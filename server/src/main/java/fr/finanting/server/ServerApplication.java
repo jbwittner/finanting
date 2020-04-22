@@ -8,14 +8,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Jean-Baptiste WITTNER
  */
 @SpringBootApplication
-public class WebApplication {
+public class ServerApplication {
 
     /**
      * Main of the application
      */
     public static void main(final String[] args) {
 
-        SpringApplication.run(WebApplication.class, args);
+        SpringApplication.run(ServerApplication.class, args);
 
     }
 
