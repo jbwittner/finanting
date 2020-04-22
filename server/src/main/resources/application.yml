@@ -1,0 +1,31 @@
+Application:
+  db-param:
+    host: localhost
+    port: 3306
+    db-name: finanting
+    user: finanting_user
+    password: FinantingPass2020
+
+logging:
+  level:
+    fr.jarvis.server.aop.interceptor: 
+      RepositoriesInterceptor: INFO
+    org:
+      apache: DEBUG
+      springframework:
+        data: DEBUG
+
+spring:
+  jpa:
+    database-platform : org.hibernate.dialect.MySQLDialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+
+  datasource:
+    url: jdbc:mysql://${application.db-param.host}:${application.db-param.port}/${application.db-param.db-name}
+    databaseName: ${application.db-param.db-name}
+    username: ${application.db-param.user}
+    password: ${application.db-param.password}
+    driverClassName: com.mysql.cj.jdbc.Driver
