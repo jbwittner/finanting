@@ -8,7 +8,7 @@ Application:
 
 logging:
   level:
-    fr.jarvis.server.aop.interceptor: 
+    fr.finanting.server.aop.interceptor: 
       RepositoriesInterceptor: INFO
     org:
       apache: DEBUG
