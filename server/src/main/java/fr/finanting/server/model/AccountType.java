@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Class of the Account type
+ */
 @Entity
 @Table(name = "ACCOUNT_TYPE")
 public class AccountType {
@@ -58,7 +61,7 @@ public class AccountType {
     public String toString() {
         return "AccountType{" +
                 "id=" + this.id +
-                ", model='" + this.type + '\'' +
+                ", type='" + this.type + '\'' +
                 '}';
     }
 
