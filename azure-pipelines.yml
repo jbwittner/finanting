@@ -1,0 +1,124 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+  branches:
+    include:
+      - master
+      - develop
+
+pr:
+  - master
+  - develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: Simple variable group
+
+steps:
+  - task: Maven@3
+    displayName: 'PMD check'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'pmd:pmd'
+      options: '-B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      publishJUnitResults: false
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
+      checkStyleRunAnalysis: true
+      pmdRunAnalysis: true
+
+  - task: Bash@3
+    displayName: 'Checking results of PMD'
+    inputs:
+      targetType: 'inline'
+      script: |
+        FILE="server/target/site/pmd.html"
+        if [ -f "$FILE" ];
+        then
+          echo "File $FILE exist."
+          exit 1
+        else
+          echo "File $FILE does not exist"
+        fi
+      failOnStderr: true
+
+  - task: Maven@3
+    displayName: 'Maven validate'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'validate'
+      options: '-B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      publishJUnitResults: false
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
+      checkStyleRunAnalysis: false
+
+  - task: Maven@3
+    displayName: 'Maven compile'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'compile'
+      options: '-B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      publishJUnitResults: false
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
+      checkStyleRunAnalysis: false
+
+  - task: Maven@3
+    displayName: 'Maven test'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'test'
+      options: '-B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
+
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        export CODECOV_TOKEN=$(CODECOV_TOKEN)
+        bash <(curl -s https://codecov.io/bash)
+
+  - task: Maven@3
+    displayName: 'Maven package'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'package'
+      options: '-DskipTests -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      publishJUnitResults: false
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
+      checkStyleRunAnalysis: false
+      pmdRunAnalysis: false
