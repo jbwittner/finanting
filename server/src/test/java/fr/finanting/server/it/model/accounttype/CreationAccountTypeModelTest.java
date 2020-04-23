@@ -9,9 +9,9 @@ import fr.finanting.server.repositories.AccountTypeRepository;
 import fr.finanting.server.it.model.ModelTest;
 
 /**
- * Test class for creation of device type
+ * Test class for creation of Account type
  */
-public class CreationDeviceTypeModelTest extends ModelTest {
+public class CreationAccountTypeModelTest extends ModelTest {
 
     @Autowired
     AccountTypeRepository accountTypeRepository;
@@ -19,7 +19,7 @@ public class CreationDeviceTypeModelTest extends ModelTest {
     public static final String DUPLICATE_ACCOUNT_TYPE = "PAYPAL";
 
     /**
-     * Test to check the good creation of device type
+     * Test to check the good creation of account type
      */
     @Test
     public void createAccountTypeOk(){
@@ -35,7 +35,7 @@ public class CreationDeviceTypeModelTest extends ModelTest {
 
     /**
      * Test to check if the repository throw an exception when we try
-     * to create a device type with a duplicate device type
+     * to create a account type with a duplicate account type
      */
     @Test
     public void createDuplicatAccountTypeNOk(){
@@ -51,7 +51,7 @@ public class CreationDeviceTypeModelTest extends ModelTest {
 
     /**
      * Test to check if the repository throw an exception when we try
-     * to create a device type a null type
+     * to create a account type a null type
      */
     @Test
     public void createAccountTypeWithNullTypeNOk(){
