@@ -7,7 +7,7 @@ services:
 
   # Database
   mariadb:
-    image: mariadb:latest
+    image: mariadb:10.4.12
     ports:
       - '3306:3306'
     volumes:
@@ -26,7 +26,7 @@ services:
   phpmyadmin:
     depends_on:
       - mariadb
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin/phpmyadmin:5.0.2
     restart: always
     ports:
       - '8080:80'

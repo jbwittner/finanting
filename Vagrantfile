@@ -77,9 +77,26 @@ Vagrant.configure("2") do |config|
   config.vm.provision :docker_compose
 
   config.vm.provision "file", source: "docker-compose.yml", destination: "docker-compose.yml"
+  config.vm.provision "file", source: "sql/init_tables.sql", destination: "init_tables.sql"
+  config.vm.provision "file", source: "sql/add_data_dev.sql", destination: "add_data_dev.sql"
+  config.vm.provision "file", source: "waitForMariaDB.sh", destination: "waitForMariaDB.sh"
+
+  config.vm.provision "shell", inline: <<-SHELL
+    chmod +x waitForMariaDB.sh
+    echo "export SQL_USER=finanting_user" >> ~/.profile
+    echo "export SQL_PASSWORD=FinantingPass2020" >> ~/.profile
+    echo "export SQL_DB=finanting" >> ~/.profile
+    apt-get install -y mysql-client
+  SHELL
 
   config.vm.provision "shell", inline: <<-SHELL
     docker-compose up -d
+  SHELL
+
+  config.vm.provision "shell", inline: <<-SHELL
+    ./waitForMariaDB.sh
+    docker exec -i vagrant_mariadb_1 mysql -u"$SQL_USER" -p"$SQL_PASSWORD" "$SQL_DB" < init_tables.sql
+    docker exec -i vagrant_mariadb_1 mysql -u"$SQL_USER" -p"$SQL_PASSWORD" "$SQL_DB" < add_data_dev.sql
   SHELL
   
 end
