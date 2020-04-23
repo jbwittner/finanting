@@ -1,0 +1,35 @@
+Application:
+  db-param:
+    host: localhost
+    port: 3306
+    db-name: finanting
+    user: finanting_user
+    password: FinantingPass2020
+
+logging:
+  level:
+    fr.finanting.server.aop.interceptor: 
+      RepositoriesInterceptor: INFO
+    org:
+      apache: DEBUG
+      springframework:
+        data: DEBUG
+
+server:
+  port : 2142
+
+spring:
+  jpa:
+    database-platform : org.hibernate.dialect.MariaDB103Dialect
+    hibernate:
+      hbm2ddl.auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+
+  datasource:
+    url: jdbc:mariadb://${application.db-param.host}:${application.db-param.port}/${application.db-param.db-name}
+    databaseName: ${application.db-param.db-name}
+    username: ${application.db-param.user}
+    password: ${application.db-param.password}
+    driverClassName: org.mariadb.jdbc.Driver
