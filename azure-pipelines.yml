@@ -98,6 +98,7 @@ steps:
       mavenAuthenticateFeed: false
       effectivePomSkip: false
       sonarQubeRunAnalysis: false
+      codeCoverageToolOption: 'JaCoCo'
 
   - task: Bash@3
     inputs:
