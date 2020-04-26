@@ -59,10 +59,7 @@ public class AccountType {
      */
     @Override
     public String toString() {
-        return "AccountType{" +
-                "id=" + this.id +
-                ", type='" + this.type + '\'' +
-                '}';
+        return "AccountType [id=" + id + ", type=" + type + "]";
     }
 
 }

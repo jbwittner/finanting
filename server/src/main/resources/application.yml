@@ -22,7 +22,7 @@ spring:
   jpa:
     database-platform : org.hibernate.dialect.MariaDB103Dialect
     hibernate:
-      hbm2ddl.auto: create
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl

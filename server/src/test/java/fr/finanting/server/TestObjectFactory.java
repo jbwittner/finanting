@@ -10,8 +10,7 @@ import java.util.List;
  */
 public class TestObjectFactory {
 
-    public static final int LENGTH_DEVICE_TYPE_MODEL = 10;
-    public static final int LENGTH_DEVICE_SERIAL = 10;
+    public static final int LENGTH_ACCOUNT_TYPE = 10;
 
     private List<String> listRandomString = new ArrayList<>();
 
@@ -44,19 +43,19 @@ public class TestObjectFactory {
     }
 
     /**
-     * Generate a random device type
-     * @return Device type generated
+     * Generate a random account type
+     * @return Account type generated
      */
     public AccountType createRandomAccountType(){
-        final String type = this.getRandomAsciiString(LENGTH_DEVICE_TYPE_MODEL);
+        final String type = this.getRandomAsciiString(LENGTH_ACCOUNT_TYPE);
 
         return this.createAccountType(type);
     }
 
     /**
-     * Generate a device type
+     * Generate a account type
      * @param type String of type
-     * @return Device type
+     * @return Account type
      */
     public AccountType createAccountType(final String type){
         return new AccountType(type);
