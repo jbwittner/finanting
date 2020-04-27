@@ -4,33 +4,38 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fr.finanting.server.it.AbstractMotherTest;
 import fr.finanting.server.model.AccountType;
-import fr.finanting.server.repositories.AccountTypeRepository;
-import fr.finanting.server.it.model.ModelTest;
+import fr.finanting.server.repositorie.AccountTypeRepository;
 
 /**
  * Test class for creation of Account type
  */
-public class CreationAccountTypeModelTest extends ModelTest {
+public class CreationAccountTypeModelTest extends AbstractMotherTest {
 
     @Autowired
     AccountTypeRepository accountTypeRepository;
 
-    public static final String DUPLICATE_ACCOUNT_TYPE = "PAYPAL";
+    AccountType accountTypeTest;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initDataBeforeEach() {
+        this.accountTypeTest = this.factory.createRandomAccountType();
+    }
 
     /**
      * Test to check the good creation of account type
      */
     @Test
     public void createAccountTypeOk(){
-        final AccountType accountType = factory.createRandomAccountType();
+        accountTypeRepository.save(this.accountTypeTest);
 
-        accountTypeRepository.save(accountType);
+        final AccountType deviceTypeSaved = accountTypeRepository.findByType(this.accountTypeTest.getType());
 
-        final AccountType deviceTypeSaved = accountTypeRepository.findByType(accountType.getType());
-
-        Assertions.assertEquals(accountType, deviceTypeSaved);
-
+        Assertions.assertEquals(this.accountTypeTest, deviceTypeSaved);
     }
 
     /**
@@ -38,11 +43,10 @@ public class CreationAccountTypeModelTest extends ModelTest {
      * to create a account type with a duplicate account type
      */
     @Test
-    public void createDuplicatAccountTypeNOk(){
-        final AccountType accountType = new AccountType(DUPLICATE_ACCOUNT_TYPE);
-        final AccountType duplicateAccountType = new AccountType(DUPLICATE_ACCOUNT_TYPE);
+    public void createDuplicateAccountTypeNOk(){
+        final AccountType duplicateAccountType = this.factory.createAccountType(this.accountTypeTest.getType());
 
-        accountTypeRepository.save(accountType);
+        accountTypeRepository.save(this.accountTypeTest);
 
         Assertions.assertThrows(org.springframework.dao.DataIntegrityViolationException.class, () -> {
             accountTypeRepository.save(duplicateAccountType);
@@ -55,7 +59,7 @@ public class CreationAccountTypeModelTest extends ModelTest {
      */
     @Test
     public void createAccountTypeWithNullTypeNOk(){
-        final AccountType deviceType = new AccountType(null);
+        final AccountType deviceType = this.factory.createAccountType(null);
 
         Assertions.assertThrows(org.springframework.dao.DataIntegrityViolationException.class, () -> {
             accountTypeRepository.save(deviceType);

@@ -23,7 +23,7 @@ public class RepositoriesInterceptor extends GeneralInterceptor {
      * @return Proceed of the event
      * @throws Throwable
      */
-    @Around("execution(* fr.finanting.server.repositories.*.*(..))")
+    @Around("execution(* fr.finanting.server.repositorie.*.*(..))")
     public Object logInterceptor(final ProceedingJoinPoint joinPoint) throws Throwable {
 
         final Object proceed = this.logExecutionTime(joinPoint, this.logger);
