@@ -8,24 +8,25 @@ Application:
 
 logging:
   level:
-    fr.finanting.server.aop.interceptor: 
-      RepositoriesInterceptor: INFO
+    fr.finanting.server:
+      ServerApplication: INFO
+      aop.interceptor: 
+        RepositoriesInterceptor: INFO
     org:
       apache: INFO
       springframework:
         data: INFO
-
 spring:
   jpa:
     show-sql: false
     database-platform: org.hibernate.dialect.H2Dialect
+    ddl-auto: create
     hibernate:
-      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
   datasource:
-    url: jdbc:h2:mem:${application.db-param.db-name}
+    url: jdbc:h2:mem:${application.db-param.db-name};DB_CLOSE_ON_EXIT=false
     databaseName: ${application.db-param.db-name}
     username: ${application.db-param.user}
     password: ${application.db-param.password}
