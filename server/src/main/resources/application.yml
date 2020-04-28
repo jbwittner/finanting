@@ -8,12 +8,14 @@ Application:
 
 logging:
   level:
-    fr.finanting.server.aop.interceptor: 
-      RepositoriesInterceptor: INFO
+    fr.finanting.server:
+      ServerApplication: INFO
+      aop.interceptor: 
+        RepositoriesInterceptor: INFO
     org:
-      apache: DEBUG
+      apache: INFO
       springframework:
-        data: DEBUG
+        data: INFO
 
 server:
   port : 2142
@@ -22,7 +24,7 @@ spring:
   jpa:
     database-platform : org.hibernate.dialect.MariaDB103Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
