@@ -31,7 +31,7 @@ public class CreationAccountTypeModelTest extends AbstractMotherTest {
      */
     @Test
     public void createAccountTypeOk(){
-        accountTypeRepository.save(this.accountTypeTest);
+        accountTypeRepository.saveAndFlush(this.accountTypeTest);
 
         final AccountType deviceTypeSaved = accountTypeRepository.findByType(this.accountTypeTest.getType());
 
@@ -46,10 +46,10 @@ public class CreationAccountTypeModelTest extends AbstractMotherTest {
     public void createDuplicateAccountTypeNOk(){
         final AccountType duplicateAccountType = this.factory.createAccountType(this.accountTypeTest.getType());
 
-        accountTypeRepository.save(this.accountTypeTest);
+        accountTypeRepository.saveAndFlush(this.accountTypeTest);
 
         Assertions.assertThrows(org.springframework.dao.DataIntegrityViolationException.class, () -> {
-            accountTypeRepository.save(duplicateAccountType);
+            accountTypeRepository.saveAndFlush(duplicateAccountType);
         });
     }
 
@@ -60,10 +60,11 @@ public class CreationAccountTypeModelTest extends AbstractMotherTest {
     @Test
     public void createAccountTypeWithNullTypeNOk(){
         final AccountType deviceType = this.factory.createAccountType(null);
-
+        
         Assertions.assertThrows(org.springframework.dao.DataIntegrityViolationException.class, () -> {
-            accountTypeRepository.save(deviceType);
+            accountTypeRepository.saveAndFlush(deviceType);
         });
+        
     }
 
 }
