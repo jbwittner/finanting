@@ -2,9 +2,6 @@ package fr.finanting.server.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -12,20 +9,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ACCOUNT_TYPE")
-public class AccountType {
+public class AccountType extends AbstractPersistant{
 
-    @Id
-    @Column(name = "ID_ACCOUNT_TYPE")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "TYPE", nullable = false, unique = true)
+    @Column(name = "TYPE", nullable = false, unique = true, length = 20)
     private String type;
 
     /**
      * Default constructor
      */
-    protected AccountType() {
+    public AccountType() {
+        super();
         // This constructor is intentionally empty. Nothing special is needed here.
     }
 
@@ -34,6 +27,7 @@ public class AccountType {
      * @param type String of type
      */
     public AccountType(final String type) {
+        super();
         this.type = type;
     }
 
@@ -54,12 +48,11 @@ public class AccountType {
     }
 
     /**
-     * Override of toString method
-     * @return String representation of the model
+     * {@inheritDoc}
      */
     @Override
     public String toString() {
-        return "AccountType [id=" + id + ", type=" + type + "]";
+        return "AccountType [id=" + this.id + ", type=" + type + "]";
     }
 
 }
