@@ -1,9 +1,10 @@
 #!/bin/sh
 # wait until MariaDB is really available
 maxcounter=45
- 
+
 counter=1
-while ! mysql --protocol TCP -u"$SQL_USER" -p"$SQL_PASSWORD" -e "show databases;" > /dev/null 2>&1; do
+while ! mysql --protocol TCP -u"$SQL_USER" -p"$SQL_PASSWORD" -e "show databases;" > localfile 2>&1; do
+    echo Counter = $counter
     sleep 1
     counter=`expr $counter + 1`
     if [ $counter -gt $maxcounter ]; then
@@ -11,3 +12,5 @@ while ! mysql --protocol TCP -u"$SQL_USER" -p"$SQL_PASSWORD" -e "show databases;
         exit 1
     fi;
 done
+
+echo End at counter = $counter
