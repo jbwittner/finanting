@@ -1,12 +1,4 @@
 --
--- Loading data from table `hibernate_sequence`
---
-
-INSERT INTO `hibernate_sequence` (`next_not_cached_value`, `minimum_value`, `maximum_value`, `start_value`, `increment`, `cache_size`, `cycle_option`, `cycle_count`) VALUES
-(1, 1, 9223372036854775806, 1, 1, 1000, 0, 0);
-COMMIT;
-
---
 -- Loading data from table `ACCOUNT_TYPE`
 --
 
@@ -14,4 +6,17 @@ INSERT INTO `ACCOUNT_TYPE` (`ID`, `TYPE`) VALUES
 (1, 'SAVING'),
 (2, 'BANKING'),
 (3, 'PAYPAL');
+COMMIT;
+
+--
+-- Loading data from table `ACCOUNT`
+--
+
+INSERT INTO `ACCOUNT` (`ID`, `NAME`, `ACCOUNT_TYPE`) VALUES
+(1, 'PERSO_1', 1),
+(2, 'PERSO_2', 1),
+(3, 'PERSO_3', 1),
+(4, 'COMMON_1', 2),
+(5, 'COMMON_2', 3),
+(6, 'SPECIAL', 2);
 COMMIT;
