@@ -7,7 +7,7 @@ import fr.finanting.server.model.AccountType;
 /**
  * Repository for account type
  */
-public interface AccountTypeRepository extends JpaRepository<AccountType, Long> {
+public interface AccountTypeRepository extends JpaRepository<AccountType, Integer> {
 
     /**
      * Method to find AccountType type by type
