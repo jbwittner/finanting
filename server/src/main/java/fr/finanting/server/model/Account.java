@@ -12,7 +12,7 @@ public class Account extends AbstractPersistant{
     @Column(name = "NAME", nullable = false, length = 20)
     private String name;
 
-    @ManyToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_TYPE", nullable = false, foreignKey = @ForeignKey(name = "FK_ACCOUNT_TYPE"))
     private AccountType accountType;
 
