@@ -3,7 +3,9 @@ package fr.finanting.server.it.model.accounttype;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 
+import fr.finanting.server.TestObjectFactory;
 import fr.finanting.server.it.AbstractMotherTest;
 import fr.finanting.server.model.AccountType;
 import fr.finanting.server.repositorie.AccountTypeRepository;
@@ -16,26 +18,24 @@ public class CreationAccountTypeModelTest extends AbstractMotherTest {
     @Autowired
     AccountTypeRepository accountTypeRepository;
 
-    AccountType accountTypeTest;
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public void initDataBeforeEach() {
-        this.accountTypeTest = this.factory.createRandomAccountType();
-    }
+    public void initDataBeforeEach() {}
 
     /**
      * Test to check the good creation of account type
      */
     @Test
     public void createAccountTypeOk(){
-        accountTypeRepository.saveAndFlush(this.accountTypeTest);
+        final AccountType accountType = new AccountType(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT_TYPE));
 
-        final AccountType deviceTypeSaved = accountTypeRepository.findByType(this.accountTypeTest.getType());
+        this.accountTypeRepository.saveAndFlush(accountType);
 
-        Assertions.assertEquals(this.accountTypeTest, deviceTypeSaved);
+        final AccountType accountTypeSaved = this.accountTypeRepository.findByType(accountType.getType());
+
+        Assertions.assertEquals(accountType, accountTypeSaved);
     }
 
     /**
@@ -44,12 +44,14 @@ public class CreationAccountTypeModelTest extends AbstractMotherTest {
      */
     @Test
     public void createDuplicateAccountTypeNOk(){
-        final AccountType duplicateAccountType = this.factory.createAccountType(this.accountTypeTest.getType());
+        final AccountType accountType = new AccountType(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT_TYPE));
 
-        accountTypeRepository.saveAndFlush(this.accountTypeTest);
+        this.accountTypeRepository.saveAndFlush(accountType);
 
-        Assertions.assertThrows(org.springframework.dao.DataIntegrityViolationException.class, () -> {
-            accountTypeRepository.saveAndFlush(duplicateAccountType);
+        final AccountType duplicateAccountType = new AccountType(accountType.getType());
+
+        Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+            this.accountTypeRepository.saveAndFlush(duplicateAccountType);
         });
     }
 
@@ -59,10 +61,10 @@ public class CreationAccountTypeModelTest extends AbstractMotherTest {
      */
     @Test
     public void createAccountTypeWithNullTypeNOk(){
-        final AccountType deviceType = this.factory.createAccountType(null);
+        final AccountType accountType = new AccountType();
         
-        Assertions.assertThrows(org.springframework.dao.DataIntegrityViolationException.class, () -> {
-            accountTypeRepository.saveAndFlush(deviceType);
+        Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+            this.accountTypeRepository.saveAndFlush(accountType);
         });
         
     }

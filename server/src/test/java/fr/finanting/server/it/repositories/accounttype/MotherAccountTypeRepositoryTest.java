@@ -14,11 +14,12 @@ import fr.finanting.server.repositorie.AccountTypeRepository;
  */
 public class MotherAccountTypeRepositoryTest extends AbstractMotherTest {
 
-    static final double MAX_ACCOUNT_TYPE = 50;
-    static final double MIN_ACCOUNT_TYPE = 25;
-    private double numberAccountType;
+    static final Integer MAX_ACCOUNT_TYPE = 50;
+    static final Integer MIN_ACCOUNT_TYPE = 25;
 
     final protected List<AccountType> accountTypeList = new ArrayList<>();
+
+    protected AccountType randomAccountType;
 
     @Autowired
     protected AccountTypeRepository accountTypeRepository;
@@ -28,15 +29,20 @@ public class MotherAccountTypeRepositoryTest extends AbstractMotherTest {
      */
     @Override
     public void initDataBeforeEach() {
-        this.numberAccountType = MIN_ACCOUNT_TYPE + (Math.random() * (MAX_ACCOUNT_TYPE - MIN_ACCOUNT_TYPE));
+
+        Integer numberAccountType = this.factory.getRandomInteger(MIN_ACCOUNT_TYPE, MAX_ACCOUNT_TYPE);
 
         AccountType accountType;
 
         for (int i = 0; i < numberAccountType; i++) {
-            accountType = this.factory.createRandomAccountType();
+            accountType = this.factory.createAccountType();
             this.accountTypeList.add(accountType);
             this.accountTypeRepository.save(accountType);
         }
+
+        this.randomAccountType = accountTypeList.get(this.factory.getRandomInteger(0, numberAccountType));
+
+        this.accountTypeRepository.flush();
 
     }
 

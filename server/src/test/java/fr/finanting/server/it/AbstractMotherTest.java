@@ -38,7 +38,7 @@ public abstract class AbstractMotherTest {
     }
 
     /**
-     * Method used to prepare the data of each tests
+     * Method used to prepare the data of tests
      */
     abstract protected void initDataBeforeEach();
 

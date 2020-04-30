@@ -27,8 +27,8 @@ public class FindByTypeTest extends MotherAccountTypeRepositoryTest {
      * Test to check the findBy method when the accountType the input are null
      */
     @Test
-    public void findByTypeNull(){
-        Assertions.assertThrows(java.lang.NullPointerException.class, () -> {
+    public void findByTypeNullNok(){
+        Assertions.assertThrows(NullPointerException.class, () -> {
             this.accountTypeRepository.findByType(null);
         });
     }
@@ -37,7 +37,7 @@ public class FindByTypeTest extends MotherAccountTypeRepositoryTest {
      * Test to check the findBy method when the accountType are not in the database
      */
     @Test
-    public void findByTypeNOk(){
+    public void findByTypeNotExistOk(){
         final String randomString = this.factory.getRandomAsciiString(10);
 
         final AccountType accountType = this.accountTypeRepository.findByType(randomString);
