@@ -38,7 +38,7 @@ public class FindByTypeTest extends MotherAccountTypeRepositoryTest {
      */
     @Test
     public void findByTypeNotExistOk(){
-        final String randomString = this.factory.getRandomAsciiString(10);
+        final String randomString = this.factory.getUniqueRandomAsciiString(10);
 
         final AccountType accountType = this.accountTypeRepository.findByType(randomString);
 

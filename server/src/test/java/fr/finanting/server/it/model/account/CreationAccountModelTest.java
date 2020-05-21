@@ -43,7 +43,7 @@ public class CreationAccountModelTest extends AbstractMotherTest {
      */
     @Test
     public void createOk(){
-        final Account account = new Account(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
+        final Account account = new Account(this.factory.getUniqueRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
                                             this.accountTypeOne);
 
         this.accountRepository.saveAndFlush(account);
@@ -59,7 +59,7 @@ public class CreationAccountModelTest extends AbstractMotherTest {
      */
     @Test
     public void createDuplicateNOk(){
-        final Account account = new Account(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
+        final Account account = new Account(this.factory.getUniqueRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
                                             this.accountTypeOne);
 
         this.accountRepository.saveAndFlush(account);
@@ -73,7 +73,7 @@ public class CreationAccountModelTest extends AbstractMotherTest {
 
     @Test
     public void createDuplicateAccountNameNOk(){
-        final Account account = new Account(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
+        final Account account = new Account(this.factory.getUniqueRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
                                             this.accountTypeOne);
 
         this.accountRepository.saveAndFlush(account);
@@ -87,12 +87,12 @@ public class CreationAccountModelTest extends AbstractMotherTest {
 
     @Test
     public void createDuplicateAccountTypeOk(){
-        final Account account = new Account(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
+        final Account account = new Account(this.factory.getUniqueRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
                                             this.accountTypeOne);
 
         this.accountRepository.saveAndFlush(account);
 
-        final Account duplicateAccount = new Account(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
+        final Account duplicateAccount = new Account(this.factory.getUniqueRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
                                                     this.accountTypeTwo);
 
         accountRepository.saveAndFlush(duplicateAccount);
@@ -120,7 +120,7 @@ public class CreationAccountModelTest extends AbstractMotherTest {
 
     @Test
     public void createWithNullTypeNOk(){
-        final Account account = new Account(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
+        final Account account = new Account(this.factory.getUniqueRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT),
                                             null);
         
         Assertions.assertThrows(DataIntegrityViolationException.class, () -> {

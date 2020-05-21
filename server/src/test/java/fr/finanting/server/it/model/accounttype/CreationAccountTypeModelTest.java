@@ -29,7 +29,7 @@ public class CreationAccountTypeModelTest extends AbstractMotherTest {
      */
     @Test
     public void createAccountTypeOk(){
-        final AccountType accountType = new AccountType(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT_TYPE));
+        final AccountType accountType = new AccountType(this.factory.getUniqueRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT_TYPE));
 
         this.accountTypeRepository.saveAndFlush(accountType);
 
@@ -44,7 +44,7 @@ public class CreationAccountTypeModelTest extends AbstractMotherTest {
      */
     @Test
     public void createDuplicateAccountTypeNOk(){
-        final AccountType accountType = new AccountType(this.factory.getRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT_TYPE));
+        final AccountType accountType = new AccountType(this.factory.getUniqueRandomAsciiString(TestObjectFactory.LENGTH_ACCOUNT_TYPE));
 
         this.accountTypeRepository.saveAndFlush(accountType);
 

@@ -39,5 +39,4 @@ public abstract class AbstractPersistant {
      */
     @Override
     public abstract String toString();
-
 }

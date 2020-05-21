@@ -55,4 +55,12 @@ public class AccountType extends AbstractPersistant{
         return "AccountType [id=" + this.id + ", type=" + type + "]";
     }
 
+    public boolean equals(AccountType accountType){
+        boolean idIsEqual = this.id.equals(accountType.getId());
+        boolean typeIsEquals = this.type.equals(accountType.getType());
+
+        boolean isEquals = idIsEqual && typeIsEquals;
+        return isEquals;
+    }
+
 }

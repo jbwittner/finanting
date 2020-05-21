@@ -38,7 +38,7 @@ public class FindByNameTest extends MotherAccountRepositoryTest {
      */
     @Test
     public void findByNameNotExistOk(){
-        final String randomString = this.factory.getRandomAsciiString(10);
+        final String randomString = this.factory.getUniqueRandomAsciiString(10);
 
         final Account account = this.accountRepository.findByName(randomString);
 
