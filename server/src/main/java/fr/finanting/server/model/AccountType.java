@@ -4,10 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * Class of the Account type
  */
 @Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "ACCOUNT_TYPE")
 public class AccountType extends AbstractPersistant{
 
@@ -29,30 +34,6 @@ public class AccountType extends AbstractPersistant{
     public AccountType(final String type) {
         super();
         this.type = type;
-    }
-
-    /**
-     * Getter of type
-     * @return String of type
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Setter of type
-     * @param type String of type
-     */
-    public void setType(final String type) {
-        this.type = type;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "AccountType [id=" + this.id + ", type=" + type + "]";
     }
 
 }

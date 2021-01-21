@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
- * Interceptor for Repositories
+ * Interceptor for services
  */
 @Aspect
 @Component
-public class RepositoriesInterceptor extends GeneralInterceptor {
+public class ServiceInterceptor extends GeneralInterceptor {
 
-    protected final Logger logger = LoggerFactory.getLogger(RepositoriesInterceptor.class);
+    protected final Logger logger = LoggerFactory.getLogger(ServiceInterceptor.class);
 
     /**
      * Log interceptor to log the methode, the time to proceed and the arguments of
@@ -23,8 +23,9 @@ public class RepositoriesInterceptor extends GeneralInterceptor {
      * @return Proceed of the event
      * @throws Throwable
      */
-    @Around("execution(* org.springframework.data.repository.CrudRepository.*(..))" +
-            "|| execution(* org.springframework.data.jpa.repository.JpaRepository.*(..))")
+    @Around("execution(* fr.finanting.server.*.*.*(..))" +
+            "&& !execution(* org.springframework.data.repository.CrudRepository.*(..))" +
+            "&& !execution(* org.springframework.data.jpa.repository.JpaRepository.*(..))")
     public Object logInterceptor(final ProceedingJoinPoint joinPoint) throws Throwable {
         return this.logExecutionTime(joinPoint, this.logger);
     }

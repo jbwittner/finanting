@@ -6,9 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import lombok.Data;
+
 /**
  * Abstract part of models
  */
+@Data
 @MappedSuperclass
 public abstract class AbstractPersistant {
 
@@ -16,28 +19,5 @@ public abstract class AbstractPersistant {
     @Column(name = "ID", nullable = false, updatable = false, insertable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Integer id;
-
-    /**
-     * Getter of id
-     * @return id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * Setter of id
-     * @param id id
-     */
-    public void setId(final Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * Override of toString method
-     * @return String representation of the model
-     */
-    @Override
-    public abstract String toString();
 
 }
