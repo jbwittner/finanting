@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Appenders>
-        <RollingFile name="RollingFile" fileName="logs/jarvis.log"
-                     filePattern="logs/$${date:yyyy-MM}/jarvis_%d{MM-dd-yyyy}_%d{HH-mm}_%i.log">
+        <RollingFile name="RollingFile" fileName="logs/finanting.log"
+                     filePattern="logs/$${date:yyyy-MM}/finanting_%d{MM-dd-yyyy}_%d{HH-mm}_%i.log">
             <PatternLayout pattern="%d{dd MM yyyy}\t%d{HH:mm:ss.SSS}\t%t\t%-5level\t%logger{1.}\t%msg%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="250 MB"/>
             </Policies>
         </RollingFile>
-        <RollingFile name="JSONRollingFile" fileName="logs/jarvis_json.log"
-                     filePattern="logs/$${date:yyyy-MM}/jarvis_%d{MM-dd-yyyy}_%d{HH-mm}_json_%i.log">
+        <RollingFile name="JSONRollingFile" fileName="logs/finanting_json.log"
+                     filePattern="logs/$${date:yyyy-MM}/finanting_%d{MM-dd-yyyy}_%d{HH-mm}_json_%i.log">
             <JSONLayout complete="true" compact="false"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
