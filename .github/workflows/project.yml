@@ -1,0 +1,90 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Project CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  check-build-test-backend:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup-Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11 # The JDK version to make available on the path.
+          java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+          architecture: x64 # (x64 or x86) - defaults to x64
+
+      - name: Cache
+        uses: actions/cache@v2.0.0
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: ~/.m2/repository
+          # An explicit key for restoring and saving the cache
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Generation PMD report
+        run: mvn -B pmd:pmd -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        working-directory: server
+
+      - name: Check PMD report
+        run: mvn -B pmd:check -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        working-directory: server
+
+      - name: Build java part
+        run: mvn -B compile -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        working-directory: server
+        env:
+          CI: false
+
+      - name: Test java part
+        run: mvn -B test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        working-directory: server
+        env:
+          CI: false
+
+      - name: Coverage java part
+        uses: codecov/codecov-action@v1
+
+  package-application:
+    needs: [check-build-test-backend]
+
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup-Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11 # The JDK version to make available on the path.
+          java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+          architecture: x64 # (x64 or x86) - defaults to x64
+
+      - name: Cache
+        uses: actions/cache@v2.0.0
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: ~/.m2/repository
+          # An explicit key for restoring and saving the cache
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Package application
+        run: mvn -B -DskipTests package --file pom.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        env:
+          CI: false

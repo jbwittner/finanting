@@ -9,6 +9,7 @@
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${application.name} - ${application.service}</name>
+    <description>A financial accounting application</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
