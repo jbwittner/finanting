@@ -12,7 +12,7 @@ services:
       - '3306:3306'
     volumes:
       - finanting_db:/var/lib/mysql
-    command: --character_set_client=utf8 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: FinantingRootPass2020
