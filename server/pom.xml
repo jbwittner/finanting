@@ -227,12 +227,7 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <exclude>fr/opendoha/myguild/server/dto/*.class</exclude>
-                                <exclude>fr/opendoha/myguild/server/model/*.class</exclude>
-                                <exclude>fr/opendoha/myguild/server/model/**/*.class</exclude>
-                                <exclude>fr/opendoha/myguild/server/parameters/*.class</exclude>
-                                <exclude>fr/opendoha/myguild/server/data/**/*.class</exclude>
-                                <exclude>fr/opendoha/myguild/server/tools/oauth2/models/*.class</exclude>
+                                <exclude>fr/finanting/server/model/*.class</exclude>
                             </excludes>
                         </configuration>
                     </execution>

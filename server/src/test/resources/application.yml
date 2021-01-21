@@ -11,11 +11,13 @@ logging:
     fr.finanting.server:
       ServerApplication: INFO
       aop.interceptor: 
-        RepositoriesInterceptor: INFO
+        RepositoryInterceptor: INFO
+        ServiceInterceptor: INFO
     org:
       apache: INFO
       springframework:
         data: INFO
+
 spring:
   jpa:
     show-sql: false
@@ -26,7 +28,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
   datasource:
-    url: jdbc:h2:mem:${application.db-param.db-name};DB_CLOSE_ON_EXIT=false
+    url: jdbc:h2:mem:${application.db-param.db-name};DB_CLOSE_DELAY=false;DB_CLOSE_ON_EXIT=false;DATABASE_TO_UPPER=false
     databaseName: ${application.db-param.db-name}
     username: ${application.db-param.user}
     password: ${application.db-param.password}
