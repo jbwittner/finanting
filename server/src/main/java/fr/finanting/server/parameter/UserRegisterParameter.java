@@ -9,5 +9,6 @@ public class UserRegisterParameter {
     private String userName;
     private String firstName;
     private String lastName;
+    private String password;
     
 }

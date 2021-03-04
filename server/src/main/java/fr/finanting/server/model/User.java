@@ -36,13 +36,18 @@ public class User extends AbstractPersistant implements UserDetails {
     private String password;
 
     @Column(nullable = false)
-    private Boolean expired;
+    private Boolean isExpired;
 
     @Column(nullable = false)
-    private Boolean locked;
+    private Boolean isLocked;
 
     @Column(nullable = false)
-    private Boolean credentialsExpired;
+    private Boolean isCredentialsExpired;
+
+	@Column(nullable = false)
+    private Boolean isEnabled;
+
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -52,23 +57,22 @@ public class User extends AbstractPersistant implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return !this.expired;
+		return !this.isExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return !this.locked;
+		return !this.isLocked;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return !this.credentialsExpired;
+		return !this.isCredentialsExpired;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.isEnabled;
 	}
 
 }

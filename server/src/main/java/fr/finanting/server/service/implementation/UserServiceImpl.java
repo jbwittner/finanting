@@ -3,6 +3,7 @@ package fr.finanting.server.service.implementation;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +20,12 @@ import fr.finanting.server.service.UserService;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class UserServiceImpl implements UserService {
         
         if(this.userRepository.existsByEmail(userRegisterParameter.getEmail())){
             throw new UserEmailAlreadyExistException(userRegisterParameter.getEmail());
-        } else if (this.userRepository.existsByUsername(userRegisterParameter.getEmail())){
+        } else if (this.userRepository.existsByUsername(userRegisterParameter.getUserName())){
             throw new UserNameAlreadyExistException(userRegisterParameter.getUserName());
         }
 
@@ -40,6 +43,11 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userRegisterParameter.getFirstName());
         user.setLastName(userRegisterParameter.getLastName());
         user.setUsername(userRegisterParameter.getUserName());
+        user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
+        user.setIsCredentialsExpired(false);
+        user.setIsExpired(false);
+        user.setIsLocked(false);
+        user.setIsEnabled(true);
         
         this.userRepository.save(user);
 
