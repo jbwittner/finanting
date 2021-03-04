@@ -1,7 +1,6 @@
 package fr.finanting.server.exception;
 
 @SuppressWarnings("serial")
-
 public class UsernameNotFoundException extends FunctionalException {
 
     /**
