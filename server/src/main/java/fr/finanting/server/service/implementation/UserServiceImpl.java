@@ -1,6 +1,8 @@
 package fr.finanting.server.service.implementation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.finanting.server.dto.UserDTO;
 import fr.finanting.server.exception.UserEmailAlreadyExistException;
 import fr.finanting.server.exception.UserNameAlreadyExistException;
+import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.UserRegisterParameter;
 import fr.finanting.server.repository.UserRepository;
@@ -44,6 +47,11 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userRegisterParameter.getLastName());
         user.setUserName(userRegisterParameter.getUserName());
         user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
+
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.APPROVED);
+
+        user.setRoles(roles);
         
         this.userRepository.save(user);
 

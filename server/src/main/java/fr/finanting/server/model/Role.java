@@ -12,10 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "USERS")
-@Data
-public class Role extends AbstractPersistant {
-    
+public enum  Role {
+    PENDING,
+    APPROVED,
+    SPAM
 }

@@ -1,9 +1,13 @@
 package fr.finanting.server.model;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -32,5 +36,9 @@ public class User extends AbstractPersistant {
 
     @Column(nullable = false)
     private String password;
+
+    @ElementCollection(targetClass = Role.class)
+    @Enumerated(EnumType.STRING)
+    private List<Role> roles;
 
 }
