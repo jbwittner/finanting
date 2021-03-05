@@ -6,9 +6,9 @@ import fr.finanting.server.model.User;
 
 public interface UserRepository extends AbstractRepository<User, Integer>{
     
-    Optional<User> findByUsername(String username);
+    Optional<User> findByUserName(String userName);
 
-    boolean existsByUsername(String username);
+    boolean existsByUserName(String userName);
     boolean existsByEmail(String email);
 
 }

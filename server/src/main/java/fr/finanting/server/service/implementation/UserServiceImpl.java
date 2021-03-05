@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         
         if(this.userRepository.existsByEmail(userRegisterParameter.getEmail())){
             throw new UserEmailAlreadyExistException(userRegisterParameter.getEmail());
-        } else if (this.userRepository.existsByUsername(userRegisterParameter.getUserName())){
+        } else if (this.userRepository.existsByUserName(userRegisterParameter.getUserName())){
             throw new UserNameAlreadyExistException(userRegisterParameter.getUserName());
         }
 
@@ -42,12 +42,8 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userRegisterParameter.getEmail());
         user.setFirstName(userRegisterParameter.getFirstName());
         user.setLastName(userRegisterParameter.getLastName());
-        user.setUsername(userRegisterParameter.getUserName());
+        user.setUserName(userRegisterParameter.getUserName());
         user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
-        user.setIsCredentialsExpired(false);
-        user.setIsExpired(false);
-        user.setIsLocked(false);
-        user.setIsEnabled(true);
         
         this.userRepository.save(user);
 

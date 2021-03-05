@@ -1,6 +1,9 @@
 package fr.finanting.server.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,12 @@ public class UserController {
     public void registerNewAccount(@RequestBody final UserRegisterParameter userRegisterParameter)
             throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
         this.userService.registerNewAccount(userRegisterParameter);
+    }
+
+    @GetMapping("/test")
+    public String test(Principal principal){
+        System.out.println(principal);
+        return principal.getName();
     }
 
 }
