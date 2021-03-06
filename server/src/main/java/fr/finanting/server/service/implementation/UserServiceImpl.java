@@ -49,7 +49,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
 
         List<Role> roles = new ArrayList<>();
-        roles.add(Role.APPROVED);
+        //roles.add(Role.ADMIN);
+        roles.add(Role.USER);
 
         user.setRoles(roles);
         

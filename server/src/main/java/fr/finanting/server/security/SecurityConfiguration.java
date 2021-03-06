@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import fr.finanting.server.model.Role;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -41,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .antMatcher("/**").authorizeRequests()
+            .antMatchers("/admin/*").hasAnyRole(Role.ADMIN.toString())
             .antMatchers("/", "/user/registerNewAccount").permitAll()
             .anyRequest().authenticated()
             .and().formLogin().permitAll()

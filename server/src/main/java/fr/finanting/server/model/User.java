@@ -3,12 +3,16 @@ package fr.finanting.server.model;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,23 +26,24 @@ import lombok.EqualsAndHashCode;
 @Data
 public class User extends AbstractPersistant {
 
-	@Column(nullable = false, unique = true)
+	@Column(name = "USERNAME", nullable = false, unique = true)
     private String userName;
 
-    @Column(nullable = false)
+    @Column(name = "FIRSTNAME", nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "LASTNAME", nullable = false)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @ElementCollection(targetClass = Role.class)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     private List<Role> roles;
 
 }
