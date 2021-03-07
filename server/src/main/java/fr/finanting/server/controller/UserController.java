@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,8 +34,13 @@ public class UserController {
     }
 
     @GetMapping("/test")
-    public String test(Principal principal){
-        System.out.println(principal);
-        return principal.getName();
+    public String test(Authentication authentication){
+        System.out.println(authentication);
+        System.out.println("getPrincipal : " + authentication.getPrincipal());
+        System.out.println("getCredentials : " + authentication.getCredentials());
+        System.out.println("getDetails : " + authentication.getDetails());
+        System.out.println("getName : " + authentication.getName());
+        System.out.println("getAuthorities : " + authentication.getAuthorities());
+        return authentication.getName();
     }
 }

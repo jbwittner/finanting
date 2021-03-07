@@ -1,5 +1,6 @@
 package fr.finanting.server.service.implementation;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder){
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -34,10 +35,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO registerNewAccount(UserRegisterParameter userRegisterParameter)
             throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
-        
-        if(this.userRepository.existsByEmail(userRegisterParameter.getEmail())){
+
+        if (this.userRepository.existsByEmail(userRegisterParameter.getEmail())) {
             throw new UserEmailAlreadyExistException(userRegisterParameter.getEmail());
-        } else if (this.userRepository.existsByUserName(userRegisterParameter.getUserName())){
+        } else if (this.userRepository.existsByUserName(userRegisterParameter.getUserName())) {
             throw new UserNameAlreadyExistException(userRegisterParameter.getUserName());
         }
 
@@ -49,14 +50,20 @@ public class UserServiceImpl implements UserService {
         user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
 
         List<Role> roles = new ArrayList<>();
-        //roles.add(Role.ADMIN);
         roles.add(Role.USER);
 
         user.setRoles(roles);
-        
+
         this.userRepository.save(user);
 
         return null;
     }
+
+    @Override
+    public UserDTO getAccountInformations(Principal principal) {
+        principal.getName();
+        return null;
+    }
+
     
 }
