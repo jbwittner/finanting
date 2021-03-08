@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class UserRegisterParameter {
+public class UserUpdateParameter {
 
     @NotNull
     @NotEmpty
@@ -23,9 +23,5 @@ public class UserRegisterParameter {
     @NotNull
     @NotEmpty
     private String lastName;
-
-    @NotNull
-    @NotEmpty
-    private String password;
     
 }

@@ -43,7 +43,8 @@ public class User extends AbstractPersistant {
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
+    @Column(name = "ROLES")
     private List<Role> roles;
 
 }

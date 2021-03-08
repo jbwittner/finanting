@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.finanting.server.dto.UserDTO;
+import fr.finanting.server.exception.BadPasswordException;
 import fr.finanting.server.exception.UserEmailAlreadyExistException;
 import fr.finanting.server.exception.UserNameAlreadyExistException;
+import fr.finanting.server.parameter.PasswordUpdateParameter;
 import fr.finanting.server.parameter.UserRegisterParameter;
+import fr.finanting.server.parameter.UserUpdateParameter;
+import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.UserService;
 
 @RestController
@@ -28,19 +33,26 @@ public class UserController {
     }
 
     @PostMapping("/registerNewAccount")
-    public void registerNewAccount(@RequestBody final UserRegisterParameter userRegisterParameter)
+    public UserDTO registerNewAccount(@RequestBody final UserRegisterParameter userRegisterParameter)
             throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
-        this.userService.registerNewAccount(userRegisterParameter);
+        return this.userService.registerNewAccount(userRegisterParameter);
     }
 
-    @GetMapping("/test")
-    public String test(Authentication authentication){
-        System.out.println(authentication);
-        System.out.println("getPrincipal : " + authentication.getPrincipal());
-        System.out.println("getCredentials : " + authentication.getCredentials());
-        System.out.println("getDetails : " + authentication.getDetails());
-        System.out.println("getName : " + authentication.getName());
-        System.out.println("getAuthorities : " + authentication.getAuthorities());
-        return authentication.getName();
+    @PostMapping("/updateAccountInformations")
+    public UserDTO updateAccountInformations(Authentication authentication, @RequestBody final UserUpdateParameter userUpdateParameter){
+        UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        return this.userService.updateAccountInformations(userUpdateParameter, userDetailsImpl.getUsername());
+    }
+
+    @GetMapping("/getAccountInformations")
+    public UserDTO getAccountInformations(Authentication authentication){
+        UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        return this.userService.getAccountInformations(userDetailsImpl.getUsername());
+    }
+
+    @GetMapping("/updatePassword")
+    public void updatePassword(Authentication authentication, @RequestBody final PasswordUpdateParameter passwordUpdateParameter) throws BadPasswordException{
+        UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        this.userService.updatePassword(passwordUpdateParameter, userDetailsImpl.getUsername());
     }
 }
