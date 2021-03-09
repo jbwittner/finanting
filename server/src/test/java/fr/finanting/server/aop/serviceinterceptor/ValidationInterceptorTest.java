@@ -1,5 +1,6 @@
 package fr.finanting.server.aop.serviceinterceptor;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.aspectj.lang.JoinPoint;
@@ -31,6 +32,7 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
 
         final ObjectToValidate objectToValidate = new ObjectToValidate();
         objectToValidate.setEmail(this.factory.getUniqueRandomEmail());
+        objectToValidate.setName(this.factory.getRandomAlphanumericString());
 
         final Object[] objects = new Object[1];
         objects[0] = objectToValidate;
@@ -51,6 +53,7 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
         final ServiceInterceptor serviceInterceptor = new ServiceInterceptor();
 
         final ObjectToValidate objectToValidate = new ObjectToValidate();
+        objectToValidate.setName("");
 
         final Object[] objects = new Object[1];
         objects[0] = objectToValidate;
@@ -109,6 +112,9 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
     
         @NotNull
         private String email;
+
+        @NotEmpty
+        private String name;
     }
 
 }
