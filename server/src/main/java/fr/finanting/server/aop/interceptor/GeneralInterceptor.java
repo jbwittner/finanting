@@ -4,8 +4,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
+
+import fr.finanting.server.exception.ValidationDataException;
+import fr.finanting.server.validation.InputServiceValidator;
 
 /**
  * Mother class for the Interceptor
@@ -43,6 +47,35 @@ public class GeneralInterceptor {
         logger.info("EXITING :: " + method + " executed in " + executionTime + "ms");
 
         return proceed;
+    }
+
+    /**
+     * Method used to check the validation of input data
+     *
+     * @param joinPoint Event intercepted by the aop
+     * @param logger    Logger used to log information's
+     * @throws ValidationDataException
+     */
+    protected void validationInputData(final JoinPoint joinPoint, final Logger logger) throws ValidationDataException {
+
+        final List<Object> list = Arrays.asList(joinPoint.getArgs());
+        final Iterator<Object> iterator = list.iterator();
+
+        String method = joinPoint.getSignature().getDeclaringTypeName();
+        method += "." + joinPoint.getSignature().getName();
+
+        Object object;
+
+        final InputServiceValidator<Object> validator = new InputServiceValidator<>();
+
+        logger.info("INPUT VALIDATION :: " + method);
+
+        while (iterator.hasNext()) {
+            object = iterator.next();
+            logger.debug("VALIDATION OF :: " + object.toString());
+            validator.validate(object);
+        }
+
     }
 
 }

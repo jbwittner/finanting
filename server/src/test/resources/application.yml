@@ -11,8 +11,8 @@ logging:
     fr.finanting.server:
       ServerApplication: INFO
       aop.interceptor: 
-        RepositoryInterceptor: INFO
-        ServiceInterceptor: INFO
+        RepositoryInterceptor: ERROR
+        ServiceInterceptor: ERROR
     org:
       apache: INFO
       springframework:

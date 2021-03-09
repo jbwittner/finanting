@@ -1,10 +1,11 @@
-package fr.finanting.server;
+package fr.finanting.server.testhelper;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.github.javafaker.Faker;
+import com.github.javafaker.Name;
 
 /**
  * Factory to help during tests
@@ -21,6 +22,7 @@ public class TestObjectFactory {
     private List<String> listRandomString = new ArrayList<>();
     private List<String> listRandomEmail = new ArrayList<>();
     private List<Integer> listRandomNumber = new ArrayList<>();
+    private List<String> listRandomName = new ArrayList<>();
 
     protected final Faker faker = new Faker();
     
@@ -32,6 +34,7 @@ public class TestObjectFactory {
         this.listRandomString = new ArrayList<>();
         this.listRandomNumber = new ArrayList<>();
         this.listRandomEmail = new ArrayList<>();
+        this.listRandomName = new ArrayList<>();
     }
 
     /**
@@ -96,13 +99,31 @@ public class TestObjectFactory {
         String randomUri = "";
 
         while (isNotUnique){
-            randomUri = "http://" + RandomStringUtils.randomAlphanumeric(LENGTH_URI) + ".com";
+            randomUri = this.faker.internet().url();
             isNotUnique = listRandomString.contains(randomUri);
         }
 
         listRandomString.add(randomUri);
 
         return randomUri;
+    }
+
+    /**
+     * Method to get a unique random name
+     */
+    public Name getUniqueRandomName(){
+
+        boolean isNotUnique = true;
+        Name randomName = this.faker.name();
+
+        while (isNotUnique){
+            randomName = this.faker.name();
+            isNotUnique = listRandomName.contains(randomName.username());
+        }
+
+        listRandomName.add(randomName.username());
+
+        return randomName;
     }
 
     /**
@@ -113,8 +134,7 @@ public class TestObjectFactory {
         String email = "";
 
         while (isNotUnique){
-            email = RandomStringUtils.randomAlphabetic(LENGTH_EMAIL_NAME);
-            email = email + "@" + RandomStringUtils.randomAlphabetic(LENGTH_DOMAIN) + ".com";
+            email = this.faker.internet().emailAddress();
             isNotUnique = listRandomEmail.contains(email);
         }
 

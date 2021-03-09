@@ -228,6 +228,12 @@
                         <configuration>
                             <excludes>
                                 <exclude>fr/finanting/server/model/*.class</exclude>
+                                <exclude>fr/finanting/server/parameter/*.class</exclude>
+                                <exclude>fr/finanting/server/dto/*.class</exclude>
+                                <exclude>fr/finanting/server/controller/*.class</exclude>
+                                <exclude>fr/finanting/server/ServerApplication.class</exclude>
+                                <exclude>fr/finanting/server/tools/handler/ErrorDetails.class</exclude>
+                                <exclude>fr/finanting/server/security/SecurityConfiguration.class</exclude>
                             </excludes>
                         </configuration>
                     </execution>

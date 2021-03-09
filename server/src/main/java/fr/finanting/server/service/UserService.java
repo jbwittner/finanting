@@ -26,7 +26,7 @@ public interface UserService {
     /**
      * Method used to update account informations
      */
-    public UserDTO updateAccountInformations(UserUpdateParameter userUpdateParameter, String userName);
+    public UserDTO updateAccountInformations(UserUpdateParameter userUpdateParameter, String userName) throws UserEmailAlreadyExistException, UserNameAlreadyExistException;
 
     /**
      * Method used to update account password

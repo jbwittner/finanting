@@ -48,7 +48,7 @@ public class UserController {
      * Endpoint used to update account informations
      */
     @PostMapping("/updateAccountInformations")
-    public UserDTO updateAccountInformations(final Authentication authentication, @RequestBody final UserUpdateParameter userUpdateParameter){
+    public UserDTO updateAccountInformations(final Authentication authentication, @RequestBody final UserUpdateParameter userUpdateParameter) throws UserEmailAlreadyExistException, UserNameAlreadyExistException{
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.userService.updateAccountInformations(userUpdateParameter, userDetailsImpl.getUsername());
     }

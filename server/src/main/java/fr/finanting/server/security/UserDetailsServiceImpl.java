@@ -17,11 +17,15 @@ import fr.finanting.server.repository.UserRepository;
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
     
-    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    public UserDetailsServiceImpl(final UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
     @Override
-    public UserDetails loadUserByUsername(final String username) {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         final User user = userRepository.findByUserName(username)
             .orElseThrow(() -> new UsernameNotFoundException(username));
         return new UserDetailsImpl(user);

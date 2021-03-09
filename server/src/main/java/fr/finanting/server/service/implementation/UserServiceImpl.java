@@ -2,6 +2,7 @@ package fr.finanting.server.service.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,8 +59,6 @@ public class UserServiceImpl implements UserService {
 
         final List<Role> roles = new ArrayList<>();
         roles.add(Role.USER);
-        roles.add(Role.ADMIN);
-
         user.setRoles(roles);
 
         this.userRepository.save(user);
@@ -80,9 +79,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateAccountInformations(final UserUpdateParameter userUpdateParameter, final String userName) {
+    public UserDTO updateAccountInformations(final UserUpdateParameter userUpdateParameter, final String userName) throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
         
         final User user = this.userRepository.findByUserName(userName).get();
+        Optional<User> optionalUserFind;
+
+        if(!user.getEmail().equals(userUpdateParameter.getEmail())){
+            optionalUserFind = this.userRepository.findByEmail(userUpdateParameter.getEmail());
+            if(optionalUserFind.isPresent()){
+                throw new UserEmailAlreadyExistException(userUpdateParameter.getEmail());
+            }
+        }
+
+        if(!user.getUserName().equals(userUpdateParameter.getUserName())){
+            optionalUserFind = this.userRepository.findByUserName(userUpdateParameter.getUserName());
+            if(optionalUserFind.isPresent()){
+                throw new UserNameAlreadyExistException(userUpdateParameter.getUserName());
+            }
+        }
 
         user.setEmail(userUpdateParameter.getEmail());
         user.setFirstName(userUpdateParameter.getFirstName());
@@ -109,6 +123,5 @@ public class UserServiceImpl implements UserService {
         this.userRepository.save(user);
         
     }
-
     
 }
