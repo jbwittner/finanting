@@ -1,6 +1,5 @@
 package fr.finanting.server.model;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
@@ -10,12 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

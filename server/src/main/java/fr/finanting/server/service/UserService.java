@@ -1,7 +1,5 @@
 package fr.finanting.server.service;
 
-import java.security.Principal;
-
 import fr.finanting.server.dto.UserDTO;
 import fr.finanting.server.exception.BadPasswordException;
 import fr.finanting.server.exception.UserEmailAlreadyExistException;
