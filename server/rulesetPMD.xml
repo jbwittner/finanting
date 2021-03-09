@@ -53,8 +53,6 @@
             <property name="strictMode" value="false" />
         </properties>
     </rule>
-    <rule ref="category/java/bestpractices.xml/PositionLiteralsFirstInCaseInsensitiveComparisons" />
-    <rule ref="category/java/bestpractices.xml/PositionLiteralsFirstInComparisons" />
     <rule ref="category/java/bestpractices.xml/PreserveStackTrace" />
     <rule ref="category/java/bestpractices.xml/SwitchStmtsShouldHaveDefault" />
     <rule ref="category/java/bestpractices.xml/SystemPrintln" />
@@ -63,7 +61,6 @@
             <property name="checkAll" value="true" />
         </properties>
     </rule>
-    <rule ref="category/java/bestpractices.xml/UnusedImports" />
     <rule ref="category/java/bestpractices.xml/UnusedLocalVariable" />
     <rule ref="category/java/bestpractices.xml/UnusedPrivateField" />
     <rule ref="category/java/bestpractices.xml/UseAssertEqualsInsteadOfAssertTrue" />
@@ -71,7 +68,6 @@
     <rule ref="category/java/bestpractices.xml/UseAssertSameInsteadOfAssertTrue" />
     <rule ref="category/java/bestpractices.xml/UseAssertTrueInsteadOfAssertEquals" />
     <rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty" />
-    <rule ref="category/java/bestpractices.xml/UseVarargs" />
     <rule ref="category/java/bestpractices.xml/WhileLoopWithLiteralBoolean" />
     <!-- bestpractices -->
 
@@ -153,13 +149,12 @@
     </rule>
     <rule ref="category/java/design.xml/AvoidThrowingNullPointerException" />
     <rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes" />
-    <rule ref="category/java/design.xml/AvoidUncheckedExceptionsInSignatures" />
     <rule ref="category/java/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal" />
     <rule ref="category/java/design.xml/CollapsibleIfStatements" />
     <rule ref="category/java/design.xml/DoNotExtendJavaLangError" />
     <rule ref="category/java/design.xml/ExcessiveParameterList">
         <properties>
-            <property name="minimum" value="10.0" />
+            <property name="minimum" value="20.0" />
         </properties>
     </rule>
     <rule ref="category/java/design.xml/LogicInversion" />
@@ -172,7 +167,7 @@
     </rule>
     <rule ref="category/java/design.xml/TooManyFields">
         <properties>
-            <property name="maxfields" value="15" />
+            <property name="maxfields" value="30" />
         </properties>
     </rule>
     <!-- Design -->
@@ -227,7 +222,6 @@
     <rule ref="category/java/errorprone.xml/CallSuperFirst" />
     <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals" />
     <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly" />
-    <rule ref="category/java/errorprone.xml/DoNotCallSystemExit" />
     <rule ref="category/java/errorprone.xml/DoNotHardCodeSDCard" />
     <rule ref="category/java/errorprone.xml/EmptyCatchBlock">
         <properties>
@@ -266,7 +260,6 @@
     <rule ref="category/java/performance.xml/InsufficientStringBufferDeclaration" />
     <rule ref="category/java/performance.xml/IntegerInstantiation" />
     <rule ref="category/java/performance.xml/LongInstantiation" />
-    <rule ref="category/java/performance.xml/OptimizableToArrayCall" />
     <rule ref="category/java/performance.xml/ShortInstantiation" />
     <rule ref="category/java/performance.xml/StringInstantiation" />
     <rule ref="category/java/performance.xml/StringToString" />
