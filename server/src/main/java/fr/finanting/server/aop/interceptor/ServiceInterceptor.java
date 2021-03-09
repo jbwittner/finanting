@@ -20,10 +20,6 @@ public class ServiceInterceptor extends GeneralInterceptor {
 
     protected final Logger logger = LoggerFactory.getLogger(ServiceInterceptor.class);
 
-    public ServiceInterceptor(){
-        super();
-    }
-
     /**
      * Log interceptor to log the method, the time to proceed and the arguments of
      * repositories methods

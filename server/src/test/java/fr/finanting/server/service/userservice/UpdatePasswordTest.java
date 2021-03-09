@@ -18,6 +18,9 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
+/**
+ * Test class to test updatePassword method
+ */
 public class UpdatePasswordTest extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -37,7 +40,7 @@ public class UpdatePasswordTest extends AbstractMotherIntegrationTest {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
 
         this.user = new User();
-        Name name = this.factory.getUniqueRandomName();
+        final Name name = this.factory.getUniqueRandomName();
         this.user.setUserName(name.username());
         this.user.setFirstName(name.firstName());
         this.user.setLastName(name.lastName());
@@ -53,11 +56,14 @@ public class UpdatePasswordTest extends AbstractMotherIntegrationTest {
 
     }
     
+    /**
+     * Test with good old password
+     */
     @Test
     public void testUpdatePasword() throws BadPasswordException {
-        String newPassword = this.factory.getUniqueRandomAlphanumericString();
+        final String newPassword = this.factory.getUniqueRandomAlphanumericString();
 
-        PasswordUpdateParameter passwordUpdateParameter = new PasswordUpdateParameter();
+        final PasswordUpdateParameter passwordUpdateParameter = new PasswordUpdateParameter();
         passwordUpdateParameter.setNewPassword(newPassword);
         passwordUpdateParameter.setPreviousPassword(this.previousPassword);
 
@@ -70,11 +76,14 @@ public class UpdatePasswordTest extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test with bad old password
+     */
     @Test
     public void testBadOldPasword() throws BadPasswordException {
-        String newPassword = this.factory.getUniqueRandomAlphanumericString();
+        final String newPassword = this.factory.getUniqueRandomAlphanumericString();
 
-        PasswordUpdateParameter passwordUpdateParameter = new PasswordUpdateParameter();
+        final PasswordUpdateParameter passwordUpdateParameter = new PasswordUpdateParameter();
         passwordUpdateParameter.setNewPassword(newPassword);
         passwordUpdateParameter.setPreviousPassword(this.factory.getUniqueRandomAlphanumericString());
 

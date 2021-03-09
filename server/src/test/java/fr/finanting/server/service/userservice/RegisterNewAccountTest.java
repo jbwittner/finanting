@@ -17,6 +17,9 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
+/**
+ * Test class to test registerNewAccount method
+ */
 public class RegisterNewAccountTest extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -35,7 +38,7 @@ public class RegisterNewAccountTest extends AbstractMotherIntegrationTest {
 
         this.newUserRegisterParameter = new UserRegisterParameter();
         this.newUserRegisterParameter.setEmail(this.factory.getUniqueRandomEmail());
-        Name name = this.factory.getUniqueRandomName();
+        final Name name = this.factory.getUniqueRandomName();
         this.newUserRegisterParameter.setUserName(name.username());
         this.newUserRegisterParameter.setFirstName(name.firstName());
         this.newUserRegisterParameter.setLastName(name.lastName());
@@ -44,6 +47,9 @@ public class RegisterNewAccountTest extends AbstractMotherIntegrationTest {
         
     }
 
+    /**
+     * Test to register a new account
+     */
     @Test
     public void testRegisterNewAccount() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
         this.userService.registerNewAccount(this.newUserRegisterParameter);
@@ -61,11 +67,14 @@ public class RegisterNewAccountTest extends AbstractMotherIntegrationTest {
         }
     }
 
+    /**
+     * Test to register a new account with a email already used
+     */
     @Test
     public void testRegisterEmailAlreadyUsed() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
 
-        User user = new User();
-        Name name = this.factory.getUniqueRandomName();
+        final User user = new User();
+        final Name name = this.factory.getUniqueRandomName();
         user.setUserName(name.username());
         user.setFirstName(name.firstName());
         user.setLastName(name.lastName());
@@ -78,11 +87,14 @@ public class RegisterNewAccountTest extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to register a new account with a user name already used
+     */
     @Test
     public void testRegisterUserNameAlreadyUsed() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
 
-        User user = new User();
-        Name name = this.factory.getUniqueRandomName();
+        final User user = new User();
+        final Name name = this.factory.getUniqueRandomName();
         user.setUserName(this.newUserRegisterParameter.getUserName());
         user.setFirstName(name.firstName());
         user.setLastName(name.lastName());

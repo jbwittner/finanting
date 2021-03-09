@@ -17,6 +17,9 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
+/**
+ * Test class to test getAccountInformations method
+ */
 public class GetAccountInformationsTest extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -34,7 +37,7 @@ public class GetAccountInformationsTest extends AbstractMotherIntegrationTest {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
 
         this.user = new User();
-        Name name = this.factory.getUniqueRandomName();
+        final Name name = this.factory.getUniqueRandomName();
         this.user.setUserName(name.username());
         this.user.setFirstName(name.firstName());
         this.user.setLastName(name.lastName());
@@ -49,10 +52,13 @@ public class GetAccountInformationsTest extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to get account informations
+     */
     @Test
     public void testGetAccountInformations() {
 
-        UserDTO userDTO = this.userService.getAccountInformations(this.user.getUserName());
+        final UserDTO userDTO = this.userService.getAccountInformations(this.user.getUserName());
 
         Assertions.assertEquals(this.user.getUserName(), userDTO.getUserName());
         Assertions.assertEquals(this.user.getEmail(), userDTO.getEmail());

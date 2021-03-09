@@ -1,4 +1,4 @@
-package fr.finanting.server.service.security;
+package fr.finanting.server.service.security.userdetailsserviceimpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,10 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.security.UserDetailsServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
-public class UserDetailsServiceImplTest extends AbstractMotherIntegrationTest {
+/**
+ * Test class to test userDetailsServiceImpl method
+ */
+public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -37,7 +40,7 @@ public class UserDetailsServiceImplTest extends AbstractMotherIntegrationTest {
         this.userdetDetailsServiceImpl = new UserDetailsServiceImpl(this.userRepository);
 
         this.user = new User();
-        Name name = this.factory.getUniqueRandomName();
+        final Name name = this.factory.getUniqueRandomName();
         this.user.setUserName(name.username());
         this.user.setFirstName(name.firstName());
         this.user.setLastName(name.lastName());
@@ -52,9 +55,12 @@ public class UserDetailsServiceImplTest extends AbstractMotherIntegrationTest {
         
     }
 
+    /**
+     * Try to load sucessfully
+     */
     @Test
     public void testLoadSucessful() throws UsernameNotFoundException {
-        UserDetails userDetails = this.userdetDetailsServiceImpl.loadUserByUsername(this.user.getUserName());
+        final UserDetails userDetails = this.userdetDetailsServiceImpl.loadUserByUsername(this.user.getUserName());
         
         Assertions.assertTrue(userDetails.isAccountNonExpired());
         Assertions.assertTrue(userDetails.isAccountNonLocked());
@@ -63,7 +69,7 @@ public class UserDetailsServiceImplTest extends AbstractMotherIntegrationTest {
 
         final Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
-        for(GrantedAuthority grantedAuthority : authorities){
+        for(final GrantedAuthority grantedAuthority : authorities){
             Assertions.assertTrue(grantedAuthority.getAuthority().equals(Role.USER.toString()));
         }
 
@@ -72,9 +78,12 @@ public class UserDetailsServiceImplTest extends AbstractMotherIntegrationTest {
         
     }
 
+    /**
+     * Try to load without user
+     */
     @Test
     public void testLoadFailed() throws UsernameNotFoundException {
-        String randomUserName = this.factory.getUniqueRandomAlphanumericString();
+        final String randomUserName = this.factory.getUniqueRandomAlphanumericString();
 
         Assertions.assertThrows(UsernameNotFoundException.class,
             () -> this.userdetDetailsServiceImpl.loadUserByUsername(randomUserName));

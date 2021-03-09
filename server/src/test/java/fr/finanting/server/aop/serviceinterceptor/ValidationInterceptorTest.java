@@ -15,6 +15,9 @@ import fr.finanting.server.exception.ValidationDataException;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import lombok.Data;
 
+/**
+ * Test class to test validationInterceptor method
+ */
 public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
 
     @Mock
