@@ -20,6 +20,10 @@ public class ServiceInterceptor extends GeneralInterceptor {
 
     protected final Logger logger = LoggerFactory.getLogger(ServiceInterceptor.class);
 
+    public ServiceInterceptor(){
+        super();
+    }
+
     /**
      * Log interceptor to log the method, the time to proceed and the arguments of
      * repositories methods
@@ -37,7 +41,7 @@ public class ServiceInterceptor extends GeneralInterceptor {
     /**
      * Interceptor used to check the input data validity
      */
-    @Before("execution(* fr.opendoha.myguild.server.service.*.*(..))")
+    @Before("execution(* fr.finanting.server.service.*.*(..))")
     public void validationInterceptor(final JoinPoint joinPoint) throws ValidationDataException {
         this.validationInputData(joinPoint, this.logger);
     }
