@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.UserRepository;
 
+/**
+ * Implementation of UserDetailsService
+ */
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -18,8 +21,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByUserName(username)
+    public UserDetails loadUserByUsername(final String username) {
+        final User user = userRepository.findByUserName(username)
             .orElseThrow(() -> new UsernameNotFoundException(username));
         return new UserDetailsImpl(user);
     }

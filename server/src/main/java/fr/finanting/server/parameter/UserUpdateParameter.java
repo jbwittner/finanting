@@ -5,6 +5,9 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
+/**
+ * Parameter used to update account informations
+ */
 @Data
 public class UserUpdateParameter {
 

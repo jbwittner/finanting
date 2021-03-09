@@ -25,7 +25,7 @@ public class TestObjectFactory {
     protected final Faker faker = new Faker();
     
     /**
-     * Methode to reset all list of data
+     * Method to reset all list of data
      */
     public void resetAllList(){
         

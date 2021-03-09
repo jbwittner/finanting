@@ -11,26 +11,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
 
+/**
+ * Implementation of UserDetails
+ */
+@SuppressWarnings("serial")
 public class UserDetailsImpl implements UserDetails {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
     private User user;
      
-    public UserDetailsImpl(User user) {
+    /**
+     * Constructor
+     */
+    public UserDetailsImpl(final User user) {
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         
-        List<Role> roles = this.user.getRoles();
+        final List<Role> roles = this.user.getRoles();
         
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        for (Role role : roles) {
+        for (final Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.toString()));
         }
 

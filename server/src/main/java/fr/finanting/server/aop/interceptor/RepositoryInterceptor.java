@@ -17,7 +17,7 @@ public class RepositoryInterceptor extends GeneralInterceptor {
     protected final Logger logger = LoggerFactory.getLogger(RepositoryInterceptor.class);
 
     /**
-     * Log interceptor to log the methode, the time to proceed and the arguments of
+     * Log interceptor to log the method, the time to proceed and the arguments of
      * repositories methods
      * @param joinPoint Event intercepted by the aop
      * @return Proceed of the event

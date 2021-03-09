@@ -20,11 +20,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * User model
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "USERS")
 @Data
-public class User extends AbstractPersistant {
+public class User extends MotherPersistant {
 
 	@Column(name = "USERNAME", nullable = false, unique = true)
     private String userName;

@@ -16,32 +16,37 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.finanting.server.model.Role;
 
+/**
+ * Implementation of WebSecurityConfigurerAdapter
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Bean
+    @Override
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
 
+    /**
+     * Bean of authenticationProvider
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
-         
         return authProvider;
     }
  
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
     
  
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable()
             .antMatcher("/**").authorizeRequests()
             .antMatchers("/admin/*").hasAnyRole(Role.ADMIN.toString())
@@ -51,6 +56,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and().logout().permitAll();     
     }
 
+    /**
+     * Bean of passwordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

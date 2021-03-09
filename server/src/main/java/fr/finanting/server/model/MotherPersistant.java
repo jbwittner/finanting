@@ -9,11 +9,11 @@ import javax.persistence.MappedSuperclass;
 import lombok.Data;
 
 /**
- * Abstract part of models
+ * Mother part of models
  */
 @Data
 @MappedSuperclass
-public abstract class AbstractPersistant {
+public class MotherPersistant {
 
     @Id
     @Column(name = "ID", nullable = false, updatable = false, insertable = false)

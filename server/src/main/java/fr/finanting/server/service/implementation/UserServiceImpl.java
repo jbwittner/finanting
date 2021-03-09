@@ -1,12 +1,9 @@
 package fr.finanting.server.service.implementation;
 
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +20,9 @@ import fr.finanting.server.parameter.UserUpdateParameter;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.UserService;
 
+/**
+ * Implementation of UserService
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -30,14 +30,17 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Constructor
+     */
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(final UserRepository userRepository, final PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserDTO registerNewAccount(UserRegisterParameter userRegisterParameter)
+    public UserDTO registerNewAccount(final UserRegisterParameter userRegisterParameter)
             throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
 
         if (this.userRepository.existsByEmail(userRegisterParameter.getEmail())) {
@@ -46,57 +49,57 @@ public class UserServiceImpl implements UserService {
             throw new UserNameAlreadyExistException(userRegisterParameter.getUserName());
         }
 
-        User user = new User();
+        final User user = new User();
         user.setEmail(userRegisterParameter.getEmail());
         user.setFirstName(userRegisterParameter.getFirstName());
         user.setLastName(userRegisterParameter.getLastName());
         user.setUserName(userRegisterParameter.getUserName());
         user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
 
-        List<Role> roles = new ArrayList<>();
+        final List<Role> roles = new ArrayList<>();
         roles.add(Role.USER);
         roles.add(Role.ADMIN);
 
         user.setRoles(roles);
 
-        user = this.userRepository.save(user);
+        this.userRepository.save(user);
 
-        UserDTO userDTO = new UserDTO(user);
-
-        return userDTO;
-    }
-
-    @Override
-    public UserDTO getAccountInformations(String userName) {
-
-        User user = this.userRepository.findByUserName(userName).get();
-
-        UserDTO userDTO = new UserDTO(user);
+        final UserDTO userDTO = new UserDTO(user);
 
         return userDTO;
     }
 
     @Override
-    public UserDTO updateAccountInformations(UserUpdateParameter userUpdateParameter, String userName) {
+    public UserDTO getAccountInformations(final String userName) {
+
+        final User user = this.userRepository.findByUserName(userName).get();
+
+        final UserDTO userDTO = new UserDTO(user);
+
+        return userDTO;
+    }
+
+    @Override
+    public UserDTO updateAccountInformations(final UserUpdateParameter userUpdateParameter, final String userName) {
         
-        User user = this.userRepository.findByUserName(userName).get();
+        final User user = this.userRepository.findByUserName(userName).get();
 
         user.setEmail(userUpdateParameter.getEmail());
         user.setFirstName(userUpdateParameter.getFirstName());
         user.setLastName(userUpdateParameter.getLastName());
         user.setUserName(userUpdateParameter.getUserName());
 
-        user = this.userRepository.save(user);
+        this.userRepository.save(user);
 
-        UserDTO userDTO = new UserDTO(user);
+        final UserDTO userDTO = new UserDTO(user);
 
         return userDTO;
     }
 
     @Override
-    public void updatePassword(PasswordUpdateParameter passwordUpdateParameter, String userName) throws BadPasswordException {
+    public void updatePassword(final PasswordUpdateParameter passwordUpdateParameter, final String userName) throws BadPasswordException {
         
-        User user = this.userRepository.findByUserName(userName).get();
+        final User user = this.userRepository.findByUserName(userName).get();
         
         if(!this.passwordEncoder.matches(passwordUpdateParameter.getPreviousPassword(), user.getPassword())){
             throw new BadPasswordException();            
