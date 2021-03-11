@@ -48,10 +48,7 @@ public class User extends MotherPersistant {
     @Column(name = "ROLES")
     private List<Role> roles;
 
-    @ManyToMany
-    @JoinTable( name = "USERS_GROUPES_ASSOCICATIONS",
-                joinColumns = @JoinColumn( name = "ID" ))
-    @Column(name = "tatatata")
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<Groupe> groupes = new ArrayList<>();
 
 }

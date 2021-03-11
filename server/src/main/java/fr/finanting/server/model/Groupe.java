@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,10 +28,15 @@ public class Groupe extends MotherPersistant {
 	@Column(name = "GROUPE_NAME", nullable = false, unique = true)
     private String groupeName;
 
-    @ManyToMany
+    @ManyToOne
+    @JoinColumn(name = "USER_ADMIN", nullable = false, unique = true)
+    private User userAdmin;
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable( name = "USERS_GROUPES_ASSOCICATIONS",
-                joinColumns = @JoinColumn( name = "ID" ))
-    @Column(name = "totototo")
+                joinColumns = { 
+                    @JoinColumn(name = "GROUPE_ID_JOIN") }, inverseJoinColumns = { 
+                    @JoinColumn(name = "USER_ID_INVERSE") })
     private List<User> users = new ArrayList<>();
 
 }
