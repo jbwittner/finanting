@@ -3,10 +3,9 @@ package fr.finanting.server.repository;
 import java.util.Optional;
 
 import fr.finanting.server.model.Groupe;
-import fr.finanting.server.model.User;
 
 /**
- * Repository for user model
+ * Repository for groupe model
  */
 public interface GroupeRepository extends AbstractRepository<Groupe, Integer>{
 

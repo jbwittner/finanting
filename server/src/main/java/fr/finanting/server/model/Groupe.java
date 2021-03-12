@@ -3,12 +3,8 @@ package fr.finanting.server.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
@@ -28,7 +24,7 @@ public class Groupe extends MotherPersistant {
 	@Column(name = "GROUPE_NAME", nullable = false, unique = true)
     private String groupeName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ADMIN", nullable = false, unique = true)
     private User userAdmin;
 

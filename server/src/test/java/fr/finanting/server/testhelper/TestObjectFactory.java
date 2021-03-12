@@ -1,6 +1,11 @@
 package fr.finanting.server.testhelper;
 
 import org.apache.commons.lang3.RandomStringUtils;
+
+import fr.finanting.server.model.Groupe;
+import fr.finanting.server.model.Role;
+import fr.finanting.server.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -223,6 +228,29 @@ public class TestObjectFactory {
      */
     public Integer getRandomInteger(final Integer min, final Integer max){
         return (int) (min + (Math.random() * (max - min)));
+    }
+
+    public User getUser(){
+        final User user = new User();
+        user.setEmail(this.faker.internet().emailAddress());
+        user.setFirstName(this.faker.name().firstName());
+        user.setLastName(this.faker.name().lastName());
+        user.setUserName(this.faker.name().username());
+        user.setPassword(this.getRandomAlphanumericString());
+        
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.USER);
+        user.setRoles(roles);
+
+        return user;
+    }
+
+    public Groupe getGroupe(){
+        final Groupe groupe = new Groupe();
+        groupe.setGroupeName(this.faker.company().name());
+        User user = this.getUser();
+        groupe.setUserAdmin(user);
+        return groupe;
     }
 
 }

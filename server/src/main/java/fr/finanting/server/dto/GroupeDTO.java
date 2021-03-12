@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.finanting.server.model.Groupe;
-import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
 import lombok.Data;
 
