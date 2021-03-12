@@ -9,10 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.finanting.server.dto.GroupeDTO;
 import fr.finanting.server.exception.GroupeNameAlreadyExistException;
+import fr.finanting.server.exception.GroupeNotExistException;
+import fr.finanting.server.exception.NotAdminGroupeException;
 import fr.finanting.server.exception.UserNotExistException;
+import fr.finanting.server.exception.UserNotInGroupeException;
 import fr.finanting.server.model.Groupe;
 import fr.finanting.server.model.User;
+import fr.finanting.server.parameter.AddUsersGroupeParameter;
 import fr.finanting.server.parameter.GroupeCreationParameter;
+import fr.finanting.server.parameter.RemoveUsersGroupeParameter;
 import fr.finanting.server.repository.GroupeRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.GroupeService;
@@ -58,6 +63,78 @@ public class GroupeServiceImpl implements GroupeService {
         groupe.setUsers(userList);
 
         this.groupeRepository.save(groupe);
+
+        final GroupeDTO groupeDTO = new GroupeDTO(groupe);
+
+        return groupeDTO;
+    }
+
+    @Override
+    public GroupeDTO addUsersGroupe(AddUsersGroupeParameter addUsersGroupeParameter, String userName)
+            throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
+        
+        final User user = this.userRepository.findByUserName(userName).get();
+        final Groupe groupe = this.groupeRepository.findByGroupeName(addUsersGroupeParameter.getGroupeName())
+            .orElseThrow(() -> new GroupeNotExistException(addUsersGroupeParameter.getGroupeName()));
+
+        User userAdmin = groupe.getUserAdmin();
+
+        if(!userAdmin.getId().equals(user.getId())){
+            throw new NotAdminGroupeException(groupe);
+        }
+
+        List<User> userList = groupe.getUsers();
+
+        for(String userNameToAdd : addUsersGroupeParameter.getUsersName()){
+            boolean areAlreadyOnGroupe = false;
+
+            for(User userGroupe : groupe.getUsers()){
+                if(userGroupe.getUserName().equals(userNameToAdd)){
+                    areAlreadyOnGroupe = true;
+                }
+            }
+
+            if(!areAlreadyOnGroupe){
+                final User userToAdd = this.userRepository.findByUserName(userNameToAdd)
+                    .orElseThrow(() -> new UserNotExistException(userNameToAdd));
+                userList.add(userToAdd);
+            }
+        }
+
+        final GroupeDTO groupeDTO = new GroupeDTO(groupe);
+
+        return groupeDTO;
+    }
+
+    @Override
+    public GroupeDTO removeUsersGroupe(RemoveUsersGroupeParameter removeUsersGroupeParameter, String userName) throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException {
+        
+        final User user = this.userRepository.findByUserName(userName).get();
+        final Groupe groupe = this.groupeRepository.findByGroupeName(removeUsersGroupeParameter.getGroupeName())
+            .orElseThrow(() -> new GroupeNotExistException(removeUsersGroupeParameter.getGroupeName()));
+
+        User userAdmin = groupe.getUserAdmin();
+
+        if(!userAdmin.getId().equals(user.getId())){
+            throw new NotAdminGroupeException(groupe);
+        }
+
+        List<User> userList = groupe.getUsers();
+
+        for(String userNameToRemove : removeUsersGroupeParameter.getUsersName()){
+            boolean areInGroupe = false;
+
+            for(User userGroupe : groupe.getUsers()){
+                if(userGroupe.getUserName().equals(userNameToRemove)){
+                    areInGroupe = true;
+                    userList.remove(userGroupe);
+                }
+            }
+
+            if(!areInGroupe){
+                throw new UserNotInGroupeException(user, groupe);
+            }
+        }
 
         final GroupeDTO groupeDTO = new GroupeDTO(groupe);
 

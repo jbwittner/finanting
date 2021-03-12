@@ -11,5 +11,6 @@ import fr.finanting.server.model.User;
 public interface GroupeRepository extends AbstractRepository<Groupe, Integer>{
 
     boolean existsByGroupeName(String groupeName);
+    Optional<Groupe> findByGroupeName(String groupeName);
 
 }

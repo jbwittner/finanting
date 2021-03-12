@@ -8,12 +8,13 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class GroupeCreationParameter {
+public class RemoveUsersGroupeParameter {
 
+    @NotEmpty
+    private List<String> usersName;
+    
     @NotEmpty
     @NotNull
     private String groupeName;
-    
-    private List<String> usersName;
 
 }
