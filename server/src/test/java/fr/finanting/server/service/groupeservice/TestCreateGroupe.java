@@ -93,10 +93,15 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void groupeNameAlreadyUsed(){
+    public void groupeNameAlreadyUsed() throws GroupeNameAlreadyExistException, UserNotExistException{
         Groupe groupe = this.factory.getGroupe();
         this.userRepository.save(groupe.getUserAdmin());
         this.groupeRepository.save(groupe);
+
+        GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
+        groupeCreationParameter.setGroupeName(groupe.getGroupeName());
+
+        this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName());
     }
     
 }
