@@ -33,7 +33,7 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        groupeServiceImpl = new GroupeServiceImpl(this.userRepository, this.groupeRepository);
+        this.groupeServiceImpl = new GroupeServiceImpl(this.userRepository, this.groupeRepository);
         this.userPrincipal = this.userRepository.save(factory.getUser());
     }
 
@@ -101,7 +101,22 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
         GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
         groupeCreationParameter.setGroupeName(groupe.getGroupeName());
 
-        this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName());
+        Assertions.assertThrows(GroupeNameAlreadyExistException.class,
+            () -> this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName()));
+    }
+
+    @Test
+    public void userNotExist() throws GroupeNameAlreadyExistException, UserNotExistException {
+        GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
+        groupeCreationParameter.setGroupeName(this.faker.company().name());
+
+        List<String> usersNameList = new ArrayList<>();
+        usersNameList.add(this.faker.name().username());
+
+        groupeCreationParameter.setUsersName(usersNameList);
+
+        Assertions.assertThrows(UserNotExistException.class,
+            () -> this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName()));
     }
     
 }

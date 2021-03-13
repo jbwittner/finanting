@@ -250,6 +250,9 @@ public class TestObjectFactory {
         groupe.setGroupeName(this.faker.company().name());
         User user = this.getUser();
         groupe.setUserAdmin(user);
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        groupe.setUsers(users);
         return groupe;
     }
 
