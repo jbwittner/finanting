@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fr.finanting.server.dto.GroupeDTO;
+import fr.finanting.server.dto.UserDTO;
 import fr.finanting.server.exception.GroupeNotExistException;
 import fr.finanting.server.exception.NotAdminGroupeException;
 import fr.finanting.server.exception.UserNotExistException;
@@ -46,7 +48,7 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
         userList.add(user.getUserName());
         addUsersGroupeParameter.setUsersName(userList);
         
-        this.groupeServiceImpl.addUsersGroupe(addUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
+        GroupeDTO groupeDTO = this.groupeServiceImpl.addUsersGroupe(addUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
 
         Assertions.assertEquals(2, this.groupe.getUsers().size());
 
@@ -63,6 +65,11 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
 
         Assertions.assertTrue(isInGroupe);
 
+        Assertions.assertEquals(this.groupe.getGroupeName(), groupeDTO.getGroupeName());
+        Assertions.assertEquals(this.groupe.getUserAdmin().getUserName(), groupeDTO.getUserAdmin().getUserName());
+        Assertions.assertEquals(this.groupe.getUserAdmin().getUserName(), groupeDTO.getGroupeUsers().get(0).getUserName());
+        Assertions.assertEquals(user.getUserName(), groupeDTO.getGroupeUsers().get(1).getUserName());
+
     }
 
     @Test
@@ -73,22 +80,13 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
         userList.add(this.groupe.getUserAdmin().getUserName());
         addUsersGroupeParameter.setUsersName(userList);
         
-        this.groupeServiceImpl.addUsersGroupe(addUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
+        GroupeDTO groupeDTO = this.groupeServiceImpl.addUsersGroupe(addUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
 
         Assertions.assertEquals(1, this.groupe.getUsers().size());
 
-        List<User> users = this.groupe.getUsers();
-
-        boolean isInGroupe = false;
-
-        for(User userInGroupe : users){
-            if(userInGroupe.getUserName().equals(this.groupe.getUserAdmin().getUserName())){
-                isInGroupe = true;
-                break;
-            }
-        }
-
-        Assertions.assertTrue(isInGroupe);
+        Assertions.assertEquals(this.groupe.getGroupeName(), groupeDTO.getGroupeName());
+        Assertions.assertEquals(this.groupe.getUserAdmin().getUserName(), groupeDTO.getUserAdmin().getUserName());
+        Assertions.assertEquals(this.groupe.getUserAdmin().getUserName(), groupeDTO.getGroupeUsers().get(0).getUserName());
 
     }
 

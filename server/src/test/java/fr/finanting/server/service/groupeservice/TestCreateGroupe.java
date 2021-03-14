@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fr.finanting.server.dto.GroupeDTO;
 import fr.finanting.server.exception.GroupeNameAlreadyExistException;
 import fr.finanting.server.exception.UserNotExistException;
 import fr.finanting.server.model.Groupe;
@@ -67,7 +68,7 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
 
         groupeCreationParameter.setUsersName(usersNameList);
 
-        this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName());
+        GroupeDTO groupeDTO = this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName());
 
         Groupe groupe = this.groupeRepository.findByGroupeName(groupeCreationParameter.getGroupeName()).get();
 
@@ -89,6 +90,10 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
             Assertions.assertTrue(userAdded);
 
         }
+
+        Assertions.assertEquals(groupe.getGroupeName(), groupeDTO.getGroupeName());
+        Assertions.assertEquals(groupe.getUserAdmin().getUserName(), groupeDTO.getUserAdmin().getUserName());
+        Assertions.assertEquals(groupe.getUserAdmin().getUserName(), groupeDTO.getGroupeUsers().get(0).getUserName());
 
     }
 
