@@ -238,7 +238,7 @@ public class TestObjectFactory {
         user.setUserName(this.faker.name().username());
         user.setPassword(this.getRandomAlphanumericString());
         
-        List<Role> roles = new ArrayList<>();
+        final List<Role> roles = new ArrayList<>();
         roles.add(Role.USER);
         user.setRoles(roles);
 
@@ -248,9 +248,9 @@ public class TestObjectFactory {
     public Groupe getGroupe(){
         final Groupe groupe = new Groupe();
         groupe.setGroupeName(this.faker.company().name());
-        User user = this.getUser();
+        final User user = this.getUser();
         groupe.setUserAdmin(user);
-        List<User> users = new ArrayList<>();
+        final List<User> users = new ArrayList<>();
         users.add(user);
         groupe.setUsers(users);
         return groupe;

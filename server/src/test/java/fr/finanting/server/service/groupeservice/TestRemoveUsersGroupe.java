@@ -38,29 +38,29 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
         this.groupeServiceImpl = new GroupeServiceImpl(this.userRepository, this.groupeRepository);
         this.groupe = this.factory.getGroupe();
         this.userRepository.save(this.groupe.getUserAdmin());
-        List<User> users = this.groupe.getUsers();
+        final List<User> users = this.groupe.getUsers();
         for(Integer index = 0; index < NUMBER_USERS; index ++){
-            User user = this.userRepository.save(this.factory.getUser());
+            final User user = this.userRepository.save(this.factory.getUser());
             users.add(user);
         }
         this.groupeRepository.save(this.groupe);
     }
 
     @Test
-    public void removeOneUserGroupeOK() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
-        List<User> users = this.groupe.getUsers();
-        User user = users.get(NUMBER_USERS);
+    public void testRemoveOneUserGroupeOK() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
+        final List<User> users = this.groupe.getUsers();
+        final User user = users.get(NUMBER_USERS);
 
-        List<String> usersName = new ArrayList<>();
+        final List<String> usersName = new ArrayList<>();
         usersName.add(user.getUserName());
 
-        RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
+        final RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
         removeUsersGroupeParameter.setGroupeName(this.groupe.getGroupeName());
         removeUsersGroupeParameter.setUsersName(usersName);
 
-        GroupeDTO groupeDTO = this.groupeServiceImpl.removeUsersGroupe(removeUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
+        final GroupeDTO groupeDTO = this.groupeServiceImpl.removeUsersGroupe(removeUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
 
-        Groupe groupe = this.groupeRepository.findByGroupeName(removeUsersGroupeParameter.getGroupeName()).get();
+        final Groupe groupe = this.groupeRepository.findByGroupeName(removeUsersGroupeParameter.getGroupeName()).get();
 
         Assertions.assertEquals(NUMBER_USERS, groupe.getUsers().size());
 
@@ -70,23 +70,23 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void removeMultipleUserGroupeOK() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
-        List<User> users = this.groupe.getUsers();
+    public void testRemoveMultipleUserGroupeOK() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
+        final List<User> users = this.groupe.getUsers();
 
-        User userOne = users.get(NUMBER_USERS);
-        User userTwo = users.get(NUMBER_USERS - 1);
+        final User userOne = users.get(NUMBER_USERS);
+        final User userTwo = users.get(NUMBER_USERS - 1);
 
-        List<String> usersName = new ArrayList<>();
+        final List<String> usersName = new ArrayList<>();
         usersName.add(userOne.getUserName());
         usersName.add(userTwo.getUserName());
 
-        RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
+        final RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
         removeUsersGroupeParameter.setGroupeName(this.groupe.getGroupeName());
         removeUsersGroupeParameter.setUsersName(usersName);
 
-        GroupeDTO groupeDTO = this.groupeServiceImpl.removeUsersGroupe(removeUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
+        final GroupeDTO groupeDTO = this.groupeServiceImpl.removeUsersGroupe(removeUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
 
-        Groupe groupe = this.groupeRepository.findByGroupeName(removeUsersGroupeParameter.getGroupeName()).get();
+        final Groupe groupe = this.groupeRepository.findByGroupeName(removeUsersGroupeParameter.getGroupeName()).get();
 
         Assertions.assertEquals(NUMBER_USERS - 1, groupe.getUsers().size());
 
@@ -95,9 +95,9 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void groupeNotExist() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
+    public void testGroupeNotExist() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
 
-        RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
+        final RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
         removeUsersGroupeParameter.setGroupeName(this.faker.company().name());
 
         Assertions.assertThrows(GroupeNotExistException.class,
@@ -106,12 +106,12 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void notAdminGroupe() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
+    public void testNotAdminGroupe() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
 
-        RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
+        final RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
         removeUsersGroupeParameter.setGroupeName(this.groupe.getGroupeName());
 
-        User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(NotAdminGroupeException.class,
             () -> this.groupeServiceImpl.removeUsersGroupe(removeUsersGroupeParameter, user.getUserName()));
@@ -119,11 +119,11 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void userNotExist() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
-        List<String> usersName = new ArrayList<>();
+    public void testUserNotExist() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
+        final List<String> usersName = new ArrayList<>();
         usersName.add(this.faker.name().username());
 
-        RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
+        final RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
         removeUsersGroupeParameter.setGroupeName(this.groupe.getGroupeName());
         removeUsersGroupeParameter.setUsersName(usersName);
 
@@ -133,12 +133,12 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void userNotInGroupe() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
-        List<String> usersName = new ArrayList<>();
-        User user = this.userRepository.save(this.factory.getUser());
+    public void testUserNotInGroupe() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
+        final List<String> usersName = new ArrayList<>();
+        final User user = this.userRepository.save(this.factory.getUser());
         usersName.add(user.getUserName());
 
-        RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
+        final RemoveUsersGroupeParameter removeUsersGroupeParameter = new RemoveUsersGroupeParameter();
         removeUsersGroupeParameter.setGroupeName(this.groupe.getGroupeName());
         removeUsersGroupeParameter.setUsersName(usersName);
 

@@ -15,7 +15,6 @@ import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.GroupeCreationParameter;
 import fr.finanting.server.repository.GroupeRepository;
 import fr.finanting.server.repository.UserRepository;
-import fr.finanting.server.service.GroupeService;
 import fr.finanting.server.service.implementation.GroupeServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
@@ -39,14 +38,14 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void createGroupeWithoutUsers() throws GroupeNameAlreadyExistException, UserNotExistException {
-        GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
+    public void testCreateGroupeWithoutUsers() throws GroupeNameAlreadyExistException, UserNotExistException {
+        final GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
         groupeCreationParameter.setGroupeName(this.faker.company().name());
         groupeCreationParameter.setUsersName(new ArrayList<>());
 
         this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName());
 
-        Groupe groupe = this.groupeRepository.findByGroupeName(groupeCreationParameter.getGroupeName()).get();
+        final Groupe groupe = this.groupeRepository.findByGroupeName(groupeCreationParameter.getGroupeName()).get();
 
         Assertions.assertEquals(groupeCreationParameter.getGroupeName(), groupe.getGroupeName());
         Assertions.assertEquals(this.userPrincipal.getUserName(), groupe.getUserAdmin().getUserName());
@@ -55,31 +54,31 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void createGroupeWithUsers() throws GroupeNameAlreadyExistException, UserNotExistException {
-        GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
+    public void testCreateGroupeWithUsers() throws GroupeNameAlreadyExistException, UserNotExistException {
+        final GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
         groupeCreationParameter.setGroupeName(this.faker.company().name());
 
-        List<String> usersNameList = new ArrayList<>(); 
+        final List<String> usersNameList = new ArrayList<>(); 
 
         for(Integer index = 0; index < NUMBER_ACCOUNT; index ++){
-            User user = this.userRepository.save(factory.getUser());
+            final User user = this.userRepository.save(factory.getUser());
             usersNameList.add(user.getUserName());
         }
 
         groupeCreationParameter.setUsersName(usersNameList);
 
-        GroupeDTO groupeDTO = this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName());
+        final GroupeDTO groupeDTO = this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName());
 
-        Groupe groupe = this.groupeRepository.findByGroupeName(groupeCreationParameter.getGroupeName()).get();
+        final Groupe groupe = this.groupeRepository.findByGroupeName(groupeCreationParameter.getGroupeName()).get();
 
         Assertions.assertEquals(groupeCreationParameter.getGroupeName(), groupe.getGroupeName());
         Assertions.assertEquals(this.userPrincipal.getUserName(), groupe.getUserAdmin().getUserName());
         Assertions.assertEquals(NUMBER_ACCOUNT + 1, groupe.getUsers().size());
 
-        for(String userNames : usersNameList){
+        for(final String userNames : usersNameList){
             boolean userAdded = false;
 
-            for(User usersGroupe : groupe.getUsers()){
+            for(final User usersGroupe : groupe.getUsers()){
 
                 if(userNames.equals(usersGroupe.getUserName())){
                     userAdded = true;
@@ -98,12 +97,12 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void groupeNameAlreadyUsed() throws GroupeNameAlreadyExistException, UserNotExistException{
-        Groupe groupe = this.factory.getGroupe();
+    public void testGroupeNameAlreadyUsed() throws GroupeNameAlreadyExistException, UserNotExistException{
+        final Groupe groupe = this.factory.getGroupe();
         this.userRepository.save(groupe.getUserAdmin());
         this.groupeRepository.save(groupe);
 
-        GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
+        final GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
         groupeCreationParameter.setGroupeName(groupe.getGroupeName());
 
         Assertions.assertThrows(GroupeNameAlreadyExistException.class,
@@ -111,11 +110,11 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void userNotExist() throws GroupeNameAlreadyExistException, UserNotExistException {
-        GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
+    public void testUserNotExist() throws GroupeNameAlreadyExistException, UserNotExistException {
+        final GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
         groupeCreationParameter.setGroupeName(this.faker.company().name());
 
-        List<String> usersNameList = new ArrayList<>();
+        final List<String> usersNameList = new ArrayList<>();
         usersNameList.add(this.faker.name().username());
 
         groupeCreationParameter.setUsersName(usersNameList);

@@ -21,7 +21,7 @@ import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 /**
  * Test class to test updatePassword method
  */
-public class UpdatePasswordTest extends AbstractMotherIntegrationTest {
+public class TestUpdatePassword extends AbstractMotherIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;

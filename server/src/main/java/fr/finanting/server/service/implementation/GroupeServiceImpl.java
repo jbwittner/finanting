@@ -31,13 +31,14 @@ public class GroupeServiceImpl implements GroupeService {
     private GroupeRepository groupeRepository;
 
     @Autowired
-    public GroupeServiceImpl(UserRepository userRepository, GroupeRepository groupeRepository){
+    public GroupeServiceImpl(final UserRepository userRepository, final GroupeRepository groupeRepository){
         this.userRepository = userRepository;
         this.groupeRepository = groupeRepository;
     }
 
     @Override
-    public GroupeDTO createGroupe(GroupeCreationParameter groupeCreationParameter, String userName) throws GroupeNameAlreadyExistException, UserNotExistException {
+    public GroupeDTO createGroupe(final GroupeCreationParameter groupeCreationParameter, final String userName)
+        throws GroupeNameAlreadyExistException, UserNotExistException {
         
         final User user = this.userRepository.findByUserName(userName).get();
 
@@ -51,7 +52,7 @@ public class GroupeServiceImpl implements GroupeService {
         groupe.setGroupeName(groupeCreationParameter.getGroupeName());
         groupe.setUserAdmin(user);
 
-        List<User> userList = new ArrayList<>();
+        final List<User> userList = new ArrayList<>();
         userList.add(user);
 
         for(final String userNameToAdd : groupeCreationParameter.getUsersName()){
@@ -71,25 +72,25 @@ public class GroupeServiceImpl implements GroupeService {
     }
 
     @Override
-    public GroupeDTO addUsersGroupe(AddUsersGroupeParameter addUsersGroupeParameter, String userName)
+    public GroupeDTO addUsersGroupe(final AddUsersGroupeParameter addUsersGroupeParameter, final String userName)
             throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
         
         final User user = this.userRepository.findByUserName(userName).get();
         final Groupe groupe = this.groupeRepository.findByGroupeName(addUsersGroupeParameter.getGroupeName())
             .orElseThrow(() -> new GroupeNotExistException(addUsersGroupeParameter.getGroupeName()));
 
-        User userAdmin = groupe.getUserAdmin();
+        final User userAdmin = groupe.getUserAdmin();
 
         if(!userAdmin.getId().equals(user.getId())){
             throw new NotAdminGroupeException(groupe);
         }
 
-        List<User> userList = groupe.getUsers();
+        final List<User> userList = groupe.getUsers();
 
-        for(String userNameToAdd : addUsersGroupeParameter.getUsersName()){
+        for(final String userNameToAdd : addUsersGroupeParameter.getUsersName()){
             boolean areAlreadyOnGroupe = false;
 
-            for(User userGroupe : groupe.getUsers()){
+            for(final User userGroupe : groupe.getUsers()){
                 if(userGroupe.getUserName().equals(userNameToAdd)){
                     areAlreadyOnGroupe = true;
                 }
@@ -108,25 +109,26 @@ public class GroupeServiceImpl implements GroupeService {
     }
 
     @Override
-    public GroupeDTO removeUsersGroupe(RemoveUsersGroupeParameter removeUsersGroupeParameter, String userName) throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
+    public GroupeDTO removeUsersGroupe(final RemoveUsersGroupeParameter removeUsersGroupeParameter, final String userName)
+        throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
         
         final User user = this.userRepository.findByUserName(userName).get();
         final Groupe groupe = this.groupeRepository.findByGroupeName(removeUsersGroupeParameter.getGroupeName())
             .orElseThrow(() -> new GroupeNotExistException(removeUsersGroupeParameter.getGroupeName()));
 
-        User userAdmin = groupe.getUserAdmin();
+            final User userAdmin = groupe.getUserAdmin();
 
         if(!userAdmin.getId().equals(user.getId())){
             throw new NotAdminGroupeException(groupe);
         }
 
-        List<User> userList = groupe.getUsers();
+        final List<User> userList = groupe.getUsers();
 
-        for(String userNameToRemove : removeUsersGroupeParameter.getUsersName()){
-            User userToRemove = this.userRepository.findByUserName(userNameToRemove)
+        for(final String userNameToRemove : removeUsersGroupeParameter.getUsersName()){
+            final User userToRemove = this.userRepository.findByUserName(userNameToRemove)
                 .orElseThrow(() -> new UserNotExistException(userNameToRemove));
 
-            boolean areInGroupe = userList.remove(userToRemove);
+            final boolean areInGroupe = userList.remove(userToRemove);
 
             if(!areInGroupe){
                 throw new UserNotInGroupeException(userToRemove, groupe);
@@ -139,14 +141,14 @@ public class GroupeServiceImpl implements GroupeService {
     }
 
     @Override
-    public void deleteGroupe(DeleteGroupeParameter deleteGroupeParameter, String userName)
+    public void deleteGroupe(final DeleteGroupeParameter deleteGroupeParameter, final String userName)
             throws GroupeNotExistException, NotAdminGroupeException {
 
         final User user = this.userRepository.findByUserName(userName).get();
         final Groupe groupe = this.groupeRepository.findByGroupeName(deleteGroupeParameter.getGroupeName())
             .orElseThrow(() -> new GroupeNotExistException(deleteGroupeParameter.getGroupeName()));
 
-        User userAdmin = groupe.getUserAdmin();
+        final User userAdmin = groupe.getUserAdmin();
 
         if(!userAdmin.getId().equals(user.getId())){
             throw new NotAdminGroupeException(groupe);
