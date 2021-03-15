@@ -1,5 +1,6 @@
 package fr.finanting.server.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
@@ -11,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,13 +26,13 @@ import lombok.EqualsAndHashCode;
 @Data
 public class User extends MotherPersistant {
 
-	@Column(name = "USERNAME", nullable = false, unique = true)
+	@Column(name = "USER_NAME", nullable = false, unique = true)
     private String userName;
 
-    @Column(name = "FIRSTNAME", nullable = false)
+    @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
 
-    @Column(name = "LASTNAME", nullable = false)
+    @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
 
     @Column(name = "EMAIL", nullable = false, unique = true)
@@ -44,5 +46,8 @@ public class User extends MotherPersistant {
     @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"))
     @Column(name = "ROLES")
     private List<Role> roles;
+
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<Group> groups = new ArrayList<>();
 
 }

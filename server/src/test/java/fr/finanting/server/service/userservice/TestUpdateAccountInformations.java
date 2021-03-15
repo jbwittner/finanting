@@ -23,7 +23,7 @@ import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 /**
  * Test class to test updateAccountInformations method
  */
-public class UpdateAccountInformationsTest extends AbstractMotherIntegrationTest{
+public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest{
 
     @Autowired
     private UserRepository userRepository;

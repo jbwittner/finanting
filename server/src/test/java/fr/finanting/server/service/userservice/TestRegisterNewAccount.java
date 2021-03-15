@@ -20,7 +20,7 @@ import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 /**
  * Test class to test registerNewAccount method
  */
-public class RegisterNewAccountTest extends AbstractMotherIntegrationTest {
+public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
