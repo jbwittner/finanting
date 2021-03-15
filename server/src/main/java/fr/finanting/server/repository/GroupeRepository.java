@@ -9,7 +9,14 @@ import fr.finanting.server.model.Groupe;
  */
 public interface GroupeRepository extends AbstractRepository<Groupe, Integer>{
 
+    /**
+     * Method to check if a group exist by group name
+     */
     boolean existsByGroupeName(String groupeName);
+
+    /**
+     * Method to get group by group name
+     */
     Optional<Groupe> findByGroupeName(String groupeName);
 
 }

@@ -18,6 +18,9 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.GroupeServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
+/**
+ * Test class to test createGroupe method
+ */
 public class TestCreateGroupe extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -37,6 +40,9 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
         this.userPrincipal = this.userRepository.save(factory.getUser());
     }
 
+    /**
+     * Test to create a groupe
+     */
     @Test
     public void testCreateGroupeWithoutUsers() throws GroupeNameAlreadyExistException, UserNotExistException {
         final GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
@@ -53,6 +59,9 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(this.userPrincipal.getUserName(), groupe.getUsers().get(0).getUserName());
     }
 
+    /**
+     * Test to create a groupe with users
+     */
     @Test
     public void testCreateGroupeWithUsers() throws GroupeNameAlreadyExistException, UserNotExistException {
         final GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();
@@ -96,6 +105,9 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to create a group with a groupe name already used
+     */
     @Test
     public void testGroupeNameAlreadyUsed() throws GroupeNameAlreadyExistException, UserNotExistException{
         final Groupe groupe = this.factory.getGroupe();
@@ -109,6 +121,9 @@ public class TestCreateGroupe extends AbstractMotherIntegrationTest {
             () -> this.groupeServiceImpl.createGroupe(groupeCreationParameter, this.userPrincipal.getUserName()));
     }
 
+    /**
+     * Test to create a group with a user that doesn't exist
+     */
     @Test
     public void testUserNotExist() throws GroupeNameAlreadyExistException, UserNotExistException {
         final GroupeCreationParameter groupeCreationParameter = new GroupeCreationParameter();

@@ -20,6 +20,9 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.GroupeServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
+/**
+ * Test class to test removeUsersGroupe method
+ */
 public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -46,6 +49,9 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
         this.groupeRepository.save(this.groupe);
     }
 
+    /**
+     * Test to remove one user from a groupe
+     */
     @Test
     public void testRemoveOneUserGroupeOK() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
         final List<User> users = this.groupe.getUsers();
@@ -69,6 +75,9 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to remove two users from a groupe
+     */
     @Test
     public void testRemoveMultipleUserGroupeOK() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
         final List<User> users = this.groupe.getUsers();
@@ -94,6 +103,9 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(groupe.getUserAdmin().getUserName(), groupeDTO.getUserAdmin().getUserName());
     }
 
+    /**
+     * Test with a group that doesn't exist
+     */
     @Test
     public void testGroupeNotExist() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
 
@@ -105,6 +117,9 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test with a group who the user are not the admin
+     */
     @Test
     public void testNotAdminGroupe() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
 
@@ -118,6 +133,9 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to remove a user that doesn't exist
+     */
     @Test
     public void testUserNotExist() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
         final List<String> usersName = new ArrayList<>();
@@ -132,6 +150,9 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to remove a user who are not in the groupe
+     */
     @Test
     public void testUserNotInGroupe() throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
         final List<String> usersName = new ArrayList<>();
@@ -146,7 +167,5 @@ public class TestRemoveUsersGroupe extends AbstractMotherIntegrationTest {
             () -> this.groupeServiceImpl.removeUsersGroupe(removeUsersGroupeParameter, this.groupe.getUserAdmin().getUserName()));
             
     }
-
-
     
 }

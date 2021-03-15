@@ -5,6 +5,9 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
+/**
+ * Parameter used delete a groupe
+ */
 @Data
 public class DeleteGroupeParameter {
 

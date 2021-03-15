@@ -11,14 +11,33 @@ import fr.finanting.server.parameter.DeleteGroupeParameter;
 import fr.finanting.server.parameter.GroupeCreationParameter;
 import fr.finanting.server.parameter.RemoveUsersGroupeParameter;
 
+/**
+ * Service for groups
+ */
 public interface GroupeService {
 
-    public GroupeDTO createGroupe(GroupeCreationParameter groupeCreationParameter, String userName) throws GroupeNameAlreadyExistException, UserNotExistException;
+    /**
+     * Method used to create a groupe
+     */
+    public GroupeDTO createGroupe(GroupeCreationParameter groupeCreationParameter, String userName)
+        throws GroupeNameAlreadyExistException, UserNotExistException;
 
-    public GroupeDTO addUsersGroupe(AddUsersGroupeParameter addUsersGroupeParameter, String userName) throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException;
+    /**
+     * Method used to add a user to a group
+     */
+    public GroupeDTO addUsersGroupe(AddUsersGroupeParameter addUsersGroupeParameter, String userName)
+        throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException;
 
-    public GroupeDTO removeUsersGroupe(RemoveUsersGroupeParameter removeUsersGroupeParameter, String userName) throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException;
-    
-    public void deleteGroupe(DeleteGroupeParameter deleteGroupeParameter, String userName) throws GroupeNotExistException, NotAdminGroupeException;
+    /**
+     * Method used to remove a user from a groupe
+     */
+    public GroupeDTO removeUsersGroupe(RemoveUsersGroupeParameter removeUsersGroupeParameter, String userName)
+        throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException;
+
+    /**
+     * Method used to delete a group
+     */
+    public void deleteGroupe(DeleteGroupeParameter deleteGroupeParameter, String userName)
+        throws GroupeNotExistException, NotAdminGroupeException;
 
 }

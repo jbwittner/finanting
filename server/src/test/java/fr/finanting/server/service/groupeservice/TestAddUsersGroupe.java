@@ -19,6 +19,9 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.GroupeServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
+/**
+ * Test class to test addUsersGroupe method
+ */
 public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -38,6 +41,9 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
         this.groupeRepository.save(this.groupe);
     }
 
+    /**
+     * Test to add a user in a group
+     */
     @Test
     public void testAddUserOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
         final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();
@@ -71,6 +77,9 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to add a user who are already in the group
+     */
     @Test
     public void testAddUserAlreadyInGroupeOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
         final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();
@@ -89,6 +98,9 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to add a user with a non admin user
+     */
     @Test
     public void testNotAdminExeptionOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
         final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();
@@ -101,6 +113,9 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to add a user to a group that doesn't exist
+     */
     @Test
     public void testGroupeNoeExistOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
         final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();
@@ -111,6 +126,9 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
 
     }
 
+    /**
+     * Test to add a user who doesn't exist
+     */
     @Test
     public void testUserNotExistExceptionOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
         final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();

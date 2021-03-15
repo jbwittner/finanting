@@ -230,6 +230,9 @@ public class TestObjectFactory {
         return (int) (min + (Math.random() * (max - min)));
     }
 
+    /**
+     * Method to get a new user
+     */
     public User getUser(){
         final User user = new User();
         user.setEmail(this.faker.internet().emailAddress());
@@ -245,6 +248,9 @@ public class TestObjectFactory {
         return user;
     }
 
+    /**
+     * Method to get a new groupe
+     */
     public Groupe getGroupe(){
         final Groupe groupe = new Groupe();
         groupe.setGroupeName(this.faker.company().name());

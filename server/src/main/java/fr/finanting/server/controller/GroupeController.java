@@ -22,7 +22,7 @@ import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.GroupeService;
 
 /**
- * User controller
+ * Group controller
  */
 @RestController
 @RequestMapping("groupe")
@@ -38,24 +38,36 @@ public class GroupeController {
         this.groupeService = groupeService;
     }
 
+    /**
+     * Endpoint used to create a groupe
+     */
     @PostMapping("/createGroupe")
     public GroupeDTO createGroupe(final Authentication authentication, @RequestBody final GroupeCreationParameter groupeCreationParameter) throws GroupeNameAlreadyExistException, UserNotExistException{
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.groupeService.createGroupe(groupeCreationParameter, userDetailsImpl.getUsername());
     }
 
+    /**
+     * Endpoint used to delete a group
+     */
     @DeleteMapping("/deleteGroupe")
     public void deleteGroupe(final Authentication authentication, @RequestBody final DeleteGroupeParameter deleteGroupeParameter) throws GroupeNotExistException, NotAdminGroupeException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         this.groupeService.deleteGroupe(deleteGroupeParameter, userDetailsImpl.getUsername());
     }
 
+    /**
+     * Endpoint used to add a user to a group
+     */
     @PostMapping("/addUsersGroupe")
     public GroupeDTO addUsersGroupe(final Authentication authentication, @RequestBody final AddUsersGroupeParameter addUsersGroupeParameter) throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.groupeService.addUsersGroupe(addUsersGroupeParameter, userDetailsImpl.getUsername());
     }
 
+    /**
+     * Endpoint used to remove a user from a groupe
+     */
     @PostMapping("/removeUsersGroupe")
     public GroupeDTO removeUsersGroupe(final Authentication authentication, @RequestBody final RemoveUsersGroupeParameter removeUsersGroupeParameter) throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
