@@ -8,70 +8,70 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.finanting.server.dto.GroupeDTO;
-import fr.finanting.server.exception.GroupeNameAlreadyExistException;
-import fr.finanting.server.exception.GroupeNotExistException;
-import fr.finanting.server.exception.NotAdminGroupeException;
+import fr.finanting.server.dto.GroupDTO;
+import fr.finanting.server.exception.GroupNameAlreadyExistException;
+import fr.finanting.server.exception.GroupNotExistException;
+import fr.finanting.server.exception.NotAdminGroupException;
 import fr.finanting.server.exception.UserNotExistException;
-import fr.finanting.server.exception.UserNotInGroupeException;
-import fr.finanting.server.parameter.AddUsersGroupeParameter;
-import fr.finanting.server.parameter.DeleteGroupeParameter;
-import fr.finanting.server.parameter.GroupeCreationParameter;
-import fr.finanting.server.parameter.RemoveUsersGroupeParameter;
+import fr.finanting.server.exception.UserNotInGroupException;
+import fr.finanting.server.parameter.AddUsersGroupParameter;
+import fr.finanting.server.parameter.DeleteGroupParameter;
+import fr.finanting.server.parameter.GroupCreationParameter;
+import fr.finanting.server.parameter.RemoveUsersGroupParameter;
 import fr.finanting.server.security.UserDetailsImpl;
-import fr.finanting.server.service.GroupeService;
+import fr.finanting.server.service.GroupService;
 
 /**
  * Group controller
  */
 @RestController
-@RequestMapping("groupe")
-public class GroupeController {
+@RequestMapping("group")
+public class GroupController {
 
-    protected final GroupeService groupeService;
+    protected final GroupService groupService;
 
     /**
      * Constructor
      */
     @Autowired
-    public GroupeController(final GroupeService groupeService) {
-        this.groupeService = groupeService;
+    public GroupController(final GroupService groupService) {
+        this.groupService = groupService;
     }
 
     /**
-     * Endpoint used to create a groupe
+     * Endpoint used to create a group
      */
-    @PostMapping("/createGroupe")
-    public GroupeDTO createGroupe(final Authentication authentication, @RequestBody final GroupeCreationParameter groupeCreationParameter) throws GroupeNameAlreadyExistException, UserNotExistException{
+    @PostMapping("/createGroup")
+    public GroupDTO createGroup(final Authentication authentication, @RequestBody final GroupCreationParameter groupCreationParameter) throws GroupNameAlreadyExistException, UserNotExistException{
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.groupeService.createGroupe(groupeCreationParameter, userDetailsImpl.getUsername());
+        return this.groupService.createGroup(groupCreationParameter, userDetailsImpl.getUsername());
     }
 
     /**
      * Endpoint used to delete a group
      */
-    @DeleteMapping("/deleteGroupe")
-    public void deleteGroupe(final Authentication authentication, @RequestBody final DeleteGroupeParameter deleteGroupeParameter) throws GroupeNotExistException, NotAdminGroupeException {
+    @DeleteMapping("/deleteGroup")
+    public void deleteGroup(final Authentication authentication, @RequestBody final DeleteGroupParameter deleteGroupParameter) throws GroupNotExistException, NotAdminGroupException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.groupeService.deleteGroupe(deleteGroupeParameter, userDetailsImpl.getUsername());
+        this.groupService.deleteGroup(deleteGroupParameter, userDetailsImpl.getUsername());
     }
 
     /**
      * Endpoint used to add a user to a group
      */
-    @PostMapping("/addUsersGroupe")
-    public GroupeDTO addUsersGroupe(final Authentication authentication, @RequestBody final AddUsersGroupeParameter addUsersGroupeParameter) throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
+    @PostMapping("/addUsersGroup")
+    public GroupDTO addUsersGroup(final Authentication authentication, @RequestBody final AddUsersGroupParameter addUsersGroupParameter) throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.groupeService.addUsersGroupe(addUsersGroupeParameter, userDetailsImpl.getUsername());
+        return this.groupService.addUsersGroup(addUsersGroupParameter, userDetailsImpl.getUsername());
     }
 
     /**
-     * Endpoint used to remove a user from a groupe
+     * Endpoint used to remove a user from a group
      */
-    @PostMapping("/removeUsersGroupe")
-    public GroupeDTO removeUsersGroupe(final Authentication authentication, @RequestBody final RemoveUsersGroupeParameter removeUsersGroupeParameter) throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException {
+    @PostMapping("/removeUsersGroup")
+    public GroupDTO removeUsersGroup(final Authentication authentication, @RequestBody final RemoveUsersGroupParameter removeUsersGroupParameter) throws GroupNotExistException, NotAdminGroupException, UserNotInGroupException, UserNotExistException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.groupeService.removeUsersGroupe(removeUsersGroupeParameter, userDetailsImpl.getUsername());
+        return this.groupService.removeUsersGroup(removeUsersGroupParameter, userDetailsImpl.getUsername());
     }
 
 }

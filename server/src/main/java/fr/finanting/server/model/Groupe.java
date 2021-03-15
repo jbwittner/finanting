@@ -16,16 +16,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Groupe model
+ * Group model
  */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "GROUPES")
 @Data
-public class Groupe extends MotherPersistant {
+public class Group extends MotherPersistant {
 
 	@Column(name = "GROUPE_NAME", nullable = false, unique = true)
-    private String groupeName;
+    private String groupName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ADMIN", nullable = false, unique = true)

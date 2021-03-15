@@ -8,16 +8,16 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * Parameter used to remove users from a groupe
+ * Parameter used to remove users from a group
  */
 @Data
-public class RemoveUsersGroupeParameter {
+public class RemoveUsersGroupParameter {
 
     @NotEmpty
     private List<String> usersName;
     
     @NotEmpty
     @NotNull
-    private String groupeName;
+    private String groupName;
 
 }

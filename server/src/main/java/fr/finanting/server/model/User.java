@@ -48,6 +48,6 @@ public class User extends MotherPersistant {
     private List<Role> roles;
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<Groupe> groupes = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>();
 
 }

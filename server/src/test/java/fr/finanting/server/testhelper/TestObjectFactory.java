@@ -2,7 +2,7 @@ package fr.finanting.server.testhelper;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import fr.finanting.server.model.Groupe;
+import fr.finanting.server.model.Group;
 import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
 
@@ -249,17 +249,17 @@ public class TestObjectFactory {
     }
 
     /**
-     * Method to get a new groupe
+     * Method to get a new group
      */
-    public Groupe getGroupe(){
-        final Groupe groupe = new Groupe();
-        groupe.setGroupeName(this.faker.company().name());
+    public Group getGroup(){
+        final Group group = new Group();
+        group.setGroupName(this.faker.company().name());
         final User user = this.getUser();
-        groupe.setUserAdmin(user);
+        group.setUserAdmin(user);
         final List<User> users = new ArrayList<>();
         users.add(user);
-        groupe.setUsers(users);
-        return groupe;
+        group.setUsers(users);
+        return group;
     }
 
 }

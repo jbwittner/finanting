@@ -1,4 +1,4 @@
-package fr.finanting.server.service.groupeservice;
+package fr.finanting.server.service.groupservice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,73 +7,73 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.finanting.server.dto.GroupeDTO;
-import fr.finanting.server.exception.GroupeNotExistException;
-import fr.finanting.server.exception.NotAdminGroupeException;
+import fr.finanting.server.dto.GroupDTO;
+import fr.finanting.server.exception.GroupNotExistException;
+import fr.finanting.server.exception.NotAdminGroupException;
 import fr.finanting.server.exception.UserNotExistException;
-import fr.finanting.server.model.Groupe;
+import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.AddUsersGroupeParameter;
-import fr.finanting.server.repository.GroupeRepository;
+import fr.finanting.server.parameter.AddUsersGroupParameter;
+import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
-import fr.finanting.server.service.implementation.GroupeServiceImpl;
+import fr.finanting.server.service.implementation.GroupServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
 /**
- * Test class to test addUsersGroupe method
+ * Test class to test addUsersGroup method
  */
-public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
+public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private GroupeRepository groupeRepository;
+    private GroupRepository groupRepository;
 
-    private GroupeServiceImpl groupeServiceImpl;
-    private Groupe groupe;
+    private GroupServiceImpl groupServiceImpl;
+    private Group group;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.groupeServiceImpl = new GroupeServiceImpl(this.userRepository, this.groupeRepository);
-        this.groupe = this.factory.getGroupe();
-        this.userRepository.save(this.groupe.getUserAdmin());
-        this.groupeRepository.save(this.groupe);
+        this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
+        this.group = this.factory.getGroup();
+        this.userRepository.save(this.group.getUserAdmin());
+        this.groupRepository.save(this.group);
     }
 
     /**
      * Test to add a user in a group
      */
     @Test
-    public void testAddUserOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
-        final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();
-        addUsersGroupeParameter.setGroupeName(this.groupe.getGroupeName());
+    public void testAddUserOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
+        final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
+        addUsersGroupParameter.setGroupName(this.group.getGroupName());
         final List<String> userList = new ArrayList<>();
         final User user = this.userRepository.save(this.factory.getUser());
         userList.add(user.getUserName());
-        addUsersGroupeParameter.setUsersName(userList);
+        addUsersGroupParameter.setUsersName(userList);
         
-        final GroupeDTO groupeDTO = this.groupeServiceImpl.addUsersGroupe(addUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
+        final GroupDTO groupDTO = this.groupServiceImpl.addUsersGroup(addUsersGroupParameter, this.group.getUserAdmin().getUserName());
 
-        Assertions.assertEquals(2, this.groupe.getUsers().size());
+        Assertions.assertEquals(2, this.group.getUsers().size());
 
-        final List<User> users = this.groupe.getUsers();
+        final List<User> users = this.group.getUsers();
 
-        boolean isInGroupe = false;
+        boolean isInGroup = false;
 
-        for(final User userInGroupe : users){
-            if(userInGroupe.getUserName().equals(user.getUserName())){
-                isInGroupe = true;
+        for(final User userInGroup : users){
+            if(userInGroup.getUserName().equals(user.getUserName())){
+                isInGroup = true;
                 break;
             }
         }
 
-        Assertions.assertTrue(isInGroupe);
+        Assertions.assertTrue(isInGroup);
 
-        Assertions.assertEquals(this.groupe.getGroupeName(), groupeDTO.getGroupeName());
-        Assertions.assertEquals(this.groupe.getUserAdmin().getUserName(), groupeDTO.getUserAdmin().getUserName());
-        Assertions.assertEquals(this.groupe.getUserAdmin().getUserName(), groupeDTO.getGroupeUsers().get(0).getUserName());
-        Assertions.assertEquals(user.getUserName(), groupeDTO.getGroupeUsers().get(1).getUserName());
+        Assertions.assertEquals(this.group.getGroupName(), groupDTO.getGroupName());
+        Assertions.assertEquals(this.group.getUserAdmin().getUserName(), groupDTO.getUserAdmin().getUserName());
+        Assertions.assertEquals(this.group.getUserAdmin().getUserName(), groupDTO.getGroupUsers().get(0).getUserName());
+        Assertions.assertEquals(user.getUserName(), groupDTO.getGroupUsers().get(1).getUserName());
 
     }
 
@@ -81,20 +81,20 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
      * Test to add a user who are already in the group
      */
     @Test
-    public void testAddUserAlreadyInGroupeOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
-        final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();
-        addUsersGroupeParameter.setGroupeName(this.groupe.getGroupeName());
+    public void testAddUserAlreadyInGroupOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
+        final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
+        addUsersGroupParameter.setGroupName(this.group.getGroupName());
         final List<String> userList = new ArrayList<>();
-        userList.add(this.groupe.getUserAdmin().getUserName());
-        addUsersGroupeParameter.setUsersName(userList);
+        userList.add(this.group.getUserAdmin().getUserName());
+        addUsersGroupParameter.setUsersName(userList);
         
-        final GroupeDTO groupeDTO = this.groupeServiceImpl.addUsersGroupe(addUsersGroupeParameter, this.groupe.getUserAdmin().getUserName());
+        final GroupDTO groupDTO = this.groupServiceImpl.addUsersGroup(addUsersGroupParameter, this.group.getUserAdmin().getUserName());
 
-        Assertions.assertEquals(1, this.groupe.getUsers().size());
+        Assertions.assertEquals(1, this.group.getUsers().size());
 
-        Assertions.assertEquals(this.groupe.getGroupeName(), groupeDTO.getGroupeName());
-        Assertions.assertEquals(this.groupe.getUserAdmin().getUserName(), groupeDTO.getUserAdmin().getUserName());
-        Assertions.assertEquals(this.groupe.getUserAdmin().getUserName(), groupeDTO.getGroupeUsers().get(0).getUserName());
+        Assertions.assertEquals(this.group.getGroupName(), groupDTO.getGroupName());
+        Assertions.assertEquals(this.group.getUserAdmin().getUserName(), groupDTO.getUserAdmin().getUserName());
+        Assertions.assertEquals(this.group.getUserAdmin().getUserName(), groupDTO.getGroupUsers().get(0).getUserName());
 
     }
 
@@ -102,14 +102,14 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
      * Test to add a user with a non admin user
      */
     @Test
-    public void testNotAdminExeptionOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
-        final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();
-        addUsersGroupeParameter.setGroupeName(this.groupe.getGroupeName());
+    public void testNotAdminExeptionOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
+        final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
+        addUsersGroupParameter.setGroupName(this.group.getGroupName());
 
         final User user = this.userRepository.save(this.factory.getUser());
 
-        Assertions.assertThrows(NotAdminGroupeException.class,
-            () -> this.groupeServiceImpl.addUsersGroupe(addUsersGroupeParameter, user.getUserName()));
+        Assertions.assertThrows(NotAdminGroupException.class,
+            () -> this.groupServiceImpl.addUsersGroup(addUsersGroupParameter, user.getUserName()));
 
     }
 
@@ -117,12 +117,12 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
      * Test to add a user to a group that doesn't exist
      */
     @Test
-    public void testGroupeNoeExistOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
-        final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();
-        addUsersGroupeParameter.setGroupeName(this.faker.company().name());
+    public void testGroupNoeExistOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
+        final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
+        addUsersGroupParameter.setGroupName(this.faker.company().name());
 
-        Assertions.assertThrows(GroupeNotExistException.class,
-            () -> this.groupeServiceImpl.addUsersGroupe(addUsersGroupeParameter, this.groupe.getUserAdmin().getUserName()));
+        Assertions.assertThrows(GroupNotExistException.class,
+            () -> this.groupServiceImpl.addUsersGroup(addUsersGroupParameter, this.group.getUserAdmin().getUserName()));
 
     }
 
@@ -130,15 +130,15 @@ public class TestAddUsersGroupe extends AbstractMotherIntegrationTest {
      * Test to add a user who doesn't exist
      */
     @Test
-    public void testUserNotExistExceptionOk() throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException {
-        final AddUsersGroupeParameter addUsersGroupeParameter = new AddUsersGroupeParameter();
-        addUsersGroupeParameter.setGroupeName(this.groupe.getGroupeName());
+    public void testUserNotExistExceptionOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
+        final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
+        addUsersGroupParameter.setGroupName(this.group.getGroupName());
         final List<String> userList = new ArrayList<>();
         userList.add(this.faker.name().username());
-        addUsersGroupeParameter.setUsersName(userList);
+        addUsersGroupParameter.setUsersName(userList);
 
         Assertions.assertThrows(UserNotExistException.class,
-            () -> this.groupeServiceImpl.addUsersGroupe(addUsersGroupeParameter, this.groupe.getUserAdmin().getUserName()));
+            () -> this.groupServiceImpl.addUsersGroup(addUsersGroupParameter, this.group.getUserAdmin().getUserName()));
 
     }
     

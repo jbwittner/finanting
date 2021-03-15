@@ -8,16 +8,16 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * Parameter used to add users to a groupe
+ * Parameter used to add users to a group
  */
 @Data
-public class AddUsersGroupeParameter {
+public class AddUsersGroupParameter {
 
     @NotEmpty
     private List<String> usersName;
     
     @NotEmpty
     @NotNull
-    private String groupeName;
+    private String groupName;
 
 }

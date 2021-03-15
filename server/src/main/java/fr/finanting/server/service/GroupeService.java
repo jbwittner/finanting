@@ -1,43 +1,43 @@
 package fr.finanting.server.service;
 
-import fr.finanting.server.dto.GroupeDTO;
-import fr.finanting.server.exception.GroupeNameAlreadyExistException;
-import fr.finanting.server.exception.GroupeNotExistException;
-import fr.finanting.server.exception.NotAdminGroupeException;
+import fr.finanting.server.dto.GroupDTO;
+import fr.finanting.server.exception.GroupNameAlreadyExistException;
+import fr.finanting.server.exception.GroupNotExistException;
+import fr.finanting.server.exception.NotAdminGroupException;
 import fr.finanting.server.exception.UserNotExistException;
-import fr.finanting.server.exception.UserNotInGroupeException;
-import fr.finanting.server.parameter.AddUsersGroupeParameter;
-import fr.finanting.server.parameter.DeleteGroupeParameter;
-import fr.finanting.server.parameter.GroupeCreationParameter;
-import fr.finanting.server.parameter.RemoveUsersGroupeParameter;
+import fr.finanting.server.exception.UserNotInGroupException;
+import fr.finanting.server.parameter.AddUsersGroupParameter;
+import fr.finanting.server.parameter.DeleteGroupParameter;
+import fr.finanting.server.parameter.GroupCreationParameter;
+import fr.finanting.server.parameter.RemoveUsersGroupParameter;
 
 /**
  * Service for groups
  */
-public interface GroupeService {
+public interface GroupService {
 
     /**
-     * Method used to create a groupe
+     * Method used to create a group
      */
-    public GroupeDTO createGroupe(GroupeCreationParameter groupeCreationParameter, String userName)
-        throws GroupeNameAlreadyExistException, UserNotExistException;
+    public GroupDTO createGroup(GroupCreationParameter groupCreationParameter, String userName)
+        throws GroupNameAlreadyExistException, UserNotExistException;
 
     /**
      * Method used to add a user to a group
      */
-    public GroupeDTO addUsersGroupe(AddUsersGroupeParameter addUsersGroupeParameter, String userName)
-        throws UserNotExistException, GroupeNotExistException, NotAdminGroupeException;
+    public GroupDTO addUsersGroup(AddUsersGroupParameter addUsersGroupParameter, String userName)
+        throws UserNotExistException, GroupNotExistException, NotAdminGroupException;
 
     /**
-     * Method used to remove a user from a groupe
+     * Method used to remove a user from a group
      */
-    public GroupeDTO removeUsersGroupe(RemoveUsersGroupeParameter removeUsersGroupeParameter, String userName)
-        throws GroupeNotExistException, NotAdminGroupeException, UserNotInGroupeException, UserNotExistException;
+    public GroupDTO removeUsersGroup(RemoveUsersGroupParameter removeUsersGroupParameter, String userName)
+        throws GroupNotExistException, NotAdminGroupException, UserNotInGroupException, UserNotExistException;
 
     /**
      * Method used to delete a group
      */
-    public void deleteGroupe(DeleteGroupeParameter deleteGroupeParameter, String userName)
-        throws GroupeNotExistException, NotAdminGroupeException;
+    public void deleteGroup(DeleteGroupParameter deleteGroupParameter, String userName)
+        throws GroupNotExistException, NotAdminGroupException;
 
 }

@@ -1,18 +1,18 @@
 package fr.finanting.server.exception;
 
-import fr.finanting.server.model.Groupe;
+import fr.finanting.server.model.Group;
 
 /**
-* Exception to signal that the user are not the admin of the groupe
+* Exception to signal that the user are not the admin of the group
 */
 @SuppressWarnings("serial")
-public class NotAdminGroupeException extends FunctionalException {
+public class NotAdminGroupException extends FunctionalException {
 
     /**
-    * Exception to signal that the user are not the admin of the groupe
+    * Exception to signal that the user are not the admin of the group
     */
-    public NotAdminGroupeException(final Groupe groupe) {
-        super("You are not the admin of the groupe : " + groupe.getGroupeName());
+    public NotAdminGroupException(final Group group) {
+        super("You are not the admin of the group : " + group.getGroupName());
     }
 
 }

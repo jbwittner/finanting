@@ -2,21 +2,21 @@ package fr.finanting.server.repository;
 
 import java.util.Optional;
 
-import fr.finanting.server.model.Groupe;
+import fr.finanting.server.model.Group;
 
 /**
- * Repository for groupe model
+ * Repository for group model
  */
-public interface GroupeRepository extends AbstractRepository<Groupe, Integer>{
+public interface GroupRepository extends AbstractRepository<Group, Integer>{
 
     /**
      * Method to check if a group exist by group name
      */
-    boolean existsByGroupeName(String groupeName);
+    boolean existsByGroupName(String groupName);
 
     /**
      * Method to get group by group name
      */
-    Optional<Groupe> findByGroupeName(String groupeName);
+    Optional<Group> findByGroupName(String groupName);
 
 }
