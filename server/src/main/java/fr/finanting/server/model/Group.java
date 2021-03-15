@@ -20,11 +20,11 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "GROUPES")
+@Table(name = "GROUPS")
 @Data
 public class Group extends MotherPersistant {
 
-	@Column(name = "GROUPE_NAME", nullable = false, unique = true)
+	@Column(name = "GROUP_NAME", nullable = false, unique = true)
     private String groupName;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,9 +32,9 @@ public class Group extends MotherPersistant {
     private User userAdmin;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable( name = "USERS_GROUPES_ASSOCICATIONS",
+    @JoinTable( name = "USERS_GROUPS_ASSOCICATIONS",
                 joinColumns = { 
-                    @JoinColumn(name = "GROUPE_ID_JOIN") }, inverseJoinColumns = { 
+                    @JoinColumn(name = "GROUP_ID_JOIN") }, inverseJoinColumns = { 
                     @JoinColumn(name = "USER_ID_INVERSE") })
     private List<User> users = new ArrayList<>();
 
