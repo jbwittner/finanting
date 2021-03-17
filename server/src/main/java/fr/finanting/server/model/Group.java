@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,6 +31,9 @@ public class Group extends MotherPersistant {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ADMIN", nullable = false, unique = true)
     private User userAdmin;
+
+    @OneToMany(mappedBy = "group")
+    private List<Account> accounts = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable( name = "USERS_GROUPS_ASSOCICATIONS",
