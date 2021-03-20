@@ -1,5 +1,6 @@
 package fr.finanting.server.exception;
 
+@SuppressWarnings("serial")
 public class AccountNotExistException extends FunctionalException {
 
     public AccountNotExistException(Integer id) {
