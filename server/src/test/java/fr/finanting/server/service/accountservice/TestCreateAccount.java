@@ -1,19 +1,9 @@
 package fr.finanting.server.service.accountservice;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import fr.finanting.server.dto.GroupDTO;
 import fr.finanting.server.exception.GroupNotExistException;
-import fr.finanting.server.exception.NotAdminGroupException;
 import fr.finanting.server.exception.UserNotExistException;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.AddUsersGroupParameter;
 import fr.finanting.server.parameter.CreateAccountParameter;
 import fr.finanting.server.parameter.subpart.AddressParameter;
 import fr.finanting.server.parameter.subpart.BankDetailsParameter;
@@ -21,8 +11,10 @@ import fr.finanting.server.repository.AccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.AccountServiceImpl;
-import fr.finanting.server.service.implementation.GroupServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestCreateAccount extends AbstractMotherIntegrationTest {
 
@@ -38,12 +30,15 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
     private AccountServiceImpl accountServiceImpl;
 
     private User user;
+    private Group group;
     private CreateAccountParameter createAccountParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
         this.accountServiceImpl = new AccountServiceImpl(accountRepository, groupRepository, userRepository);
-        this.user = this.userRepository.save(this.factory.getUser());
+        this.group = this.factory.getGroup();
+        this.user = this.userRepository.save(this.group.getUserAdmin());
+        this.group = this.groupRepository.save(this.group);
 
         this.createAccountParameter = new CreateAccountParameter();
         this.createAccountParameter.setAbbreviation(this.factory.getRandomAlphanumericString());
@@ -71,14 +66,14 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateUserAccountUserNotExist() throws UserNotExistException, GroupNotExistException {
+    public void testCreateUserAccountUserNotExist() {
         
         Assertions.assertThrows(UserNotExistException.class,
             () -> this.accountServiceImpl.createAccount(createAccountParameter, this.factory.getRandomAlphanumericString()));
     }
 
     @Test
-    public void testCreateGroupeAccountGroupNotExist() throws UserNotExistException, GroupNotExistException {
+    public void testCreateGroupAccountGroupNotExist() {
 
         this.createAccountParameter.setGroupeName(this.factory.getRandomAlphanumericString());
         
@@ -87,15 +82,11 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateGroupeAccountOk() throws UserNotExistException, GroupNotExistException {
+    public void testCreateGroupAccountOk() throws UserNotExistException, GroupNotExistException {
 
-        Group group = this.factory.getGroup();
-        group.setUserAdmin(this.user);
-        group = this.groupRepository.save(group);
-
-        this.createAccountParameter.setGroupeName(group.getGroupName());
+        this.createAccountParameter.setGroupeName(this.group.getGroupName());
         
-        this.accountServiceImpl.createAccount(createAccountParameter, this.user.getUserName());
+        this.accountServiceImpl.createAccount(this.createAccountParameter, this.user.getUserName());
     }
     
 }

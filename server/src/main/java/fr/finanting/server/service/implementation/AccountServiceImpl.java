@@ -53,7 +53,7 @@ public class AccountServiceImpl implements AccountService {
         } 
 
         account.setAbbreviation(createAccountParameter.getAbbreviation().toUpperCase());
-        account.setIntialBalance(createAccountParameter.getInitialBalance());
+        account.setInitialBalance(createAccountParameter.getInitialBalance());
         account.setLabel(createAccountParameter.getLabel());
 
         Address address = new Address();
@@ -71,7 +71,7 @@ public class AccountServiceImpl implements AccountService {
         account = this.accountRepository.save(account);
         
         AccountDTO accountDTO = new AccountDTO(account);
-        accountDTO.setBalance(account.getIntialBalance());
+        accountDTO.setBalance(account.getInitialBalance());
 
         return accountDTO;
     }
@@ -111,7 +111,7 @@ public class AccountServiceImpl implements AccountService {
         this.checkIsUserAccount(account, userName);
 
         account.setAbbreviation(updateAccountParameter.getAbbreviation());
-        account.setIntialBalance(updateAccountParameter.getInitialBalance());
+        account.setInitialBalance(updateAccountParameter.getInitialBalance());
         account.setLabel(updateAccountParameter.getLabel());
 
         Address address = new Address();
@@ -129,7 +129,7 @@ public class AccountServiceImpl implements AccountService {
         account = this.accountRepository.save(account);
         
         AccountDTO accountDTO = new AccountDTO(account);
-        accountDTO.setBalance(account.getIntialBalance());
+        accountDTO.setBalance(account.getInitialBalance());
 
         return accountDTO;
 

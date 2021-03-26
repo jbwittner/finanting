@@ -42,7 +42,7 @@ public class Account extends MotherPersistant {
     private String abbreviation;
 
     @Column(name = "INITIAL_BALANCE", nullable = false)
-    private Integer intialBalance = 0;
+    private Integer initialBalance = 0;
 
     @Embedded
     private BankDetails bankDetails;
