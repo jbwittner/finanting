@@ -9,7 +9,7 @@ public class AddressDTO {
     private String address;
     private String street;
     private String city;
-    private Integer zipCode;
+    private String zipCode;
 
     public AddressDTO(Address address){
         this.address = address.getAddress();

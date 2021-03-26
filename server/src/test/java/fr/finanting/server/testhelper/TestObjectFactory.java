@@ -1,6 +1,7 @@
 package fr.finanting.server.testhelper;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.Role;
@@ -85,6 +86,14 @@ public class TestObjectFactory {
         listRandomString.add(randomString);
 
         return randomString;
+    }
+
+    /**
+     * Method to get a random alphanumeric string
+     */
+    public String getRandomAlphanumericString(final int length){
+
+        return RandomStringUtils.randomAlphanumeric(length);
     }
 
     /**
@@ -236,9 +245,10 @@ public class TestObjectFactory {
     public User getUser(){
         final User user = new User();
         user.setEmail(this.faker.internet().emailAddress());
-        user.setFirstName(this.faker.name().firstName());
-        user.setLastName(this.faker.name().lastName());
-        user.setUserName(this.faker.name().username());
+        String firstName = StringUtils.capitalize(this.faker.name().firstName().toLowerCase());
+        user.setFirstName(firstName);
+        user.setLastName(this.faker.name().lastName().toUpperCase());
+        user.setUserName(this.faker.name().username().toLowerCase());
         user.setPassword(this.getRandomAlphanumericString());
         
         final List<Role> roles = new ArrayList<>();

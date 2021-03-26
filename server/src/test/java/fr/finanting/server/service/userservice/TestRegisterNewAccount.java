@@ -2,6 +2,7 @@ package fr.finanting.server.service.userservice;
 
 import com.github.javafaker.Name;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +58,14 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
         final User user = this.userRepository.findByUserName(this.newUserRegisterParameter.getUserName())
             .orElseThrow(() -> new UsernameNotFoundException(this.newUserRegisterParameter.getUserName()));
 
+        String userNameToCheck = newUserRegisterParameter.getUserName().toLowerCase();
+        String firstNameToCheck = StringUtils.capitalize(newUserRegisterParameter.getFirstName().toLowerCase());    
+
         Assertions.assertEquals(this.newUserRegisterParameter.getEmail(), user.getEmail());
-        Assertions.assertEquals(this.newUserRegisterParameter.getFirstName(), user.getFirstName());
-        Assertions.assertEquals(this.newUserRegisterParameter.getLastName(), user.getLastName());
+        Assertions.assertEquals(firstNameToCheck, user.getFirstName());
+        Assertions.assertEquals(this.newUserRegisterParameter.getLastName().toUpperCase(), user.getLastName());
         Assertions.assertTrue(this.passwordEncoder.matches(this.newUserRegisterParameter.getPassword(), user.getPassword()));
-        Assertions.assertEquals(this.newUserRegisterParameter.getUserName(), user.getUserName());
+        Assertions.assertEquals(userNameToCheck, user.getUserName());
         for(final Role role : user.getRoles()){
             Assertions.assertEquals(Role.USER.toString(), role.toString());
         }

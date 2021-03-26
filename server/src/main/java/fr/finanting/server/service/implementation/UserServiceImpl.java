@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,9 +53,13 @@ public class UserServiceImpl implements UserService {
 
         final User user = new User();
         user.setEmail(userRegisterParameter.getEmail());
-        user.setFirstName(userRegisterParameter.getFirstName());
-        user.setLastName(userRegisterParameter.getLastName());
-        user.setUserName(userRegisterParameter.getUserName());
+
+        String firstName = StringUtils.capitalize(userRegisterParameter.getFirstName().toLowerCase());
+        user.setFirstName(firstName);
+
+        user.setLastName(userRegisterParameter.getLastName().toUpperCase());
+        user.setUserName(userRegisterParameter.getUserName().toLowerCase());
+
         user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
 
         final List<Role> roles = new ArrayList<>();
@@ -99,9 +104,14 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setEmail(userUpdateParameter.getEmail());
-        user.setFirstName(userUpdateParameter.getFirstName());
-        user.setLastName(userUpdateParameter.getLastName());
-        user.setUserName(userUpdateParameter.getUserName());
+
+        String firstName = StringUtils.capitalize(userUpdateParameter.getUserName().toLowerCase());
+        user.setFirstName(firstName);
+
+        user.setLastName(userUpdateParameter.getLastName().toUpperCase());
+
+        String userNameToUpdate = userUpdateParameter.getUserName().toLowerCase();
+        user.setUserName(userNameToUpdate);
 
         this.userRepository.save(user);
 

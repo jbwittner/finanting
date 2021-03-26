@@ -39,7 +39,6 @@ public class AccountServiceImpl implements AccountService {
 
     public AccountDTO createAccount(final CreateAccountParameter createAccountParameter, String userName) throws UserNotExistException, GroupNotExistException{
 
-
         Account account = new Account();
 
         if(createAccountParameter.getGroupeName() != null){
@@ -53,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
             account.setUser(user);
         } 
 
-        account.setAbbreviation(createAccountParameter.getAbbreviation());
+        account.setAbbreviation(createAccountParameter.getAbbreviation().toUpperCase());
         account.setIntialBalance(createAccountParameter.getInitialBalance());
         account.setLabel(createAccountParameter.getLabel());
 
@@ -77,7 +76,7 @@ public class AccountServiceImpl implements AccountService {
         return accountDTO;
     }
 
-    private void checkAccount(Account account, String userName) throws NotAdminGroupException, NotUserAccountException{
+    private void checkIsUserAccount(Account account, String userName) throws NotAdminGroupException, NotUserAccountException{
 
         Group group = account.getGroup();
 
@@ -98,7 +97,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = this.accountRepository.findById(deleteAccountParameter.getId())
             .orElseThrow(() -> new AccountNotExistException(deleteAccountParameter.getId()));
 
-        this.checkAccount(account, userName);
+        this.checkIsUserAccount(account, userName);
 
         this.accountRepository.delete(account);
 
@@ -109,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = this.accountRepository.findById(updateAccountParameter.getAccountId())
             .orElseThrow(() -> new AccountNotExistException(updateAccountParameter.getAccountId()));
 
-        this.checkAccount(account, userName);
+        this.checkIsUserAccount(account, userName);
 
         account.setAbbreviation(updateAccountParameter.getAbbreviation());
         account.setIntialBalance(updateAccountParameter.getInitialBalance());

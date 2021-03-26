@@ -38,7 +38,7 @@ public class Account extends MotherPersistant {
 	@Column(name = "BANK_NAME", nullable = false)
     private String bankName;
 
-	@Column(name = "ABBREVIATION", nullable = false)
+	@Column(name = "ABBREVIATION", nullable = false, length = 6)
     private String abbreviation;
 
     @Column(name = "INITIAL_BALANCE", nullable = false)

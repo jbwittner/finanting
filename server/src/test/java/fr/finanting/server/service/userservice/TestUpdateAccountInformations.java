@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.javafaker.Name;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,30 +42,10 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
     protected void initDataBeforeEach() throws Exception {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
 
-        this.userOne = new User();
-        Name name = this.factory.getUniqueRandomName();
-        this.userOne.setUserName(name.username());
-        this.userOne.setFirstName(name.firstName());
-        this.userOne.setLastName(name.lastName());
-        this.userOne.setPassword(this.passwordEncoder.encode(this.factory.getUniqueRandomAlphanumericString()));
-        this.userOne.setEmail(this.factory.getUniqueRandomEmail());
-
-        final List<Role> roles = new ArrayList<>();
-        roles.add(Role.USER);
-        this.userOne.setRoles(roles);
-
+        this.userOne = this.factory.getUser();
         this.userOne = this.userRepository.save(this.userOne);
 
-        this.userTwo = new User();
-        name = this.factory.getUniqueRandomName();
-        this.userTwo.setUserName(name.username());
-        this.userTwo.setFirstName(name.firstName());
-        this.userTwo.setLastName(name.lastName());
-        this.userTwo.setPassword(this.passwordEncoder.encode(this.factory.getUniqueRandomAlphanumericString()));
-        this.userTwo.setEmail(this.factory.getUniqueRandomEmail());
-
-        this.userTwo.setRoles(roles);
-
+        this.userTwo = this.factory.getUser();
         this.userTwo = this.userRepository.save(this.userTwo);
 
     }
@@ -84,10 +65,13 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
 
         final UserDTO userDTO = this.userService.updateAccountInformations(userUpdateParameter, this.userOne.getUserName());
 
-        Assertions.assertEquals(this.userOne.getUserName(), userDTO.getUserName());
+        String userNameToCheck = userDTO.getUserName().toLowerCase();
+        String firstNameToCheck = StringUtils.capitalize(userDTO.getFirstName().toLowerCase());
+
+        Assertions.assertEquals(this.userOne.getUserName(), userNameToCheck);
         Assertions.assertEquals(this.userOne.getEmail(), userDTO.getEmail());
-        Assertions.assertEquals(this.userOne.getFirstName(), userDTO.getFirstName());
-        Assertions.assertEquals(this.userOne.getLastName(), userDTO.getLastName());
+        Assertions.assertEquals(this.userOne.getFirstName(), firstNameToCheck);
+        Assertions.assertEquals(this.userOne.getLastName(), userDTO.getLastName().toUpperCase());
     }
 
     /**
@@ -103,10 +87,13 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
 
         final UserDTO userDTO = this.userService.updateAccountInformations(userUpdateParameter, this.userOne.getUserName());
 
-        Assertions.assertEquals(this.userOne.getUserName(), userDTO.getUserName());
+        String userNameToCheck = userDTO.getUserName().toLowerCase();
+        String firstNameToCheck = StringUtils.capitalize(userDTO.getFirstName().toLowerCase());
+
+        Assertions.assertEquals(this.userOne.getUserName(), userNameToCheck);
         Assertions.assertEquals(this.userOne.getEmail(), userDTO.getEmail());
-        Assertions.assertEquals(this.userOne.getFirstName(), userDTO.getFirstName());
-        Assertions.assertEquals(this.userOne.getLastName(), userDTO.getLastName());
+        Assertions.assertEquals(this.userOne.getFirstName(), firstNameToCheck);
+        Assertions.assertEquals(this.userOne.getLastName(), userDTO.getLastName().toUpperCase());
     }
 
     /**
