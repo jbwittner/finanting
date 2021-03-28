@@ -1,5 +1,8 @@
 package fr.finanting.server.testhelper;
 
+import fr.finanting.server.model.Account;
+import fr.finanting.server.model.embeddable.Address;
+import fr.finanting.server.model.embeddable.BankDetails;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -270,6 +273,40 @@ public class TestObjectFactory {
         users.add(user);
         group.setUsers(users);
         return group;
+    }
+
+    private Account getAccount(User user, Group group){
+        Account account = new Account();
+
+        com.github.javafaker.Address addressFaker = this.faker.address();
+        Address address = new Address();
+        address.setCity(addressFaker.city());
+        address.setStreet(addressFaker.streetAddress());
+        address.setZipCode(addressFaker.zipCode());
+        account.setAddress(address);
+
+        BankDetails bankDetailsDetails = new BankDetails();
+        bankDetailsDetails.setAccountNumber(this.getRandomAlphanumericString());
+        bankDetailsDetails.setIban(this.getRandomAlphanumericString());
+        account.setBankDetails(bankDetailsDetails);
+
+        account.setAbbreviation(this.getRandomAlphanumericString(6));
+        account.setBankName(this.getRandomAlphanumericString());
+        account.setInitialBalance(0);
+        account.setLabel(this.getRandomAlphanumericString());
+
+        account.setGroup(group);
+        account.setUser(user);
+
+        return account;
+    }
+
+    public Account getAccount(User user){
+        return this.getAccount(user, null);
+    }
+
+    public Account getAccount(Group group){
+        return this.getAccount(null, group);
     }
 
 }
