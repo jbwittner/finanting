@@ -22,7 +22,6 @@ public class AccountDTO {
 
         this.id = account.getId();
         this.label = account.getLabel();
-        this.bankName = account.getBankName();
         this.abbreviation = account.getAbbreviation();
 
         if(account.getAddress() != null){

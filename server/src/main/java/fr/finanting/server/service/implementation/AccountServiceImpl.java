@@ -42,8 +42,8 @@ public class AccountServiceImpl implements AccountService {
 
         Account account = new Account();
 
-        if(createAccountParameter.getGroupeName() != null){
-            String groupName = createAccountParameter.getGroupeName();
+        if(createAccountParameter.getGroupName() != null){
+            String groupName = createAccountParameter.getGroupName();
             Group group = this.groupRepository.findByGroupName(groupName)
                 .orElseThrow(() -> new GroupNotExistException(groupName));
             account.setGroup(group);
@@ -67,6 +67,7 @@ public class AccountServiceImpl implements AccountService {
         BankDetails bankDetails = new BankDetails();
         bankDetails.setAccountNumber(createAccountParameter.getBankDetailsParameter().getAccountNumber());
         bankDetails.setIban(createAccountParameter.getBankDetailsParameter().getIban());
+        bankDetails.setBankName(createAccountParameter.getBankDetailsParameter().getBankName());
         account.setBankDetails(bankDetails);
 
         account = this.accountRepository.save(account);
@@ -114,7 +115,7 @@ public class AccountServiceImpl implements AccountService {
 
         this.checkIsUserAccount(account, userName);
 
-        account.setAbbreviation(updateAccountParameter.getAbbreviation());
+        account.setAbbreviation(updateAccountParameter.getAbbreviation().toUpperCase());
         account.setInitialBalance(updateAccountParameter.getInitialBalance());
         account.setLabel(updateAccountParameter.getLabel());
 
@@ -128,6 +129,7 @@ public class AccountServiceImpl implements AccountService {
         BankDetails bankDetails = new BankDetails();
         bankDetails.setAccountNumber(updateAccountParameter.getBankDetailsParameter().getAccountNumber());
         bankDetails.setIban(updateAccountParameter.getBankDetailsParameter().getIban());
+        bankDetails.setBankName(updateAccountParameter.getBankDetailsParameter().getBankName());
         account.setBankDetails(bankDetails);
 
         account = this.accountRepository.save(account);

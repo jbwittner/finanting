@@ -35,9 +35,6 @@ public class Account extends MotherPersistant {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-	@Column(name = "BANK_NAME", nullable = false)
-    private String bankName;
-
 	@Column(name = "ABBREVIATION", nullable = false, length = 6)
     private String abbreviation;
 

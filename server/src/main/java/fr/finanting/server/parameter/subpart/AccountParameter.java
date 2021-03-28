@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class AccountParameter {
 
-    private String groupeName;
+
 
     @NotNull
     @NotEmpty

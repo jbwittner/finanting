@@ -288,10 +288,10 @@ public class TestObjectFactory {
         BankDetails bankDetailsDetails = new BankDetails();
         bankDetailsDetails.setAccountNumber(this.getRandomAlphanumericString());
         bankDetailsDetails.setIban(this.getRandomAlphanumericString());
+        bankDetailsDetails.setBankName(this.getRandomAlphanumericString());
         account.setBankDetails(bankDetailsDetails);
 
         account.setAbbreviation(this.getRandomAlphanumericString(6));
-        account.setBankName(this.getRandomAlphanumericString());
         account.setInitialBalance(0);
         account.setLabel(this.getRandomAlphanumericString());
 

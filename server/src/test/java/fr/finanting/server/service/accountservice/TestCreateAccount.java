@@ -1,7 +1,9 @@
 package fr.finanting.server.service.accountservice;
 
+import fr.finanting.server.dto.AccountDTO;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotExistException;
+import fr.finanting.server.model.Account;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.CreateAccountParameter;
@@ -61,8 +63,13 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateUserAccountOk() throws UserNotExistException, GroupNotExistException {
-        
-        this.accountServiceImpl.createAccount(createAccountParameter, this.user.getUserName());
+
+        AccountDTO accountDTO =
+                this.accountServiceImpl.createAccount(createAccountParameter, this.user.getUserName());
+
+        Account account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
+
+        this.checkAccount(accountDTO, account, createAccountParameter, this.user);
     }
 
     @Test
@@ -75,7 +82,7 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateGroupAccountGroupNotExist() {
 
-        this.createAccountParameter.setGroupeName(this.factory.getRandomAlphanumericString());
+        this.createAccountParameter.setGroupName(this.factory.getRandomAlphanumericString());
         
         Assertions.assertThrows(GroupNotExistException.class,
             () -> this.accountServiceImpl.createAccount(createAccountParameter, this.user.getUserName()));
@@ -84,9 +91,70 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateGroupAccountOk() throws UserNotExistException, GroupNotExistException {
 
-        this.createAccountParameter.setGroupeName(this.group.getGroupName());
-        
-        this.accountServiceImpl.createAccount(this.createAccountParameter, this.user.getUserName());
+        this.createAccountParameter.setGroupName(this.group.getGroupName());
+
+        AccountDTO accountDTO =
+                this.accountServiceImpl.createAccount(this.createAccountParameter, this.user.getUserName());
+
+        Account account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
+
+        this.checkAccount(accountDTO, account, createAccountParameter, this.user);
+
+    }
+
+    private void checkAccount(AccountDTO accountDTO,
+                              Account account,
+                              CreateAccountParameter createAccountParameter,
+                              User user){
+
+        Assertions.assertEquals(createAccountParameter.getAbbreviation().toUpperCase(), accountDTO.getAbbreviation());
+        Assertions.assertEquals(createAccountParameter.getInitialBalance(), accountDTO.getBalance());
+        Assertions.assertEquals(createAccountParameter.getLabel(), accountDTO.getLabel());
+        Assertions.assertEquals(createAccountParameter.getAddressParameter().getCity(),
+                accountDTO.getAddressDTO().getCity());
+        Assertions.assertEquals(createAccountParameter.getAddressParameter().getStreet(),
+                accountDTO.getAddressDTO().getStreet());
+        Assertions.assertEquals(createAccountParameter.getAddressParameter().getAddress(),
+                accountDTO.getAddressDTO().getAddress());
+        Assertions.assertEquals(createAccountParameter.getAddressParameter().getZipCode(),
+                accountDTO.getAddressDTO().getZipCode());
+        Assertions.assertEquals(createAccountParameter.getBankDetailsParameter().getAccountNumber(),
+                accountDTO.getBankDetailsDTO().getAccountNumber());
+        Assertions.assertEquals(createAccountParameter.getBankDetailsParameter().getIban(),
+                accountDTO.getBankDetailsDTO().getIban());
+        Assertions.assertEquals(createAccountParameter.getBankDetailsParameter().getBankName(),
+                accountDTO.getBankDetailsDTO().getBankName());
+
+        Assertions.assertEquals(createAccountParameter.getAbbreviation().toUpperCase(), account.getAbbreviation());
+        Assertions.assertEquals(createAccountParameter.getInitialBalance(), account.getInitialBalance());
+        Assertions.assertEquals(createAccountParameter.getLabel(), account.getLabel());
+        Assertions.assertEquals(createAccountParameter.getAddressParameter().getCity(),
+                account.getAddress().getCity());
+        Assertions.assertEquals(createAccountParameter.getAddressParameter().getStreet(),
+                account.getAddress().getStreet());
+        Assertions.assertEquals(createAccountParameter.getAddressParameter().getAddress(),
+                account.getAddress().getAddress());
+        Assertions.assertEquals(createAccountParameter.getAddressParameter().getZipCode(),
+                account.getAddress().getZipCode());
+        Assertions.assertEquals(createAccountParameter.getBankDetailsParameter().getAccountNumber(),
+                account.getBankDetails().getAccountNumber());
+        Assertions.assertEquals(createAccountParameter.getBankDetailsParameter().getIban(),
+                account.getBankDetails().getIban());
+
+        if(createAccountParameter.getGroupName() != null){
+            Assertions.assertEquals(createAccountParameter.getGroupName(),
+                    accountDTO.getGroupDTO().getGroupName());
+
+            Assertions.assertEquals(createAccountParameter.getGroupName(),
+                    account.getGroup().getGroupName());
+        } else {
+            Assertions.assertEquals(user.getUserName(),
+                    accountDTO.getUserDTO().getUserName());
+
+            Assertions.assertEquals(user.getUserName(),
+                    account.getUser().getUserName());
+        }
+
     }
     
 }

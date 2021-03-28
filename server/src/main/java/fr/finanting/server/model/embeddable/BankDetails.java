@@ -14,5 +14,8 @@ public class BankDetails {
 
     @Column(name = "ACCOUNT_NUMBER")
     private String accountNumber;
+
+    @Column(name = "BANK_NAME")
+    private String bankName;
    
 }
