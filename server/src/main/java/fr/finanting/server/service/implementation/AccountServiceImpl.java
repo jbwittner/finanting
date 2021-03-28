@@ -37,7 +37,8 @@ public class AccountServiceImpl implements AccountService {
             this.userRepository = userRepository;
         }
 
-    public AccountDTO createAccount(final CreateAccountParameter createAccountParameter, String userName) throws UserNotExistException, GroupNotExistException{
+    public AccountDTO createAccount(final CreateAccountParameter createAccountParameter, String userName)
+            throws UserNotExistException, GroupNotExistException{
 
         Account account = new Account();
 
@@ -76,7 +77,8 @@ public class AccountServiceImpl implements AccountService {
         return accountDTO;
     }
 
-    private void checkIsUserAccount(Account account, String userName) throws NotAdminGroupException, NotUserAccountException{
+    private void checkIsUserAccount(Account account, String userName)
+            throws NotAdminGroupException, NotUserAccountException{
 
         Group group = account.getGroup();
 
@@ -92,7 +94,8 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
-    public void deleteAccount(DeleteAccountParameter deleteAccountParameter, String userName) throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
+    public void deleteAccount(DeleteAccountParameter deleteAccountParameter, String userName)
+            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
         Account account = this.accountRepository.findById(deleteAccountParameter.getId())
             .orElseThrow(() -> new AccountNotExistException(deleteAccountParameter.getId()));
@@ -103,7 +106,8 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
-    public AccountDTO updateAccount(UpdateAccountParameter updateAccountParameter, String userName) throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
+    public AccountDTO updateAccount(UpdateAccountParameter updateAccountParameter, String userName)
+            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
         Account account = this.accountRepository.findById(updateAccountParameter.getAccountId())
             .orElseThrow(() -> new AccountNotExistException(updateAccountParameter.getAccountId()));

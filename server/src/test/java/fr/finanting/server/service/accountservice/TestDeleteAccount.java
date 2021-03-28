@@ -38,7 +38,8 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testDeleteUserAccountOk() throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+    public void testDeleteUserAccountOk()
+            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         User user = this.factory.getUser();
         user = this.userRepository.save(user);
         Account account = this.factory.getAccount(user);
@@ -55,7 +56,8 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testDeleteGroupAccountOk() throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+    public void testDeleteGroupAccountOk()
+            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         Group group = this.factory.getGroup();
         User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
@@ -105,7 +107,8 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testDeleteUserAccountUserNotExist() throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+    public void testDeleteUserAccountUserNotExist()
+            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         User user = this.factory.getUser();
         user = this.userRepository.save(user);
         Account account = this.factory.getAccount(user);
