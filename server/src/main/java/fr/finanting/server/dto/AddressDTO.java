@@ -11,7 +11,7 @@ public class AddressDTO {
     private String city;
     private String zipCode;
 
-    public AddressDTO(Address address){
+    public AddressDTO(final Address address){
         this.address = address.getAddress();
         this.street = address.getStreet();
         this.city = address.getCity();

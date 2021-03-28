@@ -65,8 +65,8 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
 
         final UserDTO userDTO = this.userService.updateAccountInformations(userUpdateParameter, this.userOne.getUserName());
 
-        String userNameToCheck = userDTO.getUserName().toLowerCase();
-        String firstNameToCheck = StringUtils.capitalize(userDTO.getFirstName().toLowerCase());
+        final String userNameToCheck = userDTO.getUserName().toLowerCase();
+        final String firstNameToCheck = StringUtils.capitalize(userDTO.getFirstName().toLowerCase());
 
         Assertions.assertEquals(this.userOne.getUserName(), userNameToCheck);
         Assertions.assertEquals(this.userOne.getEmail(), userDTO.getEmail());
@@ -87,8 +87,8 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
 
         final UserDTO userDTO = this.userService.updateAccountInformations(userUpdateParameter, this.userOne.getUserName());
 
-        String userNameToCheck = userDTO.getUserName().toLowerCase();
-        String firstNameToCheck = StringUtils.capitalize(userDTO.getFirstName().toLowerCase());
+        final String userNameToCheck = userDTO.getUserName().toLowerCase();
+        final String firstNameToCheck = StringUtils.capitalize(userDTO.getFirstName().toLowerCase());
 
         Assertions.assertEquals(this.userOne.getUserName(), userNameToCheck);
         Assertions.assertEquals(this.userOne.getEmail(), userDTO.getEmail());

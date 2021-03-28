@@ -42,20 +42,20 @@ public class TestDeleteGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteGroupOk() throws GroupNotExistException, NotAdminGroupException {
-        DeleteGroupParameter deleteGroupParameter = new DeleteGroupParameter();
+        final DeleteGroupParameter deleteGroupParameter = new DeleteGroupParameter();
         deleteGroupParameter.setGroupName(this.group.getGroupName());
-        String userName = this.group.getUserAdmin().getUserName();
+        final String userName = this.group.getUserAdmin().getUserName();
         this.groupServiceImpl.deleteGroup(deleteGroupParameter, userName);
 
-        Optional<Group> optionalGroup = this.groupRepository.findByGroupName(this.group.getGroupName());
+        final Optional<Group> optionalGroup = this.groupRepository.findByGroupName(this.group.getGroupName());
         Assertions.assertFalse(optionalGroup.isPresent());
     }
 
     @Test
     public void testDeleteNonExistentGroup() throws GroupNotExistException, NotAdminGroupException {
-        DeleteGroupParameter deleteGroupParameter = new DeleteGroupParameter();
+        final DeleteGroupParameter deleteGroupParameter = new DeleteGroupParameter();
         deleteGroupParameter.setGroupName(this.factory.getRandomAlphanumericString());
-        String userName = this.group.getUserAdmin().getUserName();
+        final String userName = this.group.getUserAdmin().getUserName();
 
         Assertions.assertThrows(GroupNotExistException.class,
             () -> this.groupServiceImpl.deleteGroup(deleteGroupParameter, userName));
@@ -64,11 +64,11 @@ public class TestDeleteGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteNonAdminGroup() throws GroupNotExistException, NotAdminGroupException {
-        DeleteGroupParameter deleteGroupParameter = new DeleteGroupParameter();
+        final DeleteGroupParameter deleteGroupParameter = new DeleteGroupParameter();
         deleteGroupParameter.setGroupName(this.group.getGroupName());
         User user = this.factory.getUser();
         user = this.userRepository.save(user);
-        String userName = user.getUserName();
+        final String userName = user.getUserName();
 
         Assertions.assertThrows(NotAdminGroupException.class,
             () -> this.groupServiceImpl.deleteGroup(deleteGroupParameter, userName));

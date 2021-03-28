@@ -10,7 +10,7 @@ public class BankDetailsDTO {
     private String accountNumber;
     private String bankName;
 
-    public BankDetailsDTO(BankDetails bankDetails){
+    public BankDetailsDTO(final BankDetails bankDetails){
         this.iban = bankDetails.getIban();
         this.accountNumber = bankDetails.getAccountNumber();
         this.bankName = bankDetails.getBankName();

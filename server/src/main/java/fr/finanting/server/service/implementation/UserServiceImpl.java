@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         final User user = new User();
         user.setEmail(userRegisterParameter.getEmail());
 
-        String firstName = StringUtils.capitalize(userRegisterParameter.getFirstName().toLowerCase());
+        final String firstName = StringUtils.capitalize(userRegisterParameter.getFirstName().toLowerCase());
         user.setFirstName(firstName);
 
         user.setLastName(userRegisterParameter.getLastName().toUpperCase());
@@ -105,12 +105,12 @@ public class UserServiceImpl implements UserService {
 
         user.setEmail(userUpdateParameter.getEmail());
 
-        String firstName = StringUtils.capitalize(userUpdateParameter.getUserName().toLowerCase());
+        final String firstName = StringUtils.capitalize(userUpdateParameter.getUserName().toLowerCase());
         user.setFirstName(firstName);
 
         user.setLastName(userUpdateParameter.getLastName().toUpperCase());
 
-        String userNameToUpdate = userUpdateParameter.getUserName().toLowerCase();
+        final String userNameToUpdate = userUpdateParameter.getUserName().toLowerCase();
         user.setUserName(userNameToUpdate);
 
         this.userRepository.save(user);

@@ -58,8 +58,8 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
         final User user = this.userRepository.findByUserName(this.newUserRegisterParameter.getUserName())
             .orElseThrow(() -> new UsernameNotFoundException(this.newUserRegisterParameter.getUserName()));
 
-        String userNameToCheck = newUserRegisterParameter.getUserName().toLowerCase();
-        String firstNameToCheck = StringUtils.capitalize(newUserRegisterParameter.getFirstName().toLowerCase());    
+        final String userNameToCheck = newUserRegisterParameter.getUserName().toLowerCase();
+        final String firstNameToCheck = StringUtils.capitalize(newUserRegisterParameter.getFirstName().toLowerCase());
 
         Assertions.assertEquals(this.newUserRegisterParameter.getEmail(), user.getEmail());
         Assertions.assertEquals(firstNameToCheck, user.getFirstName());

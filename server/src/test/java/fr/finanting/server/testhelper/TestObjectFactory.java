@@ -248,7 +248,7 @@ public class TestObjectFactory {
     public User getUser(){
         final User user = new User();
         user.setEmail(this.faker.internet().emailAddress());
-        String firstName = StringUtils.capitalize(this.faker.name().firstName().toLowerCase());
+        final String firstName = StringUtils.capitalize(this.faker.name().firstName().toLowerCase());
         user.setFirstName(firstName);
         user.setLastName(this.faker.name().lastName().toUpperCase());
         user.setUserName(this.faker.name().username().toLowerCase());
@@ -275,17 +275,17 @@ public class TestObjectFactory {
         return group;
     }
 
-    private Account getAccount(User user, Group group){
-        Account account = new Account();
+    private Account getAccount(final User user, final Group group){
+        final Account account = new Account();
 
-        com.github.javafaker.Address addressFaker = this.faker.address();
-        Address address = new Address();
+        final com.github.javafaker.Address addressFaker = this.faker.address();
+        final Address address = new Address();
         address.setCity(addressFaker.city());
         address.setStreet(addressFaker.streetAddress());
         address.setZipCode(addressFaker.zipCode());
         account.setAddress(address);
 
-        BankDetails bankDetailsDetails = new BankDetails();
+        final BankDetails bankDetailsDetails = new BankDetails();
         bankDetailsDetails.setAccountNumber(this.getRandomAlphanumericString());
         bankDetailsDetails.setIban(this.getRandomAlphanumericString());
         bankDetailsDetails.setBankName(this.getRandomAlphanumericString());
@@ -301,11 +301,11 @@ public class TestObjectFactory {
         return account;
     }
 
-    public Account getAccount(User user){
+    public Account getAccount(final User user){
         return this.getAccount(user, null);
     }
 
-    public Account getAccount(Group group){
+    public Account getAccount(final Group group){
         return this.getAccount(null, group);
     }
 

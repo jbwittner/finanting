@@ -5,8 +5,6 @@ import fr.finanting.server.exception.*;
 import fr.finanting.server.model.Account;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.CreateAccountParameter;
-import fr.finanting.server.parameter.DeleteAccountParameter;
 import fr.finanting.server.parameter.UpdateAccountParameter;
 import fr.finanting.server.parameter.subpart.AddressParameter;
 import fr.finanting.server.parameter.subpart.BankDetailsParameter;
@@ -18,8 +16,6 @@ import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
 
 public class TestUpdateAccount extends AbstractMotherIntegrationTest {
 
@@ -40,18 +36,18 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
         this.accountServiceImpl = new AccountServiceImpl(accountRepository, groupRepository, userRepository);
 
         Group group = this.factory.getGroup();
-        User user = this.userRepository.save(group.getUserAdmin());
+        this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
 
         this.updateAccountParameter = new UpdateAccountParameter();
-        AddressParameter addressParameter = new AddressParameter();
+        final AddressParameter addressParameter = new AddressParameter();
         addressParameter.setAddress(this.faker.address().fullAddress());
         addressParameter.setCity(this.faker.address().city());
         addressParameter.setStreet(this.faker.address().streetAddress());
         addressParameter.setZipCode(this.faker.address().zipCode());
         this.updateAccountParameter.setAddressParameter(addressParameter);
 
-        BankDetailsParameter bankDetailsParameter = new BankDetailsParameter();
+        final BankDetailsParameter bankDetailsParameter = new BankDetailsParameter();
         bankDetailsParameter.setAccountNumber(this.factory.getRandomAlphanumericString());
         bankDetailsParameter.setIban(this.factory.getRandomAlphanumericString());
         this.updateAccountParameter.setBankDetailsParameter(bankDetailsParameter);
@@ -66,43 +62,43 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     public void testUpdateGroupAccountOk()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         Group group = this.factory.getGroup();
-        User user = this.userRepository.save(group.getUserAdmin());
+        final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
 
         Account account = this.accountRepository.save(this.factory.getAccount(group));
 
         this.updateAccountParameter.setAccountId(account.getId());
 
-        AccountDTO accountDTO =
+        final AccountDTO accountDTO =
                 this.accountServiceImpl.updateAccount(this.updateAccountParameter, user.getUserName());
 
         account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
 
-        this.checkAccount(accountDTO, account, this.updateAccountParameter, user);
+        this.checkAccount(accountDTO, account, this.updateAccountParameter);
 
     }
 
     @Test
     public void testUpdateUserAccountOk()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
-        User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.userRepository.save(this.factory.getUser());
         Account account = this.accountRepository.save(this.factory.getAccount(user));
 
         this.updateAccountParameter.setAccountId(account.getId());
 
-        AccountDTO accountDTO =
+        final AccountDTO accountDTO =
                 this.accountServiceImpl.updateAccount(this.updateAccountParameter, user.getUserName());
 
         account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
 
-        this.checkAccount(accountDTO, account, this.updateAccountParameter, user);
+        this.checkAccount(accountDTO, account, this.updateAccountParameter);
 
     }
 
     @Test
     public void testUpdateAccountNotExist()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
-        User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.userRepository.save(this.factory.getUser());
 
         this.updateAccountParameter.setAccountId(this.factory.getRandomInteger());
 
@@ -114,12 +110,12 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateGroupAccountNotAdmin() {
         Group group = this.factory.getGroup();
-        User user = this.userRepository.save(group.getUserAdmin());
+        this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
 
-        User user2 = this.userRepository.save(this.factory.getUser());
+        final User user2 = this.userRepository.save(this.factory.getUser());
 
-        Account account = this.accountRepository.save(this.factory.getAccount(group));
+        final Account account = this.accountRepository.save(this.factory.getAccount(group));
 
         this.updateAccountParameter.setAccountId(account.getId());
 
@@ -130,22 +126,21 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateUserAccountNotUserAccount()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
-        User user = this.userRepository.save(this.factory.getUser());
-        Account account = this.accountRepository.save(this.factory.getAccount(user));
+        final User user = this.userRepository.save(this.factory.getUser());
+        final Account account = this.accountRepository.save(this.factory.getAccount(user));
 
         this.updateAccountParameter.setAccountId(account.getId());
 
-        User user2 = this.userRepository.save(this.factory.getUser());
+        final User user2 = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(NotUserAccountException.class,
                 () -> this.accountServiceImpl.updateAccount(this.updateAccountParameter, user2.getUserName()));
 
     }
 
-    private void checkAccount(AccountDTO accountDTO,
-                              Account account,
-                              UpdateAccountParameter updateAccountParameter,
-                              User user){
+    private void checkAccount(final AccountDTO accountDTO,
+                              final Account account,
+                              final UpdateAccountParameter updateAccountParameter){
 
         Assertions.assertEquals(updateAccountParameter.getAbbreviation().toUpperCase(), accountDTO.getAbbreviation());
         Assertions.assertEquals(updateAccountParameter.getInitialBalance(), accountDTO.getBalance());

@@ -4,10 +4,7 @@ import fr.finanting.server.exception.*;
 import fr.finanting.server.model.Account;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.CreateAccountParameter;
 import fr.finanting.server.parameter.DeleteAccountParameter;
-import fr.finanting.server.parameter.subpart.AddressParameter;
-import fr.finanting.server.parameter.subpart.BankDetailsParameter;
 import fr.finanting.server.repository.AccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
@@ -45,12 +42,12 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
         Account account = this.factory.getAccount(user);
         account = this.accountRepository.save(account);
 
-        DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
+        final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
         deleteAccountParameter.setId(account.getId());
 
         this.accountServiceImpl.deleteAccount(deleteAccountParameter, user.getUserName());
 
-        Optional<Account> accountOptional = this.accountRepository.findById(account.getId());
+        final Optional<Account> accountOptional = this.accountRepository.findById(account.getId());
 
         Assertions.assertFalse(accountOptional.isPresent());
     }
@@ -59,17 +56,17 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
     public void testDeleteGroupAccountOk()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         Group group = this.factory.getGroup();
-        User user = this.userRepository.save(group.getUserAdmin());
+        final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
         Account account = this.factory.getAccount(group);
         account = this.accountRepository.save(account);
 
-        DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
+        final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
         deleteAccountParameter.setId(account.getId());
 
         this.accountServiceImpl.deleteAccount(deleteAccountParameter, user.getUserName());
 
-        Optional<Account> accountOptional = this.accountRepository.findById(account.getId());
+        final Optional<Account> accountOptional = this.accountRepository.findById(account.getId());
 
         Assertions.assertFalse(accountOptional.isPresent());
     }
@@ -77,14 +74,13 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteGroupAccountNotAdmin() {
         Group group = this.factory.getGroup();
-        User user = this.userRepository.save(group.getUserAdmin());
+        this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
-        Account account = this.factory.getAccount(group);
-        account = this.accountRepository.save(account);
+        final Account account = this.accountRepository.save(this.factory.getAccount(group));
 
-        User user2 = this.userRepository.save(this.factory.getUser());
+        final User user2 = this.userRepository.save(this.factory.getUser());
 
-        DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
+        final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
         deleteAccountParameter.setId(account.getId());
 
         Assertions.assertThrows(NotAdminGroupException.class,
@@ -93,13 +89,12 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteUserAccountNotUserAccount() {
-        User user = this.userRepository.save(this.factory.getUser());
-        Account account = this.factory.getAccount(user);
-        account = this.accountRepository.save(account);
+        final User user = this.userRepository.save(this.factory.getUser());
+        final Account account = this.accountRepository.save(this.factory.getAccount(user));
 
-        User user2 = this.userRepository.save(this.factory.getUser());
+        final User user2 = this.userRepository.save(this.factory.getUser());
 
-        DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
+        final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
         deleteAccountParameter.setId(account.getId());
 
         Assertions.assertThrows(NotUserAccountException.class,
@@ -109,26 +104,24 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteUserAccountUserNotExist()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
-        User user = this.factory.getUser();
-        user = this.userRepository.save(user);
-        Account account = this.factory.getAccount(user);
-        account = this.accountRepository.save(account);
+        final User user = this.userRepository.save(this.factory.getUser());
+        final Account account = this.accountRepository.save(this.factory.getAccount(user));
 
-        DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
+        final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
         deleteAccountParameter.setId(account.getId());
 
         this.accountServiceImpl.deleteAccount(deleteAccountParameter, user.getUserName());
 
-        Optional<Account> accountOptional = this.accountRepository.findById(account.getId());
+        final Optional<Account> accountOptional = this.accountRepository.findById(account.getId());
 
         Assertions.assertFalse(accountOptional.isPresent());
     }
 
     @Test
     public void testDeleteAccountNotExist() {
-        User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.userRepository.save(this.factory.getUser());
 
-        DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
+        final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
         deleteAccountParameter.setId(this.factory.getRandomInteger());
 
         Assertions.assertThrows(AccountNotExistException.class,

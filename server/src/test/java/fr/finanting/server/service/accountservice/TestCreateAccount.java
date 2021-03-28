@@ -45,14 +45,14 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
         this.createAccountParameter = new CreateAccountParameter();
         this.createAccountParameter.setAbbreviation(this.factory.getRandomAlphanumericString());
 
-        AddressParameter addressParameter = new AddressParameter();
+        final AddressParameter addressParameter = new AddressParameter();
         addressParameter.setAddress(this.faker.address().fullAddress());
         addressParameter.setCity(this.faker.address().city());
         addressParameter.setStreet(this.faker.address().streetAddress());
         addressParameter.setZipCode(this.faker.address().zipCode());
         this.createAccountParameter.setAddressParameter(addressParameter);
 
-        BankDetailsParameter bankDetailsParameter = new BankDetailsParameter();
+        final BankDetailsParameter bankDetailsParameter = new BankDetailsParameter();
         bankDetailsParameter.setAccountNumber(this.factory.getRandomAlphanumericString());
         bankDetailsParameter.setIban(this.factory.getRandomAlphanumericString());
         this.createAccountParameter.setBankDetailsParameter(bankDetailsParameter);
@@ -64,10 +64,10 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateUserAccountOk() throws UserNotExistException, GroupNotExistException {
 
-        AccountDTO accountDTO =
+        final AccountDTO accountDTO =
                 this.accountServiceImpl.createAccount(createAccountParameter, this.user.getUserName());
 
-        Account account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
+        final Account account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
 
         this.checkAccount(accountDTO, account, createAccountParameter, this.user);
     }
@@ -93,19 +93,19 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
 
         this.createAccountParameter.setGroupName(this.group.getGroupName());
 
-        AccountDTO accountDTO =
+        final AccountDTO accountDTO =
                 this.accountServiceImpl.createAccount(this.createAccountParameter, this.user.getUserName());
 
-        Account account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
+        final Account account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
 
         this.checkAccount(accountDTO, account, createAccountParameter, this.user);
 
     }
 
-    private void checkAccount(AccountDTO accountDTO,
-                              Account account,
-                              CreateAccountParameter createAccountParameter,
-                              User user){
+    private void checkAccount(final AccountDTO accountDTO,
+                              final Account account,
+                              final CreateAccountParameter createAccountParameter,
+                              final User user){
 
         Assertions.assertEquals(createAccountParameter.getAbbreviation().toUpperCase(), accountDTO.getAbbreviation());
         Assertions.assertEquals(createAccountParameter.getInitialBalance(), accountDTO.getBalance());
@@ -141,18 +141,18 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(createAccountParameter.getBankDetailsParameter().getIban(),
                 account.getBankDetails().getIban());
 
-        if(createAccountParameter.getGroupName() != null){
-            Assertions.assertEquals(createAccountParameter.getGroupName(),
-                    accountDTO.getGroupDTO().getGroupName());
-
-            Assertions.assertEquals(createAccountParameter.getGroupName(),
-                    account.getGroup().getGroupName());
-        } else {
+        if(createAccountParameter.getGroupName() == null){
             Assertions.assertEquals(user.getUserName(),
                     accountDTO.getUserDTO().getUserName());
 
             Assertions.assertEquals(user.getUserName(),
                     account.getUser().getUserName());
+        } else {
+            Assertions.assertEquals(createAccountParameter.getGroupName(),
+                    accountDTO.getGroupDTO().getGroupName());
+
+            Assertions.assertEquals(createAccountParameter.getGroupName(),
+                    account.getGroup().getGroupName());
         }
 
     }

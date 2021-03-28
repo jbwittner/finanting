@@ -18,7 +18,7 @@ public class AccountDTO {
 
     AddressDTO addressDTO;
 
-    public AccountDTO(Account account){
+    public AccountDTO(final Account account){
 
         this.id = account.getId();
         this.label = account.getLabel();

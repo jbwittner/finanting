@@ -37,68 +37,68 @@ public class AccountServiceImpl implements AccountService {
             this.userRepository = userRepository;
         }
 
-    public AccountDTO createAccount(final CreateAccountParameter createAccountParameter, String userName)
+    public AccountDTO createAccount(final CreateAccountParameter createAccountParameter, final String userName)
             throws UserNotExistException, GroupNotExistException{
 
         Account account = new Account();
 
-        if(createAccountParameter.getGroupName() != null){
-            String groupName = createAccountParameter.getGroupName();
-            Group group = this.groupRepository.findByGroupName(groupName)
+        if(createAccountParameter.getGroupName() == null){
+            final User user = this.userRepository.findByUserName(userName)
+                    .orElseThrow(() -> new UserNotExistException(userName));
+            account.setUser(user);
+        } else {
+            final String groupName = createAccountParameter.getGroupName();
+            final Group group = this.groupRepository.findByGroupName(groupName)
                 .orElseThrow(() -> new GroupNotExistException(groupName));
             account.setGroup(group);
-        } else {
-            User user = this.userRepository.findByUserName(userName)
-                .orElseThrow(() -> new UserNotExistException(userName));
-            account.setUser(user);
-        } 
+        }
 
         account.setAbbreviation(createAccountParameter.getAbbreviation().toUpperCase());
         account.setInitialBalance(createAccountParameter.getInitialBalance());
         account.setLabel(createAccountParameter.getLabel());
 
-        Address address = new Address();
+        final Address address = new Address();
         address.setAddress(createAccountParameter.getAddressParameter().getAddress());
         address.setCity(createAccountParameter.getAddressParameter().getCity());
         address.setStreet(createAccountParameter.getAddressParameter().getStreet());
         address.setZipCode(createAccountParameter.getAddressParameter().getZipCode());
         account.setAddress(address);
-        
-        BankDetails bankDetails = new BankDetails();
+
+        final BankDetails bankDetails = new BankDetails();
         bankDetails.setAccountNumber(createAccountParameter.getBankDetailsParameter().getAccountNumber());
         bankDetails.setIban(createAccountParameter.getBankDetailsParameter().getIban());
         bankDetails.setBankName(createAccountParameter.getBankDetailsParameter().getBankName());
         account.setBankDetails(bankDetails);
 
         account = this.accountRepository.save(account);
-        
-        AccountDTO accountDTO = new AccountDTO(account);
+
+        final AccountDTO accountDTO = new AccountDTO(account);
         accountDTO.setBalance(account.getInitialBalance());
 
         return accountDTO;
     }
 
-    private void checkIsUserAccount(Account account, String userName)
+    private void checkIsUserAccount(final Account account, final String userName)
             throws NotAdminGroupException, NotUserAccountException{
 
-        Group group = account.getGroup();
+        final Group group = account.getGroup();
 
-        if(group != null) {
-            if(!group.getUserAdmin().getUserName().equals(userName)){
-                throw new NotAdminGroupException(group);
-            }
-        } else {
+        if(group == null) {
             if(!account.getUser().getUserName().equals(userName)){
                 throw new NotUserAccountException(userName, account);
+            }
+        } else {
+            if(!group.getUserAdmin().getUserName().equals(userName)){
+                throw new NotAdminGroupException(group);
             }
         }
 
     }
 
-    public void deleteAccount(DeleteAccountParameter deleteAccountParameter, String userName)
+    public void deleteAccount(final DeleteAccountParameter deleteAccountParameter, final String userName)
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
-        Account account = this.accountRepository.findById(deleteAccountParameter.getId())
+        final  Account account = this.accountRepository.findById(deleteAccountParameter.getId())
             .orElseThrow(() -> new AccountNotExistException(deleteAccountParameter.getId()));
 
         this.checkIsUserAccount(account, userName);
@@ -107,7 +107,7 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
-    public AccountDTO updateAccount(UpdateAccountParameter updateAccountParameter, String userName)
+    public AccountDTO updateAccount(final UpdateAccountParameter updateAccountParameter, final String userName)
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
         Account account = this.accountRepository.findById(updateAccountParameter.getAccountId())
@@ -119,22 +119,22 @@ public class AccountServiceImpl implements AccountService {
         account.setInitialBalance(updateAccountParameter.getInitialBalance());
         account.setLabel(updateAccountParameter.getLabel());
 
-        Address address = new Address();
+        final Address address = new Address();
         address.setAddress(updateAccountParameter.getAddressParameter().getAddress());
         address.setCity(updateAccountParameter.getAddressParameter().getCity());
         address.setStreet(updateAccountParameter.getAddressParameter().getStreet());
         address.setZipCode(updateAccountParameter.getAddressParameter().getZipCode());
         account.setAddress(address);
-        
-        BankDetails bankDetails = new BankDetails();
+
+        final BankDetails bankDetails = new BankDetails();
         bankDetails.setAccountNumber(updateAccountParameter.getBankDetailsParameter().getAccountNumber());
         bankDetails.setIban(updateAccountParameter.getBankDetailsParameter().getIban());
         bankDetails.setBankName(updateAccountParameter.getBankDetailsParameter().getBankName());
         account.setBankDetails(bankDetails);
 
         account = this.accountRepository.save(account);
-        
-        AccountDTO accountDTO = new AccountDTO(account);
+
+        final AccountDTO accountDTO = new AccountDTO(account);
         accountDTO.setBalance(account.getInitialBalance());
 
         return accountDTO;
