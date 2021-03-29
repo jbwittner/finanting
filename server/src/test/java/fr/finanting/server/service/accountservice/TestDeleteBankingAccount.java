@@ -36,7 +36,7 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteUserAccountOk()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         User user = this.factory.getUser();
         user = this.userRepository.save(user);
         BankingAccount bankingAccount = this.factory.getBankingAccount(user);
@@ -54,7 +54,7 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteGroupAccountOk()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
@@ -97,13 +97,13 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());
 
-        Assertions.assertThrows(NotUserAccountException.class,
+        Assertions.assertThrows(NotUserBankingAccountException.class,
                 () -> this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user2.getUserName()));
     }
 
     @Test
     public void testDeleteUserAccountUserNotExist()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
         final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
 
