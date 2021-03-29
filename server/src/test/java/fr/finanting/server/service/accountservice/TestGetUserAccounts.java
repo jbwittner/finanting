@@ -34,7 +34,6 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
     private AccountRepository accountRepository;
 
     private AccountServiceImpl accountServiceImpl;
-    private UpdateAccountParameter updateAccountParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
@@ -43,17 +42,17 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetUserAccountWithoutGroupAccount() {
-        User user = this.userRepository.save(this.factory.getUser());
-        Account account1 = this.accountRepository.save(this.factory.getAccount(user));
-        Account account2 = this.accountRepository.save(this.factory.getAccount(user));
-        Account account3 = this.accountRepository.save(this.factory.getAccount(user));
+        final User user = this.userRepository.save(this.factory.getUser());
+        final Account account1 = this.accountRepository.save(this.factory.getAccount(user));
+        final Account account2 = this.accountRepository.save(this.factory.getAccount(user));
+        final Account account3 = this.accountRepository.save(this.factory.getAccount(user));
 
-        AccountsDTO accountsDTO = this.accountServiceImpl.getUserAccounts(user.getUserName());
+        final AccountsDTO accountsDTO = this.accountServiceImpl.getUserAccounts(user.getUserName());
 
         Assertions.assertEquals(0, accountsDTO.getGroupAccountDTO().size());
         Assertions.assertEquals(3, accountsDTO.getUserAccountDTO().size());
 
-        for(AccountDTO accountDTO : accountsDTO.getUserAccountDTO()){
+        for(final AccountDTO accountDTO : accountsDTO.getUserAccountDTO()){
             boolean isPresent = true;
             if(accountDTO.getId().equals(account1.getId())){
                 this.checkAccount(accountDTO, account1);
@@ -72,17 +71,17 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetUserAccountWithoutUserAccount() {
-        User user = this.userRepository.save(this.factory.getUser());
-        Account account1 = this.createGroupAccount(user);
-        Account account2 = this.createGroupAccount(user);
-        Account account3 = this.createGroupAccount(user);
+        final User user = this.userRepository.save(this.factory.getUser());
+        final Account account1 = this.createGroupAccount(user);
+        final Account account2 = this.createGroupAccount(user);
+        final Account account3 = this.createGroupAccount(user);
 
-        AccountsDTO accountsDTO = this.accountServiceImpl.getUserAccounts(user.getUserName());
+        final AccountsDTO accountsDTO = this.accountServiceImpl.getUserAccounts(user.getUserName());
 
         Assertions.assertEquals(0, accountsDTO.getUserAccountDTO().size());
         Assertions.assertEquals(3, accountsDTO.getGroupAccountDTO().size());
 
-        for(AccountDTO accountDTO : accountsDTO.getGroupAccountDTO()){
+        for(final AccountDTO accountDTO : accountsDTO.getGroupAccountDTO()){
             boolean isPresent = true;
             if(accountDTO.getId().equals(account1.getId())){
                 this.checkAccount(accountDTO, account1);
@@ -99,18 +98,18 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
 
     }
 
-    private Account createGroupAccount(User user){
-        Group group = this.factory.getGroup();
+    private Account createGroupAccount(final User user){
+        final Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
 
-        Account account = this.accountRepository.save(this.factory.getAccount(group));
-        List<Account> accounts = new ArrayList<>();
+        final Account account = this.accountRepository.save(this.factory.getAccount(group));
+        final List<Account> accounts = new ArrayList<>();
         accounts.add(account);
         group.setAccounts(accounts);
 
         this.groupRepository.save(group);
 
-        List<Group> groups = user.getGroups();
+        final List<Group> groups = user.getGroups();
         groups.add(group);
         user.setGroups(groups);
 

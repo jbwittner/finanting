@@ -33,7 +33,6 @@ public class TestGetAccount extends AbstractMotherIntegrationTest {
     private AccountRepository accountRepository;
 
     private AccountServiceImpl accountServiceImpl;
-    private UpdateAccountParameter updateAccountParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
@@ -43,10 +42,10 @@ public class TestGetAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserAccount()
             throws AccountNotExistException, NotUserAccountException, UserNotInGroupException {
-        User user = this.userRepository.save(this.factory.getUser());
-        Account account = this.accountRepository.save(this.factory.getAccount(user));
+        final User user = this.userRepository.save(this.factory.getUser());
+        final Account account = this.accountRepository.save(this.factory.getAccount(user));
 
-        AccountDTO accountDTO = this.accountServiceImpl.getAccount(account.getId(), user.getUserName());
+        final AccountDTO accountDTO = this.accountServiceImpl.getAccount(account.getId(), user.getUserName());
 
         this.checkAccount(accountDTO, account);
     }
@@ -54,34 +53,34 @@ public class TestGetAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testGetGroupAccount()
             throws AccountNotExistException, NotUserAccountException, UserNotInGroupException {
-        Group group = this.factory.getGroup();
-        User user = this.userRepository.save(group.getUserAdmin());
-        Account account = this.accountRepository.save(this.factory.getAccount(group));
+        final Group group = this.factory.getGroup();
+        final User user = this.userRepository.save(group.getUserAdmin());
+        final Account account = this.accountRepository.save(this.factory.getAccount(group));
 
-        List<Account> accountList = new ArrayList<>();
+        final List<Account> accountList = new ArrayList<>();
         accountList.add(account);
 
         group.setAccounts(accountList);
         this.groupRepository.save(group);
 
-        AccountDTO accountDTO = this.accountServiceImpl.getAccount(account.getId(), user.getUserName());
+        final AccountDTO accountDTO = this.accountServiceImpl.getAccount(account.getId(), user.getUserName());
 
         this.checkAccount(accountDTO, account);
     }
 
     @Test
     public void testGetGroupAccountNotInGroup() {
-        Group group = this.factory.getGroup();
+        final Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
-        Account account = this.accountRepository.save(this.factory.getAccount(group));
+        final Account account = this.accountRepository.save(this.factory.getAccount(group));
 
-        List<Account> accountList = new ArrayList<>();
+        final List<Account> accountList = new ArrayList<>();
         accountList.add(account);
 
         group.setAccounts(accountList);
         this.groupRepository.save(group);
 
-        User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(UserNotInGroupException.class,
                 () -> this.accountServiceImpl.getAccount(account.getId(), user.getUserName()));
@@ -91,7 +90,7 @@ public class TestGetAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testGetNotExistAccount() {
 
-        User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(AccountNotExistException.class,
                 () -> this.accountServiceImpl.getAccount(this.factory.getRandomInteger(), user.getUserName()));
@@ -100,10 +99,10 @@ public class TestGetAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetNotUserAccount() {
-        User user = this.userRepository.save(this.factory.getUser());
-        Account account = this.accountRepository.save(this.factory.getAccount(user));
+        final User user = this.userRepository.save(this.factory.getUser());
+        final Account account = this.accountRepository.save(this.factory.getAccount(user));
 
-        User user2 = this.userRepository.save(this.factory.getUser());
+        final User user2 = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(NotUserAccountException.class,
                 () -> this.accountServiceImpl.getAccount(account.getId(), user2.getUserName()));

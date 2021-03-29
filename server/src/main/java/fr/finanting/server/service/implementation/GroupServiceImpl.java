@@ -43,13 +43,14 @@ public class GroupServiceImpl implements GroupService {
         this.groupRepository = groupRepository;
     }
 
+    @Override
     public GroupsDTO getUserGroups(final String userName){
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        List<Group> groups = user.getGroups();
+        final List<Group> groups = user.getGroups();
 
-        List<GroupDTO> groupDTOList = new ArrayList<>();
+        final List<GroupDTO> groupDTOList = new ArrayList<>();
         GroupDTO groupDTO;
 
         for(final Group group : groups){
@@ -57,13 +58,14 @@ public class GroupServiceImpl implements GroupService {
             groupDTOList.add(groupDTO);
         }
 
-        GroupsDTO groupsDTO = new GroupsDTO();
+        final GroupsDTO groupsDTO = new GroupsDTO();
         groupsDTO.setGroupDTO(groupDTOList);
 
         return groupsDTO;
 
     }
 
+    @Override
     public GroupDTO getGroup(final String groupName, final String userName)
             throws GroupNotExistException, UserNotInGroupException {
 

@@ -37,6 +37,7 @@ public class AccountServiceImpl implements AccountService {
             this.userRepository = userRepository;
         }
 
+    @Override
     public AccountDTO createAccount(final CreateAccountParameter createAccountParameter, final String userName)
             throws UserNotExistException, GroupNotExistException{
 
@@ -107,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
         } else {
             boolean isInGroup = false;
 
-            for(User user : group.getUsers()){
+            for(final User user : group.getUsers()){
                 if(user.getUserName().equals(userName)){
                     isInGroup = true;
                     break;
@@ -122,6 +123,7 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
+    @Override
     public void deleteAccount(final DeleteAccountParameter deleteAccountParameter, final String userName)
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
@@ -134,6 +136,7 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
+    @Override
     public AccountDTO updateAccount(final UpdateAccountParameter updateAccountParameter, final String userName)
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
@@ -168,6 +171,7 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
+    @Override
     public AccountsDTO getUserAccounts(final String userName){
         final AccountsDTO accountsDTO = new AccountsDTO();
         final List<AccountDTO> userAccountDTOList = new ArrayList<>();
@@ -175,7 +179,7 @@ public class AccountServiceImpl implements AccountService {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        List<Account> userAccounts = this.accountRepository.findByUser(user);
+        final List<Account> userAccounts = this.accountRepository.findByUser(user);
 
         AccountDTO accountDTO;
 
@@ -200,9 +204,9 @@ public class AccountServiceImpl implements AccountService {
         return accountsDTO;
     }
 
+    @Override
     public AccountDTO getAccount(final Integer accountId, final String userName)
             throws AccountNotExistException, NotUserAccountException, UserNotInGroupException {
-        final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         final Account account = this.accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotExistException(accountId));

@@ -1,6 +1,7 @@
 package fr.finanting.server.service;
 
 import fr.finanting.server.dto.GroupDTO;
+import fr.finanting.server.dto.GroupsDTO;
 import fr.finanting.server.exception.GroupNameAlreadyExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.NotAdminGroupException;
@@ -40,4 +41,8 @@ public interface GroupService {
     public void deleteGroup(DeleteGroupParameter deleteGroupParameter, String userName)
         throws GroupNotExistException, NotAdminGroupException;
 
+    public GroupsDTO getUserGroups(final String userName);
+
+    public GroupDTO getGroup(final String groupName, final String userName)
+            throws GroupNotExistException, UserNotInGroupException;
 }

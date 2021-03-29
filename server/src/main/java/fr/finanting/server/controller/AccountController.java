@@ -1,6 +1,7 @@
 package fr.finanting.server.controller;
 
 import fr.finanting.server.dto.AccountDTO;
+import fr.finanting.server.dto.AccountsDTO;
 import fr.finanting.server.dto.GroupDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.parameter.CreateAccountParameter;
@@ -23,7 +24,7 @@ public class AccountController {
     private final AccountService accountService;
 
     @Autowired
-    public AccountController(AccountService accountService){
+    public AccountController(final AccountService accountService){
         this.accountService = accountService;
     }
 
@@ -49,6 +50,21 @@ public class AccountController {
             throws UserNotExistException, GroupNotExistException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.accountService.createAccount(createAccountParameter, userDetailsImpl.getUsername());
+    }
+
+    @GetMapping("/getUserAccounts")
+    public AccountsDTO getUserAccounts(final Authentication authentication)
+            throws UserNotExistException, GroupNotExistException {
+        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        return this.accountService.getUserAccounts(userDetailsImpl.getUsername());
+    }
+
+    @GetMapping("/getAccount/{id}")
+    public AccountDTO getAccount(final Authentication authentication,
+                                 @PathVariable final Integer id)
+            throws AccountNotExistException, UserNotInGroupException, NotUserAccountException {
+        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        return this.accountService.getAccount(id, userDetailsImpl.getUsername());
     }
 
 

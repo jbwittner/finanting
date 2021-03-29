@@ -52,12 +52,12 @@ public class TestGetUserGroups extends AbstractMotherIntegrationTest {
 
         Assertions.assertEquals(numberGroups, groupsDTO.getGroupDTO().size());
 
-        for(GroupDTO groupDTO : groupsDTO.getGroupDTO()){
+        for(final GroupDTO groupDTO : groupsDTO.getGroupDTO()){
 
             boolean isPresent = false;
             Group groupPresent = new Group();
 
-            for(Group group : groups){
+            for(final Group group : groups){
                 if(group.getGroupName().equals(groupDTO.getGroupName())){
                     isPresent = true;
                     groupPresent = group;
@@ -68,7 +68,8 @@ public class TestGetUserGroups extends AbstractMotherIntegrationTest {
             Assertions.assertTrue(isPresent);
             Assertions.assertEquals(groupPresent.getGroupName(), groupDTO.getGroupName());
             Assertions.assertEquals(groupPresent.getUserAdmin().getUserName(), groupDTO.getUserAdmin().getUserName());
-            Assertions.assertEquals(groupPresent.getUserAdmin().getUserName(), groupDTO.getGroupUsers().get(0).getUserName());
+            Assertions.assertEquals(groupPresent.getUserAdmin().getUserName(),
+                    groupDTO.getGroupUsers().get(0).getUserName());
 
         }
 
