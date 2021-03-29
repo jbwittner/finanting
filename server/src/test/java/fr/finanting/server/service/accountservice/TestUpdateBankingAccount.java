@@ -60,7 +60,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupAccountOk()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
@@ -80,7 +80,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserAccountOk()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
         BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
 
@@ -97,7 +97,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateAccountNotExist()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
 
         this.updateBankingAccountParameter.setAccountId(this.factory.getRandomInteger());
@@ -125,7 +125,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserAccountNotUserAccount()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
         final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
 
@@ -133,7 +133,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
-        Assertions.assertThrows(NotUserAccountException.class,
+        Assertions.assertThrows(NotUserBankingAccountException.class,
                 () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user2.getUserName()));
 
     }

@@ -2,7 +2,7 @@ package fr.finanting.server.service.accountservice;
 
 import fr.finanting.server.dto.BankingAccountDTO;
 import fr.finanting.server.exception.BankingAccountNotExistException;
-import fr.finanting.server.exception.NotUserAccountException;
+import fr.finanting.server.exception.NotUserBankingAccountException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
@@ -39,7 +39,7 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetUserAccount()
-            throws BankingAccountNotExistException, NotUserAccountException, UserNotInGroupException {
+            throws BankingAccountNotExistException, NotUserBankingAccountException, UserNotInGroupException {
         final User user = this.userRepository.save(this.factory.getUser());
         final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
 
@@ -50,7 +50,7 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetGroupAccount()
-            throws BankingAccountNotExistException, NotUserAccountException, UserNotInGroupException {
+            throws BankingAccountNotExistException, NotUserBankingAccountException, UserNotInGroupException {
         final Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(group));
@@ -102,7 +102,7 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
-        Assertions.assertThrows(NotUserAccountException.class,
+        Assertions.assertThrows(NotUserBankingAccountException.class,
                 () -> this.bankingAccountServiceImpl.getBankingAccount(bankingAccount.getId(), user2.getUserName()));
     }
 

@@ -26,7 +26,7 @@ public class BankingAccountController {
     @PostMapping("/updateAccount")
     public BankingAccountDTO updateAccount(final Authentication authentication,
                                     @RequestBody final UpdateBankingAccountParameter updateBankingAccountParameter)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.bankingAccountService.updateAccount(updateBankingAccountParameter, userDetailsImpl.getUsername());
     }
@@ -34,7 +34,7 @@ public class BankingAccountController {
     @DeleteMapping("/deleteAccount")
     public void deleteAccount(final Authentication authentication,
                                     @RequestBody final DeleteBankingAccountParameter deleteBankingAccountParameter)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         this.bankingAccountService.deleteAccount(deleteBankingAccountParameter, userDetailsImpl.getUsername());
     }
@@ -57,7 +57,7 @@ public class BankingAccountController {
     @GetMapping("/getBankingAccount/{id}")
     public BankingAccountDTO getBankingAccount(final Authentication authentication,
                                  @PathVariable final Integer id)
-            throws BankingAccountNotExistException, UserNotInGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, UserNotInGroupException, NotUserBankingAccountException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.bankingAccountService.getBankingAccount(id, userDetailsImpl.getUsername());
     }

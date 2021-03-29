@@ -80,13 +80,13 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     private void checkIsAdminAccount(final BankingAccount bankingAccount, final String userName)
-            throws NotAdminGroupException, NotUserAccountException{
+            throws NotAdminGroupException, NotUserBankingAccountException{
 
         final Group group = bankingAccount.getGroup();
 
         if(group == null) {
             if(!bankingAccount.getUser().getUserName().equals(userName)){
-                throw new NotUserAccountException(userName, bankingAccount);
+                throw new NotUserBankingAccountException(userName, bankingAccount);
             }
         } else {
             if(!group.getUserAdmin().getUserName().equals(userName)){
@@ -97,13 +97,13 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     private void checkIsUserAccount(final BankingAccount bankingAccount, final String userName)
-            throws NotUserAccountException, UserNotInGroupException {
+            throws NotUserBankingAccountException, UserNotInGroupException {
 
         final Group group = bankingAccount.getGroup();
 
         if(group == null) {
             if(!bankingAccount.getUser().getUserName().equals(userName)){
-                throw new NotUserAccountException(userName, bankingAccount);
+                throw new NotUserBankingAccountException(userName, bankingAccount);
             }
         } else {
             boolean isInGroup = false;
@@ -125,7 +125,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     @Override
     public void deleteAccount(final DeleteBankingAccountParameter deleteBankingAccountParameter, final String userName)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException{
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException{
 
         final  BankingAccount bankingAccount = this.bankingAccountRepository.findById(deleteBankingAccountParameter.getId())
             .orElseThrow(() -> new BankingAccountNotExistException(deleteBankingAccountParameter.getId()));
@@ -138,7 +138,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     @Override
     public BankingAccountDTO updateAccount(final UpdateBankingAccountParameter updateBankingAccountParameter, final String userName)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException{
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException{
 
         BankingAccount bankingAccount = this.bankingAccountRepository.findById(updateBankingAccountParameter.getAccountId())
             .orElseThrow(() -> new BankingAccountNotExistException(updateBankingAccountParameter.getAccountId()));
@@ -206,7 +206,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     @Override
     public BankingAccountDTO getBankingAccount(final Integer accountId, final String userName)
-            throws BankingAccountNotExistException, NotUserAccountException, UserNotInGroupException {
+            throws BankingAccountNotExistException, NotUserBankingAccountException, UserNotInGroupException {
 
         final BankingAccount bankingAccount = this.bankingAccountRepository.findById(accountId)
                 .orElseThrow(() -> new BankingAccountNotExistException(accountId));

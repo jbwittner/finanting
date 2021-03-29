@@ -10,10 +10,10 @@ import fr.finanting.server.parameter.UpdateBankingAccountParameter;
 public interface BankingAccountService {
 
     public BankingAccountDTO updateAccount(final UpdateBankingAccountParameter updateBankingAccountParameter, final String userName)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException;
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException;
 
     public void deleteAccount(final DeleteBankingAccountParameter deleteBankingAccountParameter, final String userName)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException;
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException;
 
     public BankingAccountDTO createAccount(final CreateBankingAccountParameter createBankingAccountParameter, final String userName)
             throws UserNotExistException, GroupNotExistException;
@@ -21,5 +21,5 @@ public interface BankingAccountService {
     public BankingAccountsDTO getUserBankingAccounts(final String userName);
 
     public BankingAccountDTO getBankingAccount(final Integer accountId, final String userName)
-            throws BankingAccountNotExistException, NotUserAccountException, UserNotInGroupException;
+            throws BankingAccountNotExistException, NotUserBankingAccountException, UserNotInGroupException;
 }
