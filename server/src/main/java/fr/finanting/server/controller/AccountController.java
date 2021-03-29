@@ -7,7 +7,7 @@ import fr.finanting.server.parameter.CreateAccountParameter;
 import fr.finanting.server.parameter.DeleteAccountParameter;
 import fr.finanting.server.parameter.UpdateAccountParameter;
 import fr.finanting.server.security.UserDetailsImpl;
-import fr.finanting.server.service.AccountService;
+import fr.finanting.server.service.BankingAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("account")
 public class AccountController {
 
-    private final AccountService accountService;
+    private final BankingAccountService accountService;
 
     @Autowired
-    public AccountController(final AccountService accountService){
+    public AccountController(final BankingAccountService accountService){
         this.accountService = accountService;
     }
 

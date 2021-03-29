@@ -17,20 +17,20 @@ import fr.finanting.server.parameter.UpdateAccountParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
-import fr.finanting.server.service.AccountService;
+import fr.finanting.server.service.BankingAccountService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AccountServiceImpl implements AccountService {
+public class BankingAccountServiceImpl implements BankingAccountService {
     
     private final BankingAccountRepository accountRepository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public AccountServiceImpl(final BankingAccountRepository accountRepository,
+    public BankingAccountServiceImpl(final BankingAccountRepository accountRepository,
         final GroupRepository groupRepository, final UserRepository userRepository){
             this.accountRepository = accountRepository;
             this.groupRepository = groupRepository;

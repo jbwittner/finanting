@@ -7,7 +7,7 @@ import fr.finanting.server.parameter.CreateAccountParameter;
 import fr.finanting.server.parameter.DeleteAccountParameter;
 import fr.finanting.server.parameter.UpdateAccountParameter;
 
-public interface AccountService {
+public interface BankingAccountService {
 
     public AccountDTO updateAccount(final UpdateAccountParameter updateAccountParameter, final String userName)
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException;

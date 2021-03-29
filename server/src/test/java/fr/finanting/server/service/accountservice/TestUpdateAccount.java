@@ -11,7 +11,7 @@ import fr.finanting.server.parameter.subpart.BankDetailsParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
-import fr.finanting.server.service.implementation.AccountServiceImpl;
+import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,12 +28,12 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     @Autowired
     private BankingAccountRepository accountRepository;
 
-    private AccountServiceImpl accountServiceImpl;
+    private BankingAccountServiceImpl accountServiceImpl;
     private UpdateAccountParameter updateAccountParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.accountServiceImpl = new AccountServiceImpl(accountRepository, groupRepository, userRepository);
+        this.accountServiceImpl = new BankingAccountServiceImpl(accountRepository, groupRepository, userRepository);
 
         Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
