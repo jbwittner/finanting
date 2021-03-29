@@ -11,13 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * Group model
- */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "GROUPS")
@@ -31,11 +29,21 @@ public class Group extends MotherPersistant {
     @JoinColumn(name = "USER_ADMIN", nullable = false, unique = true)
     private User userAdmin;
 
+    @OneToMany(mappedBy = "group")
+    private List<Account> accounts = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable( name = "USERS_GROUPS_ASSOCICATIONS",
+    @JoinTable( name = "USERS_GROUPS_ASSOCIATIONS",
                 joinColumns = { 
                     @JoinColumn(name = "GROUP_ID_JOIN") }, inverseJoinColumns = { 
                     @JoinColumn(name = "USER_ID_INVERSE") })
     private List<User> users = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Group{" +
+                "groupName='" + groupName + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

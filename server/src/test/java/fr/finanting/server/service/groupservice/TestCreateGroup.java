@@ -18,9 +18,6 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.GroupServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
-/**
- * Test class to test createGroup method
- */
 public class TestCreateGroup extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -40,9 +37,6 @@ public class TestCreateGroup extends AbstractMotherIntegrationTest {
         this.userPrincipal = this.userRepository.save(factory.getUser());
     }
 
-    /**
-     * Test to create a group
-     */
     @Test
     public void testCreateGroupWithoutUsers() throws GroupNameAlreadyExistException, UserNotExistException {
         final GroupCreationParameter groupCreationParameter = new GroupCreationParameter();
@@ -59,9 +53,6 @@ public class TestCreateGroup extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(this.userPrincipal.getUserName(), group.getUsers().get(0).getUserName());
     }
 
-    /**
-     * Test to create a group with users
-     */
     @Test
     public void testCreateGroupWithUsers() throws GroupNameAlreadyExistException, UserNotExistException {
         final GroupCreationParameter groupCreationParameter = new GroupCreationParameter();
@@ -105,9 +96,6 @@ public class TestCreateGroup extends AbstractMotherIntegrationTest {
 
     }
 
-    /**
-     * Test to create a group with a group name already used
-     */
     @Test
     public void testGroupNameAlreadyUsed() throws GroupNameAlreadyExistException, UserNotExistException{
         final Group group = this.factory.getGroup();
@@ -121,9 +109,6 @@ public class TestCreateGroup extends AbstractMotherIntegrationTest {
             () -> this.groupServiceImpl.createGroup(groupCreationParameter, this.userPrincipal.getUserName()));
     }
 
-    /**
-     * Test to create a group with a user that doesn't exist
-     */
     @Test
     public void testUserNotExist() throws GroupNameAlreadyExistException, UserNotExistException {
         final GroupCreationParameter groupCreationParameter = new GroupCreationParameter();

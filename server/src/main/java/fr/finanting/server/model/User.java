@@ -13,13 +13,11 @@ import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * User model
- */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "USERS")
@@ -49,5 +47,8 @@ public class User extends MotherPersistant {
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<Group> groups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Account> accounts = new ArrayList<>();
 
 }

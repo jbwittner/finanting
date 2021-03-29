@@ -5,9 +5,6 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-/**
- * Parameter used to register a new account
- */
 @Data
 public class UserRegisterParameter {
 

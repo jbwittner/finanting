@@ -14,9 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.finanting.server.model.Role;
 
-/**
- * Implementation of WebSecurityConfigurerAdapter
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -24,9 +21,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    /**
-     * Bean of authenticationProvider
-     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -52,9 +46,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and().logout().permitAll();     
     }
 
-    /**
-     * Bean of passwordEncoder
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

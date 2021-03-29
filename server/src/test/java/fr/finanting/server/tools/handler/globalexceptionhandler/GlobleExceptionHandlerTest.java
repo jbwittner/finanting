@@ -18,19 +18,13 @@ import fr.finanting.server.tools.handler.ErrorDetails;
 import fr.finanting.server.tools.handler.GlobalExceptionHandler;
 
 
-/**
- * Test class to test globleExceptionHandler method
- */
 public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
     @Override
     protected void initDataBeforeEach() throws Exception {}
 
-    /**
-     * Test with a Exception
-     */
     @Test
-    public void ExceptionFail() throws Exception {
+    public void testExceptionFail() throws Exception {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();
@@ -42,11 +36,8 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
         
     }
 
-    /**
-     * Test with a UndeclaredThrowableException and a Exception
-     */
     @Test
-    public void UndeclaredThrowableExceptionWithExceptionFail() throws Exception {
+    public void testUndeclaredThrowableExceptionWithExceptionFail() throws Exception {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();
@@ -59,11 +50,8 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
         
     }
 
-    /**
-     * Test with a UndeclaredThrowableException and a FunctionalException
-     */
     @Test
-    public void UndeclaredThrowableExceptionWithFunctionalExceptionOk() throws Exception {
+    public void testUndeclaredThrowableExceptionWithFunctionalExceptionOk() throws Exception {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();
@@ -72,6 +60,9 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
         final UndeclaredThrowableException undeclaredThrowableException = new UndeclaredThrowableException(exception);
 
         final Date dateBefore = new Date();
+
+        Thread.sleep(1000);
+
         final ResponseEntity<?> test = globalExceptionHandler.globleExcpetionHandler(undeclaredThrowableException, fakeWebRequest);
 
         Thread.sleep(1000);
@@ -90,11 +81,8 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
         
     }
 
-    /**
-     * Test with a FunctionalException
-     */
     @Test
-    public void FunctionalExceptionOk() throws Exception {
+    public void testFunctionalExceptionOk() throws Exception {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();

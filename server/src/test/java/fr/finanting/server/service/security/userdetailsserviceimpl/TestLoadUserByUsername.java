@@ -20,9 +20,6 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.security.UserDetailsServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
-/**
- * Test class to test userDetailsServiceImpl method
- */
 public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -55,9 +52,6 @@ public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
         
     }
 
-    /**
-     * Try to load sucessfully
-     */
     @Test
     public void testLoadSucessful() throws UsernameNotFoundException {
         final UserDetails userDetails = this.userdetDetailsServiceImpl.loadUserByUsername(this.user.getUserName());
@@ -78,9 +72,6 @@ public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
         
     }
 
-    /**
-     * Try to load without user
-     */
     @Test
     public void testLoadFailed() throws UsernameNotFoundException {
         final String randomUserName = this.factory.getUniqueRandomAlphanumericString();

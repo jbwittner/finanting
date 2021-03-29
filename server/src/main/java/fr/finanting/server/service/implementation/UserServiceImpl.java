@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,19 +22,13 @@ import fr.finanting.server.parameter.UserUpdateParameter;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.UserService;
 
-/**
- * Implementation of UserService
- */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Constructor
-     */
     @Autowired
     public UserServiceImpl(final UserRepository userRepository, final PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -52,9 +47,13 @@ public class UserServiceImpl implements UserService {
 
         final User user = new User();
         user.setEmail(userRegisterParameter.getEmail());
-        user.setFirstName(userRegisterParameter.getFirstName());
-        user.setLastName(userRegisterParameter.getLastName());
-        user.setUserName(userRegisterParameter.getUserName());
+
+        final String firstName = StringUtils.capitalize(userRegisterParameter.getFirstName().toLowerCase());
+        user.setFirstName(firstName);
+
+        user.setLastName(userRegisterParameter.getLastName().toUpperCase());
+        user.setUserName(userRegisterParameter.getUserName().toLowerCase());
+
         user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
 
         final List<Role> roles = new ArrayList<>();
@@ -99,9 +98,14 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setEmail(userUpdateParameter.getEmail());
-        user.setFirstName(userUpdateParameter.getFirstName());
-        user.setLastName(userUpdateParameter.getLastName());
-        user.setUserName(userUpdateParameter.getUserName());
+
+        final String firstName = StringUtils.capitalize(userUpdateParameter.getUserName().toLowerCase());
+        user.setFirstName(firstName);
+
+        user.setLastName(userUpdateParameter.getLastName().toUpperCase());
+
+        final String userNameToUpdate = userUpdateParameter.getUserName().toLowerCase();
+        user.setUserName(userNameToUpdate);
 
         this.userRepository.save(user);
 

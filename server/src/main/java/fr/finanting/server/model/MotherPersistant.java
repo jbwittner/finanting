@@ -8,9 +8,6 @@ import javax.persistence.MappedSuperclass;
 
 import lombok.Data;
 
-/**
- * Mother part of models
- */
 @Data
 @MappedSuperclass
 public class MotherPersistant {

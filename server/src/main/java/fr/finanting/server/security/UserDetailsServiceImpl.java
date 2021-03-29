@@ -10,18 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.UserRepository;
 
-/**
- * Implementation of UserDetailsService
- */
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
     
     private UserRepository userRepository;
 
-    /**
-     * Constructor
-     */
     @Autowired
     public UserDetailsServiceImpl(final UserRepository userRepository){
         this.userRepository = userRepository;

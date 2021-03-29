@@ -19,9 +19,6 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.GroupServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
-/**
- * Test class to test addUsersGroup method
- */
 public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -41,9 +38,6 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
         this.groupRepository.save(this.group);
     }
 
-    /**
-     * Test to add a user in a group
-     */
     @Test
     public void testAddUserOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
         final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
@@ -77,9 +71,6 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
 
     }
 
-    /**
-     * Test to add a user who are already in the group
-     */
     @Test
     public void testAddUserAlreadyInGroupOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
         final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
@@ -98,9 +89,6 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
 
     }
 
-    /**
-     * Test to add a user with a non admin user
-     */
     @Test
     public void testNotAdminExeptionOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
         final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
@@ -113,9 +101,6 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
 
     }
 
-    /**
-     * Test to add a user to a group that doesn't exist
-     */
     @Test
     public void testGroupNoeExistOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
         final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
@@ -126,9 +111,6 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
 
     }
 
-    /**
-     * Test to add a user who doesn't exist
-     */
     @Test
     public void testUserNotExistExceptionOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
         final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
