@@ -2,7 +2,7 @@ package fr.finanting.server.service.accountservice;
 
 import fr.finanting.server.dto.AccountDTO;
 import fr.finanting.server.exception.*;
-import fr.finanting.server.model.Account;
+import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.UpdateAccountParameter;
@@ -65,7 +65,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
 
-        Account account = this.accountRepository.save(this.factory.getAccount(group));
+        BankingAccount account = this.accountRepository.save(this.factory.getAccount(group));
 
         this.updateAccountParameter.setAccountId(account.getId());
 
@@ -82,7 +82,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     public void testUpdateUserAccountOk()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
-        Account account = this.accountRepository.save(this.factory.getAccount(user));
+        BankingAccount account = this.accountRepository.save(this.factory.getAccount(user));
 
         this.updateAccountParameter.setAccountId(account.getId());
 
@@ -115,7 +115,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
-        final Account account = this.accountRepository.save(this.factory.getAccount(group));
+        final BankingAccount account = this.accountRepository.save(this.factory.getAccount(group));
 
         this.updateAccountParameter.setAccountId(account.getId());
 
@@ -127,7 +127,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     public void testUpdateUserAccountNotUserAccount()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
-        final Account account = this.accountRepository.save(this.factory.getAccount(user));
+        final BankingAccount account = this.accountRepository.save(this.factory.getAccount(user));
 
         this.updateAccountParameter.setAccountId(account.getId());
 
@@ -139,7 +139,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     }
 
     private void checkAccount(final AccountDTO accountDTO,
-                              final Account account,
+                              final BankingAccount account,
                               final UpdateAccountParameter updateAccountParameter){
 
         Assertions.assertEquals(updateAccountParameter.getAbbreviation().toUpperCase(), accountDTO.getAbbreviation());

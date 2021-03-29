@@ -1,12 +1,12 @@
 package fr.finanting.server.repository;
 
-import fr.finanting.server.model.Account;
+import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.User;
 
 import java.util.List;
 
-public interface AccountRepository extends AbstractRepository<Account, Integer>{
+public interface AccountRepository extends AbstractRepository<BankingAccount, Integer>{
 
-    List<Account> findByUser(User user);
+    List<BankingAccount> findByUser(User user);
 
 }

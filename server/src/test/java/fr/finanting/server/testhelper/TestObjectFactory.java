@@ -1,6 +1,6 @@
 package fr.finanting.server.testhelper;
 
-import fr.finanting.server.model.Account;
+import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -217,8 +217,8 @@ public class TestObjectFactory {
         return group;
     }
 
-    private Account getAccount(final User user, final Group group){
-        final Account account = new Account();
+    private BankingAccount getAccount(final User user, final Group group){
+        final BankingAccount account = new BankingAccount();
 
         final com.github.javafaker.Address addressFaker = this.faker.address();
         final Address address = new Address();
@@ -243,11 +243,11 @@ public class TestObjectFactory {
         return account;
     }
 
-    public Account getAccount(final User user){
+    public BankingAccount getAccount(final User user){
         return this.getAccount(user, null);
     }
 
-    public Account getAccount(final Group group){
+    public BankingAccount getAccount(final Group group){
         return this.getAccount(null, group);
     }
 

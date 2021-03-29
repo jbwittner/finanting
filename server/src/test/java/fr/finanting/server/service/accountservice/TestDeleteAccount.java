@@ -1,7 +1,7 @@
 package fr.finanting.server.service.accountservice;
 
 import fr.finanting.server.exception.*;
-import fr.finanting.server.model.Account;
+import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.DeleteAccountParameter;
@@ -39,7 +39,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         User user = this.factory.getUser();
         user = this.userRepository.save(user);
-        Account account = this.factory.getAccount(user);
+        BankingAccount account = this.factory.getAccount(user);
         account = this.accountRepository.save(account);
 
         final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
@@ -47,7 +47,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
 
         this.accountServiceImpl.deleteAccount(deleteAccountParameter, user.getUserName());
 
-        final Optional<Account> accountOptional = this.accountRepository.findById(account.getId());
+        final Optional<BankingAccount> accountOptional = this.accountRepository.findById(account.getId());
 
         Assertions.assertFalse(accountOptional.isPresent());
     }
@@ -58,7 +58,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
         Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
-        Account account = this.factory.getAccount(group);
+        BankingAccount account = this.factory.getAccount(group);
         account = this.accountRepository.save(account);
 
         final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
@@ -66,7 +66,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
 
         this.accountServiceImpl.deleteAccount(deleteAccountParameter, user.getUserName());
 
-        final Optional<Account> accountOptional = this.accountRepository.findById(account.getId());
+        final Optional<BankingAccount> accountOptional = this.accountRepository.findById(account.getId());
 
         Assertions.assertFalse(accountOptional.isPresent());
     }
@@ -76,7 +76,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
         Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
-        final Account account = this.accountRepository.save(this.factory.getAccount(group));
+        final BankingAccount account = this.accountRepository.save(this.factory.getAccount(group));
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
@@ -90,7 +90,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteUserAccountNotUserAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
-        final Account account = this.accountRepository.save(this.factory.getAccount(user));
+        final BankingAccount account = this.accountRepository.save(this.factory.getAccount(user));
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
@@ -105,14 +105,14 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
     public void testDeleteUserAccountUserNotExist()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
-        final Account account = this.accountRepository.save(this.factory.getAccount(user));
+        final BankingAccount account = this.accountRepository.save(this.factory.getAccount(user));
 
         final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
         deleteAccountParameter.setId(account.getId());
 
         this.accountServiceImpl.deleteAccount(deleteAccountParameter, user.getUserName());
 
-        final Optional<Account> accountOptional = this.accountRepository.findById(account.getId());
+        final Optional<BankingAccount> accountOptional = this.accountRepository.findById(account.getId());
 
         Assertions.assertFalse(accountOptional.isPresent());
     }

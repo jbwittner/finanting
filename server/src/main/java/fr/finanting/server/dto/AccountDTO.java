@@ -1,6 +1,6 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.model.Account;
+import fr.finanting.server.model.BankingAccount;
 import lombok.Data;
 
 @Data
@@ -18,7 +18,7 @@ public class AccountDTO {
 
     AddressDTO addressDTO;
 
-    public AccountDTO(final Account account){
+    public AccountDTO(final BankingAccount account){
 
         this.id = account.getId();
         this.label = account.getLabel();

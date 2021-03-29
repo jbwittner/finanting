@@ -3,7 +3,7 @@ package fr.finanting.server.service.accountservice;
 import fr.finanting.server.dto.AccountDTO;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotExistException;
-import fr.finanting.server.model.Account;
+import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.CreateAccountParameter;
@@ -67,7 +67,7 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
         final AccountDTO accountDTO =
                 this.accountServiceImpl.createAccount(createAccountParameter, this.user.getUserName());
 
-        final Account account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
+        final BankingAccount account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
 
         this.checkAccount(accountDTO, account, createAccountParameter, this.user);
     }
@@ -96,14 +96,14 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
         final AccountDTO accountDTO =
                 this.accountServiceImpl.createAccount(this.createAccountParameter, this.user.getUserName());
 
-        final Account account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
+        final BankingAccount account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
 
         this.checkAccount(accountDTO, account, createAccountParameter, this.user);
 
     }
 
     private void checkAccount(final AccountDTO accountDTO,
-                              final Account account,
+                              final BankingAccount account,
                               final CreateAccountParameter createAccountParameter,
                               final User user){
 

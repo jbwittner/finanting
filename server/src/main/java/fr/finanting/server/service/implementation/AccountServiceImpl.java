@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.finanting.server.dto.AccountDTO;
-import fr.finanting.server.model.Account;
+import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.model.embeddable.Address;
@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountDTO createAccount(final CreateAccountParameter createAccountParameter, final String userName)
             throws UserNotExistException, GroupNotExistException{
 
-        Account account = new Account();
+        BankingAccount account = new BankingAccount();
 
         if(createAccountParameter.getGroupName() == null){
             final User user = this.userRepository.findByUserName(userName)
@@ -79,7 +79,7 @@ public class AccountServiceImpl implements AccountService {
         return accountDTO;
     }
 
-    private void checkIsAdminAccount(final Account account, final String userName)
+    private void checkIsAdminAccount(final BankingAccount account, final String userName)
             throws NotAdminGroupException, NotUserAccountException{
 
         final Group group = account.getGroup();
@@ -96,7 +96,7 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
-    private void checkIsUserAccount(final Account account, final String userName)
+    private void checkIsUserAccount(final BankingAccount account, final String userName)
             throws NotUserAccountException, UserNotInGroupException {
 
         final Group group = account.getGroup();
@@ -127,7 +127,7 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(final DeleteAccountParameter deleteAccountParameter, final String userName)
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
-        final  Account account = this.accountRepository.findById(deleteAccountParameter.getId())
+        final  BankingAccount account = this.accountRepository.findById(deleteAccountParameter.getId())
             .orElseThrow(() -> new AccountNotExistException(deleteAccountParameter.getId()));
 
         this.checkIsAdminAccount(account, userName);
@@ -140,7 +140,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountDTO updateAccount(final UpdateAccountParameter updateAccountParameter, final String userName)
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
-        Account account = this.accountRepository.findById(updateAccountParameter.getAccountId())
+        BankingAccount account = this.accountRepository.findById(updateAccountParameter.getAccountId())
             .orElseThrow(() -> new AccountNotExistException(updateAccountParameter.getAccountId()));
 
         this.checkIsAdminAccount(account, userName);
@@ -179,11 +179,11 @@ public class AccountServiceImpl implements AccountService {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final List<Account> userAccounts = this.accountRepository.findByUser(user);
+        final List<BankingAccount> userAccounts = this.accountRepository.findByUser(user);
 
         AccountDTO accountDTO;
 
-        for(final Account account : userAccounts){
+        for(final BankingAccount account : userAccounts){
             accountDTO = new AccountDTO(account);
             accountDTO.setBalance(account.getInitialBalance());
             userAccountDTOList.add(accountDTO);
@@ -192,7 +192,7 @@ public class AccountServiceImpl implements AccountService {
         accountsDTO.setUserAccountDTO(userAccountDTOList);
 
         for(final Group group : user.getGroups()){
-            for(final Account groupAccount : group.getAccounts()){
+            for(final BankingAccount groupAccount : group.getAccounts()){
                 accountDTO = new AccountDTO(groupAccount);
                 accountDTO.setBalance(groupAccount.getInitialBalance());
                 groupAccountDTOList.add(accountDTO);
@@ -208,7 +208,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountDTO getAccount(final Integer accountId, final String userName)
             throws AccountNotExistException, NotUserAccountException, UserNotInGroupException {
 
-        final Account account = this.accountRepository.findById(accountId)
+        final BankingAccount account = this.accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotExistException(accountId));
 
         this.checkIsUserAccount(account, userName);
