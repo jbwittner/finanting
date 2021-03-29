@@ -177,11 +177,11 @@
         <properties>
             <property name="methodWithOverrideCommentRequirement" value="Ignored" />
             <property name="accessorCommentRequirement" value="Ignored" />
-            <property name="headerCommentRequirement" value="Required" />
+            <property name="headerCommentRequirement" value="Ignored" />
             <property name="fieldCommentRequirement" value="Ignored" />
-            <property name="publicMethodCommentRequirement" value="Required" />
-            <property name="protectedMethodCommentRequirement" value="Required" />
-            <property name="enumCommentRequirement" value="Required" />
+            <property name="publicMethodCommentRequirement" value="Ignored" />
+            <property name="protectedMethodCommentRequirement" value="Ignored" />
+            <property name="enumCommentRequirement" value="Ignored" />
             <property name="serialVersionUIDCommentRequired" value="Ignored" />
         </properties>
     </rule>
