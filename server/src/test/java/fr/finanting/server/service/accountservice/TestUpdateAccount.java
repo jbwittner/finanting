@@ -8,7 +8,7 @@ import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.UpdateAccountParameter;
 import fr.finanting.server.parameter.subpart.AddressParameter;
 import fr.finanting.server.parameter.subpart.BankDetailsParameter;
-import fr.finanting.server.repository.AccountRepository;
+import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.AccountServiceImpl;
@@ -26,7 +26,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     private GroupRepository groupRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private BankingAccountRepository accountRepository;
 
     private AccountServiceImpl accountServiceImpl;
     private UpdateAccountParameter updateAccountParameter;

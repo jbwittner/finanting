@@ -7,7 +7,7 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.repository.AccountRepository;
+import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.AccountServiceImpl;
@@ -28,7 +28,7 @@ public class TestGetAccount extends AbstractMotherIntegrationTest {
     private GroupRepository groupRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private BankingAccountRepository accountRepository;
 
     private AccountServiceImpl accountServiceImpl;
 

@@ -14,7 +14,7 @@ import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.parameter.CreateAccountParameter;
 import fr.finanting.server.parameter.DeleteAccountParameter;
 import fr.finanting.server.parameter.UpdateAccountParameter;
-import fr.finanting.server.repository.AccountRepository;
+import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.AccountService;
@@ -25,12 +25,12 @@ import java.util.List;
 @Service
 public class AccountServiceImpl implements AccountService {
     
-    private final AccountRepository accountRepository;
+    private final BankingAccountRepository accountRepository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public AccountServiceImpl(final AccountRepository accountRepository,
+    public AccountServiceImpl(final BankingAccountRepository accountRepository,
         final GroupRepository groupRepository, final UserRepository userRepository){
             this.accountRepository = accountRepository;
             this.groupRepository = groupRepository;

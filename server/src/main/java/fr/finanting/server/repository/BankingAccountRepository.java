@@ -5,7 +5,7 @@ import fr.finanting.server.model.User;
 
 import java.util.List;
 
-public interface AccountRepository extends AbstractRepository<BankingAccount, Integer>{
+public interface BankingAccountRepository extends AbstractRepository<BankingAccount, Integer>{
 
     List<BankingAccount> findByUser(User user);
 
