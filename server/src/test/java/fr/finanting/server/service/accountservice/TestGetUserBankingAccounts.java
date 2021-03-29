@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
+public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -38,11 +38,11 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserAccountWithoutGroupAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount bankingAccount1 = this.bankingAccountRepository.save(this.factory.getAccount(user));
-        final BankingAccount bankingAccount2 = this.bankingAccountRepository.save(this.factory.getAccount(user));
-        final BankingAccount bankingAccount3 = this.bankingAccountRepository.save(this.factory.getAccount(user));
+        final BankingAccount bankingAccount1 = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
+        final BankingAccount bankingAccount2 = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
+        final BankingAccount bankingAccount3 = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
 
-        final BankingAccountsDTO bankingAccountsDTO = this.bankingAccountServiceImpl.getUserAccounts(user.getUserName());
+        final BankingAccountsDTO bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
 
         Assertions.assertEquals(0, bankingAccountsDTO.getGroupAccountDTO().size());
         Assertions.assertEquals(3, bankingAccountsDTO.getUserAccountDTO().size());
@@ -71,7 +71,7 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
         final BankingAccount bankingAccount2 = this.createGroupAccount(user);
         final BankingAccount bankingAccount3 = this.createGroupAccount(user);
 
-        final BankingAccountsDTO bankingAccountsDTO = this.bankingAccountServiceImpl.getUserAccounts(user.getUserName());
+        final BankingAccountsDTO bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
 
         Assertions.assertEquals(0, bankingAccountsDTO.getUserAccountDTO().size());
         Assertions.assertEquals(3, bankingAccountsDTO.getGroupAccountDTO().size());
@@ -97,7 +97,7 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
         final Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
 
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(group));
+        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(group));
         final List<BankingAccount> bankingAccounts = new ArrayList<>();
         bankingAccounts.add(bankingAccount);
         group.setAccounts(bankingAccounts);

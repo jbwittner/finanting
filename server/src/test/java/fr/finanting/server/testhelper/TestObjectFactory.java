@@ -217,7 +217,7 @@ public class TestObjectFactory {
         return group;
     }
 
-    private BankingAccount getAccount(final User user, final Group group){
+    private BankingAccount getBankingAccount(final User user, final Group group){
         final BankingAccount bankingAccount = new BankingAccount();
 
         final com.github.javafaker.Address addressFaker = this.faker.address();
@@ -243,12 +243,12 @@ public class TestObjectFactory {
         return bankingAccount;
     }
 
-    public BankingAccount getAccount(final User user){
-        return this.getAccount(user, null);
+    public BankingAccount getBankingAccount(final User user){
+        return this.getBankingAccount(user, null);
     }
 
-    public BankingAccount getAccount(final Group group){
-        return this.getAccount(null, group);
+    public BankingAccount getBankingAccount(final Group group){
+        return this.getBankingAccount(null, group);
     }
 
 }

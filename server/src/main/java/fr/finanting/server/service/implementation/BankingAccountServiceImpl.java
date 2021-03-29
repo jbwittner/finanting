@@ -12,8 +12,8 @@ import fr.finanting.server.model.User;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.parameter.CreateBankingAccountParameter;
-import fr.finanting.server.parameter.DeleteAccountParameter;
-import fr.finanting.server.parameter.UpdateAccountParameter;
+import fr.finanting.server.parameter.DeleteBankingAccountParameter;
+import fr.finanting.server.parameter.UpdateBankingAccountParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
@@ -38,37 +38,37 @@ public class BankingAccountServiceImpl implements BankingAccountService {
         }
 
     @Override
-    public BankingAccountDTO createAccount(final CreateBankingAccountParameter createAccountParameter, final String userName)
+    public BankingAccountDTO createAccount(final CreateBankingAccountParameter createBankingAccountParameter, final String userName)
             throws UserNotExistException, GroupNotExistException{
 
         BankingAccount bankingAccount = new BankingAccount();
 
-        if(createAccountParameter.getGroupName() == null){
+        if(createBankingAccountParameter.getGroupName() == null){
             final User user = this.userRepository.findByUserName(userName)
                     .orElseThrow(() -> new UserNotExistException(userName));
             bankingAccount.setUser(user);
         } else {
-            final String groupName = createAccountParameter.getGroupName();
+            final String groupName = createBankingAccountParameter.getGroupName();
             final Group group = this.groupRepository.findByGroupName(groupName)
                 .orElseThrow(() -> new GroupNotExistException(groupName));
             bankingAccount.setGroup(group);
         }
 
-        bankingAccount.setAbbreviation(createAccountParameter.getAbbreviation().toUpperCase());
-        bankingAccount.setInitialBalance(createAccountParameter.getInitialBalance());
-        bankingAccount.setLabel(createAccountParameter.getLabel());
+        bankingAccount.setAbbreviation(createBankingAccountParameter.getAbbreviation().toUpperCase());
+        bankingAccount.setInitialBalance(createBankingAccountParameter.getInitialBalance());
+        bankingAccount.setLabel(createBankingAccountParameter.getLabel());
 
         final Address address = new Address();
-        address.setAddress(createAccountParameter.getAddressParameter().getAddress());
-        address.setCity(createAccountParameter.getAddressParameter().getCity());
-        address.setStreet(createAccountParameter.getAddressParameter().getStreet());
-        address.setZipCode(createAccountParameter.getAddressParameter().getZipCode());
+        address.setAddress(createBankingAccountParameter.getAddressParameter().getAddress());
+        address.setCity(createBankingAccountParameter.getAddressParameter().getCity());
+        address.setStreet(createBankingAccountParameter.getAddressParameter().getStreet());
+        address.setZipCode(createBankingAccountParameter.getAddressParameter().getZipCode());
         bankingAccount.setAddress(address);
 
         final BankDetails bankDetails = new BankDetails();
-        bankDetails.setAccountNumber(createAccountParameter.getBankDetailsParameter().getAccountNumber());
-        bankDetails.setIban(createAccountParameter.getBankDetailsParameter().getIban());
-        bankDetails.setBankName(createAccountParameter.getBankDetailsParameter().getBankName());
+        bankDetails.setAccountNumber(createBankingAccountParameter.getBankDetailsParameter().getAccountNumber());
+        bankDetails.setIban(createBankingAccountParameter.getBankDetailsParameter().getIban());
+        bankDetails.setBankName(createBankingAccountParameter.getBankDetailsParameter().getBankName());
         bankingAccount.setBankDetails(bankDetails);
 
         bankingAccount = this.bankingAccountRepository.save(bankingAccount);
@@ -124,11 +124,11 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public void deleteAccount(final DeleteAccountParameter deleteAccountParameter, final String userName)
+    public void deleteAccount(final DeleteBankingAccountParameter deleteBankingAccountParameter, final String userName)
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
-        final  BankingAccount bankingAccount = this.bankingAccountRepository.findById(deleteAccountParameter.getId())
-            .orElseThrow(() -> new BankingAccountNotExistException(deleteAccountParameter.getId()));
+        final  BankingAccount bankingAccount = this.bankingAccountRepository.findById(deleteBankingAccountParameter.getId())
+            .orElseThrow(() -> new BankingAccountNotExistException(deleteBankingAccountParameter.getId()));
 
         this.checkIsAdminAccount(bankingAccount, userName);
 
@@ -137,29 +137,29 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public BankingAccountDTO updateAccount(final UpdateAccountParameter updateAccountParameter, final String userName)
+    public BankingAccountDTO updateAccount(final UpdateBankingAccountParameter updateBankingAccountParameter, final String userName)
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
-        BankingAccount bankingAccount = this.bankingAccountRepository.findById(updateAccountParameter.getAccountId())
-            .orElseThrow(() -> new BankingAccountNotExistException(updateAccountParameter.getAccountId()));
+        BankingAccount bankingAccount = this.bankingAccountRepository.findById(updateBankingAccountParameter.getAccountId())
+            .orElseThrow(() -> new BankingAccountNotExistException(updateBankingAccountParameter.getAccountId()));
 
         this.checkIsAdminAccount(bankingAccount, userName);
 
-        bankingAccount.setAbbreviation(updateAccountParameter.getAbbreviation().toUpperCase());
-        bankingAccount.setInitialBalance(updateAccountParameter.getInitialBalance());
-        bankingAccount.setLabel(updateAccountParameter.getLabel());
+        bankingAccount.setAbbreviation(updateBankingAccountParameter.getAbbreviation().toUpperCase());
+        bankingAccount.setInitialBalance(updateBankingAccountParameter.getInitialBalance());
+        bankingAccount.setLabel(updateBankingAccountParameter.getLabel());
 
         final Address address = new Address();
-        address.setAddress(updateAccountParameter.getAddressParameter().getAddress());
-        address.setCity(updateAccountParameter.getAddressParameter().getCity());
-        address.setStreet(updateAccountParameter.getAddressParameter().getStreet());
-        address.setZipCode(updateAccountParameter.getAddressParameter().getZipCode());
+        address.setAddress(updateBankingAccountParameter.getAddressParameter().getAddress());
+        address.setCity(updateBankingAccountParameter.getAddressParameter().getCity());
+        address.setStreet(updateBankingAccountParameter.getAddressParameter().getStreet());
+        address.setZipCode(updateBankingAccountParameter.getAddressParameter().getZipCode());
         bankingAccount.setAddress(address);
 
         final BankDetails bankDetails = new BankDetails();
-        bankDetails.setAccountNumber(updateAccountParameter.getBankDetailsParameter().getAccountNumber());
-        bankDetails.setIban(updateAccountParameter.getBankDetailsParameter().getIban());
-        bankDetails.setBankName(updateAccountParameter.getBankDetailsParameter().getBankName());
+        bankDetails.setAccountNumber(updateBankingAccountParameter.getBankDetailsParameter().getAccountNumber());
+        bankDetails.setIban(updateBankingAccountParameter.getBankDetailsParameter().getIban());
+        bankDetails.setBankName(updateBankingAccountParameter.getBankDetailsParameter().getBankName());
         bankingAccount.setBankDetails(bankDetails);
 
         bankingAccount = this.bankingAccountRepository.save(bankingAccount);
@@ -172,7 +172,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public BankingAccountsDTO getUserAccounts(final String userName){
+    public BankingAccountsDTO getUserBankingAccounts(final String userName){
         final BankingAccountsDTO bankingAccountsDTO = new BankingAccountsDTO();
         final List<BankingAccountDTO> userAccountDTOList = new ArrayList<>();
         final List<BankingAccountDTO> groupAccountDTOList = new ArrayList<>();
@@ -205,7 +205,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public BankingAccountDTO getAccount(final Integer accountId, final String userName)
+    public BankingAccountDTO getBankingAccount(final Integer accountId, final String userName)
             throws BankingAccountNotExistException, NotUserAccountException, UserNotInGroupException {
 
         final BankingAccount bankingAccount = this.bankingAccountRepository.findById(accountId)

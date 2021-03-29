@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class AccountParameter {
+public class BankingAccountParameter {
 
     @NotNull
     @NotEmpty
