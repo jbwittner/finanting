@@ -3,6 +3,7 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.dto.GroupsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,8 @@ import fr.finanting.server.service.GroupService;
 @Transactional
 public class GroupServiceImpl implements GroupService {
 
-    private UserRepository userRepository;
-    private GroupRepository groupRepository;
+    private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
 
     /**
      * Constructor
@@ -42,11 +43,56 @@ public class GroupServiceImpl implements GroupService {
         this.groupRepository = groupRepository;
     }
 
+    public GroupsDTO getUserGroups(final String userName){
+
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+
+        List<Group> groups = user.getGroups();
+
+        List<GroupDTO> groupDTOList = new ArrayList<>();
+        GroupDTO groupDTO;
+
+        for(final Group group : groups){
+            groupDTO = new GroupDTO(group);
+            groupDTOList.add(groupDTO);
+        }
+
+        GroupsDTO groupsDTO = new GroupsDTO();
+        groupsDTO.setGroupDTO(groupDTOList);
+
+        return groupsDTO;
+
+    }
+
+    public GroupDTO getGroup(final String groupName, final String userName)
+            throws GroupNotExistException, UserNotInGroupException {
+
+        final Group group = this.groupRepository.findByGroupName(groupName)
+                .orElseThrow(() -> new GroupNotExistException(groupName));
+
+        boolean isGroupMember = false;
+
+        for(final User user : group.getUsers()){
+            if (user.getUserName().equals(userName)) {
+                isGroupMember = true;
+                break;
+            }
+        }
+
+        if(!isGroupMember){
+            final User user = this.userRepository.findByUserName(userName).orElseThrow();
+            throw new UserNotInGroupException(user, group);
+        }
+
+        return new GroupDTO(group);
+
+    }
+
     @Override
     public GroupDTO createGroup(final GroupCreationParameter groupCreationParameter, final String userName)
         throws GroupNameAlreadyExistException, UserNotExistException {
         
-        final User user = this.userRepository.findByUserName(userName).get();
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         final Boolean groupExist = this.groupRepository.existsByGroupName(groupCreationParameter.getGroupName());
 
@@ -72,16 +118,14 @@ public class GroupServiceImpl implements GroupService {
 
         this.groupRepository.save(group);
 
-        final GroupDTO groupDTO = new GroupDTO(group);
-
-        return groupDTO;
+        return new GroupDTO(group);
     }
 
     @Override
     public GroupDTO addUsersGroup(final AddUsersGroupParameter addUsersGroupParameter, final String userName)
             throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
         
-        final User user = this.userRepository.findByUserName(userName).get();
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final Group group = this.groupRepository.findByGroupName(addUsersGroupParameter.getGroupName())
             .orElseThrow(() -> new GroupNotExistException(addUsersGroupParameter.getGroupName()));
 
@@ -109,16 +153,14 @@ public class GroupServiceImpl implements GroupService {
             }
         }
 
-        final GroupDTO groupDTO = new GroupDTO(group);
-
-        return groupDTO;
+        return new GroupDTO(group);
     }
 
     @Override
     public GroupDTO removeUsersGroup(final RemoveUsersGroupParameter removeUsersGroupParameter, final String userName)
         throws GroupNotExistException, NotAdminGroupException, UserNotInGroupException, UserNotExistException {
         
-        final User user = this.userRepository.findByUserName(userName).get();
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final Group group = this.groupRepository.findByGroupName(removeUsersGroupParameter.getGroupName())
             .orElseThrow(() -> new GroupNotExistException(removeUsersGroupParameter.getGroupName()));
 
@@ -141,16 +183,14 @@ public class GroupServiceImpl implements GroupService {
             }
         }
 
-        final GroupDTO groupDTO = new GroupDTO(group);
-
-        return groupDTO;
+        return new GroupDTO(group);
     }
 
     @Override
     public void deleteGroup(final DeleteGroupParameter deleteGroupParameter, final String userName)
             throws GroupNotExistException, NotAdminGroupException {
 
-        final User user = this.userRepository.findByUserName(userName).get();
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final Group group = this.groupRepository.findByGroupName(deleteGroupParameter.getGroupName())
             .orElseThrow(() -> new GroupNotExistException(deleteGroupParameter.getGroupName()));
 

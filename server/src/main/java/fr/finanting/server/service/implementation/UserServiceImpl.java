@@ -29,8 +29,8 @@ import fr.finanting.server.service.UserService;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Constructor
