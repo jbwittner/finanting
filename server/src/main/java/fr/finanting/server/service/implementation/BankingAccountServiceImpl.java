@@ -11,7 +11,7 @@ import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
-import fr.finanting.server.parameter.CreateAccountParameter;
+import fr.finanting.server.parameter.CreateBankingAccountParameter;
 import fr.finanting.server.parameter.DeleteAccountParameter;
 import fr.finanting.server.parameter.UpdateAccountParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
@@ -38,7 +38,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
         }
 
     @Override
-    public BankingAccountDTO createAccount(final CreateAccountParameter createAccountParameter, final String userName)
+    public BankingAccountDTO createAccount(final CreateBankingAccountParameter createAccountParameter, final String userName)
             throws UserNotExistException, GroupNotExistException{
 
         BankingAccount bankingAccount = new BankingAccount();
@@ -125,10 +125,10 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     @Override
     public void deleteAccount(final DeleteAccountParameter deleteAccountParameter, final String userName)
-            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
         final  BankingAccount bankingAccount = this.bankingAccountRepository.findById(deleteAccountParameter.getId())
-            .orElseThrow(() -> new AccountNotExistException(deleteAccountParameter.getId()));
+            .orElseThrow(() -> new BankingAccountNotExistException(deleteAccountParameter.getId()));
 
         this.checkIsAdminAccount(bankingAccount, userName);
 
@@ -138,10 +138,10 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     @Override
     public BankingAccountDTO updateAccount(final UpdateAccountParameter updateAccountParameter, final String userName)
-            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException{
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException{
 
         BankingAccount bankingAccount = this.bankingAccountRepository.findById(updateAccountParameter.getAccountId())
-            .orElseThrow(() -> new AccountNotExistException(updateAccountParameter.getAccountId()));
+            .orElseThrow(() -> new BankingAccountNotExistException(updateAccountParameter.getAccountId()));
 
         this.checkIsAdminAccount(bankingAccount, userName);
 
@@ -206,10 +206,10 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     @Override
     public BankingAccountDTO getAccount(final Integer accountId, final String userName)
-            throws AccountNotExistException, NotUserAccountException, UserNotInGroupException {
+            throws BankingAccountNotExistException, NotUserAccountException, UserNotInGroupException {
 
         final BankingAccount bankingAccount = this.bankingAccountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotExistException(accountId));
+                .orElseThrow(() -> new BankingAccountNotExistException(accountId));
 
         this.checkIsUserAccount(bankingAccount, userName);
 

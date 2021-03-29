@@ -60,7 +60,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupAccountOk()
-            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
         Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
@@ -80,7 +80,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserAccountOk()
-            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
         BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(user));
 
@@ -97,12 +97,12 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateAccountNotExist()
-            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
 
         this.updateAccountParameter.setAccountId(this.factory.getRandomInteger());
 
-        Assertions.assertThrows(AccountNotExistException.class,
+        Assertions.assertThrows(BankingAccountNotExistException.class,
                 () -> this.bankingAccountServiceImpl.updateAccount(this.updateAccountParameter, user.getUserName()));
 
     }
@@ -125,7 +125,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserAccountNotUserAccount()
-            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
         final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(user));
 

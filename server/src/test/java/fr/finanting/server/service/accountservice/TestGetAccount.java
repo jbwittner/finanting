@@ -1,7 +1,7 @@
 package fr.finanting.server.service.accountservice;
 
 import fr.finanting.server.dto.BankingAccountDTO;
-import fr.finanting.server.exception.AccountNotExistException;
+import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.NotUserAccountException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.BankingAccount;
@@ -39,7 +39,7 @@ public class TestGetAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetUserAccount()
-            throws AccountNotExistException, NotUserAccountException, UserNotInGroupException {
+            throws BankingAccountNotExistException, NotUserAccountException, UserNotInGroupException {
         final User user = this.userRepository.save(this.factory.getUser());
         final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(user));
 
@@ -50,7 +50,7 @@ public class TestGetAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetGroupAccount()
-            throws AccountNotExistException, NotUserAccountException, UserNotInGroupException {
+            throws BankingAccountNotExistException, NotUserAccountException, UserNotInGroupException {
         final Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(group));
@@ -90,7 +90,7 @@ public class TestGetAccount extends AbstractMotherIntegrationTest {
 
         final User user = this.userRepository.save(this.factory.getUser());
 
-        Assertions.assertThrows(AccountNotExistException.class,
+        Assertions.assertThrows(BankingAccountNotExistException.class,
                 () -> this.bankingAccountServiceImpl.getAccount(this.factory.getRandomInteger(), user.getUserName()));
 
     }

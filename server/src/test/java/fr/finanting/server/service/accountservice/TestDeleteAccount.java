@@ -36,7 +36,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteUserAccountOk()
-            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
         User user = this.factory.getUser();
         user = this.userRepository.save(user);
         BankingAccount bankingAccount = this.factory.getAccount(user);
@@ -54,7 +54,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteGroupAccountOk()
-            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
         Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
@@ -103,7 +103,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteUserAccountUserNotExist()
-            throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
         final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(user));
 
@@ -124,7 +124,7 @@ public class TestDeleteAccount extends AbstractMotherIntegrationTest {
         final DeleteAccountParameter deleteAccountParameter = new DeleteAccountParameter();
         deleteAccountParameter.setId(this.factory.getRandomInteger());
 
-        Assertions.assertThrows(AccountNotExistException.class,
+        Assertions.assertThrows(BankingAccountNotExistException.class,
                 () -> this.bankingAccountServiceImpl.deleteAccount(deleteAccountParameter, user.getUserName()));
     }
 }

@@ -6,7 +6,7 @@ import fr.finanting.server.exception.UserNotExistException;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.CreateAccountParameter;
+import fr.finanting.server.parameter.CreateBankingAccountParameter;
 import fr.finanting.server.parameter.subpart.AddressParameter;
 import fr.finanting.server.parameter.subpart.BankDetailsParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
@@ -33,7 +33,7 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
 
     private User user;
     private Group group;
-    private CreateAccountParameter createAccountParameter;
+    private CreateBankingAccountParameter createAccountParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
@@ -42,7 +42,7 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
         this.user = this.userRepository.save(this.group.getUserAdmin());
         this.group = this.groupRepository.save(this.group);
 
-        this.createAccountParameter = new CreateAccountParameter();
+        this.createAccountParameter = new CreateBankingAccountParameter();
         this.createAccountParameter.setAbbreviation(this.factory.getRandomAlphanumericString());
 
         final AddressParameter addressParameter = new AddressParameter();
@@ -104,7 +104,7 @@ public class TestCreateAccount extends AbstractMotherIntegrationTest {
 
     private void checkAccount(final BankingAccountDTO bankingAccountDTO,
                               final BankingAccount bankingAccount,
-                              final CreateAccountParameter createAccountParameter,
+                              final CreateBankingAccountParameter createAccountParameter,
                               final User user){
 
         Assertions.assertEquals(createAccountParameter.getAbbreviation().toUpperCase(), bankingAccountDTO.getAbbreviation());

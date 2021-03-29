@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class CreateAccountParameter extends AccountParameter {
+public class CreateBankingAccountParameter extends AccountParameter {
 
     private String groupName;
 

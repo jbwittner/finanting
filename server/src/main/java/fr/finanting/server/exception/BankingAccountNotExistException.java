@@ -1,9 +1,9 @@
 package fr.finanting.server.exception;
 
 @SuppressWarnings("serial")
-public class AccountNotExistException extends FunctionalException {
+public class BankingAccountNotExistException extends FunctionalException {
 
-    public AccountNotExistException(final Integer id) {
+    public BankingAccountNotExistException(final Integer id) {
         super("Account with the id '" + id + "' doesn't exist" );
     }
 
