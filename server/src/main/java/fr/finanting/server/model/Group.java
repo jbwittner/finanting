@@ -30,7 +30,7 @@ public class Group extends MotherPersistant {
     private User userAdmin;
 
     @OneToMany(mappedBy = "group")
-    private List<Account> accounts = new ArrayList<>();
+    private List<BankingAccount> accounts = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable( name = "USERS_GROUPS_ASSOCIATIONS",

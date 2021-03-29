@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "ACCOUNTS")
 @Data
-public class Account extends MotherPersistant {
+public class BankingAccount extends MotherPersistant {
     
 	@Column(name = "ACCOUNT_LABEL", nullable = false)
     private String label;

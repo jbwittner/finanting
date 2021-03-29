@@ -67,7 +67,7 @@ public class GroupController {
         return this.groupService.getUserGroups(userDetailsImpl.getUsername());
     }
 
-    @GetMapping("/getAccount/{groupName}")
+    @GetMapping("/getBankingAccount/{groupName}")
     public GroupDTO getGroup(final Authentication authentication,
                               @PathVariable final String groupName)
             throws UserNotInGroupException, GroupNotExistException {
