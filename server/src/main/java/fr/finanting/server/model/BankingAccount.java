@@ -20,11 +20,11 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "ACCOUNTS")
+@Table(name = "BANKING_ACCOUNTS")
 @Data
 public class BankingAccount extends MotherPersistant {
     
-	@Column(name = "ACCOUNT_LABEL", nullable = false)
+	@Column(name = "LABEL", nullable = false)
     private String label;
 
     @ManyToOne(fetch = FetchType.LAZY)

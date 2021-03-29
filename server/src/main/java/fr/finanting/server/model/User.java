@@ -51,4 +51,7 @@ public class User extends MotherPersistant {
     @OneToMany(mappedBy = "user")
     private List<BankingAccount> accounts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Category> categories = new ArrayList<>();
+
 }

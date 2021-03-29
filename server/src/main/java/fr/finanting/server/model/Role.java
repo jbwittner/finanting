@@ -1,6 +1,6 @@
 package fr.finanting.server.model;
 
-public enum  Role {
+public enum Role {
     ADMIN,
     USER
 }
