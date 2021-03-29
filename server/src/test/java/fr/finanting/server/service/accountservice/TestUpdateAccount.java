@@ -1,6 +1,6 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.dto.AccountDTO;
+import fr.finanting.server.dto.BankingAccountDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
@@ -26,14 +26,14 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     private GroupRepository groupRepository;
 
     @Autowired
-    private BankingAccountRepository accountRepository;
+    private BankingAccountRepository bankingAccountRepository;
 
-    private BankingAccountServiceImpl accountServiceImpl;
+    private BankingAccountServiceImpl bankingAccountServiceImpl;
     private UpdateAccountParameter updateAccountParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.accountServiceImpl = new BankingAccountServiceImpl(accountRepository, groupRepository, userRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository);
 
         Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
@@ -65,16 +65,16 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
 
-        BankingAccount account = this.accountRepository.save(this.factory.getAccount(group));
+        BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(group));
 
-        this.updateAccountParameter.setAccountId(account.getId());
+        this.updateAccountParameter.setAccountId(bankingAccount.getId());
 
-        final AccountDTO accountDTO =
-                this.accountServiceImpl.updateAccount(this.updateAccountParameter, user.getUserName());
+        final BankingAccountDTO bankingAccountDTO =
+                this.bankingAccountServiceImpl.updateAccount(this.updateAccountParameter, user.getUserName());
 
-        account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
+        bankingAccount = this.bankingAccountRepository.findById(bankingAccountDTO.getId()).orElseThrow();
 
-        this.checkAccount(accountDTO, account, this.updateAccountParameter);
+        this.checkAccount(bankingAccountDTO, bankingAccount, this.updateAccountParameter);
 
     }
 
@@ -82,16 +82,16 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
     public void testUpdateUserAccountOk()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
-        BankingAccount account = this.accountRepository.save(this.factory.getAccount(user));
+        BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(user));
 
-        this.updateAccountParameter.setAccountId(account.getId());
+        this.updateAccountParameter.setAccountId(bankingAccount.getId());
 
-        final AccountDTO accountDTO =
-                this.accountServiceImpl.updateAccount(this.updateAccountParameter, user.getUserName());
+        final BankingAccountDTO bankingAccountDTO =
+                this.bankingAccountServiceImpl.updateAccount(this.updateAccountParameter, user.getUserName());
 
-        account = this.accountRepository.findById(accountDTO.getId()).orElseThrow();
+        bankingAccount = this.bankingAccountRepository.findById(bankingAccountDTO.getId()).orElseThrow();
 
-        this.checkAccount(accountDTO, account, this.updateAccountParameter);
+        this.checkAccount(bankingAccountDTO, bankingAccount, this.updateAccountParameter);
 
     }
 
@@ -103,7 +103,7 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
         this.updateAccountParameter.setAccountId(this.factory.getRandomInteger());
 
         Assertions.assertThrows(AccountNotExistException.class,
-                () -> this.accountServiceImpl.updateAccount(this.updateAccountParameter, user.getUserName()));
+                () -> this.bankingAccountServiceImpl.updateAccount(this.updateAccountParameter, user.getUserName()));
 
     }
 
@@ -115,64 +115,64 @@ public class TestUpdateAccount extends AbstractMotherIntegrationTest {
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
-        final BankingAccount account = this.accountRepository.save(this.factory.getAccount(group));
+        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(group));
 
-        this.updateAccountParameter.setAccountId(account.getId());
+        this.updateAccountParameter.setAccountId(bankingAccount.getId());
 
         Assertions.assertThrows(NotAdminGroupException.class,
-                () -> this.accountServiceImpl.updateAccount(this.updateAccountParameter, user2.getUserName()));
+                () -> this.bankingAccountServiceImpl.updateAccount(this.updateAccountParameter, user2.getUserName()));
     }
 
     @Test
     public void testUpdateUserAccountNotUserAccount()
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount account = this.accountRepository.save(this.factory.getAccount(user));
+        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(user));
 
-        this.updateAccountParameter.setAccountId(account.getId());
+        this.updateAccountParameter.setAccountId(bankingAccount.getId());
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(NotUserAccountException.class,
-                () -> this.accountServiceImpl.updateAccount(this.updateAccountParameter, user2.getUserName()));
+                () -> this.bankingAccountServiceImpl.updateAccount(this.updateAccountParameter, user2.getUserName()));
 
     }
 
-    private void checkAccount(final AccountDTO accountDTO,
-                              final BankingAccount account,
+    private void checkAccount(final BankingAccountDTO bankingAccountDTO,
+                              final BankingAccount bankingAccount,
                               final UpdateAccountParameter updateAccountParameter){
 
-        Assertions.assertEquals(updateAccountParameter.getAbbreviation().toUpperCase(), accountDTO.getAbbreviation());
-        Assertions.assertEquals(updateAccountParameter.getInitialBalance(), accountDTO.getBalance());
-        Assertions.assertEquals(updateAccountParameter.getLabel(), accountDTO.getLabel());
+        Assertions.assertEquals(updateAccountParameter.getAbbreviation().toUpperCase(), bankingAccountDTO.getAbbreviation());
+        Assertions.assertEquals(updateAccountParameter.getInitialBalance(), bankingAccountDTO.getBalance());
+        Assertions.assertEquals(updateAccountParameter.getLabel(), bankingAccountDTO.getLabel());
         Assertions.assertEquals(updateAccountParameter.getAddressParameter().getCity(),
-                accountDTO.getAddressDTO().getCity());
+                bankingAccountDTO.getAddressDTO().getCity());
         Assertions.assertEquals(updateAccountParameter.getAddressParameter().getStreet(),
-                accountDTO.getAddressDTO().getStreet());
+                bankingAccountDTO.getAddressDTO().getStreet());
         Assertions.assertEquals(updateAccountParameter.getAddressParameter().getAddress(),
-                accountDTO.getAddressDTO().getAddress());
+                bankingAccountDTO.getAddressDTO().getAddress());
         Assertions.assertEquals(updateAccountParameter.getAddressParameter().getZipCode(),
-                accountDTO.getAddressDTO().getZipCode());
+                bankingAccountDTO.getAddressDTO().getZipCode());
         Assertions.assertEquals(updateAccountParameter.getBankDetailsParameter().getAccountNumber(),
-                accountDTO.getBankDetailsDTO().getAccountNumber());
+                bankingAccountDTO.getBankDetailsDTO().getAccountNumber());
         Assertions.assertEquals(updateAccountParameter.getBankDetailsParameter().getIban(),
-                accountDTO.getBankDetailsDTO().getIban());
+                bankingAccountDTO.getBankDetailsDTO().getIban());
 
-        Assertions.assertEquals(updateAccountParameter.getAbbreviation().toUpperCase(), account.getAbbreviation());
-        Assertions.assertEquals(updateAccountParameter.getInitialBalance(), account.getInitialBalance());
-        Assertions.assertEquals(updateAccountParameter.getLabel(), account.getLabel());
+        Assertions.assertEquals(updateAccountParameter.getAbbreviation().toUpperCase(), bankingAccount.getAbbreviation());
+        Assertions.assertEquals(updateAccountParameter.getInitialBalance(), bankingAccount.getInitialBalance());
+        Assertions.assertEquals(updateAccountParameter.getLabel(), bankingAccount.getLabel());
         Assertions.assertEquals(updateAccountParameter.getAddressParameter().getCity(),
-                account.getAddress().getCity());
+                bankingAccount.getAddress().getCity());
         Assertions.assertEquals(updateAccountParameter.getAddressParameter().getStreet(),
-                account.getAddress().getStreet());
+                bankingAccount.getAddress().getStreet());
         Assertions.assertEquals(updateAccountParameter.getAddressParameter().getAddress(),
-                account.getAddress().getAddress());
+                bankingAccount.getAddress().getAddress());
         Assertions.assertEquals(updateAccountParameter.getAddressParameter().getZipCode(),
-                account.getAddress().getZipCode());
+                bankingAccount.getAddress().getZipCode());
         Assertions.assertEquals(updateAccountParameter.getBankDetailsParameter().getAccountNumber(),
-                account.getBankDetails().getAccountNumber());
+                bankingAccount.getBankDetails().getAccountNumber());
         Assertions.assertEquals(updateAccountParameter.getBankDetailsParameter().getIban(),
-                account.getBankDetails().getIban());
+                bankingAccount.getBankDetails().getIban());
 
     }
 

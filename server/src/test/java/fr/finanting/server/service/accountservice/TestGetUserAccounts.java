@@ -1,7 +1,7 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.dto.AccountDTO;
-import fr.finanting.server.dto.AccountsDTO;
+import fr.finanting.server.dto.BankingAccountDTO;
+import fr.finanting.server.dto.BankingAccountsDTO;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
@@ -26,35 +26,35 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
     private GroupRepository groupRepository;
 
     @Autowired
-    private BankingAccountRepository accountRepository;
+    private BankingAccountRepository bankingAccountRepository;
 
-    private BankingAccountServiceImpl accountServiceImpl;
+    private BankingAccountServiceImpl bankingAccountServiceImpl;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.accountServiceImpl = new BankingAccountServiceImpl(accountRepository, groupRepository, userRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository);
     }
 
     @Test
     public void testGetUserAccountWithoutGroupAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount account1 = this.accountRepository.save(this.factory.getAccount(user));
-        final BankingAccount account2 = this.accountRepository.save(this.factory.getAccount(user));
-        final BankingAccount account3 = this.accountRepository.save(this.factory.getAccount(user));
+        final BankingAccount bankingAccount1 = this.bankingAccountRepository.save(this.factory.getAccount(user));
+        final BankingAccount bankingAccount2 = this.bankingAccountRepository.save(this.factory.getAccount(user));
+        final BankingAccount bankingAccount3 = this.bankingAccountRepository.save(this.factory.getAccount(user));
 
-        final AccountsDTO accountsDTO = this.accountServiceImpl.getUserAccounts(user.getUserName());
+        final BankingAccountsDTO bankingAccountsDTO = this.bankingAccountServiceImpl.getUserAccounts(user.getUserName());
 
-        Assertions.assertEquals(0, accountsDTO.getGroupAccountDTO().size());
-        Assertions.assertEquals(3, accountsDTO.getUserAccountDTO().size());
+        Assertions.assertEquals(0, bankingAccountsDTO.getGroupAccountDTO().size());
+        Assertions.assertEquals(3, bankingAccountsDTO.getUserAccountDTO().size());
 
-        for(final AccountDTO accountDTO : accountsDTO.getUserAccountDTO()){
+        for(final BankingAccountDTO bankingAccountDTO : bankingAccountsDTO.getUserAccountDTO()){
             boolean isPresent = true;
-            if(accountDTO.getId().equals(account1.getId())){
-                this.checkAccount(accountDTO, account1);
-            } else if(accountDTO.getId().equals(account2.getId())){
-                this.checkAccount(accountDTO, account2);
-            } else if(accountDTO.getId().equals(account3.getId())){
-                this.checkAccount(accountDTO, account3);
+            if(bankingAccountDTO.getId().equals(bankingAccount1.getId())){
+                this.checkAccount(bankingAccountDTO, bankingAccount1);
+            } else if(bankingAccountDTO.getId().equals(bankingAccount2.getId())){
+                this.checkAccount(bankingAccountDTO, bankingAccount2);
+            } else if(bankingAccountDTO.getId().equals(bankingAccount3.getId())){
+                this.checkAccount(bankingAccountDTO, bankingAccount3);
             } else {
                 isPresent = false;
             }
@@ -67,23 +67,23 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserAccountWithoutUserAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount account1 = this.createGroupAccount(user);
-        final BankingAccount account2 = this.createGroupAccount(user);
-        final BankingAccount account3 = this.createGroupAccount(user);
+        final BankingAccount bankingAccount1 = this.createGroupAccount(user);
+        final BankingAccount bankingAccount2 = this.createGroupAccount(user);
+        final BankingAccount bankingAccount3 = this.createGroupAccount(user);
 
-        final AccountsDTO accountsDTO = this.accountServiceImpl.getUserAccounts(user.getUserName());
+        final BankingAccountsDTO bankingAccountsDTO = this.bankingAccountServiceImpl.getUserAccounts(user.getUserName());
 
-        Assertions.assertEquals(0, accountsDTO.getUserAccountDTO().size());
-        Assertions.assertEquals(3, accountsDTO.getGroupAccountDTO().size());
+        Assertions.assertEquals(0, bankingAccountsDTO.getUserAccountDTO().size());
+        Assertions.assertEquals(3, bankingAccountsDTO.getGroupAccountDTO().size());
 
-        for(final AccountDTO accountDTO : accountsDTO.getGroupAccountDTO()){
+        for(final BankingAccountDTO bankingAccountDTO : bankingAccountsDTO.getGroupAccountDTO()){
             boolean isPresent = true;
-            if(accountDTO.getId().equals(account1.getId())){
-                this.checkAccount(accountDTO, account1);
-            } else if(accountDTO.getId().equals(account2.getId())){
-                this.checkAccount(accountDTO, account2);
-            } else if(accountDTO.getId().equals(account3.getId())){
-                this.checkAccount(accountDTO, account3);
+            if(bankingAccountDTO.getId().equals(bankingAccount1.getId())){
+                this.checkAccount(bankingAccountDTO, bankingAccount1);
+            } else if(bankingAccountDTO.getId().equals(bankingAccount2.getId())){
+                this.checkAccount(bankingAccountDTO, bankingAccount2);
+            } else if(bankingAccountDTO.getId().equals(bankingAccount3.getId())){
+                this.checkAccount(bankingAccountDTO, bankingAccount3);
             } else {
                 isPresent = false;
             }
@@ -97,10 +97,10 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
         final Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
 
-        final BankingAccount account = this.accountRepository.save(this.factory.getAccount(group));
-        final List<BankingAccount> accounts = new ArrayList<>();
-        accounts.add(account);
-        group.setAccounts(accounts);
+        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getAccount(group));
+        final List<BankingAccount> bankingAccounts = new ArrayList<>();
+        bankingAccounts.add(bankingAccount);
+        group.setAccounts(bankingAccounts);
 
         this.groupRepository.save(group);
 
@@ -108,27 +108,27 @@ public class TestGetUserAccounts extends AbstractMotherIntegrationTest {
         groups.add(group);
         user.setGroups(groups);
 
-        return account;
+        return bankingAccount;
     }
 
-    private void checkAccount(final AccountDTO accountDTO,
-                              final BankingAccount account){
+    private void checkAccount(final BankingAccountDTO bankingAccountDTO,
+                              final BankingAccount bankingAccount){
 
-        Assertions.assertEquals(account.getAbbreviation(), accountDTO.getAbbreviation());
-        Assertions.assertEquals(account.getInitialBalance(), accountDTO.getBalance());
-        Assertions.assertEquals(account.getLabel(), accountDTO.getLabel());
-        Assertions.assertEquals(account.getAddress().getCity(),
-                accountDTO.getAddressDTO().getCity());
-        Assertions.assertEquals(account.getAddress().getStreet(),
-                accountDTO.getAddressDTO().getStreet());
-        Assertions.assertEquals(account.getAddress().getAddress(),
-                accountDTO.getAddressDTO().getAddress());
-        Assertions.assertEquals(account.getAddress().getZipCode(),
-                accountDTO.getAddressDTO().getZipCode());
-        Assertions.assertEquals(account.getBankDetails().getAccountNumber(),
-                accountDTO.getBankDetailsDTO().getAccountNumber());
-        Assertions.assertEquals(account.getBankDetails().getIban(),
-                accountDTO.getBankDetailsDTO().getIban());
+        Assertions.assertEquals(bankingAccount.getAbbreviation(), bankingAccountDTO.getAbbreviation());
+        Assertions.assertEquals(bankingAccount.getInitialBalance(), bankingAccountDTO.getBalance());
+        Assertions.assertEquals(bankingAccount.getLabel(), bankingAccountDTO.getLabel());
+        Assertions.assertEquals(bankingAccount.getAddress().getCity(),
+                bankingAccountDTO.getAddressDTO().getCity());
+        Assertions.assertEquals(bankingAccount.getAddress().getStreet(),
+                bankingAccountDTO.getAddressDTO().getStreet());
+        Assertions.assertEquals(bankingAccount.getAddress().getAddress(),
+                bankingAccountDTO.getAddressDTO().getAddress());
+        Assertions.assertEquals(bankingAccount.getAddress().getZipCode(),
+                bankingAccountDTO.getAddressDTO().getZipCode());
+        Assertions.assertEquals(bankingAccount.getBankDetails().getAccountNumber(),
+                bankingAccountDTO.getBankDetailsDTO().getAccountNumber());
+        Assertions.assertEquals(bankingAccount.getBankDetails().getIban(),
+                bankingAccountDTO.getBankDetailsDTO().getIban());
 
     }
 }

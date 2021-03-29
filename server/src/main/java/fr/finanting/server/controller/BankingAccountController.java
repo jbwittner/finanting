@@ -1,7 +1,7 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.dto.AccountDTO;
-import fr.finanting.server.dto.AccountsDTO;
+import fr.finanting.server.dto.BankingAccountDTO;
+import fr.finanting.server.dto.BankingAccountsDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.parameter.CreateAccountParameter;
 import fr.finanting.server.parameter.DeleteAccountParameter;
@@ -13,22 +13,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("account")
-public class AccountController {
+@RequestMapping("bankingAccount")
+public class BankingAccountController {
 
-    private final BankingAccountService accountService;
+    private final BankingAccountService bankingAccountService;
 
     @Autowired
-    public AccountController(final BankingAccountService accountService){
-        this.accountService = accountService;
+    public BankingAccountController(final BankingAccountService bankingAccountService){
+        this.bankingAccountService = bankingAccountService;
     }
 
     @PostMapping("/updateAccount")
-    public AccountDTO updateAccount(final Authentication authentication,
+    public BankingAccountDTO updateAccount(final Authentication authentication,
                                     @RequestBody final UpdateAccountParameter updateAccountParameter)
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.accountService.updateAccount(updateAccountParameter, userDetailsImpl.getUsername());
+        return this.bankingAccountService.updateAccount(updateAccountParameter, userDetailsImpl.getUsername());
     }
 
     @DeleteMapping("/deleteAccount")
@@ -36,30 +36,30 @@ public class AccountController {
                                     @RequestBody final DeleteAccountParameter deleteAccountParameter)
             throws AccountNotExistException, NotAdminGroupException, NotUserAccountException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.accountService.deleteAccount(deleteAccountParameter, userDetailsImpl.getUsername());
+        this.bankingAccountService.deleteAccount(deleteAccountParameter, userDetailsImpl.getUsername());
     }
 
     @PostMapping("/createAccount")
-    public AccountDTO createAccount(final Authentication authentication,
+    public BankingAccountDTO createAccount(final Authentication authentication,
                                     @RequestBody final CreateAccountParameter createAccountParameter)
             throws UserNotExistException, GroupNotExistException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.accountService.createAccount(createAccountParameter, userDetailsImpl.getUsername());
+        return this.bankingAccountService.createAccount(createAccountParameter, userDetailsImpl.getUsername());
     }
 
     @GetMapping("/getUserAccounts")
-    public AccountsDTO getUserAccounts(final Authentication authentication)
+    public BankingAccountsDTO getUserAccounts(final Authentication authentication)
             throws UserNotExistException, GroupNotExistException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.accountService.getUserAccounts(userDetailsImpl.getUsername());
+        return this.bankingAccountService.getUserAccounts(userDetailsImpl.getUsername());
     }
 
     @GetMapping("/getAccount/{id}")
-    public AccountDTO getAccount(final Authentication authentication,
+    public BankingAccountDTO getAccount(final Authentication authentication,
                                  @PathVariable final Integer id)
             throws AccountNotExistException, UserNotInGroupException, NotUserAccountException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.accountService.getAccount(id, userDetailsImpl.getUsername());
+        return this.bankingAccountService.getAccount(id, userDetailsImpl.getUsername());
     }
 
 

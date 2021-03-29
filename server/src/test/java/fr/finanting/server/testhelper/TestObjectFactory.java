@@ -218,29 +218,29 @@ public class TestObjectFactory {
     }
 
     private BankingAccount getAccount(final User user, final Group group){
-        final BankingAccount account = new BankingAccount();
+        final BankingAccount bankingAccount = new BankingAccount();
 
         final com.github.javafaker.Address addressFaker = this.faker.address();
         final Address address = new Address();
         address.setCity(addressFaker.city());
         address.setStreet(addressFaker.streetAddress());
         address.setZipCode(addressFaker.zipCode());
-        account.setAddress(address);
+        bankingAccount.setAddress(address);
 
         final BankDetails bankDetailsDetails = new BankDetails();
         bankDetailsDetails.setAccountNumber(this.getRandomAlphanumericString());
         bankDetailsDetails.setIban(this.getRandomAlphanumericString());
         bankDetailsDetails.setBankName(this.getRandomAlphanumericString());
-        account.setBankDetails(bankDetailsDetails);
+        bankingAccount.setBankDetails(bankDetailsDetails);
 
-        account.setAbbreviation(this.getRandomAlphanumericString(6));
-        account.setInitialBalance(0);
-        account.setLabel(this.getRandomAlphanumericString());
+        bankingAccount.setAbbreviation(this.getRandomAlphanumericString(6));
+        bankingAccount.setInitialBalance(0);
+        bankingAccount.setLabel(this.getRandomAlphanumericString());
 
-        account.setGroup(group);
-        account.setUser(user);
+        bankingAccount.setGroup(group);
+        bankingAccount.setUser(user);
 
-        return account;
+        return bankingAccount;
     }
 
     public BankingAccount getAccount(final User user){
