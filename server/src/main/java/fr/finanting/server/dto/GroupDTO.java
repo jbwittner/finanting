@@ -7,9 +7,6 @@ import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import lombok.Data;
 
-/**
- * User DTO
- */
 @Data
 public class GroupDTO {
 
@@ -17,10 +14,6 @@ public class GroupDTO {
     private UserDTO userAdmin;
     private List<UserDTO> groupUsers = new ArrayList<>(); 
 
-    
-    /**
-     * Constructor
-     */
     public GroupDTO(final Group group){
         this.groupName = group.getGroupName();
         this.userAdmin = new UserDTO(group.getUserAdmin());

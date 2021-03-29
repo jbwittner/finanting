@@ -22,9 +22,6 @@ import fr.finanting.server.parameter.UserUpdateParameter;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.UserService;
 
-/**
- * Implementation of UserService
- */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -32,9 +29,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    /**
-     * Constructor
-     */
     @Autowired
     public UserServiceImpl(final UserRepository userRepository, final PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;

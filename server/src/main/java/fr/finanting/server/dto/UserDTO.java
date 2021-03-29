@@ -7,9 +7,6 @@ import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
 import lombok.Data;
 
-/**
- * User DTO
- */
 @Data
 public class UserDTO {
 
@@ -19,9 +16,6 @@ public class UserDTO {
     private String userName;
     private List<String> roles = new ArrayList<>();
     
-    /**
-     * Constructor
-     */
     public UserDTO(final User user){
         this.email = user.getEmail();
         this.firstName = user.getFirstName();

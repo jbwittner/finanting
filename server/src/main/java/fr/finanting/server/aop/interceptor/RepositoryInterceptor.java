@@ -16,13 +16,6 @@ public class RepositoryInterceptor extends GeneralInterceptor {
 
     protected final Logger logger = LoggerFactory.getLogger(RepositoryInterceptor.class);
 
-    /**
-     * Log interceptor to log the method, the time to proceed and the arguments of
-     * repositories methods
-     * @param joinPoint Event intercepted by the aop
-     * @return Proceed of the event
-     * @throws Throwable
-     */
     @Around("execution(* org.springframework.data.repository.CrudRepository.*(..))" +
             "|| execution(* org.springframework.data.jpa.repository.JpaRepository.*(..))")
     public Object logInterceptor(final ProceedingJoinPoint joinPoint) throws Throwable {

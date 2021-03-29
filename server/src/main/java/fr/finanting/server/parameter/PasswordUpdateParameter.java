@@ -5,9 +5,6 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-/**
- * Parameter used to update user password
- */
 @Data
 public class PasswordUpdateParameter {
     

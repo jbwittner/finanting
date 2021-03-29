@@ -18,9 +18,6 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
-/**
- * Test class to test updatePassword method
- */
 public class TestUpdatePassword extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -56,9 +53,6 @@ public class TestUpdatePassword extends AbstractMotherIntegrationTest {
 
     }
     
-    /**
-     * Test with good old password
-     */
     @Test
     public void testUpdatePasword() throws BadPasswordException {
         final String newPassword = this.factory.getUniqueRandomAlphanumericString();
@@ -76,9 +70,6 @@ public class TestUpdatePassword extends AbstractMotherIntegrationTest {
 
     }
 
-    /**
-     * Test with bad old password
-     */
     @Test
     public void testBadOldPasword() throws BadPasswordException {
         final String newPassword = this.factory.getUniqueRandomAlphanumericString();

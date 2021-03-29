@@ -7,9 +7,6 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-/**
- * Parameter used to remove users from a group
- */
 @Data
 public class RemoveUsersGroupParameter {
 

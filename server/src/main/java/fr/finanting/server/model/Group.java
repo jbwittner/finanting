@@ -16,9 +16,6 @@ import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * Group model
- */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "GROUPS")

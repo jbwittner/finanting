@@ -8,4 +8,5 @@ public class BankDetailsParameter {
     private String bankName;
     private String iban;
     private String accountNumber;
+    
 }

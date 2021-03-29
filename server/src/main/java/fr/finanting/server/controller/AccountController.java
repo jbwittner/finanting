@@ -2,11 +2,9 @@ package fr.finanting.server.controller;
 
 import fr.finanting.server.dto.AccountDTO;
 import fr.finanting.server.dto.AccountsDTO;
-import fr.finanting.server.dto.GroupDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.parameter.CreateAccountParameter;
 import fr.finanting.server.parameter.DeleteAccountParameter;
-import fr.finanting.server.parameter.GroupCreationParameter;
 import fr.finanting.server.parameter.UpdateAccountParameter;
 import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.AccountService;
@@ -14,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Account controller
- */
 @RestController
 @RequestMapping("account")
 public class AccountController {

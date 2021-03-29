@@ -11,18 +11,8 @@ import org.slf4j.Logger;
 import fr.finanting.server.exception.ValidationDataException;
 import fr.finanting.server.validation.InputServiceValidator;
 
-/**
- * Mother class for the Interceptor
- */
 public class GeneralInterceptor {
 
-    /**
-     * General execution logger time
-     * @param joinPoint Event intercepted by the aop
-     * @param logger Logger used to log informations
-     * @return Proceed of the event
-     * @throws Throwable
-     */
     public Object logExecutionTime(final ProceedingJoinPoint joinPoint, final Logger logger) throws Throwable {
         final long start = System.currentTimeMillis();
         final List<Object> list = Arrays.asList(joinPoint.getArgs());
@@ -49,13 +39,6 @@ public class GeneralInterceptor {
         return proceed;
     }
 
-    /**
-     * Method used to check the validation of input data
-     *
-     * @param joinPoint Event intercepted by the aop
-     * @param logger    Logger used to log information's
-     * @throws ValidationDataException
-     */
     protected void validationInputData(final JoinPoint joinPoint, final Logger logger) throws ValidationDataException {
 
         final List<Object> list = Arrays.asList(joinPoint.getArgs());

@@ -24,9 +24,6 @@ import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.GroupService;
 
-/**
- * Implementation of GroupService
- */
 @Service
 @Transactional
 public class GroupServiceImpl implements GroupService {
@@ -34,9 +31,6 @@ public class GroupServiceImpl implements GroupService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
 
-    /**
-     * Constructor
-     */
     @Autowired
     public GroupServiceImpl(final UserRepository userRepository, final GroupRepository groupRepository){
         this.userRepository = userRepository;

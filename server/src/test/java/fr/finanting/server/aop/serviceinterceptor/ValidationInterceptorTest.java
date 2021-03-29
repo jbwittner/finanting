@@ -15,9 +15,6 @@ import fr.finanting.server.exception.ValidationDataException;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import lombok.Data;
 
-/**
- * Test class to test validationInterceptor method
- */
 public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
 
     @Mock
@@ -26,9 +23,6 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() throws Exception {}
 
-    /**
-     * Test with validation ok
-     */
     @Test
     public void validationOk() throws ValidationDataException {
         final ServiceInterceptor serviceInterceptor = new ServiceInterceptor();
@@ -48,9 +42,6 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
         serviceInterceptor.validationInterceptor(this.joinPoint);
     }
 
-    /**
-     * Test with validation fail
-     */
     @Test
     public void validationFail() throws ValidationDataException {
         final ServiceInterceptor serviceInterceptor = new ServiceInterceptor();
@@ -70,9 +61,6 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
             () -> serviceInterceptor.validationInterceptor(joinPoint));
     }
 
-    /**
-     * Custom implementation of Signature
-     */
     private class SignatureImpl implements Signature{
 
         @Override
@@ -107,9 +95,6 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
     
     }
     
-    /**
-     * Custom object
-     */
     @Data
     private class ObjectToValidate {
     

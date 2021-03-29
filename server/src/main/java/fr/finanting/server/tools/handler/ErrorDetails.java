@@ -4,9 +4,6 @@ import java.util.Date;
 
 import lombok.Data;
 
-/**
- * Class used to manage errors
- */
 @Data
 public class ErrorDetails {
     private Date timestamp;
@@ -14,9 +11,6 @@ public class ErrorDetails {
     private String details;
     private String exception;
 
-    /**
-     * Constructor
-     */
     public ErrorDetails(final Date timestamp, final String message, final String details, final String exception) {
         super();
         this.timestamp = timestamp;

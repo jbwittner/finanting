@@ -18,17 +18,11 @@ import fr.finanting.server.tools.handler.ErrorDetails;
 import fr.finanting.server.tools.handler.GlobalExceptionHandler;
 
 
-/**
- * Test class to test globleExceptionHandler method
- */
 public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
     @Override
     protected void initDataBeforeEach() throws Exception {}
 
-    /**
-     * Test with a Exception
-     */
     @Test
     public void testExceptionFail() throws Exception {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
@@ -42,9 +36,6 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
         
     }
 
-    /**
-     * Test with a UndeclaredThrowableException and a Exception
-     */
     @Test
     public void testUndeclaredThrowableExceptionWithExceptionFail() throws Exception {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
@@ -59,9 +50,6 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
         
     }
 
-    /**
-     * Test with a UndeclaredThrowableException and a FunctionalException
-     */
     @Test
     public void testUndeclaredThrowableExceptionWithFunctionalExceptionOk() throws Exception {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
@@ -93,9 +81,6 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
         
     }
 
-    /**
-     * Test with a FunctionalException
-     */
     @Test
     public void testFunctionalExceptionOk() throws Exception {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();

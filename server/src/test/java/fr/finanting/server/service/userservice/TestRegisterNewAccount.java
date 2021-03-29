@@ -18,9 +18,6 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
-/**
- * Test class to test registerNewAccount method
- */
 public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -48,9 +45,6 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
         
     }
 
-    /**
-     * Test to register a new account
-     */
     @Test
     public void testRegisterNewAccount() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
         this.userService.registerNewAccount(this.newUserRegisterParameter);
@@ -71,9 +65,6 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
         }
     }
 
-    /**
-     * Test to register a new account with a email already used
-     */
     @Test
     public void testRegisterEmailAlreadyUsed() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
 
@@ -91,9 +82,6 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
 
     }
 
-    /**
-     * Test to register a new account with a user name already used
-     */
     @Test
     public void testRegisterUserNameAlreadyUsed() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
 

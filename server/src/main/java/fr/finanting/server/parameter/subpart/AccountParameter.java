@@ -9,8 +9,6 @@ import lombok.Data;
 @Data
 public class AccountParameter {
 
-
-
     @NotNull
     @NotEmpty
     private String label;

@@ -7,9 +7,6 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
-/**
- * Parameter used to add users to a group
- */
 @Data
 public class AddUsersGroupParameter {
 

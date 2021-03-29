@@ -17,9 +17,6 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
-/**
- * Test class to test getAccountInformations method
- */
 public class TestGetAccountInformations extends AbstractMotherIntegrationTest {
 
     @Autowired
@@ -52,9 +49,6 @@ public class TestGetAccountInformations extends AbstractMotherIntegrationTest {
 
     }
 
-    /**
-     * Test to get account informations
-     */
     @Test
     public void testGetAccountInformations() {
 

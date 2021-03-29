@@ -18,26 +18,17 @@ import fr.finanting.server.parameter.RemoveUsersGroupParameter;
 import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.GroupService;
 
-/**
- * Group controller
- */
 @RestController
 @RequestMapping("group")
 public class GroupController {
 
     protected final GroupService groupService;
 
-    /**
-     * Constructor
-     */
     @Autowired
     public GroupController(final GroupService groupService) {
         this.groupService = groupService;
     }
 
-    /**
-     * Endpoint used to create a group
-     */
     @PostMapping("/createGroup")
     public GroupDTO createGroup(final Authentication authentication,
                                 @RequestBody final GroupCreationParameter groupCreationParameter)
@@ -46,9 +37,6 @@ public class GroupController {
         return this.groupService.createGroup(groupCreationParameter, userDetailsImpl.getUsername());
     }
 
-    /**
-     * Endpoint used to delete a group
-     */
     @DeleteMapping("/deleteGroup")
     public void deleteGroup(final Authentication authentication,
                             @RequestBody final DeleteGroupParameter deleteGroupParameter)
@@ -57,9 +45,6 @@ public class GroupController {
         this.groupService.deleteGroup(deleteGroupParameter, userDetailsImpl.getUsername());
     }
 
-    /**
-     * Endpoint used to add a user to a group
-     */
     @PostMapping("/addUsersGroup")
     public GroupDTO addUsersGroup(final Authentication authentication,
                                   @RequestBody final AddUsersGroupParameter addUsersGroupParameter)
@@ -68,9 +53,6 @@ public class GroupController {
         return this.groupService.addUsersGroup(addUsersGroupParameter, userDetailsImpl.getUsername());
     }
 
-    /**
-     * Endpoint used to remove a user from a group
-     */
     @PostMapping("/removeUsersGroup")
     public GroupDTO removeUsersGroup(final Authentication authentication,
                                      @RequestBody final RemoveUsersGroupParameter removeUsersGroupParameter)

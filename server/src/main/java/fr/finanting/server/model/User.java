@@ -18,9 +18,6 @@ import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * User model
- */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "USERS")
