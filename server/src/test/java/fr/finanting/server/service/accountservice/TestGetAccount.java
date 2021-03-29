@@ -2,13 +2,11 @@ package fr.finanting.server.service.accountservice;
 
 import fr.finanting.server.dto.AccountDTO;
 import fr.finanting.server.exception.AccountNotExistException;
-import fr.finanting.server.exception.NotAdminGroupException;
 import fr.finanting.server.exception.NotUserAccountException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Account;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.UpdateAccountParameter;
 import fr.finanting.server.repository.AccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;

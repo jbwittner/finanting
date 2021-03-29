@@ -1,8 +1,5 @@
 package fr.finanting.server.service.userservice;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.javafaker.Name;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import fr.finanting.server.dto.UserDTO;
 import fr.finanting.server.exception.UserEmailAlreadyExistException;
 import fr.finanting.server.exception.UserNameAlreadyExistException;
-import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.UserUpdateParameter;
 import fr.finanting.server.repository.UserRepository;

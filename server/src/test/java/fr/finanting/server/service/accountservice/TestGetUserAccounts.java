@@ -5,10 +5,6 @@ import fr.finanting.server.dto.AccountsDTO;
 import fr.finanting.server.model.Account;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.CreateAccountParameter;
-import fr.finanting.server.parameter.UpdateAccountParameter;
-import fr.finanting.server.parameter.subpart.AddressParameter;
-import fr.finanting.server.parameter.subpart.BankDetailsParameter;
 import fr.finanting.server.repository.AccountRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
@@ -17,7 +13,6 @@ import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
