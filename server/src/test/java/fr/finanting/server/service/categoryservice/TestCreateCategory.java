@@ -54,7 +54,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
         this.createCategoryParameter = new CreateCategoryParameter();
         this.createCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
         this.createCategoryParameter.setCategoryType(CategoryType.EXPENSE);
-        this.createCategoryParameter.setDescritpion(this.faker.yoda().quote());
+        this.createCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         this.createCategoryParameter.setLabel(this.faker.company().name());
 
         this.group = this.factory.getGroup();
@@ -128,6 +128,39 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
         this.createCategoryParameter.setParentId(this.factory.getRandomInteger());
 
         Assertions.assertThrows(CategoryNotExistException.class,
+            () -> this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName()));
+    }
+
+    @Test
+    public void testCreateCategoryWithBadAssociationtUserParentCategory() {
+        Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+
+        this.createCategoryParameter.setParentId(category.getId());
+
+        Assertions.assertThrows(BadAssociationCategoryUserGroup.class,
+            () -> this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName()));
+    }
+
+    @Test
+    public void dd() {
+        Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+
+        this.createCategoryParameter.setParentId(category.getId());
+        this.createCategoryParameter.setGroupName(this.factory.getRandomAlphanumericString());
+
+        Assertions.assertThrows(BadAssociationCategoryUserGroup.class,
+            () -> this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName()));
+    }
+
+    
+    @Test
+    public void testCreateCategoryWithBadAssociationtGroupParentCategory() {
+        Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
+
+        this.createCategoryParameter.setGroupName(this.group.getGroupName());
+        this.createCategoryParameter.setParentId(category.getId());
+
+        Assertions.assertThrows(BadAssociationCategoryUserGroup.class,
             () -> this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName()));
     }
 

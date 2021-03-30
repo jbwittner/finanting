@@ -41,24 +41,25 @@ public class CategoryServiceImpl implements CategoryService {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
+        // check if the new category are a sub category
         if(createCategoryParameter.getParentId() != null){
             Integer id = createCategoryParameter.getParentId();
             Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
             boolean areGoodAssociation = false;
 
-            if(parentCategory.getUser() != null){
-                if(parentCategory.getUser().getUserName().equals(userName)){
-                    areGoodAssociation = true;
-                } else {
-                    throw new CategoryNoUserException(id);
-                }
-            } else if(parentCategory.getGroup() != null) {
-
+            if(parentCategory.getGroup() != null && createCategoryParameter.getGroupName() != null){
                 parentCategory.getGroup().checkAreInGroup(user);
 
                 if(parentCategory.getGroup().getGroupName().equals(createCategoryParameter.getGroupName())){
                     areGoodAssociation = true;
+                }
+
+            } else if(parentCategory.getUser() != null  && createCategoryParameter.getGroupName() == null){
+                if(parentCategory.getUser().getUserName().equals(userName)){
+                    areGoodAssociation = true;
+                } else {
+                    throw new CategoryNoUserException(id);
                 }
             }
 
