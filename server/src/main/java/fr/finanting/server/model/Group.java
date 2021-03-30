@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
+
+import fr.finanting.server.exception.UserNotInGroupException;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -18,7 +21,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "GROUPS")
+@Table(name = "USER_GROUPS")
 @Data
 public class Group extends MotherPersistant {
 
@@ -44,9 +47,22 @@ public class Group extends MotherPersistant {
 
     @Override
     public String toString() {
-        return "Group{" +
-                "groupName='" + groupName + '\'' +
-                ", id=" + id +
-                '}';
+        return "Group [id=" + this.id + "groupName=" + groupName + ", userAdmin=" + userAdmin + "]";
     }
+
+    public void checkAreInGroup(User user) throws UserNotInGroupException{
+        boolean areInGroup = false;
+
+        for(final User userInGroup : this.users){
+            if(user.getUserName().equals(userInGroup.getUserName())){
+                areInGroup = true;
+                break;
+            }
+        }
+
+        if(!areInGroup){
+            throw new UserNotInGroupException(user, this);
+        }
+    }
+    
 }
