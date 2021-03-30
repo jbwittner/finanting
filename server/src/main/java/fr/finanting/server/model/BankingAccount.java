@@ -46,4 +46,9 @@ public class BankingAccount extends MotherPersistant {
     
     @Embedded
     private Address address;
+
+    @Override
+    public String toString() {
+        return "BankingAccount [id= " + this.id + "abbreviation=" + abbreviation + ", label=" + label + ", user=" + user + "]";
+    }
 }

@@ -8,8 +8,6 @@ public class BankingAccountDTO {
 
     private Integer id;
     private String label;
-    private GroupDTO groupDTO;
-    private UserDTO userDTO;
     private String bankName;
     private String abbreviation;
     private Integer balance;
@@ -26,14 +24,6 @@ public class BankingAccountDTO {
 
         if(bankingAccount.getAddress() != null){
             this.addressDTO = new AddressDTO(bankingAccount.getAddress());
-        }
-
-        if(bankingAccount.getGroup() != null){
-            this.groupDTO = new GroupDTO(bankingAccount.getGroup());
-        }
-
-        if(bankingAccount.getUser() != null){
-            this.userDTO = new UserDTO(bankingAccount.getUser());
         }
 
         if(bankingAccount.getBankDetails() != null){

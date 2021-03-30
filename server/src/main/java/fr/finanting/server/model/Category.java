@@ -3,6 +3,7 @@ package fr.finanting.server.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -23,12 +24,11 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Category extends MotherPersistant {
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "PARENT_ID", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "PARENT_ID")
     private Category parent;
 
-    @OneToMany
-    @JoinColumn(name = "CHILD_ID", insertable = false, updatable = false)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "parent")
     private List<Category> child;
 
     @Column(name = "LABEL", nullable = false)
@@ -51,5 +51,10 @@ public class Category extends MotherPersistant {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    @Override
+    public String toString() {
+        return "Category [id= " + this.id + "abbreviation=" + abbreviation + ", label=" + label + ", user=" + user + "]";
+    }
     
 }

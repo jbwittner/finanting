@@ -39,13 +39,12 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     @Override
     public BankingAccountDTO createAccount(final CreateBankingAccountParameter createBankingAccountParameter, final String userName)
-            throws UserNotExistException, GroupNotExistException{
+            throws GroupNotExistException{
 
         BankingAccount bankingAccount = new BankingAccount();
 
         if(createBankingAccountParameter.getGroupName() == null){
-            final User user = this.userRepository.findByUserName(userName)
-                    .orElseThrow(() -> new UserNotExistException(userName));
+            final User user = this.userRepository.findByUserName(userName).orElseThrow();
             bankingAccount.setUser(user);
         } else {
             final String groupName = createBankingAccountParameter.getGroupName();
@@ -96,29 +95,17 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     }
 
-    private void checkIsUserAccount(final BankingAccount bankingAccount, final String userName)
+    private void checkIsUserAccount(final BankingAccount bankingAccount, final User user)
             throws NotUserBankingAccountException, UserNotInGroupException {
 
         final Group group = bankingAccount.getGroup();
 
         if(group == null) {
-            if(!bankingAccount.getUser().getUserName().equals(userName)){
-                throw new NotUserBankingAccountException(userName, bankingAccount);
+            if(!bankingAccount.getUser().getUserName().equals(user.getUserName())){
+                throw new NotUserBankingAccountException(user.getUserName(), bankingAccount);
             }
         } else {
-            boolean isInGroup = false;
-
-            for(final User user : group.getUsers()){
-                if(user.getUserName().equals(userName)){
-                    isInGroup = true;
-                    break;
-                }
-            }
-
-            if(!isInGroup){
-                final User user = this.userRepository.findByUserName(userName).orElseThrow();
-                throw new UserNotInGroupException(user, group);
-            }
+            group.checkAreInGroup(user);
         }
 
     }
@@ -211,7 +198,9 @@ public class BankingAccountServiceImpl implements BankingAccountService {
         final BankingAccount bankingAccount = this.bankingAccountRepository.findById(accountId)
                 .orElseThrow(() -> new BankingAccountNotExistException(accountId));
 
-        this.checkIsUserAccount(bankingAccount, userName);
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+
+        this.checkIsUserAccount(bankingAccount, user);
 
         final BankingAccountDTO bankingAccountDTO = new BankingAccountDTO(bankingAccount);
         bankingAccountDTO.setBalance(bankingAccount.getInitialBalance());

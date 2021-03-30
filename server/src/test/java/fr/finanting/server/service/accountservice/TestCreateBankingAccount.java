@@ -73,13 +73,6 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateUserAccountUserNotExist() {
-        
-        Assertions.assertThrows(UserNotExistException.class,
-            () -> this.bankingAccountServiceImpl.createAccount(createBankingAccountParameter, this.factory.getRandomAlphanumericString()));
-    }
-
-    @Test
     public void testCreateGroupAccountGroupNotExist() {
 
         this.createBankingAccountParameter.setGroupName(this.factory.getRandomAlphanumericString());
@@ -143,14 +136,8 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
 
         if(createBankingAccountParameter.getGroupName() == null){
             Assertions.assertEquals(user.getUserName(),
-                    bankingAccountDTO.getUserDTO().getUserName());
-
-            Assertions.assertEquals(user.getUserName(),
                     bankingAccount.getUser().getUserName());
         } else {
-            Assertions.assertEquals(createBankingAccountParameter.getGroupName(),
-                    bankingAccountDTO.getGroupDTO().getGroupName());
-
             Assertions.assertEquals(createBankingAccountParameter.getGroupName(),
                     bankingAccount.getGroup().getGroupName());
         }
