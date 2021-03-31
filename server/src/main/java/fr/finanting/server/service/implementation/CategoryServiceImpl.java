@@ -108,7 +108,9 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNoUserException(updateCategoryParameter.getId());
         }
 
-        if(updateCategoryParameter.getParentId() != null){
+        if(updateCategoryParameter.getParentId() == null){
+            category.setParent(null);
+        } else {
             final Integer id = updateCategoryParameter.getParentId();
             final Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
@@ -135,8 +137,6 @@ public class CategoryServiceImpl implements CategoryService {
 
             category.setParent(parentCategory);
 
-        } else {
-            category.setParent(null);
         }
 
         category.setLabel(updateCategoryParameter.getLabel());
