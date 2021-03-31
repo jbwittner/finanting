@@ -15,7 +15,7 @@ public class TreeCategoriesDTO {
     private String abbreviation;
     private String descritpion;
     private CategoryType categoryType;
-    private List<TreeCategoriesDTO> treeCategoriesDTOs;
+    private List<TreeCategoriesDTO> childTreeCategoriesDTOs;
 
     public TreeCategoriesDTO(final Category category){
         this.id = category.getId();
@@ -24,11 +24,11 @@ public class TreeCategoriesDTO {
         this.descritpion= category.getDescritpion();
         this.categoryType= category.getCategoryType();
 
-        this.treeCategoriesDTOs = new ArrayList<>();
+        this.childTreeCategoriesDTOs = new ArrayList<>();
 
         for(final Category childCategory : category.getChild()){
-            TreeCategoriesDTO childTreeCategoriesDTO = new TreeCategoriesDTO(childCategory);
-            treeCategoriesDTOs.add(childTreeCategoriesDTO);
+            final TreeCategoriesDTO childTreeCategoriesDTO = new TreeCategoriesDTO(childCategory);
+            childTreeCategoriesDTOs.add(childTreeCategoriesDTO);
         }
 
     }

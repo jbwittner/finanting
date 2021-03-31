@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class GroupingCategoriesDTO {
     
-    private GroupDTO groupDTO;
+    private String groupName;
     private List<TreeCategoriesDTO> treeCategoriesDTOs = new ArrayList<>();
 
 }

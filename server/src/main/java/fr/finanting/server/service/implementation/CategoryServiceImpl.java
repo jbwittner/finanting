@@ -1,9 +1,14 @@
 package fr.finanting.server.service.implementation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.finanting.server.dto.CategoryDTO;
+import fr.finanting.server.dto.GroupDTO;
+import fr.finanting.server.dto.GroupingCategoriesDTO;
 import fr.finanting.server.dto.TreeCategoriesDTO;
 import fr.finanting.server.dto.UserCategoryDTO;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroup;
@@ -153,12 +158,48 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public TreeCategoriesDTO getUserCategory(String userName) {
-        TreeCategoriesDTO treeCategoriesDTO = new TreeCategoriesDTO();
+    public UserCategoryDTO getUserCategory(final String userName) {
 
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
+        List<Category> motherCategories = this.categoryRepository.findByUserAndGroupIsNullAndParentIsNull(user);
 
-        return treeCategoriesDTO;
+        final UserCategoryDTO userCategoryDTO = new UserCategoryDTO();
+        final List<GroupingCategoriesDTO> groupingCategoriesDTOs = new ArrayList<>();
+
+        // User categories
+        final GroupingCategoriesDTO userGroupingCategoriesDTO = new GroupingCategoriesDTO();
+        final List<TreeCategoriesDTO> userTreeCategoriesDTOs = new ArrayList<>();
+        
+        for(final Category motherCategory : motherCategories){
+            final TreeCategoriesDTO treeCategoriesDTO = new TreeCategoriesDTO(motherCategory);
+            userTreeCategoriesDTOs.add(treeCategoriesDTO);
+        }
+        userGroupingCategoriesDTO.setTreeCategoriesDTOs(userTreeCategoriesDTOs);
+        groupingCategoriesDTOs.add(userGroupingCategoriesDTO);
+
+        // Groups categories
+        final List<Group> groups = user.getGroups();
+
+        for(final Group group : groups){
+            motherCategories = this.categoryRepository.findByUserAndGroupAndParentIsNull(user, group);
+
+            final GroupingCategoriesDTO groupGroupingCategoriesDTO = new GroupingCategoriesDTO();
+            final List<TreeCategoriesDTO> groupTreeCategoriesDTOs = new ArrayList<>();
+
+            for(final Category motherCategory : motherCategories){
+                final TreeCategoriesDTO treeCategoriesDTO = new TreeCategoriesDTO(motherCategory);
+                groupTreeCategoriesDTOs.add(treeCategoriesDTO);
+            }
+
+            groupGroupingCategoriesDTO.setGroupName(group.getGroupName());
+            groupGroupingCategoriesDTO.setTreeCategoriesDTOs(groupTreeCategoriesDTOs);
+            groupingCategoriesDTOs.add(groupGroupingCategoriesDTO);
+        }
+
+        userCategoryDTO.setGroupingCategoriesDTOs(groupingCategoriesDTOs);
+
+        return userCategoryDTO;
     }
 
 }

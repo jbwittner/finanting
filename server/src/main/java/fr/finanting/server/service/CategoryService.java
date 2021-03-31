@@ -19,6 +19,6 @@ public interface CategoryService {
     public CategoryDTO updateCategory(UpdateCategoryParameter updateCategoryParameter, String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup;
 
-    public TreeCategoriesDTO getUserCategory(String userName);
+    public UserCategoryDTO getUserCategory(String userName);
     
 }
