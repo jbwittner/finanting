@@ -34,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO createCategory(CreateCategoryParameter createCategoryParameter, String userName)
+    public CategoryDTO createCategory(final CreateCategoryParameter createCategoryParameter, final String userName)
         throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException{
 
         Category category = new Category();
@@ -43,8 +43,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         // check if the new category are a sub category
         if(createCategoryParameter.getParentId() != null){
-            Integer id = createCategoryParameter.getParentId();
-            Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
+            final Integer id = createCategoryParameter.getParentId();
+            final Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
             boolean areGoodAssociation = false;
 
@@ -87,38 +87,42 @@ public class CategoryServiceImpl implements CategoryService {
 
         category = this.categoryRepository.save(category);
 
-        CategoryDTO categoryDTO = new CategoryDTO(category);
+        final CategoryDTO categoryDTO = new CategoryDTO(category);
 
         return categoryDTO;
 
     }
 
     @Override
-    public CategoryDTO updateCategory(UpdateCategoryParameter updateCategoryParameter, String userName)
+    public CategoryDTO updateCategory(final UpdateCategoryParameter updateCategoryParameter, final String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup{
 
-        Category category = this.categoryRepository.findById(updateCategoryParameter.getId())
+        final Category category = this.categoryRepository.findById(updateCategoryParameter.getId())
             .orElseThrow(() -> new CategoryNotExistException(updateCategoryParameter.getId()));
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
+        if(category.getGroup() != null){
+            category.getGroup().checkAreInGroup(user);
+        } else if (!category.getUser().getUserName().equals(userName)){
+            throw new CategoryNoUserException(updateCategoryParameter.getId());
+        }
+
         if(updateCategoryParameter.getParentId() != null){
-            Integer id = updateCategoryParameter.getParentId();
-            Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
+            final Integer id = updateCategoryParameter.getParentId();
+            final Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
             boolean areGoodAssociation = false;
 
-            if(parentCategory.getUser() != null){
-                if(parentCategory.getUser().getUserName().equals(userName)
-                && parentCategory.getUser().getUserName().equals(category.getUser().getUserName())){
+            if(parentCategory.getUser() != null && category.getUser() != null){
+                if(parentCategory.getUser().getUserName().equals(userName)){
                     areGoodAssociation = true;
                 } else {
                     throw new CategoryNoUserException(id);
                 }
-            } else if(parentCategory.getGroup() != null) {
+            } else if(parentCategory.getGroup() != null && category.getGroup() != null) {
 
                 parentCategory.getGroup().checkAreInGroup(user);
-                category.getGroup().checkAreInGroup(user);
 
                 if(parentCategory.getGroup().getGroupName().equals(category.getGroup().getGroupName())){
                     areGoodAssociation = true;
@@ -131,6 +135,8 @@ public class CategoryServiceImpl implements CategoryService {
 
             category.setParent(parentCategory);
 
+        } else {
+            category.setParent(null);
         }
 
         category.setLabel(updateCategoryParameter.getLabel());
@@ -138,7 +144,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.setDescritpion(updateCategoryParameter.getDescritpion());
         category.setCategoryType(updateCategoryParameter.getCategoryType());
 
-        CategoryDTO categoryDTO = new CategoryDTO(category);
+        final CategoryDTO categoryDTO = new CategoryDTO(category);
 
         return categoryDTO;
 

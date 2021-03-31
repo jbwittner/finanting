@@ -56,7 +56,7 @@ public class User extends MotherPersistant {
 
     @Override
     public String toString() {
-        return "User [id=" + this.id + "roles=" + roles + ", userName=" + userName + "]";
+        return "User [id=" + this.id + ", roles=" + roles + ", userName=" + userName + "]";
     }
 
     

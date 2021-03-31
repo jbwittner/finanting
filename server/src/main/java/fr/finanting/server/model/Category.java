@@ -1,11 +1,8 @@
 package fr.finanting.server.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -54,7 +51,7 @@ public class Category extends MotherPersistant {
 
     @Override
     public String toString() {
-        return "Category [id= " + this.id + "abbreviation=" + abbreviation + ", label=" + label + ", user=" + user + "]";
+        return "Category [id= " + this.id + ", abbreviation=" + abbreviation + ", label=" + label + ", user=" + user + "]";
     }
     
 }

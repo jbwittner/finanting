@@ -49,6 +49,6 @@ public class BankingAccount extends MotherPersistant {
 
     @Override
     public String toString() {
-        return "BankingAccount [id= " + this.id + "abbreviation=" + abbreviation + ", label=" + label + ", user=" + user + "]";
+        return "BankingAccount [id= " + this.id + ", abbreviation=" + abbreviation + ", label=" + label + ", user=" + user + "]";
     }
 }
