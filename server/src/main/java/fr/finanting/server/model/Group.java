@@ -29,13 +29,13 @@ public class Group extends MotherPersistant {
     private String groupName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ADMIN", nullable = false, unique = true)
+    @JoinColumn(name = "USER_ADMIN", nullable = false)
     private User userAdmin;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<BankingAccount> accounts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<Category> categories = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)

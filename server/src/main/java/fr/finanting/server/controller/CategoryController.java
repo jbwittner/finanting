@@ -1,6 +1,7 @@
 package fr.finanting.server.controller;
 
 import fr.finanting.server.dto.CategoryDTO;
+import fr.finanting.server.dto.UserCategoryDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.parameter.CreateCategoryParameter;
 import fr.finanting.server.security.UserDetailsImpl;
@@ -27,6 +28,13 @@ public class CategoryController {
             throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException  {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return categoryService.createCategory(createCategoryParameter, userDetailsImpl.getUsername());
+    }
+
+    @GetMapping("/getUserCategory")
+    public UserCategoryDTO getUserCategory(final Authentication authentication)
+            throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException  {
+        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        return categoryService.getUserCategory(userDetailsImpl.getUsername());
     }
     
 }
