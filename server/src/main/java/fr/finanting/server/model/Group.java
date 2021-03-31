@@ -50,7 +50,7 @@ public class Group extends MotherPersistant {
         return "Group [id=" + this.id + ", groupName=" + groupName + ", userAdmin=" + userAdmin + "]";
     }
 
-    public void checkAreInGroup(User user) throws UserNotInGroupException{
+    public void checkAreInGroup(final User user) throws UserNotInGroupException{
         boolean areInGroup = false;
 
         for(final User userInGroup : this.users){
