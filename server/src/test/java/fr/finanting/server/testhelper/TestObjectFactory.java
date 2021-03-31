@@ -254,7 +254,7 @@ public class TestObjectFactory {
     }
 
     private Category getCategory(final User user, final Group group, final boolean isExpense){
-        Category category = new Category();
+        final Category category = new Category();
 
         category.setAbbreviation(this.getRandomAlphanumericString(6).toUpperCase());
         CategoryType categoryType;

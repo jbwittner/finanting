@@ -47,7 +47,7 @@ public class Group extends MotherPersistant {
 
     @Override
     public String toString() {
-        return "Group [id=" + this.id + "groupName=" + groupName + ", userAdmin=" + userAdmin + "]";
+        return "Group [id=" + this.id + ", groupName=" + groupName + ", userAdmin=" + userAdmin + "]";
     }
 
     public void checkAreInGroup(User user) throws UserNotInGroupException{
