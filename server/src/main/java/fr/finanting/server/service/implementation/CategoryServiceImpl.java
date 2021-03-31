@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.finanting.server.dto.CategoryDTO;
+import fr.finanting.server.dto.TreeCategoriesDTO;
+import fr.finanting.server.dto.UserCategoryDTO;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroup;
 import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.CategoryNotExistException;
@@ -148,6 +150,15 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryDTO;
 
+    }
+
+    @Override
+    public TreeCategoriesDTO getUserCategory(String userName) {
+        TreeCategoriesDTO treeCategoriesDTO = new TreeCategoriesDTO();
+
+
+
+        return treeCategoriesDTO;
     }
 
 }
