@@ -41,26 +41,26 @@ public class TestGetAllUserCategory extends AbstractMotherIntegrationTest {
         this.categoryServiceImpl = new CategoryServiceImpl(this.userRepository, this.groupRepository, this.categoryRepository);
     }
 
-    private List<Group> prepareGroupCategories(User user){
+    private List<Group> prepareGroupCategories(final User user){
 
-        List<Group> groupList = new ArrayList<>();
+        final List<Group> groupList = new ArrayList<>();
 
         for(int groupIndex = 0; groupIndex < NUMBER_GROUP; groupIndex++){
 
             Group group = this.factory.getGroup();
             this.userRepository.save(group.getUserAdmin());
-            List<User> users = group.getUsers();
+            final List<User> users = group.getUsers();
             users.add(user);
             group.setUsers(users);
             group = this.groupRepository.save(group);
 
-            List<Category> categories = new ArrayList<>();
+            final List<Category> categories = new ArrayList<>();
 
             for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
     
                 Category motherCategory = this.categoryRepository.save(this.factory.getCategory(group, true));
     
-                List<Category> childCategories = new ArrayList<>();
+                final List<Category> childCategories = new ArrayList<>();
     
                 for(int childIndex = 0; childIndex < NUMBER_CHILD_CATEGORY; childIndex++){
     
@@ -88,15 +88,15 @@ public class TestGetAllUserCategory extends AbstractMotherIntegrationTest {
 
     }
 
-    private List<Category> prepareUserCategories(User user){
+    private List<Category> prepareUserCategories(final User user){
 
-        List<Category> categories = new ArrayList<>();
+        final List<Category> categories = new ArrayList<>();
 
         for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
 
             Category motherCategory = this.categoryRepository.save(this.factory.getCategory(user, true));
 
-            List<Category> childCategories = new ArrayList<>();
+            final List<Category> childCategories = new ArrayList<>();
 
             for(int childIndex = 0; childIndex < NUMBER_CHILD_CATEGORY; childIndex++){
 
@@ -123,20 +123,20 @@ public class TestGetAllUserCategory extends AbstractMotherIntegrationTest {
 
         User user = this.userRepository.save(this.factory.getUser());
 
-        int userId = user.getId();
+        final int userId = user.getId();
 
-        List<Group> groupList = this.prepareGroupCategories(user);
-        List<Category> userCategories = this.prepareUserCategories(user);
+        final List<Group> groupList = this.prepareGroupCategories(user);
+        final List<Category> userCategories = this.prepareUserCategories(user);
 
         user = this.userRepository.findById(userId).orElseThrow();
         
-        UserCategoryDTO userCategoryDTO = this.categoryServiceImpl.getAllUserCategory(user.getUserName());
+        final UserCategoryDTO userCategoryDTO = this.categoryServiceImpl.getAllUserCategory(user.getUserName());
 
         boolean haveUserCategories = false;
 
         Assertions.assertEquals(NUMBER_GROUP + 1, userCategoryDTO.getGroupingCategoriesDTOs().size());
 
-        for(GroupingCategoriesDTO groupingCategoriesDTO : userCategoryDTO.getGroupingCategoriesDTOs()){
+        for(final GroupingCategoriesDTO groupingCategoriesDTO : userCategoryDTO.getGroupingCategoriesDTOs()){
 
             List<Category> categories = new ArrayList<>();
 
@@ -146,7 +146,7 @@ public class TestGetAllUserCategory extends AbstractMotherIntegrationTest {
             } else {
                 boolean haveGroup = false;
 
-                for(Group group : groupList){
+                for(final Group group : groupList){
                     if(group.getGroupName().equals(groupingCategoriesDTO.getGroupName())){
                         haveGroup = true;
                         categories = group.getCategories();
@@ -157,13 +157,13 @@ public class TestGetAllUserCategory extends AbstractMotherIntegrationTest {
 
             }
 
-            for(TreeCategoriesDTO treeCategoriesDTO : groupingCategoriesDTO.getTreeCategoriesDTOs()){
+            for(final TreeCategoriesDTO treeCategoriesDTO : groupingCategoriesDTO.getTreeCategoriesDTOs()){
 
                 boolean isPresent = false;
     
                 Category childCategory = new Category();
     
-                for(Category category : categories){
+                for(final Category category : categories){
                     if(category.getId().equals(treeCategoriesDTO.getId())){
                         isPresent = true;
                         childCategory = category;
@@ -177,10 +177,10 @@ public class TestGetAllUserCategory extends AbstractMotherIntegrationTest {
     
                 Assertions.assertTrue(isPresent);
     
-                for(TreeCategoriesDTO childTreeCategoriesDTO : treeCategoriesDTO.getChildTreeCategoriesDTOs()){
+                for(final TreeCategoriesDTO childTreeCategoriesDTO : treeCategoriesDTO.getChildTreeCategoriesDTOs()){
                     boolean childIsPresent = false;
     
-                    for(Category category : childCategory.getChild()){
+                    for(final Category category : childCategory.getChild()){
                         if(category.getId().equals(childTreeCategoriesDTO.getId())){
                             childIsPresent = true;
                             Assertions.assertEquals(category.getAbbreviation(), childTreeCategoriesDTO.getAbbreviation());

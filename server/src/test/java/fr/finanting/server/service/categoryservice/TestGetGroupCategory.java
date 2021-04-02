@@ -46,16 +46,16 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
     public void testGetUserCategory() throws GroupNotExistException, UserNotInGroupException{
 
         Group group = this.factory.getGroup();
-        User user = this.userRepository.save(group.getUserAdmin());
+        final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
 
-        List<Category> categories = new ArrayList<>();
+        final List<Category> categories = new ArrayList<>();
 
         for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
 
             Category motherCategory = this.categoryRepository.save(this.factory.getCategory(group, true));
 
-            List<Category> childCategories = new ArrayList<>();
+            final List<Category> childCategories = new ArrayList<>();
 
             for(int childIndex = 0; childIndex < NUMBER_CHILD_CATEGORY; childIndex++){
 
@@ -71,17 +71,17 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
 
         }
 
-        GroupingCategoriesDTO groupingCategoriesDTO = this.categoryServiceImpl.getGroupCategory(group.getGroupName(), user.getUserName());
+        final GroupingCategoriesDTO groupingCategoriesDTO = this.categoryServiceImpl.getGroupCategory(group.getGroupName(), user.getUserName());
 
         Assertions.assertEquals(NUMBER_MOTHER_CATEGORY, groupingCategoriesDTO.getTreeCategoriesDTOs().size());
 
-        for(TreeCategoriesDTO treeCategoriesDTO : groupingCategoriesDTO.getTreeCategoriesDTOs()){
+        for(final TreeCategoriesDTO treeCategoriesDTO : groupingCategoriesDTO.getTreeCategoriesDTOs()){
 
             boolean isPresent = false;
 
             Category childCategory = new Category();
 
-            for(Category category : categories){
+            for(final Category category : categories){
                 if(category.getId().equals(treeCategoriesDTO.getId())){
                     isPresent = true;
                     childCategory = category;
@@ -95,10 +95,10 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
 
             Assertions.assertTrue(isPresent);
 
-            for(TreeCategoriesDTO childTreeCategoriesDTO : treeCategoriesDTO.getChildTreeCategoriesDTOs()){
+            for(final TreeCategoriesDTO childTreeCategoriesDTO : treeCategoriesDTO.getChildTreeCategoriesDTOs()){
                 boolean childIsPresent = false;
 
-                for(Category category : childCategory.getChild()){
+                for(final Category category : childCategory.getChild()){
                     if(category.getId().equals(childTreeCategoriesDTO.getId())){
                         childIsPresent = true;
                         Assertions.assertEquals(category.getAbbreviation(), childTreeCategoriesDTO.getAbbreviation());
@@ -119,7 +119,7 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserCategoryNotExistGroup() throws GroupNotExistException, UserNotInGroupException{
 
-        User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(GroupNotExistException.class,
             () -> this.categoryServiceImpl.getGroupCategory(this.factory.getRandomAlphanumericString(), user.getUserName()));
@@ -129,11 +129,11 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserCategorytNoUserGroup() throws GroupNotExistException, UserNotInGroupException{
 
-        Group group = this.factory.getGroup();
+        final Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
-        Group finalGroup = this.groupRepository.save(group);
+        final Group finalGroup = this.groupRepository.save(group);
 
-        User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(UserNotInGroupException.class,
             () -> this.categoryServiceImpl.getGroupCategory(finalGroup.getGroupName(), otherUser.getUserName()));

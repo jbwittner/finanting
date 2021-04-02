@@ -42,15 +42,15 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserCategory(){
 
-        User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.userRepository.save(this.factory.getUser());
 
-        List<Category> categories = new ArrayList<>();
+        final List<Category> categories = new ArrayList<>();
 
         for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
 
             Category motherCategory = this.categoryRepository.save(this.factory.getCategory(user, true));
 
-            List<Category> childCategories = new ArrayList<>();
+            final List<Category> childCategories = new ArrayList<>();
 
             for(int childIndex = 0; childIndex < NUMBER_CHILD_CATEGORY; childIndex++){
 
@@ -66,17 +66,17 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
 
         }
 
-        GroupingCategoriesDTO groupingCategoriesDTO = this.categoryServiceImpl.getUserCategory(user.getUserName());
+        final GroupingCategoriesDTO groupingCategoriesDTO = this.categoryServiceImpl.getUserCategory(user.getUserName());
 
         Assertions.assertEquals(NUMBER_MOTHER_CATEGORY, groupingCategoriesDTO.getTreeCategoriesDTOs().size());
 
-        for(TreeCategoriesDTO treeCategoriesDTO : groupingCategoriesDTO.getTreeCategoriesDTOs()){
+        for(final TreeCategoriesDTO treeCategoriesDTO : groupingCategoriesDTO.getTreeCategoriesDTOs()){
 
             boolean isPresent = false;
 
             Category childCategory = new Category();
 
-            for(Category category : categories){
+            for(final Category category : categories){
                 if(category.getId().equals(treeCategoriesDTO.getId())){
                     isPresent = true;
                     childCategory = category;
@@ -90,10 +90,10 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
 
             Assertions.assertTrue(isPresent);
 
-            for(TreeCategoriesDTO childTreeCategoriesDTO : treeCategoriesDTO.getChildTreeCategoriesDTOs()){
+            for(final TreeCategoriesDTO childTreeCategoriesDTO : treeCategoriesDTO.getChildTreeCategoriesDTOs()){
                 boolean childIsPresent = false;
 
-                for(Category category : childCategory.getChild()){
+                for(final Category category : childCategory.getChild()){
                     if(category.getId().equals(childTreeCategoriesDTO.getId())){
                         childIsPresent = true;
                         Assertions.assertEquals(category.getAbbreviation(), childTreeCategoriesDTO.getAbbreviation());
