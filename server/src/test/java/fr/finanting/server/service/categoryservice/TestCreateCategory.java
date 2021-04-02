@@ -1,6 +1,5 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.server.dto.CategoryDTO;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroup;
 import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.CategoryNotExistException;
@@ -65,15 +64,9 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateSimpleUserCategory()
         throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException {
-        final CategoryDTO categoryDTO = this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
 
-        final Category category = this.categoryRepository.findById(categoryDTO.getId()).orElseThrow();
-
-        Assertions.assertEquals(this.createCategoryParameter.getAbbreviation().toUpperCase(), categoryDTO.getAbbreviation());
-        Assertions.assertEquals(this.createCategoryParameter.getCategoryType(), categoryDTO.getCategoryType());
-        Assertions.assertEquals(this.createCategoryParameter.getDescritpion(), categoryDTO.getDescritpion());
-        Assertions.assertEquals(this.createCategoryParameter.getLabel(), categoryDTO.getLabel());
-        Assertions.assertNull(categoryDTO.getParentId());
+        final Category category = this.categoryRepository.findAll().get(0);
 
         Assertions.assertEquals(this.createCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(this.createCategoryParameter.getCategoryType(), category.getCategoryType());
@@ -88,15 +81,10 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
     public void testCreateSimpleGroupCategory()
         throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException {
         this.createCategoryParameter.setGroupName(this.group.getGroupName());
-        final CategoryDTO categoryDTO = this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
+        
+        this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
 
-        final Category category = this.categoryRepository.findById(categoryDTO.getId()).orElseThrow();
-
-        Assertions.assertEquals(this.createCategoryParameter.getAbbreviation().toUpperCase(), categoryDTO.getAbbreviation());
-        Assertions.assertEquals(this.createCategoryParameter.getCategoryType(), categoryDTO.getCategoryType());
-        Assertions.assertEquals(this.createCategoryParameter.getDescritpion(), categoryDTO.getDescritpion());
-        Assertions.assertEquals(this.createCategoryParameter.getLabel(), categoryDTO.getLabel());
-        Assertions.assertNull(categoryDTO.getParentId());
+        final Category category = this.categoryRepository.findAll().get(0);
 
         Assertions.assertEquals(this.createCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(this.createCategoryParameter.getCategoryType(), category.getCategoryType());
@@ -115,15 +103,9 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
         this.createCategoryParameter.setParentId(parentCategory.getId());
 
-        final CategoryDTO categoryDTO = this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
 
-        final Category category = this.categoryRepository.findById(categoryDTO.getId()).orElseThrow();
-
-        Assertions.assertEquals(this.createCategoryParameter.getAbbreviation().toUpperCase(), categoryDTO.getAbbreviation());
-        Assertions.assertEquals(this.createCategoryParameter.getCategoryType(), categoryDTO.getCategoryType());
-        Assertions.assertEquals(this.createCategoryParameter.getDescritpion(), categoryDTO.getDescritpion());
-        Assertions.assertEquals(this.createCategoryParameter.getLabel(), categoryDTO.getLabel());
-        Assertions.assertEquals(this.createCategoryParameter.getParentId(),categoryDTO.getParentId());
+        final Category category = this.categoryRepository.findById(parentCategory.getId() + 1).orElseThrow();
 
         Assertions.assertEquals(this.createCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(this.createCategoryParameter.getCategoryType(), category.getCategoryType());
@@ -142,15 +124,9 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
         this.createCategoryParameter.setParentId(parentCategory.getId());
         this.createCategoryParameter.setGroupName(this.group.getGroupName());
 
-        final CategoryDTO categoryDTO = this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
 
-        final Category category = this.categoryRepository.findById(categoryDTO.getId()).orElseThrow();
-
-        Assertions.assertEquals(this.createCategoryParameter.getAbbreviation().toUpperCase(), categoryDTO.getAbbreviation());
-        Assertions.assertEquals(this.createCategoryParameter.getCategoryType(), categoryDTO.getCategoryType());
-        Assertions.assertEquals(this.createCategoryParameter.getDescritpion(), categoryDTO.getDescritpion());
-        Assertions.assertEquals(this.createCategoryParameter.getLabel(), categoryDTO.getLabel());
-        Assertions.assertEquals(this.createCategoryParameter.getParentId(),categoryDTO.getParentId());
+        final Category category = this.categoryRepository.findById(parentCategory.getId() + 1).orElseThrow();
 
         Assertions.assertEquals(this.createCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(this.createCategoryParameter.getCategoryType(), category.getCategoryType());

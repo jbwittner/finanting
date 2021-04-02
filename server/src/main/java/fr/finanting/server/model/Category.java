@@ -25,7 +25,7 @@ public class Category extends MotherPersistant {
     @JoinColumn(name = "PARENT_ID")
     private Category parent;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "parent")
+    @OneToMany(fetch = FetchType.EAGER ,mappedBy = "parent")
     private List<Category> child;
 
     @Column(name = "LABEL", nullable = false)

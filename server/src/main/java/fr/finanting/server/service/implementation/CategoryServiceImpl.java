@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.finanting.server.dto.CategoryDTO;
-import fr.finanting.server.dto.GroupDTO;
 import fr.finanting.server.dto.GroupingCategoriesDTO;
 import fr.finanting.server.dto.TreeCategoriesDTO;
 import fr.finanting.server.dto.UserCategoryDTO;
@@ -41,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO createCategory(final CreateCategoryParameter createCategoryParameter, final String userName)
+    public void createCategory(final CreateCategoryParameter createCategoryParameter, final String userName)
         throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException{
 
         Category category = new Category();
@@ -92,19 +90,15 @@ public class CategoryServiceImpl implements CategoryService {
             category.setGroup(group);
         }
 
-        category = this.categoryRepository.save(category);
-
-        final CategoryDTO categoryDTO = new CategoryDTO(category);
-
-        return categoryDTO;
+        this.categoryRepository.saveAndFlush(category);
 
     }
 
     @Override
-    public CategoryDTO updateCategory(final UpdateCategoryParameter updateCategoryParameter, final String userName)
+    public void updateCategory(final UpdateCategoryParameter updateCategoryParameter, final String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup{
 
-        final Category category = this.categoryRepository.findById(updateCategoryParameter.getId())
+        Category category = this.categoryRepository.findById(updateCategoryParameter.getId())
             .orElseThrow(() -> new CategoryNotExistException(updateCategoryParameter.getId()));
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
@@ -151,49 +145,67 @@ public class CategoryServiceImpl implements CategoryService {
         category.setDescritpion(updateCategoryParameter.getDescritpion());
         category.setCategoryType(updateCategoryParameter.getCategoryType());
 
-        final CategoryDTO categoryDTO = new CategoryDTO(category);
-
-        return categoryDTO;
+        this.categoryRepository.saveAndFlush(category);
 
     }
 
     @Override
-    public UserCategoryDTO getUserCategory(final String userName) {
+    public GroupingCategoriesDTO getUserCategory(final String userName){
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+        List<Category> motherCategories = this.categoryRepository.findByUserAndGroupIsNullAndParentIsNull(user);
+        return this.getTreeCategoryDTO(motherCategories);
+    }
+
+    @Override
+    public GroupingCategoriesDTO getGroupCategory(final String groupName, final String userName)
+        throws GroupNotExistException, UserNotInGroupException{
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        List<Category> motherCategories = this.categoryRepository.findByUserAndGroupIsNullAndParentIsNull(user);
+        final Group group = this.groupRepository.findByGroupName(groupName)
+                .orElseThrow(() -> new GroupNotExistException(groupName));
+
+        group.checkAreInGroup(user);
+
+        List<Category> motherCategories = this.categoryRepository.findByGroupAndParentIsNull(group);
+        return this.getTreeCategoryDTO(motherCategories);
+    }
+
+    private GroupingCategoriesDTO getTreeCategoryDTO(final List<Category> categories){
+
+        final GroupingCategoriesDTO groupingCategoriesDTO = new GroupingCategoriesDTO();
+        final List<TreeCategoriesDTO> treeCategoriesDTOs = new ArrayList<>();
+
+        for(final Category motherCategory : categories){
+            final TreeCategoriesDTO treeCategoriesDTO = new TreeCategoriesDTO(motherCategory);
+            treeCategoriesDTOs.add(treeCategoriesDTO);
+        }
+
+        groupingCategoriesDTO.setTreeCategoriesDTOs(treeCategoriesDTOs);
+
+        return groupingCategoriesDTO;
+    }
+
+    @Override
+    public UserCategoryDTO getAllUserCategory(final String userName) {
+
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         final UserCategoryDTO userCategoryDTO = new UserCategoryDTO();
         final List<GroupingCategoriesDTO> groupingCategoriesDTOs = new ArrayList<>();
 
         // User categories
-        final GroupingCategoriesDTO userGroupingCategoriesDTO = new GroupingCategoriesDTO();
-        final List<TreeCategoriesDTO> userTreeCategoriesDTOs = new ArrayList<>();
-        
-        for(final Category motherCategory : motherCategories){
-            final TreeCategoriesDTO treeCategoriesDTO = new TreeCategoriesDTO(motherCategory);
-            userTreeCategoriesDTOs.add(treeCategoriesDTO);
-        }
-        userGroupingCategoriesDTO.setTreeCategoriesDTOs(userTreeCategoriesDTOs);
+        GroupingCategoriesDTO userGroupingCategoriesDTO = this.getUserCategory(userName);
         groupingCategoriesDTOs.add(userGroupingCategoriesDTO);
 
         // Groups categories
         final List<Group> groups = user.getGroups();
 
         for(final Group group : groups){
-            motherCategories = this.categoryRepository.findByUserAndGroupAndParentIsNull(user, group);
-
-            final GroupingCategoriesDTO groupGroupingCategoriesDTO = new GroupingCategoriesDTO();
-            final List<TreeCategoriesDTO> groupTreeCategoriesDTOs = new ArrayList<>();
-
-            for(final Category motherCategory : motherCategories){
-                final TreeCategoriesDTO treeCategoriesDTO = new TreeCategoriesDTO(motherCategory);
-                groupTreeCategoriesDTOs.add(treeCategoriesDTO);
-            }
-
+            List<Category> motherCategories = this.categoryRepository.findByGroupAndParentIsNull(group);
+            final GroupingCategoriesDTO groupGroupingCategoriesDTO = this.getTreeCategoryDTO(motherCategories);
             groupGroupingCategoriesDTO.setGroupName(group.getGroupName());
-            groupGroupingCategoriesDTO.setTreeCategoriesDTOs(groupTreeCategoriesDTOs);
+            
             groupingCategoriesDTOs.add(groupGroupingCategoriesDTO);
         }
 

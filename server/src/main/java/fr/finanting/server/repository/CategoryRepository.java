@@ -10,6 +10,6 @@ public interface CategoryRepository extends AbstractRepository<Category, Integer
 
     List<Category> findByUserAndGroupIsNullAndParentIsNull(User user);
 
-    List<Category> findByUserAndGroupAndParentIsNull(User user, Group group);
+    List<Category> findByGroupAndParentIsNull(Group group);
     
 }

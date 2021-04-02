@@ -26,9 +26,11 @@ public class TreeCategoriesDTO {
 
         this.childTreeCategoriesDTOs = new ArrayList<>();
 
-        for(final Category childCategory : category.getChild()){
-            final TreeCategoriesDTO childTreeCategoriesDTO = new TreeCategoriesDTO(childCategory);
-            childTreeCategoriesDTOs.add(childTreeCategoriesDTO);
+        if(category.getChild() != null) {
+            for(final Category childCategory : category.getChild()){
+                final TreeCategoriesDTO childTreeCategoriesDTO = new TreeCategoriesDTO(childCategory);
+                childTreeCategoriesDTOs.add(childTreeCategoriesDTO);
+            } 
         }
 
     }
