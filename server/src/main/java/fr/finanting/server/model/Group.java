@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
+
+import fr.finanting.server.exception.UserNotInGroupException;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -18,7 +21,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "GROUPS")
+@Table(name = "USER_GROUPS")
 @Data
 public class Group extends MotherPersistant {
 
@@ -26,11 +29,14 @@ public class Group extends MotherPersistant {
     private String groupName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ADMIN", nullable = false, unique = true)
+    @JoinColumn(name = "USER_ADMIN", nullable = false)
     private User userAdmin;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<BankingAccount> accounts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    private List<Category> categories = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable( name = "USERS_GROUPS_ASSOCIATIONS",
@@ -41,9 +47,22 @@ public class Group extends MotherPersistant {
 
     @Override
     public String toString() {
-        return "Group{" +
-                "groupName='" + groupName + '\'' +
-                ", id=" + id +
-                '}';
+        return "Group [id=" + this.id + ", groupName=" + groupName + ", userAdmin=" + userAdmin + "]";
     }
+
+    public void checkAreInGroup(final User user) throws UserNotInGroupException{
+        boolean areInGroup = false;
+
+        for(final User userInGroup : this.users){
+            if(user.getUserName().equals(userInGroup.getUserName())){
+                areInGroup = true;
+                break;
+            }
+        }
+
+        if(!areInGroup){
+            throw new UserNotInGroupException(user, this);
+        }
+    }
+    
 }

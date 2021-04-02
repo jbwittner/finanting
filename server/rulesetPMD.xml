@@ -83,7 +83,7 @@
     <rule ref="category/java/codestyle.xml/CallSuperInConstructor" />
     <rule ref="category/java/codestyle.xml/ConfusingTernary">
         <properties>
-            <property name="ignoreElseIf" value="false" />
+            <property name="ignoreElseIf" value="true" />
         </properties>
     </rule>
     <rule ref="category/java/codestyle.xml/ControlStatementBraces">

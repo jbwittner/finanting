@@ -1,6 +1,8 @@
 package fr.finanting.server.testhelper;
 
 import fr.finanting.server.model.BankingAccount;
+import fr.finanting.server.model.Category;
+import fr.finanting.server.model.CategoryType;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -233,7 +235,7 @@ public class TestObjectFactory {
         bankDetailsDetails.setBankName(this.getRandomAlphanumericString());
         bankingAccount.setBankDetails(bankDetailsDetails);
 
-        bankingAccount.setAbbreviation(this.getRandomAlphanumericString(6));
+        bankingAccount.setAbbreviation(this.getRandomAlphanumericString(6).toUpperCase());
         bankingAccount.setInitialBalance(0);
         bankingAccount.setLabel(this.getRandomAlphanumericString());
 
@@ -250,5 +252,35 @@ public class TestObjectFactory {
     public BankingAccount getBankingAccount(final Group group){
         return this.getBankingAccount(null, group);
     }
+
+    private Category getCategory(final User user, final Group group, final boolean isExpense){
+        final Category category = new Category();
+
+        category.setAbbreviation(this.getRandomAlphanumericString(6).toUpperCase());
+        CategoryType categoryType;
+
+        if(isExpense){
+            categoryType = CategoryType.EXPENSE;
+        } else {
+            categoryType = CategoryType.REVENUE;
+        }
+
+        category.setCategoryType(categoryType);
+        category.setDescritpion(this.faker.superhero().descriptor());
+        category.setLabel(this.faker.company().catchPhrase());
+        category.setGroup(group);
+        category.setUser(user);
+
+        return category;
+    }
+
+    public Category getCategory(final User user, final boolean isExpense){
+        return this.getCategory(user, null, isExpense);
+    }
+
+    public Category getCategory(final Group group, final boolean isExpense){
+        return this.getCategory(null, group, isExpense);
+    }
+
 
 }

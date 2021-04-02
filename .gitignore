@@ -276,7 +276,6 @@ buildNumber.properties
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
-!.vscode/launch.json
 !.vscode/extensions.json
 
 ### VisualStudioCode Patch ###
@@ -312,7 +311,6 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/git,java,linux,maven,windows,java-web,intellij,code-java,intellij+all,intellij+iml,visualstudiocode
 
 .vagrant
-.vscode
 logs
 .settings
 .factorypath

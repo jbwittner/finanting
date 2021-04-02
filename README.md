@@ -1,8 +1,4 @@
-# myGuild
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/opendoha/finanting/tree/develop)
-
-[![Known Vulnerabilities](https://snyk.io/test/github/opendoha/finanting/badge.svg)](https://snyk.io/test/github/opendoha/finanting) ![](https://github.com/opendoha/myGuild/workflows/Project%20CI/badge.svg)
+# Finanting
 
 ## Information
 
