@@ -1,6 +1,5 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.server.dto.CategoryDTO;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroup;
 import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.CategoryNotExistException;
@@ -63,22 +62,18 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
         Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
 
+        Integer categoryId = category.getId();
+
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
-        updateCategoryParameter.setId(category.getId());
+        updateCategoryParameter.setId(categoryId);
         updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
         
-        final CategoryDTO categoryDTO = this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
 
-        category = this.categoryRepository.findById(categoryDTO.getId()).orElseThrow();
-
-        Assertions.assertEquals(updateCategoryParameter.getAbbreviation().toUpperCase(), categoryDTO.getAbbreviation());
-        Assertions.assertEquals(updateCategoryParameter.getCategoryType(), categoryDTO.getCategoryType());
-        Assertions.assertEquals(updateCategoryParameter.getDescritpion(), categoryDTO.getDescritpion());
-        Assertions.assertEquals(updateCategoryParameter.getLabel(), categoryDTO.getLabel());
-        Assertions.assertNull(categoryDTO.getParentId());
+        category = this.categoryRepository.findById(categoryId).orElseThrow();
 
         Assertions.assertEquals(updateCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(updateCategoryParameter.getCategoryType(), category.getCategoryType());
@@ -95,22 +90,18 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
         Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
 
+        Integer categoryId = category.getId();
+
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
-        updateCategoryParameter.setId(category.getId());
+        updateCategoryParameter.setId(categoryId);
         updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
         
-        final CategoryDTO categoryDTO = this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
 
-        category = this.categoryRepository.findById(categoryDTO.getId()).orElseThrow();
-
-        Assertions.assertEquals(updateCategoryParameter.getAbbreviation().toUpperCase(), categoryDTO.getAbbreviation());
-        Assertions.assertEquals(updateCategoryParameter.getCategoryType(), categoryDTO.getCategoryType());
-        Assertions.assertEquals(updateCategoryParameter.getDescritpion(), categoryDTO.getDescritpion());
-        Assertions.assertEquals(updateCategoryParameter.getLabel(), categoryDTO.getLabel());
-        Assertions.assertNull(categoryDTO.getParentId());
+        category = this.categoryRepository.findById(categoryId).orElseThrow();
 
         Assertions.assertEquals(updateCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(updateCategoryParameter.getCategoryType(), category.getCategoryType());
@@ -130,20 +121,20 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         category.setParent(parentCategory);
         category = this.categoryRepository.save(category);
 
+        Integer categoryId = category.getId();
+
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
-        updateCategoryParameter.setId(category.getId());
+        updateCategoryParameter.setId(categoryId);
         updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
 
-        final CategoryDTO categoryDTO = this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
 
-        category = this.categoryRepository.findById(categoryDTO.getId()).orElseThrow();
+        category = this.categoryRepository.findById(categoryId).orElseThrow();
 
         Assertions.assertNull(category.getParent());
-        Assertions.assertNull(categoryDTO.getParentId());
-
     }
 
     @Test
@@ -154,20 +145,19 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
-        updateCategoryParameter.setId(category.getId());
+        Integer categoryId = category.getId();
+        updateCategoryParameter.setId(categoryId);
         updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
         updateCategoryParameter.setParentId(parentCategory.getId());
 
-        final CategoryDTO categoryDTO = this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
 
-        category = this.categoryRepository.findById(categoryDTO.getId()).orElseThrow();
+        category = this.categoryRepository.findById(categoryId).orElseThrow();
 
         Assertions.assertEquals(parentCategory.getId(), category.getParent().getId());
-        Assertions.assertEquals(parentCategory.getId(), categoryDTO.getParentId());
-
 
     }
 
@@ -179,20 +169,19 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
-        updateCategoryParameter.setId(category.getId());
+        Integer categoryId = category.getId();
+        updateCategoryParameter.setId(categoryId);
         updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
         updateCategoryParameter.setParentId(parentCategory.getId());
 
-        final CategoryDTO categoryDTO = this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName());
 
-        category = this.categoryRepository.findById(categoryDTO.getId()).orElseThrow();
+        category = this.categoryRepository.findById(categoryId).orElseThrow();
 
         Assertions.assertEquals(parentCategory.getId(), category.getParent().getId());
-        Assertions.assertEquals(parentCategory.getId(), categoryDTO.getParentId());
-
 
     }
 

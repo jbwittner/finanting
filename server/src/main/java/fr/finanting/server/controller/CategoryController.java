@@ -1,6 +1,6 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.dto.CategoryDTO;
+import fr.finanting.server.dto.GroupingCategoriesDTO;
 import fr.finanting.server.dto.UserCategoryDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.parameter.CreateCategoryParameter;
@@ -23,18 +23,31 @@ public class CategoryController {
     }
 
     @PostMapping("/createCategory")
-    public CategoryDTO createCategory(final Authentication authentication,
+    public void createCategory(final Authentication authentication,
                                     @RequestBody final CreateCategoryParameter createCategoryParameter)
             throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException  {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return categoryService.createCategory(createCategoryParameter, userDetailsImpl.getUsername());
+        this.categoryService.createCategory(createCategoryParameter, userDetailsImpl.getUsername());
+    }
+
+    @GetMapping("/getAllUserCategory")
+    public UserCategoryDTO getAllUserCategory(final Authentication authentication) {
+        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        return this.categoryService.getAllUserCategory(userDetailsImpl.getUsername());
+    }
+
+    @GetMapping("/getGroupCategory/{groupName}")
+    public GroupingCategoriesDTO getGroupCategory(final Authentication authentication, 
+                                            @PathVariable final String groupName)
+            throws GroupNotExistException, UserNotInGroupException {
+        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        return this.categoryService.getGroupCategory(groupName, userDetailsImpl.getUsername());
     }
 
     @GetMapping("/getUserCategory")
-    public UserCategoryDTO getUserCategory(final Authentication authentication)
-            throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException  {
+    public GroupingCategoriesDTO getUserCategory(final Authentication authentication) {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return categoryService.getUserCategory(userDetailsImpl.getUsername());
+        return this.categoryService.getUserCategory(userDetailsImpl.getUsername());
     }
     
 }
