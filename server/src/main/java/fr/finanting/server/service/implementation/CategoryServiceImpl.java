@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void createCategory(final CreateCategoryParameter createCategoryParameter, final String userName)
         throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException{
 
-        Category category = new Category();
+        final Category category = new Category();
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -98,7 +98,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void updateCategory(final UpdateCategoryParameter updateCategoryParameter, final String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup{
 
-        Category category = this.categoryRepository.findById(updateCategoryParameter.getId())
+        final Category category = this.categoryRepository.findById(updateCategoryParameter.getId())
             .orElseThrow(() -> new CategoryNotExistException(updateCategoryParameter.getId()));
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
@@ -152,7 +152,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public GroupingCategoriesDTO getUserCategory(final String userName){
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
-        List<Category> motherCategories = this.categoryRepository.findByUserAndGroupIsNullAndParentIsNull(user);
+        final List<Category> motherCategories = this.categoryRepository.findByUserAndGroupIsNullAndParentIsNull(user);
         return this.getTreeCategoryDTO(motherCategories);
     }
 
@@ -167,7 +167,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         group.checkAreInGroup(user);
 
-        List<Category> motherCategories = this.categoryRepository.findByGroupAndParentIsNull(group);
+        final List<Category> motherCategories = this.categoryRepository.findByGroupAndParentIsNull(group);
         return this.getTreeCategoryDTO(motherCategories);
     }
 
@@ -195,14 +195,14 @@ public class CategoryServiceImpl implements CategoryService {
         final List<GroupingCategoriesDTO> groupingCategoriesDTOs = new ArrayList<>();
 
         // User categories
-        GroupingCategoriesDTO userGroupingCategoriesDTO = this.getUserCategory(userName);
+        final GroupingCategoriesDTO userGroupingCategoriesDTO = this.getUserCategory(userName);
         groupingCategoriesDTOs.add(userGroupingCategoriesDTO);
 
         // Groups categories
         final List<Group> groups = user.getGroups();
 
         for(final Group group : groups){
-            List<Category> motherCategories = this.categoryRepository.findByGroupAndParentIsNull(group);
+            final List<Category> motherCategories = this.categoryRepository.findByGroupAndParentIsNull(group);
             final GroupingCategoriesDTO groupGroupingCategoriesDTO = this.getTreeCategoryDTO(motherCategories);
             groupGroupingCategoriesDTO.setGroupName(group.getGroupName());
             

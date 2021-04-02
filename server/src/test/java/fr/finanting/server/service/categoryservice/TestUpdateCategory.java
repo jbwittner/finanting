@@ -62,7 +62,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
         Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
 
-        Integer categoryId = category.getId();
+        final Integer categoryId = category.getId();
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(categoryId);
@@ -90,7 +90,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
         Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
 
-        Integer categoryId = category.getId();
+        final Integer categoryId = category.getId();
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(categoryId);
@@ -121,7 +121,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         category.setParent(parentCategory);
         category = this.categoryRepository.save(category);
 
-        Integer categoryId = category.getId();
+        final Integer categoryId = category.getId();
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(categoryId);
@@ -145,7 +145,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
-        Integer categoryId = category.getId();
+        final Integer categoryId = category.getId();
         updateCategoryParameter.setId(categoryId);
         updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
@@ -169,7 +169,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
-        Integer categoryId = category.getId();
+        final Integer categoryId = category.getId();
         updateCategoryParameter.setId(categoryId);
         updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
