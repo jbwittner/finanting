@@ -195,6 +195,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
         updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
 
         Assertions.assertThrows(CategoryNoUserException.class,
             () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
@@ -207,6 +208,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
         updateCategoryParameter.setParentId(this.factory.getRandomInteger());
+        updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
 
         Assertions.assertThrows(CategoryNotExistException.class,
             () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
@@ -220,6 +222,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
         updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
 
         Assertions.assertThrows(BadAssociationCategoryType.class,
             () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
@@ -270,6 +273,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
         updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
 
         Assertions.assertThrows(BadAssociationCategoryUserGroup.class,
             () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
@@ -283,6 +287,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
         updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
 
         Assertions.assertThrows(BadAssociationCategoryUserGroup.class,
             () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
@@ -300,6 +305,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
         updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
 
         Assertions.assertThrows(UserNotInGroupException.class,
             () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
@@ -322,6 +328,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
         updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
 
         Assertions.assertThrows(BadAssociationCategoryUserGroup.class,
             () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
