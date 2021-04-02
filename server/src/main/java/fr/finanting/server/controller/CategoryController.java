@@ -4,6 +4,7 @@ import fr.finanting.server.dto.GroupingCategoriesDTO;
 import fr.finanting.server.dto.UserCategoryDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.parameter.CreateCategoryParameter;
+import fr.finanting.server.parameter.UpdateCategoryParameter;
 import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.CategoryService;
 
@@ -25,9 +26,17 @@ public class CategoryController {
     @PostMapping("/createCategory")
     public void createCategory(final Authentication authentication,
                                     @RequestBody final CreateCategoryParameter createCategoryParameter)
-            throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException  {
+            throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType  {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         this.categoryService.createCategory(createCategoryParameter, userDetailsImpl.getUsername());
+    }
+
+    @PostMapping("/updateCategory")
+    public void updateCategory(final Authentication authentication,
+                                    @RequestBody final UpdateCategoryParameter updateCategoryParameter)
+            throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType  {
+        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        this.categoryService.updateCategory(updateCategoryParameter, userDetailsImpl.getUsername());
     }
 
     @GetMapping("/getAllUserCategory")

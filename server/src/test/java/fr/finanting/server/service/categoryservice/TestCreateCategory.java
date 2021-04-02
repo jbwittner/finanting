@@ -1,5 +1,6 @@
 package fr.finanting.server.service.categoryservice;
 
+import fr.finanting.server.exception.BadAssociationCategoryType;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroup;
 import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.CategoryNotExistException;
@@ -63,7 +64,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateSimpleUserCategory()
-        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException {
+        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType {
         this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
 
         final Category category = this.categoryRepository.findAll().get(0);
@@ -79,7 +80,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateSimpleGroupCategory()
-        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException {
+        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType {
         this.createCategoryParameter.setGroupName(this.group.getGroupName());
         
         this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName());
@@ -97,7 +98,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateUserCategoryWithUserParentCategory()
-        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException {
+        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType {
         
         final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.user, true));
 
@@ -118,7 +119,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateGroupCategoryWithGroupParentCategory()
-        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException {
+        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType {
         final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.group, true));
         
         this.createCategoryParameter.setParentId(parentCategory.getId());
@@ -150,6 +151,16 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
         this.createCategoryParameter.setParentId(this.factory.getRandomInteger());
 
         Assertions.assertThrows(CategoryNotExistException.class,
+            () -> this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName()));
+    }
+
+    @Test
+    public void testCreateCategoryWithBadAssociationtCategoryType() {
+        final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, false));
+
+        this.createCategoryParameter.setParentId(category.getId());
+
+        Assertions.assertThrows(BadAssociationCategoryType.class,
             () -> this.categoryServiceImpl.createCategory(this.createCategoryParameter, this.user.getUserName()));
     }
 

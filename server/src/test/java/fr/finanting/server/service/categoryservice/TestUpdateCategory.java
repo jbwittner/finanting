@@ -1,5 +1,6 @@
 package fr.finanting.server.service.categoryservice;
 
+import fr.finanting.server.exception.BadAssociationCategoryType;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroup;
 import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.CategoryNotExistException;
@@ -58,7 +59,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCategoryWithoutParentCategory()
-        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException {
+        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType {
 
         Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
 
@@ -86,7 +87,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateSimpleGroupCategory()
-        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException {
+        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType {
 
         Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
 
@@ -114,7 +115,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCategoryRemoveUserParentCategory()
-        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup{
+        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup, BadAssociationCategoryType{
         
         final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.user, true));
         Category category = this.factory.getCategory(this.user, true);
@@ -139,7 +140,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCategoryAddUserParentCategory()
-        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup{
+        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup, BadAssociationCategoryType{
         
         final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.user, true));
         Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
@@ -163,7 +164,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCategoryAddGroupParentCategory()
-        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup{
+        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup, BadAssociationCategoryType{
         
         final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.group, true));
         Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
@@ -208,6 +209,19 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         updateCategoryParameter.setParentId(this.factory.getRandomInteger());
 
         Assertions.assertThrows(CategoryNotExistException.class,
+            () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
+    }
+
+    @Test
+    public void testUpdateCategoryWithBadAssociationCategoryType() {
+        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.user, false));
+        final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
+
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setId(category.getId());
+        updateCategoryParameter.setParentId(parentCategory.getId());
+
+        Assertions.assertThrows(BadAssociationCategoryType.class,
             () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
     }
 
