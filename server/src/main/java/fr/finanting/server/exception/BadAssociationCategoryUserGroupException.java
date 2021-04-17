@@ -1,9 +1,9 @@
 package fr.finanting.server.exception;
 
 @SuppressWarnings("serial")
-public class BadAssociationCategoryUserGroup extends FunctionalException {
+public class BadAssociationCategoryUserGroupException extends FunctionalException {
 
-    public BadAssociationCategoryUserGroup() {
+    public BadAssociationCategoryUserGroupException() {
         super("You can't associate a user category with a group category");
     }
 
