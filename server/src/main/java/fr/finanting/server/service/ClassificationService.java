@@ -1,5 +1,8 @@
 package fr.finanting.server.service;
 
+import java.util.List;
+
+import fr.finanting.server.dto.ClassificationDTO;
 import fr.finanting.server.exception.ClassificationNoUserException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
@@ -18,5 +21,11 @@ public interface ClassificationService {
 
     public void deleteClassification(final DeleteClassificationParameter deleteClassificationParameter, final String userName)
         throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException;
+
+    public List<ClassificationDTO> getUserClassifications(final String userName);
+
+    public List<ClassificationDTO> getGroupClassifications(final String groupName, final String userName)
+        throws GroupNotExistException, UserNotInGroupException;
+
     
 }

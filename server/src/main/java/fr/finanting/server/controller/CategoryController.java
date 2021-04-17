@@ -1,12 +1,14 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.dto.GroupingCategoriesDTO;
-import fr.finanting.server.dto.UserCategoryDTO;
+import fr.finanting.server.dto.TreeCategoriesDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.parameter.CreateCategoryParameter;
+import fr.finanting.server.parameter.DeleteCategoryParameter;
 import fr.finanting.server.parameter.UpdateCategoryParameter;
 import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.CategoryService;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -39,14 +41,16 @@ public class CategoryController {
         this.categoryService.updateCategory(updateCategoryParameter, userDetailsImpl.getUsername());
     }
 
-    @GetMapping("/getAllUserCategory")
-    public UserCategoryDTO getAllUserCategory(final Authentication authentication) {
+    @DeleteMapping("/deleteCategory")
+    public void deleteCategory(final Authentication authentication,
+                                @RequestBody final DeleteCategoryParameter deleteCategoryParameter)
+            throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException{
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.categoryService.getAllUserCategory(userDetailsImpl.getUsername());
+        this.categoryService.deleteCategory(deleteCategoryParameter, userDetailsImpl.getUsername());
     }
 
     @GetMapping("/getGroupCategory/{groupName}")
-    public GroupingCategoriesDTO getGroupCategory(final Authentication authentication, 
+    public List<TreeCategoriesDTO> getGroupCategory(final Authentication authentication, 
                                             @PathVariable final String groupName)
             throws GroupNotExistException, UserNotInGroupException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
@@ -54,7 +58,7 @@ public class CategoryController {
     }
 
     @GetMapping("/getUserCategory")
-    public GroupingCategoriesDTO getUserCategory(final Authentication authentication) {
+    public List<TreeCategoriesDTO> getUserCategory(final Authentication authentication) {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.categoryService.getUserCategory(userDetailsImpl.getUsername());
     }
