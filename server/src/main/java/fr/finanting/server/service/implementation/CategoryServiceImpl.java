@@ -9,16 +9,18 @@ import org.springframework.stereotype.Service;
 import fr.finanting.server.dto.GroupingCategoriesDTO;
 import fr.finanting.server.dto.TreeCategoriesDTO;
 import fr.finanting.server.dto.UserCategoryDTO;
-import fr.finanting.server.exception.BadAssociationCategoryType;
-import fr.finanting.server.exception.BadAssociationCategoryUserGroup;
+import fr.finanting.server.exception.BadAssociationCategoryTypeException;
+import fr.finanting.server.exception.BadAssociationCategoryUserGroupException;
 import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.CategoryNotExistException;
+import fr.finanting.server.exception.DeleteCategoryWithChildException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.CreateCategoryParameter;
+import fr.finanting.server.parameter.DeleteCategoryParameter;
 import fr.finanting.server.parameter.UpdateCategoryParameter;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.GroupRepository;
@@ -41,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void createCategory(final CreateCategoryParameter createCategoryParameter, final String userName)
-        throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType{
+        throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException{
 
         final Category category = new Category();
 
@@ -53,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
             final Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
             if(!parentCategory.getCategoryType().equals(createCategoryParameter.getCategoryType())){
-                throw new BadAssociationCategoryType();
+                throw new BadAssociationCategoryTypeException();
             }
 
             boolean areGoodAssociation = false;
@@ -74,7 +76,7 @@ public class CategoryServiceImpl implements CategoryService {
             }
 
             if(!areGoodAssociation){
-                throw new BadAssociationCategoryUserGroup();
+                throw new BadAssociationCategoryUserGroupException();
             }
 
             category.setParent(parentCategory);
@@ -101,7 +103,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void updateCategory(final UpdateCategoryParameter updateCategoryParameter, final String userName)
-        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroup, BadAssociationCategoryType{
+        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException{
 
         final Category category = this.categoryRepository.findById(updateCategoryParameter.getId())
             .orElseThrow(() -> new CategoryNotExistException(updateCategoryParameter.getId()));
@@ -121,7 +123,7 @@ public class CategoryServiceImpl implements CategoryService {
             final Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
             if(!parentCategory.getCategoryType().equals(updateCategoryParameter.getCategoryType())){
-                throw new BadAssociationCategoryType();
+                throw new BadAssociationCategoryTypeException();
             }
 
             boolean areGoodAssociation = false;
@@ -142,7 +144,7 @@ public class CategoryServiceImpl implements CategoryService {
             }
 
             if(!areGoodAssociation){
-                throw new BadAssociationCategoryUserGroup();
+                throw new BadAssociationCategoryUserGroupException();
             }
 
             category.setParent(parentCategory);
@@ -221,6 +223,31 @@ public class CategoryServiceImpl implements CategoryService {
         userCategoryDTO.setGroupingCategoriesDTOs(groupingCategoriesDTOs);
 
         return userCategoryDTO;
+    }
+
+    @Override
+    public void deleteCategory(final DeleteCategoryParameter deleteCategoryParameter, final String userName)
+        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException {
+
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+
+        final Category category = this.categoryRepository.findById(deleteCategoryParameter.getId())
+            .orElseThrow(() -> new CategoryNotExistException(deleteCategoryParameter.getId()));
+
+        if(category.getGroup() != null){
+            category.getGroup().checkAreInGroup(user);
+        } else if (!category.getUser().getUserName().equals(userName)){
+            throw new CategoryNoUserException(deleteCategoryParameter.getId());
+        }
+
+        final List<Category> childs = category.getChild();
+
+        if(!childs.isEmpty()){
+            throw new DeleteCategoryWithChildException();
+        }
+
+        this.categoryRepository.delete(category);
+        
     }
 
 }

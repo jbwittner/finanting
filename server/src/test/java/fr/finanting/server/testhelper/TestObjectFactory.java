@@ -3,6 +3,7 @@ package fr.finanting.server.testhelper;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.CategoryType;
+import fr.finanting.server.model.Classification;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -280,6 +281,28 @@ public class TestObjectFactory {
 
     public Category getCategory(final Group group, final boolean isExpense){
         return this.getCategory(null, group, isExpense);
+    }
+
+    private Classification getClassification(final User user, final Group group){
+
+        final Classification classification = new Classification();
+
+        classification.setAbbreviation(this.getRandomAlphanumericString(6).toUpperCase());
+        classification.setDescritpion(this.faker.superhero().descriptor());
+        classification.setLabel(this.faker.company().catchPhrase());
+        classification.setUser(user);
+        classification.setGroup(group);
+
+        return classification;
+
+    }
+
+    public Classification getClassification(final User user){
+        return this.getClassification(user, null);
+    }
+
+    public Classification getClassification(final Group group){
+        return this.getClassification(null, group);
     }
 
 

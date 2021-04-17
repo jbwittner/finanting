@@ -26,7 +26,7 @@ public class CategoryController {
     @PostMapping("/createCategory")
     public void createCategory(final Authentication authentication,
                                     @RequestBody final CreateCategoryParameter createCategoryParameter)
-            throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType  {
+            throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException  {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         this.categoryService.createCategory(createCategoryParameter, userDetailsImpl.getUsername());
     }
@@ -34,7 +34,7 @@ public class CategoryController {
     @PostMapping("/updateCategory")
     public void updateCategory(final Authentication authentication,
                                     @RequestBody final UpdateCategoryParameter updateCategoryParameter)
-            throws CategoryNotExistException, BadAssociationCategoryUserGroup, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryType  {
+            throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException  {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         this.categoryService.updateCategory(updateCategoryParameter, userDetailsImpl.getUsername());
     }
