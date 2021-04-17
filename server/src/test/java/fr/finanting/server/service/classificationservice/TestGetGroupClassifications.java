@@ -1,8 +1,5 @@
 package fr.finanting.server.service.classificationservice;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.booleanThat;
-
 import java.util.ArrayList;
 import java.util.List;
 

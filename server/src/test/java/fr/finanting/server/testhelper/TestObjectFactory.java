@@ -6,11 +6,14 @@ import fr.finanting.server.model.CategoryType;
 import fr.finanting.server.model.Classification;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
+import fr.finanting.server.model.embeddable.Contact;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.Role;
+import fr.finanting.server.model.Third;
 import fr.finanting.server.model.User;
 
 import java.util.ArrayList;
@@ -220,21 +223,28 @@ public class TestObjectFactory {
         return group;
     }
 
-    private BankingAccount getBankingAccount(final User user, final Group group){
-        final BankingAccount bankingAccount = new BankingAccount();
-
+    private Address getAddress(){
         final com.github.javafaker.Address addressFaker = this.faker.address();
         final Address address = new Address();
         address.setCity(addressFaker.city());
         address.setStreet(addressFaker.streetAddress());
         address.setZipCode(addressFaker.zipCode());
-        bankingAccount.setAddress(address);
+        return address;
+    }
 
-        final BankDetails bankDetailsDetails = new BankDetails();
-        bankDetailsDetails.setAccountNumber(this.getRandomAlphanumericString());
-        bankDetailsDetails.setIban(this.getRandomAlphanumericString());
-        bankDetailsDetails.setBankName(this.getRandomAlphanumericString());
-        bankingAccount.setBankDetails(bankDetailsDetails);
+    private BankDetails getBankDetails(){
+        final BankDetails bankDetails = new BankDetails();
+        bankDetails.setAccountNumber(this.getRandomAlphanumericString());
+        bankDetails.setIban(this.getRandomAlphanumericString());
+        bankDetails.setBankName(this.getRandomAlphanumericString());
+        return bankDetails;
+    }
+
+    private BankingAccount getBankingAccount(final User user, final Group group){
+        final BankingAccount bankingAccount = new BankingAccount();
+
+        bankingAccount.setAddress(this.getAddress());
+        bankingAccount.setBankDetails(this.getBankDetails());
 
         bankingAccount.setAbbreviation(this.getRandomAlphanumericString(6).toUpperCase());
         bankingAccount.setInitialBalance(0);
@@ -305,5 +315,37 @@ public class TestObjectFactory {
         return this.getClassification(null, group);
     }
 
+    private Contact getContact(){
+        final Contact contact = new Contact();
+        contact.setEmail(this.faker.internet().emailAddress());
+        contact.setHomePhone(this.faker.phoneNumber().phoneNumber());
+        contact.setPortablePhone(this.faker.phoneNumber().cellPhone());
+        contact.setWebsite(this.faker.internet().url());
+        return contact;
+    }
+
+    private Third getThird(final User user, final Group group){
+        Third third = new Third();
+
+        third.setAbbreviation(this.getRandomAlphanumericString(5).toUpperCase());
+        third.setDescritpion(this.faker.superhero().descriptor());
+        third.setLabel(this.faker.company().name());
+        third.setAddress(this.getAddress());
+        third.setBankDetails(this.getBankDetails());
+        third.setContact(this.getContact());
+
+        third.setUser(user);
+        third.setGroup(group);
+
+        return third;
+    }
+
+    public Third getThird(final User user){
+        return this.getThird(user, null);
+    }
+
+    public Third getThird(final Group group){
+        return this.getThird(null, group);
+    }
 
 }

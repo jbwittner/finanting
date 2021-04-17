@@ -141,6 +141,6 @@ public class ClassificationServiceImpl implements ClassificationService {
 
         List<Classification> classifications = this.classificationRepository.findByGroupAndUserIsNull(group);
         return this.getListClassificationDTO(classifications);
-    } 
+    }
 
 }

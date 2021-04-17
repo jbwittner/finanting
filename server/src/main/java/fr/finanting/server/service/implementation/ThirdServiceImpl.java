@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
+import fr.finanting.server.exception.ThirdNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
@@ -14,6 +15,7 @@ import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.model.embeddable.Contact;
 import fr.finanting.server.parameter.CreateThirdParameter;
+import fr.finanting.server.parameter.UpdateThirdParameter;
 import fr.finanting.server.parameter.subpart.AddressParameter;
 import fr.finanting.server.parameter.subpart.BankDetailsParameter;
 import fr.finanting.server.parameter.subpart.ContactParameter;
@@ -43,6 +45,7 @@ public class ThirdServiceImpl implements ThirdService{
             this.categoryRepository = categoryRepository;
         }
     
+    @Override
     public void createThird(final CreateThirdParameter createThirdParameter, final String userName) throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
@@ -110,5 +113,66 @@ public class ThirdServiceImpl implements ThirdService{
 
     }
 
+    @Override
+    public void updateThrid(final UpdateThirdParameter updateThirdParameter, final String userName) throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException{
+
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+
+        final Third third = this.thirdRepository.findById(updateThirdParameter.getId())
+            .orElseThrow(() -> new ThirdNotExistException(updateThirdParameter.getId()));
+
+        if(third.getGroup() != null){
+            third.getGroup().checkAreInGroup(user);
+        }
+
+        if(updateThirdParameter.getAddressParameter() != null){
+            AddressParameter addressParameter = updateThirdParameter.getAddressParameter();
+
+            Address address = new Address();
+            address.setAddress(addressParameter.getAddress());
+            address.setCity(addressParameter.getCity());
+            address.setStreet(addressParameter.getStreet());
+            address.setZipCode(addressParameter.getZipCode());
+
+            third.setAddress(address);
+        }
+
+        if(updateThirdParameter.getBankDetailsParameter() != null){
+            BankDetailsParameter bankDetailsParameter = updateThirdParameter.getBankDetailsParameter();
+            
+            BankDetails bankDetails = new BankDetails();
+            bankDetails.setBankName(bankDetailsParameter.getBankName());
+            bankDetails.setIban(bankDetailsParameter.getIban());
+            bankDetails.setAccountNumber(bankDetailsParameter.getAccountNumber());
+
+            third.setBankDetails(bankDetails);
+        }
+
+        if(updateThirdParameter.getContactParameter() != null){
+            ContactParameter contactParameter = updateThirdParameter.getContactParameter();
+
+            Contact contact = new Contact();
+            contact.setHomePhone(contactParameter.getHomePhone());
+            contact.setPortablePhone(contactParameter.getPortablePhone());
+            contact.setEmail(contactParameter.getEmail());
+            contact.setWebsite(contactParameter.getWebsite());
+
+            third.setContact(contact);
+        }
+
+        third.setAbbreviation(updateThirdParameter.getAbbreviation().toUpperCase());
+        third.setLabel(updateThirdParameter.getLabel());
+        third.setDescritpion(updateThirdParameter.getDescritpion());
+
+        if(updateThirdParameter.getDefaultCategoryId() != null){
+            final Category defaultCategory = this.categoryRepository.findById(updateThirdParameter.getDefaultCategoryId())
+                .orElseThrow(() -> new CategoryNotExistException(updateThirdParameter.getDefaultCategoryId()));
+
+            third.setDefaultCategory(defaultCategory);
+        }
+
+        this.thirdRepository.save(third);
+
+    }
     
 }
