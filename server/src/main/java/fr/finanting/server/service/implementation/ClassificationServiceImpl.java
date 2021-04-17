@@ -116,10 +116,7 @@ public class ClassificationServiceImpl implements ClassificationService {
         List<ClassificationDTO> classificationDTOs = new ArrayList<>();
 
         for(Classification classification : classifications){
-            ClassificationDTO classificationDTO = new ClassificationDTO();
-            classificationDTO.setAbbreviation(classification.getAbbreviation());
-            classificationDTO.setDescritpion(classification.getDescritpion());
-            classificationDTO.setLabel(classification.getLabel());
+            ClassificationDTO classificationDTO = new ClassificationDTO(classification);
             classificationDTOs.add(classificationDTO);
         }
 
