@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.finanting.server.exception.BadAssociationThirdException;
 import fr.finanting.server.exception.CategoryNotExistException;
+import fr.finanting.server.exception.ThirdNoUserException;
 import fr.finanting.server.exception.ThirdNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
@@ -144,7 +145,9 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateUserThird() throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException {
+    public void testUpdateUserThird()
+        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException {
+
         Third third = this.thirdRepository.save(this.factory.getThird(this.user));
         this.updateThirdParameter.setId(third.getId());
         
@@ -161,7 +164,9 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateGroupThird() throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException {
+    public void testUpdateGroupThird()
+        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException {
+            
         Third third = this.thirdRepository.save(this.factory.getThird(this.group));
         this.updateThirdParameter.setId(third.getId());
         
@@ -179,7 +184,9 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
     
     @Test
-    public void testUpdateUserThirdWithoutAddressParameter() throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException {
+    public void testUpdateUserThirdWithoutAddressParameter()
+        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException {
+
         Third third = this.thirdRepository.save(this.factory.getThird(this.user));
         this.updateThirdParameter.setId(third.getId());
 
@@ -197,7 +204,9 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
     }
     
     @Test
-    public void testUpdateUserThirdWithoutBankDetailsParameter() throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException {
+    public void testUpdateUserThirdWithoutBankDetailsParameter()
+        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException {
+            
         Third third = this.thirdRepository.save(this.factory.getThird(this.user));
         this.updateThirdParameter.setId(third.getId());
         
@@ -215,7 +224,9 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateUserThirdWithoutContactParameter() throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException {
+    public void testUpdateUserThirdWithoutContactParameter()
+        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException {
+            
         Third third = this.thirdRepository.save(this.factory.getThird(this.user));
         this.updateThirdParameter.setId(third.getId());
         
@@ -233,7 +244,9 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateUserThirdAddingDefaultUserCategory() throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException {
+    public void testUpdateUserThirdAddingDefaultUserCategory()
+        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException {
+            
         Third third = this.thirdRepository.save(this.factory.getThird(this.user));
         this.updateThirdParameter.setId(third.getId());
         
@@ -255,7 +268,9 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateGroupThirdAddingDefaultGroupCategory() throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException {
+    public void testUpdateGroupThirdAddingDefaultGroupCategory()
+        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException {
+            
         Third third = this.thirdRepository.save(this.factory.getThird(this.group));
         this.updateThirdParameter.setId(third.getId());
         
@@ -274,6 +289,21 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
         Assertions.assertEquals(this.updateThirdParameter.getDefaultCategoryId(), third.getDefaultCategory().getId());
         
+    }
+
+    @Test
+    public void testUpdateOtherUserThird() {
+        User otherUser = this.userRepository.save(this.factory.getUser());
+
+        Third third = this.thirdRepository.save(this.factory.getThird(otherUser));
+        this.updateThirdParameter.setId(third.getId());
+
+        final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+
+        this.updateThirdParameter.setDefaultCategoryId(category.getId());
+
+        Assertions.assertThrows(ThirdNoUserException.class,
+            () -> this.thirdServiceImpl.updateThrid(this.updateThirdParameter, this.user.getUserName()));       
     }
 
     @Test

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import fr.finanting.server.exception.BadAssociationThirdException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
+import fr.finanting.server.exception.ThirdNoUserException;
 import fr.finanting.server.exception.ThirdNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
@@ -16,6 +17,7 @@ import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.model.embeddable.Contact;
 import fr.finanting.server.parameter.CreateThirdParameter;
+import fr.finanting.server.parameter.DeleteThirdParameter;
 import fr.finanting.server.parameter.UpdateThirdParameter;
 import fr.finanting.server.parameter.subpart.AddressParameter;
 import fr.finanting.server.parameter.subpart.BankDetailsParameter;
@@ -130,14 +132,19 @@ public class ThirdServiceImpl implements ThirdService{
     }
 
     @Override
-    public void updateThrid(final UpdateThirdParameter updateThirdParameter, final String userName) throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException{
+    public void updateThrid(final UpdateThirdParameter updateThirdParameter, final String userName)
+        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException{
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         final Third third = this.thirdRepository.findById(updateThirdParameter.getId())
             .orElseThrow(() -> new ThirdNotExistException(updateThirdParameter.getId()));
 
-        if(third.getGroup() != null){
+        if(third.getGroup() == null){
+            if(!third.getUser().getUserName().equals(userName)){
+                throw new ThirdNoUserException(updateThirdParameter.getId());
+            }
+        } else {
             third.getGroup().checkAreInGroup(user);
         }
 
@@ -208,6 +215,21 @@ public class ThirdServiceImpl implements ThirdService{
         }
 
         this.thirdRepository.save(third);
+
+    }
+
+    @Override
+    public void deleteThird(final DeleteThirdParameter deleteThirdParameter, final String userName)
+        throws ThirdNotExistException, UserNotInGroupException{
+
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+
+        final Third third = this.thirdRepository.findById(deleteThirdParameter.getId())
+            .orElseThrow(() -> new ThirdNotExistException(deleteThirdParameter.getId()));
+
+        if(third.getGroup() != null){
+            third.getGroup().checkAreInGroup(user);
+        }
 
     }
     
