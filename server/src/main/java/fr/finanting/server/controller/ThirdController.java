@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.finanting.server.exception.BadAssociationThirdException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.ThirdNotExistException;
@@ -30,7 +31,7 @@ public class ThirdController {
     @PostMapping("/createThird")
     public void createThird(final Authentication authentication,
                                     @RequestBody final CreateThirdParameter createThirdParameter)
-            throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException {
+            throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         this.thirdService.createThird(createThirdParameter, userDetailsImpl.getUsername());
     }
@@ -38,7 +39,7 @@ public class ThirdController {
     @PostMapping("/updateThrid")
     public void updateThrid(final Authentication authentication,
                                     @RequestBody final UpdateThirdParameter updateThirdParameter)
-            throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException {
+            throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         this.thirdService.updateThrid(updateThirdParameter, userDetailsImpl.getUsername());
     }

@@ -3,6 +3,7 @@ package fr.finanting.server.service.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.finanting.server.exception.BadAssociationThirdException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.ThirdNotExistException;
@@ -46,7 +47,8 @@ public class ThirdServiceImpl implements ThirdService{
         }
     
     @Override
-    public void createThird(final CreateThirdParameter createThirdParameter, final String userName) throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void createThird(final CreateThirdParameter createThirdParameter, final String userName)
+        throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -106,6 +108,20 @@ public class ThirdServiceImpl implements ThirdService{
             final Category defaultCategory = this.categoryRepository.findById(createThirdParameter.getDefaultCategoryId())
                 .orElseThrow(() -> new CategoryNotExistException(createThirdParameter.getDefaultCategoryId()));
 
+            if(createThirdParameter.getGroupName() == null){
+                if(defaultCategory.getUser() == null){
+                    throw new BadAssociationThirdException();
+                } else if(!defaultCategory.getUser().getUserName().equals(userName)){
+                    throw new BadAssociationThirdException();
+                }
+            } else {
+                if(defaultCategory.getGroup() == null){
+                    throw new BadAssociationThirdException();
+                } else if(!defaultCategory.getGroup().getGroupName().equals(createThirdParameter.getGroupName())){
+                    throw new BadAssociationThirdException();
+                }
+            }
+
             third.setDefaultCategory(defaultCategory);
         }
 
@@ -114,7 +130,7 @@ public class ThirdServiceImpl implements ThirdService{
     }
 
     @Override
-    public void updateThrid(final UpdateThirdParameter updateThirdParameter, final String userName) throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException{
+    public void updateThrid(final UpdateThirdParameter updateThirdParameter, final String userName) throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException{
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -135,6 +151,8 @@ public class ThirdServiceImpl implements ThirdService{
             address.setZipCode(addressParameter.getZipCode());
 
             third.setAddress(address);
+        } else {
+            third.setAddress(null);
         }
 
         if(updateThirdParameter.getBankDetailsParameter() != null){
@@ -146,6 +164,8 @@ public class ThirdServiceImpl implements ThirdService{
             bankDetails.setAccountNumber(bankDetailsParameter.getAccountNumber());
 
             third.setBankDetails(bankDetails);
+        } else {
+            third.setBankDetails(null);
         }
 
         if(updateThirdParameter.getContactParameter() != null){
@@ -158,6 +178,8 @@ public class ThirdServiceImpl implements ThirdService{
             contact.setWebsite(contactParameter.getWebsite());
 
             third.setContact(contact);
+        } else {
+            third.setContact(null);
         }
 
         third.setAbbreviation(updateThirdParameter.getAbbreviation().toUpperCase());
@@ -167,6 +189,20 @@ public class ThirdServiceImpl implements ThirdService{
         if(updateThirdParameter.getDefaultCategoryId() != null){
             final Category defaultCategory = this.categoryRepository.findById(updateThirdParameter.getDefaultCategoryId())
                 .orElseThrow(() -> new CategoryNotExistException(updateThirdParameter.getDefaultCategoryId()));
+
+            if(third.getGroup() == null){
+                if(defaultCategory.getUser() == null){
+                    throw new BadAssociationThirdException();
+                } else if(!defaultCategory.getUser().getUserName().equals(userName)){
+                    throw new BadAssociationThirdException();
+                }
+            } else {
+                if(defaultCategory.getGroup() == null){
+                    throw new BadAssociationThirdException();
+                } else if(!defaultCategory.getGroup().getGroupName().equals(third.getGroup().getGroupName())){
+                    throw new BadAssociationThirdException();
+                }
+            }
 
             third.setDefaultCategory(defaultCategory);
         }

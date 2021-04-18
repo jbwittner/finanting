@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import fr.finanting.server.exception.BadAssociationThirdException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
@@ -132,7 +133,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateUserThird() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void testCreateUserThird() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
         this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
 
         final Third third = this.thirdRepository.findAll().get(0);
@@ -146,7 +147,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateUserThirdWithoutAddressParameter() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void testCreateUserThirdWithoutAddressParameter() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
         this.createThirdParameter.setAddressParameter(null);
         this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
 
@@ -161,7 +162,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     }
     
     @Test
-    public void testCreateUserThirdWithoutBankDetailsParameter() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void testCreateUserThirdWithoutBankDetailsParameter() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
         this.createThirdParameter.setBankDetailsParameter(null);
         this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
 
@@ -176,7 +177,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateUserThirdWithoutContactParameter() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void testCreateUserThirdWithoutContactParameter() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
         this.createThirdParameter.setContactParameter(null);
         this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
 
@@ -191,7 +192,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateGroupThird() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void testCreateGroupThird() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
         this.createThirdParameter.setGroupName(this.group.getGroupName());
         this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
 
@@ -206,7 +207,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateUserThirdWithDefaultCategory() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void testCreateUserThirdWithDefaultUserCategory() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
         final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
 
         this.createThirdParameter.setDefaultCategoryId(category.getId());
@@ -225,7 +226,74 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateGroupThirdWithNonExistentGroup() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void testCreateGroupThirdWithDefaultGroupCategory() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
+        final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+
+        this.createThirdParameter.setDefaultCategoryId(category.getId());
+        this.createThirdParameter.setGroupName(this.group.getGroupName());
+        this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
+
+        final Third third = this.thirdRepository.findAll().get(0);
+
+        this.checkData(third);
+
+        Assertions.assertEquals(third.getGroup().getGroupName(), this.group.getGroupName());
+        Assertions.assertNull(third.getUser());
+        Assertions.assertNotNull(third.getDefaultCategory());
+
+        Assertions.assertEquals(this.createThirdParameter.getDefaultCategoryId(), third.getDefaultCategory().getId());
+        
+    }
+
+    @Test
+    public void testCreateUserThirdWithGroupCategory() {
+        final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+
+        this.createThirdParameter.setDefaultCategoryId(category.getId());
+
+        Assertions.assertThrows(BadAssociationThirdException.class,
+            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+    }
+
+    @Test
+    public void testCreateUserThirdWithOtherUserCategory() {
+        final User otherUser = this.userRepository.save(this.factory.getUser());
+        final Category category = this.categoryRepository.save(this.factory.getCategory(otherUser, true));
+
+        this.createThirdParameter.setDefaultCategoryId(category.getId());
+
+        Assertions.assertThrows(BadAssociationThirdException.class,
+            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+    }
+
+    @Test
+    public void testCreateGroupThirdWithOtherGroupCategory() {
+        Group otherGroup = this.factory.getGroup();
+        this.userRepository.save(otherGroup.getUserAdmin());
+        this.groupRepository.save(otherGroup);
+
+        final Category category = this.categoryRepository.save(this.factory.getCategory(otherGroup, true));
+
+        this.createThirdParameter.setDefaultCategoryId(category.getId());
+        this.createThirdParameter.setGroupName(this.group.getGroupName());
+
+        Assertions.assertThrows(BadAssociationThirdException.class,
+            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+    }
+
+    @Test
+    public void testCreateGroupThirdWithUserCategory() {
+        final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
+
+        this.createThirdParameter.setDefaultCategoryId(category.getId());
+        this.createThirdParameter.setGroupName(this.group.getGroupName());
+
+        Assertions.assertThrows(BadAssociationThirdException.class,
+            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+    }
+
+    @Test
+    public void testCreateGroupThirdWithNonExistentGroup() {
         this.createThirdParameter.setGroupName(this.factory.getRandomAlphanumericString());
 
         Assertions.assertThrows(GroupNotExistException.class,
@@ -233,7 +301,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateGroupThirdWithUserNotInGroup() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void testCreateGroupThirdWithUserNotInGroup() {
         User otherUser = this.userRepository.save(this.factory.getUser());
         this.createThirdParameter.setGroupName(this.group.getGroupName());
 
@@ -242,7 +310,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateGroupThirdWithNonExistentCategory() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException{
+    public void testCreateUserThirdWithNonExistentCategory() {
         this.createThirdParameter.setDefaultCategoryId(this.factory.getRandomInteger());
 
         Assertions.assertThrows(CategoryNotExistException.class,
