@@ -50,7 +50,7 @@ public class ThirdController {
     @DeleteMapping("/deleteThird")
     public void deleteThird(final Authentication authentication,
                                     @RequestBody final DeleteThirdParameter deleteThirdParameter)
-            throws ThirdNotExistException, UserNotInGroupException {
+            throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         this.thirdService.deleteThird(deleteThirdParameter, userDetailsImpl.getUsername());
     }

@@ -3,7 +3,6 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.finanting.server.dto.GroupsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupsDTO getUserGroups(final String userName){
+    public List<GroupDTO> getUserGroups(final String userName){
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -52,10 +51,7 @@ public class GroupServiceImpl implements GroupService {
             groupDTOList.add(groupDTO);
         }
 
-        final GroupsDTO groupsDTO = new GroupsDTO();
-        groupsDTO.setGroupDTO(groupDTOList);
-
-        return groupsDTO;
+        return groupDTOList;
 
     }
 

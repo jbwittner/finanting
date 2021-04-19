@@ -1,6 +1,5 @@
 package fr.finanting.server.exception;
 
-@SuppressWarnings("serial")
 public class ThirdNotExistException extends FunctionalException {
 
     public ThirdNotExistException(final Integer id) {

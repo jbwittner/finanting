@@ -68,10 +68,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
         this.group = this.groupRepository.save(group);
 
-        Third third = this.thirdRepository.save(this.factory.getThird(this.user));
-
         this.updateThirdParameter = new UpdateThirdParameter();
-        this.updateThirdParameter.setId(third.getId());
         this.updateThirdParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5).toLowerCase());
         this.updateThirdParameter.setDescritpion(this.faker.superhero().descriptor());
         this.updateThirdParameter.setLabel(this.faker.company().name());
@@ -153,7 +150,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
         
         this.thirdServiceImpl.updateThrid(this.updateThirdParameter, this.user.getUserName());
 
-        third = this.thirdRepository.findAll().get(1);
+        third = this.thirdRepository.findAll().get(0);
 
         this.checkData(third);
 
@@ -172,7 +169,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
         
         this.thirdServiceImpl.updateThrid(this.updateThirdParameter, this.user.getUserName());
 
-        third = this.thirdRepository.findAll().get(1);
+        third = this.thirdRepository.findAll().get(0);
 
         this.checkData(third);
 
@@ -193,7 +190,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
         this.updateThirdParameter.setAddressParameter(null);
         this.thirdServiceImpl.updateThrid(this.updateThirdParameter, this.user.getUserName());
 
-        third = this.thirdRepository.findAll().get(1);
+        third = this.thirdRepository.findAll().get(0);
 
         this.checkData(third);
 
@@ -213,7 +210,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
         this.updateThirdParameter.setBankDetailsParameter(null);
         this.thirdServiceImpl.updateThrid(this.updateThirdParameter, this.user.getUserName());
 
-        third = this.thirdRepository.findAll().get(1);
+        third = this.thirdRepository.findAll().get(0);
 
         this.checkData(third);
 
@@ -233,7 +230,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
         this.updateThirdParameter.setContactParameter(null);
         this.thirdServiceImpl.updateThrid(this.updateThirdParameter, this.user.getUserName());
 
-        third = this.thirdRepository.findAll().get(1);
+        third = this.thirdRepository.findAll().get(0);
 
         this.checkData(third);
 
@@ -255,7 +252,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
         this.updateThirdParameter.setDefaultCategoryId(category.getId());
         this.thirdServiceImpl.updateThrid(this.updateThirdParameter, this.user.getUserName());
 
-        third = this.thirdRepository.findAll().get(1);
+        third = this.thirdRepository.findAll().get(0);
 
         this.checkData(third);
 
@@ -279,7 +276,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
         this.updateThirdParameter.setDefaultCategoryId(category.getId());
         this.thirdServiceImpl.updateThrid(this.updateThirdParameter, this.user.getUserName());
 
-        third = this.thirdRepository.findAll().get(1);
+        third = this.thirdRepository.findAll().get(0);
 
         this.checkData(third);
 

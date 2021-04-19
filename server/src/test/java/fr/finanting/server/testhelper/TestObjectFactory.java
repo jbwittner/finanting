@@ -324,7 +324,7 @@ public class TestObjectFactory {
         return contact;
     }
 
-    private Third getThird(final User user, final Group group){
+    private Third getThird(final User user, final Group group, final Category category){
         Third third = new Third();
 
         third.setAbbreviation(this.getRandomAlphanumericString(5).toUpperCase());
@@ -333,6 +333,7 @@ public class TestObjectFactory {
         third.setAddress(this.getAddress());
         third.setBankDetails(this.getBankDetails());
         third.setContact(this.getContact());
+        third.setDefaultCategory(category);
 
         third.setUser(user);
         third.setGroup(group);
@@ -341,11 +342,19 @@ public class TestObjectFactory {
     }
 
     public Third getThird(final User user){
-        return this.getThird(user, null);
+        return this.getThird(user, null, null);
+    }
+
+    public Third getThird(final User user, final Category category){
+        return this.getThird(user, null, category);
     }
 
     public Third getThird(final Group group){
-        return this.getThird(null, group);
+        return this.getThird(null, group, null);
+    }
+
+    public Third getThird(final Group group, final Category category){
+        return this.getThird(null, group, category);
     }
 
 }

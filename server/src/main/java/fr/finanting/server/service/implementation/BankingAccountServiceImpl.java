@@ -159,10 +159,8 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public BankingAccountsDTO getUserBankingAccounts(final String userName){
-        final BankingAccountsDTO bankingAccountsDTO = new BankingAccountsDTO();
+    public List<BankingAccountDTO> getUserBankingAccounts(final String userName){
         final List<BankingAccountDTO> userAccountDTOList = new ArrayList<>();
-        final List<BankingAccountDTO> groupAccountDTOList = new ArrayList<>();
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -176,19 +174,31 @@ public class BankingAccountServiceImpl implements BankingAccountService {
             userAccountDTOList.add(bankingAccountDTO);
         }
 
-        bankingAccountsDTO.setUserAccountDTO(userAccountDTOList);
+        return userAccountDTOList;
+    }
 
-        for(final Group group : user.getGroups()){
-            for(final BankingAccount groupAccount : group.getAccounts()){
-                bankingAccountDTO = new BankingAccountDTO(groupAccount);
-                bankingAccountDTO.setBalance(groupAccount.getInitialBalance());
-                groupAccountDTOList.add(bankingAccountDTO);
-            }
+    @Override
+    public List<BankingAccountDTO> getGroupBankingAccounts(String groupName, String userName) throws UserNotInGroupException, GroupNotExistException {
+        final List<BankingAccountDTO> groupAccountDTOList = new ArrayList<>();
+
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+        
+        final Group group = this.groupRepository.findByGroupName(groupName)
+            .orElseThrow(() -> new GroupNotExistException(groupName));
+
+        group.checkAreInGroup(user);
+
+        final List<BankingAccount> accounts = this.bankingAccountRepository.findByGroup(group);
+
+        BankingAccountDTO bankingAccountDTO;
+
+        for(final BankingAccount bankingAccount : accounts){
+            bankingAccountDTO = new BankingAccountDTO(bankingAccount);
+            bankingAccountDTO.setBalance(bankingAccount.getInitialBalance());
+            groupAccountDTOList.add(bankingAccountDTO);
         }
 
-        bankingAccountsDTO.setGroupAccountDTO(groupAccountDTOList);
-
-        return bankingAccountsDTO;
+        return groupAccountDTOList;
     }
 
     @Override
@@ -207,5 +217,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
         return bankingAccountDTO;
     }
+
+
 
 }

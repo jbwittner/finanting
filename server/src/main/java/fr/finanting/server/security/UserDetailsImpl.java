@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
 
-@SuppressWarnings("serial")
 public class UserDetailsImpl implements UserDetails {
 
     private User user;

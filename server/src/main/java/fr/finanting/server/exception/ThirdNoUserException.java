@@ -1,6 +1,5 @@
 package fr.finanting.server.exception;
 
-@SuppressWarnings("serial")
 public class ThirdNoUserException extends FunctionalException {
 
     public ThirdNoUserException(final Integer id) {

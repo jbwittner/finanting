@@ -1,6 +1,7 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.dto.GroupsDTO;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -62,7 +63,7 @@ public class GroupController {
     }
 
     @GetMapping("/getUserGroups")
-    public GroupsDTO getUserGroups(final Authentication authentication) {
+    public List<GroupDTO> getUserGroups(final Authentication authentication) {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.groupService.getUserGroups(userDetailsImpl.getUsername());
     }

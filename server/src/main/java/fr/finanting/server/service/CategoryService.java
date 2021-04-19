@@ -22,7 +22,8 @@ public interface CategoryService {
     public void updateCategory(UpdateCategoryParameter updateCategoryParameter, String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException;
 
-    public void deleteCategory(DeleteCategoryParameter deleteCategoryParameter, String userName) throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException;
+    public void deleteCategory(DeleteCategoryParameter deleteCategoryParameter, String userName)
+        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException;
 
     public List<TreeCategoriesDTO> getUserCategory(String userName);
 

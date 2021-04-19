@@ -1,5 +1,8 @@
 package fr.finanting.server.service;
 
+import java.util.List;
+
+import fr.finanting.server.dto.ThirdDTO;
 import fr.finanting.server.exception.BadAssociationThirdException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
@@ -19,5 +22,10 @@ public interface ThirdService {
         throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException;
     
     public void deleteThird(final DeleteThirdParameter deleteThirdParameter, final String userName)
-        throws ThirdNotExistException, UserNotInGroupException;
+        throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException;
+
+    public List<ThirdDTO> getUserThird(final String userName);
+
+    public List<ThirdDTO> getGroupThird(String groupName, String userName)
+        throws UserNotInGroupException, GroupNotExistException;
 }

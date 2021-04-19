@@ -1,8 +1,12 @@
 package fr.finanting.server.service.implementation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.finanting.server.dto.ThirdDTO;
 import fr.finanting.server.exception.BadAssociationThirdException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
@@ -220,17 +224,61 @@ public class ThirdServiceImpl implements ThirdService{
 
     @Override
     public void deleteThird(final DeleteThirdParameter deleteThirdParameter, final String userName)
-        throws ThirdNotExistException, UserNotInGroupException{
+        throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         final Third third = this.thirdRepository.findById(deleteThirdParameter.getId())
             .orElseThrow(() -> new ThirdNotExistException(deleteThirdParameter.getId()));
 
-        if(third.getGroup() != null){
+        if(third.getGroup() == null){
+            if(!third.getUser().getUserName().equals(userName)){
+                throw new ThirdNoUserException(deleteThirdParameter.getId());
+            }
+        } else {
             third.getGroup().checkAreInGroup(user);
         }
 
+        this.thirdRepository.delete(third);
+
+    }
+
+    @Override
+    public List<ThirdDTO> getUserThird(String userName) {
+
+        List<ThirdDTO> thirdDTOs = new ArrayList<>();
+
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+        
+        List<Third> thirds = this.thirdRepository.findByUser(user);
+
+        for(Third third : thirds){
+            ThirdDTO thirdDTO = new ThirdDTO(third);
+            thirdDTOs.add(thirdDTO);
+        }
+
+        return thirdDTOs;
+    }
+
+    @Override
+    public List<ThirdDTO> getGroupThird(String groupName, String userName) throws UserNotInGroupException, GroupNotExistException {
+
+        List<ThirdDTO> thirdDTOs = new ArrayList<>();
+
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+        final Group group = this.groupRepository.findByGroupName(groupName)
+            .orElseThrow(() -> new GroupNotExistException(groupName));
+
+        group.checkAreInGroup(user);
+        
+        List<Third> thirds = this.thirdRepository.findByGroup(group);
+
+        for(Third third : thirds){
+            ThirdDTO thirdDTO = new ThirdDTO(third);
+            thirdDTOs.add(thirdDTO);
+        }
+
+        return thirdDTOs;
     }
     
 }

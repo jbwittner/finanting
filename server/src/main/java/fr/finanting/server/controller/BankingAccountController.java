@@ -1,13 +1,15 @@
 package fr.finanting.server.controller;
 
 import fr.finanting.server.dto.BankingAccountDTO;
-import fr.finanting.server.dto.BankingAccountsDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.parameter.CreateBankingAccountParameter;
 import fr.finanting.server.parameter.DeleteBankingAccountParameter;
 import fr.finanting.server.parameter.UpdateBankingAccountParameter;
 import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.BankingAccountService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +50,7 @@ public class BankingAccountController {
     }
 
     @GetMapping("/getUserBankingAccounts")
-    public BankingAccountsDTO getUserBankingAccounts(final Authentication authentication)
+    public List<BankingAccountDTO> getUserBankingAccounts(final Authentication authentication)
             throws UserNotExistException, GroupNotExistException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.bankingAccountService.getUserBankingAccounts(userDetailsImpl.getUsername());
