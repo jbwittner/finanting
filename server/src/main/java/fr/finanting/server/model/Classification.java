@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "Classes")
+@Table(name = "CLASSIFICATIONS")
 @Data
 public class Classification extends MotherPersistant {
 

@@ -1,6 +1,5 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.server.dto.GroupingCategoriesDTO;
 import fr.finanting.server.dto.TreeCategoriesDTO;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
@@ -71,11 +70,11 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
 
         }
 
-        final GroupingCategoriesDTO groupingCategoriesDTO = this.categoryServiceImpl.getGroupCategory(group.getGroupName(), user.getUserName());
+        final List<TreeCategoriesDTO> treeCategoriesDTOs = this.categoryServiceImpl.getGroupCategory(group.getGroupName(), user.getUserName());
 
-        Assertions.assertEquals(NUMBER_MOTHER_CATEGORY, groupingCategoriesDTO.getTreeCategoriesDTOs().size());
+        Assertions.assertEquals(NUMBER_MOTHER_CATEGORY, treeCategoriesDTOs.size());
 
-        for(final TreeCategoriesDTO treeCategoriesDTO : groupingCategoriesDTO.getTreeCategoriesDTOs()){
+        for(final TreeCategoriesDTO treeCategoriesDTO : treeCategoriesDTOs){
 
             boolean isPresent = false;
 

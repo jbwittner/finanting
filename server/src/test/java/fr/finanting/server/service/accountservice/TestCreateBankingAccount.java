@@ -53,6 +53,7 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
         this.createBankingAccountParameter.setAddressParameter(addressParameter);
 
         final BankDetailsParameter bankDetailsParameter = new BankDetailsParameter();
+        bankDetailsParameter.setBankName(this.faker.dragonBall().character());
         bankDetailsParameter.setAccountNumber(this.factory.getRandomAlphanumericString());
         bankDetailsParameter.setIban(this.factory.getRandomAlphanumericString());
         this.createBankingAccountParameter.setBankDetailsParameter(bankDetailsParameter);

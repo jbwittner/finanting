@@ -1,6 +1,5 @@
 package fr.finanting.server.exception;
 
-@SuppressWarnings("serial")
 public class CategoryNoUserException extends FunctionalException {
 
     public CategoryNoUserException(final Integer id) {

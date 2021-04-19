@@ -1,9 +1,7 @@
 package fr.finanting.server.service.accountservice;
 
 import fr.finanting.server.dto.BankingAccountDTO;
-import fr.finanting.server.dto.BankingAccountsDTO;
 import fr.finanting.server.model.BankingAccount;
-import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.GroupRepository;
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
@@ -42,12 +39,11 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
         final BankingAccount bankingAccount2 = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
         final BankingAccount bankingAccount3 = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
 
-        final BankingAccountsDTO bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
+        final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
 
-        Assertions.assertEquals(0, bankingAccountsDTO.getGroupAccountDTO().size());
-        Assertions.assertEquals(3, bankingAccountsDTO.getUserAccountDTO().size());
+        Assertions.assertEquals(3, bankingAccountsDTO.size());
 
-        for(final BankingAccountDTO bankingAccountDTO : bankingAccountsDTO.getUserAccountDTO()){
+        for(final BankingAccountDTO bankingAccountDTO : bankingAccountsDTO){
             boolean isPresent = true;
             if(bankingAccountDTO.getId().equals(bankingAccount1.getId())){
                 this.checkAccount(bankingAccountDTO, bankingAccount1);
@@ -67,48 +63,11 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserAccountWithoutUserAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount bankingAccount1 = this.createGroupAccount(user);
-        final BankingAccount bankingAccount2 = this.createGroupAccount(user);
-        final BankingAccount bankingAccount3 = this.createGroupAccount(user);
 
-        final BankingAccountsDTO bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
+        final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
 
-        Assertions.assertEquals(0, bankingAccountsDTO.getUserAccountDTO().size());
-        Assertions.assertEquals(3, bankingAccountsDTO.getGroupAccountDTO().size());
+        Assertions.assertEquals(0, bankingAccountsDTO.size());
 
-        for(final BankingAccountDTO bankingAccountDTO : bankingAccountsDTO.getGroupAccountDTO()){
-            boolean isPresent = true;
-            if(bankingAccountDTO.getId().equals(bankingAccount1.getId())){
-                this.checkAccount(bankingAccountDTO, bankingAccount1);
-            } else if(bankingAccountDTO.getId().equals(bankingAccount2.getId())){
-                this.checkAccount(bankingAccountDTO, bankingAccount2);
-            } else if(bankingAccountDTO.getId().equals(bankingAccount3.getId())){
-                this.checkAccount(bankingAccountDTO, bankingAccount3);
-            } else {
-                isPresent = false;
-            }
-
-            Assertions.assertTrue(isPresent);
-        }
-
-    }
-
-    private BankingAccount createGroupAccount(final User user){
-        final Group group = this.factory.getGroup();
-        this.userRepository.save(group.getUserAdmin());
-
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(group));
-        final List<BankingAccount> bankingAccounts = new ArrayList<>();
-        bankingAccounts.add(bankingAccount);
-        group.setAccounts(bankingAccounts);
-
-        this.groupRepository.save(group);
-
-        final List<Group> groups = user.getGroups();
-        groups.add(group);
-        user.setGroups(groups);
-
-        return bankingAccount;
     }
 
     private void checkAccount(final BankingAccountDTO bankingAccountDTO,

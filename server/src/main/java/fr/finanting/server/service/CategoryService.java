@@ -1,7 +1,8 @@
 package fr.finanting.server.service;
 
-import fr.finanting.server.dto.GroupingCategoriesDTO;
-import fr.finanting.server.dto.UserCategoryDTO;
+import java.util.List;
+
+import fr.finanting.server.dto.TreeCategoriesDTO;
 import fr.finanting.server.exception.BadAssociationCategoryTypeException;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroupException;
 import fr.finanting.server.exception.CategoryNoUserException;
@@ -21,13 +22,12 @@ public interface CategoryService {
     public void updateCategory(UpdateCategoryParameter updateCategoryParameter, String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException;
 
-    public void deleteCategory(DeleteCategoryParameter deleteCategoryParameter, String userName) throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException;
+    public void deleteCategory(DeleteCategoryParameter deleteCategoryParameter, String userName)
+        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException;
 
-    public UserCategoryDTO getAllUserCategory(String userName);
+    public List<TreeCategoriesDTO> getUserCategory(String userName);
 
-    public GroupingCategoriesDTO getUserCategory(String userName);
-
-    public GroupingCategoriesDTO getGroupCategory(String groupName, String userName)
+    public List<TreeCategoriesDTO> getGroupCategory(String groupName, String userName)
         throws GroupNotExistException, UserNotInGroupException;
     
 }

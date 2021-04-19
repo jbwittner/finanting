@@ -1,7 +1,6 @@
 package fr.finanting.server.service.groupservice;
 
 import fr.finanting.server.dto.GroupDTO;
-import fr.finanting.server.dto.GroupsDTO;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.GroupRepository;
@@ -48,11 +47,11 @@ public class TestGetUserGroups extends AbstractMotherIntegrationTest {
 
         this.userRepository.save(user);
 
-        final GroupsDTO groupsDTO = this.groupServiceImpl.getUserGroups(user.getUserName());
+        final List<GroupDTO> groupsDTO = this.groupServiceImpl.getUserGroups(user.getUserName());
 
-        Assertions.assertEquals(numberGroups, groupsDTO.getGroupDTO().size());
+        Assertions.assertEquals(numberGroups, groupsDTO.size());
 
-        for(final GroupDTO groupDTO : groupsDTO.getGroupDTO()){
+        for(final GroupDTO groupDTO : groupsDTO){
 
             boolean isPresent = false;
             Group groupPresent = new Group();
@@ -82,9 +81,9 @@ public class TestGetUserGroups extends AbstractMotherIntegrationTest {
 
         this.userRepository.save(user);
 
-        final GroupsDTO groupsDTO = this.groupServiceImpl.getUserGroups(user.getUserName());
+        final List<GroupDTO> groupsDTO = this.groupServiceImpl.getUserGroups(user.getUserName());
 
-        Assertions.assertEquals(0, groupsDTO.getGroupDTO().size());
+        Assertions.assertEquals(0, groupsDTO.size());
 
     }
 

@@ -1,6 +1,5 @@
 package fr.finanting.server.exception;
 
-@SuppressWarnings("serial")
 public class UserNameAlreadyExistException extends FunctionalException {
 
     public UserNameAlreadyExistException(final String userName) {

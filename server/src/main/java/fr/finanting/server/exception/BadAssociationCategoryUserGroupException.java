@@ -1,6 +1,5 @@
 package fr.finanting.server.exception;
 
-@SuppressWarnings("serial")
 public class BadAssociationCategoryUserGroupException extends FunctionalException {
 
     public BadAssociationCategoryUserGroupException() {

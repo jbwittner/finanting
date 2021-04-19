@@ -2,7 +2,6 @@ package fr.finanting.server.exception;
 
 import fr.finanting.server.model.BankingAccount;
 
-@SuppressWarnings("serial")
 public class NotUserBankingAccountException extends FunctionalException {
 
     public NotUserBankingAccountException(final String userName, final BankingAccount bankingAccount) {

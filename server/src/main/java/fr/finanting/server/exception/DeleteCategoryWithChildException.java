@@ -1,6 +1,5 @@
 package fr.finanting.server.exception;
 
-@SuppressWarnings("serial")
 public class DeleteCategoryWithChildException extends FunctionalException {
 
     public DeleteCategoryWithChildException() {

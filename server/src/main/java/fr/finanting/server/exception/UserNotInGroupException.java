@@ -3,7 +3,6 @@ package fr.finanting.server.exception;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 
-@SuppressWarnings("serial")
 public class UserNotInGroupException extends FunctionalException {
 
     public UserNotInGroupException(final User user, final Group group) {

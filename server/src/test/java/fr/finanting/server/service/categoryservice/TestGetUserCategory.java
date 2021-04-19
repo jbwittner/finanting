@@ -1,6 +1,5 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.server.dto.GroupingCategoriesDTO;
 import fr.finanting.server.dto.TreeCategoriesDTO;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.User;
@@ -66,11 +65,11 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
 
         }
 
-        final GroupingCategoriesDTO groupingCategoriesDTO = this.categoryServiceImpl.getUserCategory(user.getUserName());
+        final List<TreeCategoriesDTO> treeCategoriesDTOs = this.categoryServiceImpl.getUserCategory(user.getUserName());
 
-        Assertions.assertEquals(NUMBER_MOTHER_CATEGORY, groupingCategoriesDTO.getTreeCategoriesDTOs().size());
+        Assertions.assertEquals(NUMBER_MOTHER_CATEGORY, treeCategoriesDTOs.size());
 
-        for(final TreeCategoriesDTO treeCategoriesDTO : groupingCategoriesDTO.getTreeCategoriesDTOs()){
+        for(final TreeCategoriesDTO treeCategoriesDTO : treeCategoriesDTOs){
 
             boolean isPresent = false;
 
