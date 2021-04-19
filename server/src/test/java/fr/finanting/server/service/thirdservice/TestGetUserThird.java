@@ -1,7 +1,6 @@
 package fr.finanting.server.service.thirdservice;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,17 +11,12 @@ import fr.finanting.server.dto.BankDetailsDTO;
 import fr.finanting.server.dto.CategoryDTO;
 import fr.finanting.server.dto.ContactDTO;
 import fr.finanting.server.dto.ThirdDTO;
-import fr.finanting.server.exception.ThirdNoUserException;
-import fr.finanting.server.exception.ThirdNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
-import fr.finanting.server.model.Group;
 import fr.finanting.server.model.Third;
 import fr.finanting.server.model.User;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.model.embeddable.Contact;
-import fr.finanting.server.parameter.DeleteThirdParameter;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.ThirdRepository;

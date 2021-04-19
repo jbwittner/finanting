@@ -1,6 +1,5 @@
 package fr.finanting.server.service.implementation;
 
-import fr.finanting.server.dto.BankingAccountsDTO;
 import fr.finanting.server.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

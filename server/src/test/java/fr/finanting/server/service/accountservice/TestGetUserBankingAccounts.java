@@ -1,9 +1,7 @@
 package fr.finanting.server.service.accountservice;
 
 import fr.finanting.server.dto.BankingAccountDTO;
-import fr.finanting.server.dto.BankingAccountsDTO;
 import fr.finanting.server.model.BankingAccount;
-import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.GroupRepository;
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
