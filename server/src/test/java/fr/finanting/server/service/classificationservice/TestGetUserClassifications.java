@@ -42,25 +42,25 @@ public class TestGetUserClassifications extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserClassifications(){
 
-        User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.userRepository.save(this.factory.getUser());
 
-        List<Classification> classifications = new ArrayList<>();
+        final List<Classification> classifications = new ArrayList<>();
 
         for(int index = 0; index < NUMBER_CLASSIFICATIONS; index ++){
 
-            Classification classification = this.classificationRepository.save(this.factory.getClassification(user));
+            final Classification classification = this.classificationRepository.save(this.factory.getClassification(user));
             classifications.add(classification);
             
         }
 
-        List<ClassificationDTO> classificationDTOs = this.classificationServiceImpl.getUserClassifications(user.getUserName());
+        final List<ClassificationDTO> classificationDTOs = this.classificationServiceImpl.getUserClassifications(user.getUserName());
 
         Assertions.assertEquals(NUMBER_CLASSIFICATIONS, classificationDTOs.size());
 
-        for(ClassificationDTO classificationDTO : classificationDTOs){
+        for(final ClassificationDTO classificationDTO : classificationDTOs){
             boolean isPresent = false;
 
-            for(Classification classification : classifications){
+            for(final Classification classification : classifications){
                 if(classification.getId().equals(classificationDTO.getId())){
                     isPresent = true;
                     Assertions.assertEquals(classificationDTO.getAbbreviation(), classification.getAbbreviation());

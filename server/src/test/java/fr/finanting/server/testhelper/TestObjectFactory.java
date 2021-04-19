@@ -325,7 +325,7 @@ public class TestObjectFactory {
     }
 
     private Third getThird(final User user, final Group group, final Category category){
-        Third third = new Third();
+        final Third third = new Third();
 
         third.setAbbreviation(this.getRandomAlphanumericString(5).toUpperCase());
         third.setDescritpion(this.faker.superhero().descriptor());

@@ -70,28 +70,28 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(expected.getAbbreviation(), actual.getAbbreviation());
         Assertions.assertEquals(expected.getDescritpion(), actual.getDescritpion());
 
-        Address address = expected.getAddress();
-        AddressDTO addressDTO = actual.getAddressDTO();
+        final Address address = expected.getAddress();
+        final AddressDTO addressDTO = actual.getAddressDTO();
         Assertions.assertEquals(address.getAddress(), addressDTO.getAddress());
         Assertions.assertEquals(address.getCity(), addressDTO.getCity());
         Assertions.assertEquals(address.getStreet(), addressDTO.getStreet());
         Assertions.assertEquals(address.getZipCode(), addressDTO.getZipCode());
 
-        Contact contact = expected.getContact();
-        ContactDTO contactDTO = actual.getContactDTO();
+        final Contact contact = expected.getContact();
+        final ContactDTO contactDTO = actual.getContactDTO();
         Assertions.assertEquals(contact.getEmail(), contactDTO.getEmail());
         Assertions.assertEquals(contact.getHomePhone(), contactDTO.getHomePhone());
         Assertions.assertEquals(contact.getPortablePhone(), contactDTO.getPortablePhone());
         Assertions.assertEquals(contact.getWebsite(), contactDTO.getWebsite());
 
-        BankDetails bankDetails = expected.getBankDetails();
-        BankDetailsDTO bankDetailsDTO = actual.getBankDetailsDTO();
+        final BankDetails bankDetails = expected.getBankDetails();
+        final BankDetailsDTO bankDetailsDTO = actual.getBankDetailsDTO();
         Assertions.assertEquals(bankDetails.getAccountNumber(), bankDetailsDTO.getAccountNumber());
         Assertions.assertEquals(bankDetails.getBankName(), bankDetailsDTO.getBankName());
         Assertions.assertEquals(bankDetails.getIban(), bankDetailsDTO.getIban());
 
-        Category category = expected.getDefaultCategory();
-        CategoryDTO categoryDTO = actual.getCategoryDTO();
+        final Category category = expected.getDefaultCategory();
+        final CategoryDTO categoryDTO = actual.getCategoryDTO();
         Assertions.assertEquals(category.getId(), categoryDTO.getId());
         Assertions.assertEquals(category.getAbbreviation(), categoryDTO.getAbbreviation());
         Assertions.assertEquals(category.getCategoryType(), categoryDTO.getCategoryType());
@@ -102,16 +102,16 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetUserThird() throws UserNotInGroupException, GroupNotExistException {
-        Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
-        Third third1 = this.thirdRepository.save(this.factory.getThird(this.group, category));
-        Third third2 = this.thirdRepository.save(this.factory.getThird(this.group, category));
-        Third third3 = this.thirdRepository.save(this.factory.getThird(this.group, category));
+        final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+        final Third third1 = this.thirdRepository.save(this.factory.getThird(this.group, category));
+        final Third third2 = this.thirdRepository.save(this.factory.getThird(this.group, category));
+        final Third third3 = this.thirdRepository.save(this.factory.getThird(this.group, category));
 
-        List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getGroupThird(this.group.getGroupName(), this.user.getUserName());
+        final List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getGroupThird(this.group.getGroupName(), this.user.getUserName());
 
         Assertions.assertEquals(3, thirdDTOs.size());
 
-        for(ThirdDTO thirdDTO : thirdDTOs){
+        for(final ThirdDTO thirdDTO : thirdDTOs){
 
             if(thirdDTO.getId().equals(third1.getId())){
                 this.checkData(third1, thirdDTO);
@@ -128,7 +128,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserThirdWithoutThird() throws UserNotInGroupException, GroupNotExistException {
 
-        List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getGroupThird(this.group.getGroupName(), this.user.getUserName());
+        final List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getGroupThird(this.group.getGroupName(), this.user.getUserName());
 
         Assertions.assertEquals(0, thirdDTOs.size());
 

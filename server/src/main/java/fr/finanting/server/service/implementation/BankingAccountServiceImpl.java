@@ -177,7 +177,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public List<BankingAccountDTO> getGroupBankingAccounts(String groupName, String userName) throws UserNotInGroupException, GroupNotExistException {
+    public List<BankingAccountDTO> getGroupBankingAccounts(final String groupName, final String userName) throws UserNotInGroupException, GroupNotExistException {
         final List<BankingAccountDTO> groupAccountDTOList = new ArrayList<>();
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();

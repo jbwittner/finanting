@@ -61,44 +61,44 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteUserThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        Third third = this.thirdRepository.save(this.factory.getThird(this.user));
+        final Third third = this.thirdRepository.save(this.factory.getThird(this.user));
 
-        Integer thirdId = third.getId();
+        final Integer thirdId = third.getId();
 
-        DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
+        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
         deleteThirdParameter.setId(thirdId);
 
         this.thirdServiceImpl.deleteThird(deleteThirdParameter, this.user.getUserName());
 
-        Optional<Third> optionalThird = this.thirdRepository.findById(thirdId);
+        final Optional<Third> optionalThird = this.thirdRepository.findById(thirdId);
 
         Assertions.assertFalse(optionalThird.isPresent());
     }
 
     @Test
     public void testDeleteGroupThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        Third third = this.thirdRepository.save(this.factory.getThird(this.group));
+        final Third third = this.thirdRepository.save(this.factory.getThird(this.group));
 
-        Integer thirdId = third.getId();
+        final Integer thirdId = third.getId();
 
-        DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
+        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
         deleteThirdParameter.setId(thirdId);
 
         this.thirdServiceImpl.deleteThird(deleteThirdParameter, this.user.getUserName());
 
-        Optional<Third> optionalThird = this.thirdRepository.findById(thirdId);
+        final Optional<Third> optionalThird = this.thirdRepository.findById(thirdId);
 
         Assertions.assertFalse(optionalThird.isPresent());
     }
 
     @Test
     public void testDeleteOtherUserThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        User otherUser = this.userRepository.save(this.factory.getUser());
-        Third third = this.thirdRepository.save(this.factory.getThird(otherUser));
+        final User otherUser = this.userRepository.save(this.factory.getUser());
+        final Third third = this.thirdRepository.save(this.factory.getThird(otherUser));
 
-        Integer thirdId = third.getId();
+        final Integer thirdId = third.getId();
 
-        DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
+        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
         deleteThirdParameter.setId(thirdId);
 
         Assertions.assertThrows(ThirdNoUserException.class,
@@ -111,11 +111,11 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
         this.userRepository.save(otherGroup.getUserAdmin());
         otherGroup = this.groupRepository.save(otherGroup);
 
-        Third third = this.thirdRepository.save(this.factory.getThird(otherGroup));
+        final Third third = this.thirdRepository.save(this.factory.getThird(otherGroup));
 
-        Integer thirdId = third.getId();
+        final Integer thirdId = third.getId();
 
-        DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
+        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
         deleteThirdParameter.setId(thirdId);
 
         Assertions.assertThrows(UserNotInGroupException.class,
@@ -124,7 +124,7 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteNotExistentThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
+        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
         deleteThirdParameter.setId(this.factory.getRandomInteger());
 
         Assertions.assertThrows(ThirdNotExistException.class,

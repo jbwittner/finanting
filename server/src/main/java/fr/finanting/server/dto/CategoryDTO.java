@@ -13,7 +13,7 @@ public class CategoryDTO {
     private String descritpion;
     private CategoryType categoryType;
 
-    public CategoryDTO(Category category){
+    public CategoryDTO(final Category category){
         this.id = category.getId();
         this.label= category.getLabel();
         this.abbreviation= category.getAbbreviation();

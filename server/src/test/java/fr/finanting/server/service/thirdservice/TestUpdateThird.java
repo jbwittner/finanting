@@ -107,36 +107,36 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
         final Contact contact = third.getContact();
 
         
-        if(this.updateThirdParameter.getBankDetailsParameter() != null){
+        if(this.updateThirdParameter.getBankDetailsParameter() == null){
+            Assertions.assertNull(bankDetails);
+        } else {
             Assertions.assertNotNull(bankDetails);
-            BankDetailsParameter bankDetailsParameter = this.updateThirdParameter.getBankDetailsParameter();
+            final BankDetailsParameter bankDetailsParameter = this.updateThirdParameter.getBankDetailsParameter();
             Assertions.assertEquals(bankDetailsParameter.getIban(), bankDetails.getIban());
             Assertions.assertEquals(bankDetailsParameter.getAccountNumber(), bankDetails.getAccountNumber());
             Assertions.assertEquals(bankDetailsParameter.getBankName(), bankDetails.getBankName());
-        } else {
-            Assertions.assertNull(bankDetails);
         }
 
-        if(this.updateThirdParameter.getAddressParameter() != null){
+        if(this.updateThirdParameter.getAddressParameter() == null){
+            Assertions.assertNull(address);
+        } else {
             Assertions.assertNotNull(address);
-            AddressParameter addressParameter = this.updateThirdParameter.getAddressParameter();
+            final AddressParameter addressParameter = this.updateThirdParameter.getAddressParameter();
             Assertions.assertEquals(addressParameter.getAddress(), address.getAddress());
             Assertions.assertEquals(addressParameter.getStreet(), address.getStreet());
             Assertions.assertEquals(addressParameter.getCity(), address.getCity());
             Assertions.assertEquals(addressParameter.getZipCode(), address.getZipCode());
-        } else {
-            Assertions.assertNull(address);
         }
 
-        if(this.updateThirdParameter.getContactParameter() != null){
+        if(this.updateThirdParameter.getContactParameter() == null){
+            Assertions.assertNull(contact);
+        } else {
             Assertions.assertNotNull(contact);
-            ContactParameter contactParameter = this.updateThirdParameter.getContactParameter();
+            final ContactParameter contactParameter = this.updateThirdParameter.getContactParameter();
             Assertions.assertEquals(contactParameter.getHomePhone(), contact.getHomePhone());
             Assertions.assertEquals(contactParameter.getPortablePhone(), contact.getPortablePhone());
             Assertions.assertEquals(contactParameter.getEmail(), contact.getEmail());
             Assertions.assertEquals(contactParameter.getWebsite(), contact.getWebsite());
-        } else {
-            Assertions.assertNull(contact);
         }
 
     }
@@ -290,9 +290,9 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateOtherUserThird() {
-        User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.userRepository.save(this.factory.getUser());
 
-        Third third = this.thirdRepository.save(this.factory.getThird(otherUser));
+        final Third third = this.thirdRepository.save(this.factory.getThird(otherUser));
         this.updateThirdParameter.setId(third.getId());
 
         final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
@@ -305,7 +305,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserThirdWithGroupCategory() {
-        Third third = this.thirdRepository.save(this.factory.getThird(this.user));
+        final Third third = this.thirdRepository.save(this.factory.getThird(this.user));
         this.updateThirdParameter.setId(third.getId());
 
         final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
@@ -318,7 +318,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserThirdWithOtherUserCategory() {
-        Third third = this.thirdRepository.save(this.factory.getThird(this.user));
+        final Third third = this.thirdRepository.save(this.factory.getThird(this.user));
         this.updateThirdParameter.setId(third.getId());
 
         final User otherUser = this.userRepository.save(this.factory.getUser());
@@ -332,10 +332,10 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupThirdWithOtherGroupCategory() {
-        Third third = this.thirdRepository.save(this.factory.getThird(this.group));
+        final Third third = this.thirdRepository.save(this.factory.getThird(this.group));
         this.updateThirdParameter.setId(third.getId());
 
-        Group otherGroup = this.factory.getGroup();
+        final Group otherGroup = this.factory.getGroup();
         this.userRepository.save(otherGroup.getUserAdmin());
         this.groupRepository.save(otherGroup);
 
@@ -349,7 +349,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupThirdWithUserCategory() {
-        Third third = this.thirdRepository.save(this.factory.getThird(this.group));
+        final Third third = this.thirdRepository.save(this.factory.getThird(this.group));
         this.updateThirdParameter.setId(third.getId());
 
         final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
@@ -362,7 +362,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserThirdWithNonExistentCategory() {
-        Third third = this.thirdRepository.save(this.factory.getThird(this.user));
+        final Third third = this.thirdRepository.save(this.factory.getThird(this.user));
         this.updateThirdParameter.setId(third.getId());
         
         this.updateThirdParameter.setDefaultCategoryId(this.factory.getRandomInteger());
@@ -381,7 +381,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupThirdWithUserNotInGroup() {
-        Third third = this.thirdRepository.save(this.factory.getThird(this.group));
+        final Third third = this.thirdRepository.save(this.factory.getThird(this.group));
         this.updateThirdParameter.setId(third.getId());
 
         final User otherUser = this.userRepository.save(this.factory.getUser());

@@ -59,23 +59,23 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
     @Test
     public void testGetGroupClassifications() throws GroupNotExistException, UserNotInGroupException{
 
-        List<Classification> classifications = new ArrayList<>();
+        final List<Classification> classifications = new ArrayList<>();
 
         for(int index = 0; index < NUMBER_CLASSIFICATIONS; index ++){
 
-            Classification classification = this.classificationRepository.save(this.factory.getClassification(this.group));
+            final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.group));
             classifications.add(classification);
             
         }
 
-        List<ClassificationDTO> classificationDTOs = this.classificationServiceImpl.getGroupClassifications(this.group.getGroupName(), this.user.getUserName());
+        final List<ClassificationDTO> classificationDTOs = this.classificationServiceImpl.getGroupClassifications(this.group.getGroupName(), this.user.getUserName());
 
         Assertions.assertEquals(NUMBER_CLASSIFICATIONS, classificationDTOs.size());
 
-        for(ClassificationDTO classificationDTO : classificationDTOs){
+        for(final ClassificationDTO classificationDTO : classificationDTOs){
             boolean isPresent = false;
 
-            for(Classification classification : classifications){
+            for(final Classification classification : classifications){
                 if(classification.getId().equals(classificationDTO.getId())){
                     isPresent = true;
                     Assertions.assertEquals(classificationDTO.getAbbreviation(), classification.getAbbreviation());
@@ -100,7 +100,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
     @Test
     public void testGetGroupClassificationsWithUserNotInGroup(){
 
-        User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(UserNotInGroupException.class,
             () -> this.classificationServiceImpl.getGroupClassifications(this.group.getGroupName(), otherUser.getUserName()));

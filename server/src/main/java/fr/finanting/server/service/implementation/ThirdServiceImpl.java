@@ -72,9 +72,9 @@ public class ThirdServiceImpl implements ThirdService{
         }
 
         if(createThirdParameter.getAddressParameter() != null){
-            AddressParameter addressParameter = createThirdParameter.getAddressParameter();
+            final AddressParameter addressParameter = createThirdParameter.getAddressParameter();
 
-            Address address = new Address();
+            final Address address = new Address();
             address.setAddress(addressParameter.getAddress());
             address.setCity(addressParameter.getCity());
             address.setStreet(addressParameter.getStreet());
@@ -84,9 +84,9 @@ public class ThirdServiceImpl implements ThirdService{
         }
 
         if(createThirdParameter.getBankDetailsParameter() != null){
-            BankDetailsParameter bankDetailsParameter = createThirdParameter.getBankDetailsParameter();
+            final BankDetailsParameter bankDetailsParameter = createThirdParameter.getBankDetailsParameter();
             
-            BankDetails bankDetails = new BankDetails();
+            final BankDetails bankDetails = new BankDetails();
             bankDetails.setBankName(bankDetailsParameter.getBankName());
             bankDetails.setIban(bankDetailsParameter.getIban());
             bankDetails.setAccountNumber(bankDetailsParameter.getAccountNumber());
@@ -95,9 +95,9 @@ public class ThirdServiceImpl implements ThirdService{
         }
 
         if(createThirdParameter.getContactParameter() != null){
-            ContactParameter contactParameter = createThirdParameter.getContactParameter();
+            final ContactParameter contactParameter = createThirdParameter.getContactParameter();
 
-            Contact contact = new Contact();
+            final Contact contact = new Contact();
             contact.setHomePhone(contactParameter.getHomePhone());
             contact.setPortablePhone(contactParameter.getPortablePhone());
             contact.setEmail(contactParameter.getEmail());
@@ -152,45 +152,45 @@ public class ThirdServiceImpl implements ThirdService{
             third.getGroup().checkAreInGroup(user);
         }
 
-        if(updateThirdParameter.getAddressParameter() != null){
-            AddressParameter addressParameter = updateThirdParameter.getAddressParameter();
+        if(updateThirdParameter.getAddressParameter() == null){
+            third.setAddress(null);
+        } else {
+            final AddressParameter addressParameter = updateThirdParameter.getAddressParameter();
 
-            Address address = new Address();
+            final Address address = new Address();
             address.setAddress(addressParameter.getAddress());
             address.setCity(addressParameter.getCity());
             address.setStreet(addressParameter.getStreet());
             address.setZipCode(addressParameter.getZipCode());
 
             third.setAddress(address);
-        } else {
-            third.setAddress(null);
         }
 
-        if(updateThirdParameter.getBankDetailsParameter() != null){
-            BankDetailsParameter bankDetailsParameter = updateThirdParameter.getBankDetailsParameter();
+        if(updateThirdParameter.getBankDetailsParameter() == null){
+            third.setBankDetails(null);
+        } else {
+            final BankDetailsParameter bankDetailsParameter = updateThirdParameter.getBankDetailsParameter();
             
-            BankDetails bankDetails = new BankDetails();
+            final BankDetails bankDetails = new BankDetails();
             bankDetails.setBankName(bankDetailsParameter.getBankName());
             bankDetails.setIban(bankDetailsParameter.getIban());
             bankDetails.setAccountNumber(bankDetailsParameter.getAccountNumber());
 
             third.setBankDetails(bankDetails);
-        } else {
-            third.setBankDetails(null);
         }
 
-        if(updateThirdParameter.getContactParameter() != null){
-            ContactParameter contactParameter = updateThirdParameter.getContactParameter();
+        if(updateThirdParameter.getContactParameter() == null){
+            third.setContact(null);
+        } else {
+            final ContactParameter contactParameter = updateThirdParameter.getContactParameter();
 
-            Contact contact = new Contact();
+            final Contact contact = new Contact();
             contact.setHomePhone(contactParameter.getHomePhone());
             contact.setPortablePhone(contactParameter.getPortablePhone());
             contact.setEmail(contactParameter.getEmail());
             contact.setWebsite(contactParameter.getWebsite());
 
             third.setContact(contact);
-        } else {
-            third.setContact(null);
         }
 
         third.setAbbreviation(updateThirdParameter.getAbbreviation().toUpperCase());
@@ -244,16 +244,16 @@ public class ThirdServiceImpl implements ThirdService{
     }
 
     @Override
-    public List<ThirdDTO> getUserThird(String userName) {
+    public List<ThirdDTO> getUserThird(final String userName) {
 
-        List<ThirdDTO> thirdDTOs = new ArrayList<>();
+        final List<ThirdDTO> thirdDTOs = new ArrayList<>();
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         
-        List<Third> thirds = this.thirdRepository.findByUser(user);
+        final List<Third> thirds = this.thirdRepository.findByUser(user);
 
-        for(Third third : thirds){
-            ThirdDTO thirdDTO = new ThirdDTO(third);
+        for(final Third third : thirds){
+            final ThirdDTO thirdDTO = new ThirdDTO(third);
             thirdDTOs.add(thirdDTO);
         }
 
@@ -261,9 +261,9 @@ public class ThirdServiceImpl implements ThirdService{
     }
 
     @Override
-    public List<ThirdDTO> getGroupThird(String groupName, String userName) throws UserNotInGroupException, GroupNotExistException {
+    public List<ThirdDTO> getGroupThird(final String groupName, final String userName) throws UserNotInGroupException, GroupNotExistException {
 
-        List<ThirdDTO> thirdDTOs = new ArrayList<>();
+        final List<ThirdDTO> thirdDTOs = new ArrayList<>();
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final Group group = this.groupRepository.findByGroupName(groupName)
@@ -271,10 +271,10 @@ public class ThirdServiceImpl implements ThirdService{
 
         group.checkAreInGroup(user);
         
-        List<Third> thirds = this.thirdRepository.findByGroup(group);
+        final List<Third> thirds = this.thirdRepository.findByGroup(group);
 
-        for(Third third : thirds){
-            ThirdDTO thirdDTO = new ThirdDTO(third);
+        for(final Third third : thirds){
+            final ThirdDTO thirdDTO = new ThirdDTO(third);
             thirdDTOs.add(thirdDTO);
         }
 

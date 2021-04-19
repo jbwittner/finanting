@@ -11,7 +11,7 @@ public class ContactDTO {
     private String email;
     private String website;
 
-    public ContactDTO(Contact contact){
+    public ContactDTO(final Contact contact){
         this.homePhone = contact.getHomePhone();
         this.portablePhone = contact.getPortablePhone();
         this.email = contact.getEmail();

@@ -101,9 +101,9 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(this.createThirdParameter.getLabel(), third.getLabel());
         
         if(this.createThirdParameter.getBankDetailsParameter() != null){
-            BankDetails bankDetails = third.getBankDetails();
+            final BankDetails bankDetails = third.getBankDetails();
             Assertions.assertNotNull(bankDetails);
-            BankDetailsParameter bankDetailsParameter = this.createThirdParameter.getBankDetailsParameter();
+            final BankDetailsParameter bankDetailsParameter = this.createThirdParameter.getBankDetailsParameter();
             Assertions.assertEquals(bankDetailsParameter.getIban(), bankDetails.getIban());
             Assertions.assertEquals(bankDetailsParameter.getAccountNumber(), bankDetails.getAccountNumber());
             Assertions.assertEquals(bankDetailsParameter.getBankName(), bankDetails.getBankName());
@@ -111,9 +111,9 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
         
 
         if(this.createThirdParameter.getAddressParameter() != null){
-            Address address = third.getAddress();
+            final Address address = third.getAddress();
             Assertions.assertNotNull(address);
-            AddressParameter addressParameter = this.createThirdParameter.getAddressParameter();
+            final AddressParameter addressParameter = this.createThirdParameter.getAddressParameter();
             Assertions.assertEquals(addressParameter.getAddress(), address.getAddress());
             Assertions.assertEquals(addressParameter.getStreet(), address.getStreet());
             Assertions.assertEquals(addressParameter.getCity(), address.getCity());
@@ -121,9 +121,9 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
         }
 
         if(this.createThirdParameter.getContactParameter() != null){
-            Contact contact = third.getContact();
+            final Contact contact = third.getContact();
             Assertions.assertNotNull(contact);
-            ContactParameter contactParameter = this.createThirdParameter.getContactParameter();
+            final ContactParameter contactParameter = this.createThirdParameter.getContactParameter();
             Assertions.assertEquals(contactParameter.getHomePhone(), contact.getHomePhone());
             Assertions.assertEquals(contactParameter.getPortablePhone(), contact.getPortablePhone());
             Assertions.assertEquals(contactParameter.getEmail(), contact.getEmail());
@@ -268,7 +268,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateGroupThirdWithOtherGroupCategory() {
-        Group otherGroup = this.factory.getGroup();
+        final Group otherGroup = this.factory.getGroup();
         this.userRepository.save(otherGroup.getUserAdmin());
         this.groupRepository.save(otherGroup);
 
@@ -302,7 +302,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateGroupThirdWithUserNotInGroup() {
-        User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.userRepository.save(this.factory.getUser());
         this.createThirdParameter.setGroupName(this.group.getGroupName());
 
         Assertions.assertThrows(UserNotInGroupException.class,

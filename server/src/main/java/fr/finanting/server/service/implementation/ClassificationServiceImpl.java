@@ -113,10 +113,10 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     private List<ClassificationDTO> getListClassificationDTO(final List<Classification> classifications){
-        List<ClassificationDTO> classificationDTOs = new ArrayList<>();
+        final List<ClassificationDTO> classificationDTOs = new ArrayList<>();
 
-        for(Classification classification : classifications){
-            ClassificationDTO classificationDTO = new ClassificationDTO(classification);
+        for(final Classification classification : classifications){
+            final ClassificationDTO classificationDTO = new ClassificationDTO(classification);
             classificationDTOs.add(classificationDTO);
         }
 
@@ -126,7 +126,7 @@ public class ClassificationServiceImpl implements ClassificationService {
     @Override
     public List<ClassificationDTO> getUserClassifications(final String userName) {
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
-        List<Classification> classifications = this.classificationRepository.findByUserAndGroupIsNull(user);
+        final List<Classification> classifications = this.classificationRepository.findByUserAndGroupIsNull(user);
         return this.getListClassificationDTO(classifications);
     }
 
@@ -139,7 +139,7 @@ public class ClassificationServiceImpl implements ClassificationService {
 
         group.checkAreInGroup(user);
 
-        List<Classification> classifications = this.classificationRepository.findByGroupAndUserIsNull(group);
+        final List<Classification> classifications = this.classificationRepository.findByGroupAndUserIsNull(group);
         return this.getListClassificationDTO(classifications);
     }
 
