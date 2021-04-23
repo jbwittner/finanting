@@ -24,7 +24,7 @@ public class TestGetAllCurrencies extends AbstractMotherIntegrationTest {
         this.currencyServiceImpl = new CurrencyServiceImpl(this.currencyRepository);
     }
 
-    private void checkData(Currency expectedData, CurrencyDTO currentData){
+    private void checkData(final Currency expectedData, final CurrencyDTO currentData){
         Assertions.assertEquals(expectedData.getDecimalPlaces(), currentData.getDecimalPlaces());
         Assertions.assertEquals(expectedData.getId(), currentData.getId());
         Assertions.assertEquals(expectedData.getRate(), currentData.getRate());
@@ -36,15 +36,15 @@ public class TestGetAllCurrencies extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetAllCurrencies(){
-        Currency currency1 = this.currencyRepository.save(this.factory.getCurrency());
-        Currency currency2 = this.currencyRepository.save(this.factory.getCurrency());
-        Currency currency3 = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency1 = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency2 = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency3 = this.currencyRepository.save(this.factory.getCurrency());
 
-        List<CurrencyDTO> currencyDTOs = this.currencyServiceImpl.getAllCurrencies();
+        final List<CurrencyDTO> currencyDTOs = this.currencyServiceImpl.getAllCurrencies();
 
         Assertions.assertEquals(3, currencyDTOs.size());
 
-        for(CurrencyDTO currencyDTO : currencyDTOs){
+        for(final CurrencyDTO currencyDTO : currencyDTOs){
             if(currencyDTO.getId().equals(currency1.getId())){
                 this.checkData(currency1, currencyDTO);
             } else if(currencyDTO.getId().equals(currency2.getId())){

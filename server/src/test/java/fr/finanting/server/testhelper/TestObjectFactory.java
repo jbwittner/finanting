@@ -359,13 +359,13 @@ public class TestObjectFactory {
     }
 
     public Currency getCurrency(){
-        Currency currency = new Currency();
+        final Currency currency = new Currency();
         currency.setDecimalPlaces(this.getRandomInteger());
         currency.setDefaultCurrency(false);
         currency.setIsoCode(this.getUniqueRandomAlphanumericString(3).toUpperCase());
         currency.setSymbol(this.getUniqueRandomAlphanumericString(3).toUpperCase());
 
-        String label = StringUtils.capitalize(this.getUniqueRandomAlphanumericString().toLowerCase());
+        final String label = StringUtils.capitalize(this.getUniqueRandomAlphanumericString().toLowerCase());
         currency.setLabel(label);
 
         currency.setRate(this.getRandomInteger());

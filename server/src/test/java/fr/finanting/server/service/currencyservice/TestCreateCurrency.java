@@ -41,16 +41,16 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
         this.createCurrencyParameter.setDefaultCurrency(true);
         this.currencyServiceImpl.createCurrency(this.createCurrencyParameter);
 
-        List<Currency> currencies = this.currencyRepository.findAll();
+        final List<Currency> currencies = this.currencyRepository.findAll();
 
         Assertions.assertEquals(1, currencies.size());
 
-        Currency currency = currencies.get(0);
+        final Currency currency = currencies.get(0);
 
         Assertions.assertEquals(this.createCurrencyParameter.getDecimalPlaces(), currency.getDecimalPlaces());
         Assertions.assertEquals(this.createCurrencyParameter.getDefaultCurrency(), currency.getDefaultCurrency());
         Assertions.assertEquals(this.createCurrencyParameter.getIsoCode().toUpperCase(), currency.getIsoCode());
-        String label = StringUtils.capitalize(this.createCurrencyParameter.getLabel().toLowerCase());
+        final String label = StringUtils.capitalize(this.createCurrencyParameter.getLabel().toLowerCase());
         Assertions.assertEquals(label, currency.getLabel());
         Assertions.assertEquals(this.createCurrencyParameter.getRate(), currency.getRate());
         Assertions.assertEquals(this.createCurrencyParameter.getSymbol().toUpperCase(), currency.getSymbol());
@@ -65,15 +65,15 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
         this.createCurrencyParameter.setDefaultCurrency(true);
         this.currencyServiceImpl.createCurrency(this.createCurrencyParameter);
 
-        List<Currency> currencies = this.currencyRepository.findAll();
+        final List<Currency> currencies = this.currencyRepository.findAll();
 
         Assertions.assertEquals(2, currencies.size());
 
-        Currency currency = currencies.get(1);
+        final Currency currency = currencies.get(1);
 
         Assertions.assertEquals(this.createCurrencyParameter.getDecimalPlaces(), currency.getDecimalPlaces());
         Assertions.assertEquals(this.createCurrencyParameter.getIsoCode().toUpperCase(), currency.getIsoCode());
-        String label = StringUtils.capitalize(this.createCurrencyParameter.getLabel().toLowerCase());
+        final String label = StringUtils.capitalize(this.createCurrencyParameter.getLabel().toLowerCase());
         Assertions.assertEquals(label, currency.getLabel());
         Assertions.assertEquals(this.createCurrencyParameter.getRate(), currency.getRate());
         Assertions.assertEquals(this.createCurrencyParameter.getSymbol().toUpperCase(), currency.getSymbol());
@@ -93,15 +93,15 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
 
         this.currencyServiceImpl.createCurrency(this.createCurrencyParameter);
 
-        List<Currency> currencies = this.currencyRepository.findAll();
+        final List<Currency> currencies = this.currencyRepository.findAll();
 
         Assertions.assertEquals(2, currencies.size());
 
-        Currency currency = currencies.get(1);
+        final Currency currency = currencies.get(1);
 
         Assertions.assertEquals(this.createCurrencyParameter.getDecimalPlaces(), currency.getDecimalPlaces());
         Assertions.assertEquals(this.createCurrencyParameter.getIsoCode().toUpperCase(), currency.getIsoCode());
-        String label = StringUtils.capitalize(this.createCurrencyParameter.getLabel().toLowerCase());
+        final String label = StringUtils.capitalize(this.createCurrencyParameter.getLabel().toLowerCase());
         Assertions.assertEquals(label, currency.getLabel());
         Assertions.assertEquals(this.createCurrencyParameter.getRate(), currency.getRate());
         Assertions.assertEquals(this.createCurrencyParameter.getSymbol().toUpperCase(), currency.getSymbol());
@@ -122,7 +122,7 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
 
     @Test
     public void testCreateCurrencyWithAlreadyExitedIsoCode(){
-        Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency = this.currencyRepository.save(this.factory.getCurrency());
 
         this.createCurrencyParameter.setIsoCode(currency.getIsoCode());
 

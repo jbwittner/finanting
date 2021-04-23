@@ -1,6 +1,5 @@
 package fr.finanting.server.service.implementation;
 
-import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public void createCurrency(final CreateCurrencyParameter createCurrencyParameter) throws CurrencyIsoCodeAlreadyExist, NoDefaultCurrencyException{
 
-        String isoCode = createCurrencyParameter.getIsoCode().toUpperCase();
+        final String isoCode = createCurrencyParameter.getIsoCode().toUpperCase();
 
         if(this.currencyRepository.existsByIsoCode(isoCode)){
             throw new CurrencyIsoCodeAlreadyExist(isoCode);
@@ -44,9 +43,9 @@ public class CurrencyServiceImpl implements CurrencyService {
         }
 
         if(createCurrencyParameter.getDefaultCurrency().equals(true)){
-            Optional<Currency> optionalDefaultApplicationCurrency = this.currencyRepository.findByDefaultCurrency(true);
+            final Optional<Currency> optionalDefaultApplicationCurrency = this.currencyRepository.findByDefaultCurrency(true);
             if(optionalDefaultApplicationCurrency.isPresent()){
-                Currency defaultApplicationCurrency = optionalDefaultApplicationCurrency.get();
+                final Currency defaultApplicationCurrency = optionalDefaultApplicationCurrency.get();
                 defaultApplicationCurrency.setDefaultCurrency(false);
                 this.currencyRepository.save(defaultApplicationCurrency);
             }
@@ -55,7 +54,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         final Currency currency = new Currency();
 
         currency.setDefaultCurrency(createCurrencyParameter.getDefaultCurrency());
-        String label = StringUtils.capitalize(createCurrencyParameter.getLabel().toLowerCase());
+        final String label = StringUtils.capitalize(createCurrencyParameter.getLabel().toLowerCase());
         currency.setLabel(label);
         currency.setSymbol(createCurrencyParameter.getSymbol().toUpperCase());
         currency.setIsoCode(isoCode);
@@ -68,20 +67,20 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void updateCurrency(final UpdateCurrencyParameter updateCurrencyParameter) throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
-        String isoCode = updateCurrencyParameter.getIsoCode().toUpperCase();
+        final String isoCode = updateCurrencyParameter.getIsoCode().toUpperCase();
 
-        Optional<Currency> optionalCurrency = this.currencyRepository.findById(updateCurrencyParameter.getId());
+        final Optional<Currency> optionalCurrency = this.currencyRepository.findById(updateCurrencyParameter.getId());
 
         if(!optionalCurrency.isPresent()){
             throw new CurrencyNotExistException(updateCurrencyParameter.getId());
         }
 
-        Currency currentCurrency = optionalCurrency.get();
+        final Currency currentCurrency = optionalCurrency.get();
 
-        Optional<Currency> optionalCheckIsoCodeCurrency = this.currencyRepository.findByIsoCode(isoCode);
+        final Optional<Currency> optionalCheckIsoCodeCurrency = this.currencyRepository.findByIsoCode(isoCode);
 
         if(optionalCheckIsoCodeCurrency.isPresent()){
-            Currency checkIsoCodeCurrency = optionalCheckIsoCodeCurrency.get();
+            final Currency checkIsoCodeCurrency = optionalCheckIsoCodeCurrency.get();
             if(!checkIsoCodeCurrency.getId().equals(currentCurrency.getId())){
                 throw new CurrencyIsoCodeAlreadyExist(isoCode);
             }
@@ -93,7 +92,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         }
 
         currentCurrency.setDefaultCurrency(updateCurrencyParameter.getDefaultCurrency());
-        String label = StringUtils.capitalize(updateCurrencyParameter.getLabel().toLowerCase());
+        final String label = StringUtils.capitalize(updateCurrencyParameter.getLabel().toLowerCase());
         currentCurrency.setLabel(label);
         currentCurrency.setSymbol(updateCurrencyParameter.getSymbol().toUpperCase());
         currentCurrency.setIsoCode(isoCode);
@@ -106,13 +105,13 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public List<CurrencyDTO> getAllCurrencies() {
-        List<CurrencyDTO> currencyDTOs = new ArrayList<>();
+        final List<CurrencyDTO> currencyDTOs = new ArrayList<>();
 
-        List<Currency> currencies = this.currencyRepository.findAll();
+        final List<Currency> currencies = this.currencyRepository.findAll();
 
         CurrencyDTO currencyDTO;
 
-        for(Currency currency : currencies){
+        for(final Currency currency : currencies){
             currencyDTO = new CurrencyDTO(currency);
             currencyDTOs.add(currencyDTO);
         }

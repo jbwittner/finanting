@@ -46,7 +46,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
         this.currencyServiceImpl.updateCurrency(updateCurrencyParameter);
 
-        List<Currency> currencies = this.currencyRepository.findAll();
+        final List<Currency> currencies = this.currencyRepository.findAll();
 
         Assertions.assertEquals(1, currencies.size());
 
@@ -55,7 +55,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(this.updateCurrencyParameter.getDecimalPlaces(), currency.getDecimalPlaces());
         Assertions.assertEquals(this.updateCurrencyParameter.getDefaultCurrency(), currency.getDefaultCurrency());
         Assertions.assertEquals(this.updateCurrencyParameter.getIsoCode().toUpperCase(), currency.getIsoCode());
-        String label = StringUtils.capitalize(this.updateCurrencyParameter.getLabel().toLowerCase());
+        final String label = StringUtils.capitalize(this.updateCurrencyParameter.getLabel().toLowerCase());
         Assertions.assertEquals(label, currency.getLabel());
         Assertions.assertEquals(this.updateCurrencyParameter.getRate(), currency.getRate());
         Assertions.assertEquals(this.updateCurrencyParameter.getSymbol().toUpperCase(), currency.getSymbol());
@@ -71,7 +71,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
         this.currencyServiceImpl.updateCurrency(updateCurrencyParameter);
 
-        List<Currency> currencies = this.currencyRepository.findAll();
+        final List<Currency> currencies = this.currencyRepository.findAll();
 
         Assertions.assertEquals(1, currencies.size());
 
@@ -80,7 +80,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(this.updateCurrencyParameter.getDecimalPlaces(), currency.getDecimalPlaces());
         Assertions.assertEquals(this.updateCurrencyParameter.getDefaultCurrency(), currency.getDefaultCurrency());
         Assertions.assertEquals(this.updateCurrencyParameter.getIsoCode().toUpperCase(), currency.getIsoCode());
-        String label = StringUtils.capitalize(this.updateCurrencyParameter.getLabel().toLowerCase());
+        final String label = StringUtils.capitalize(this.updateCurrencyParameter.getLabel().toLowerCase());
         Assertions.assertEquals(label, currency.getLabel());
         Assertions.assertEquals(this.updateCurrencyParameter.getRate(), currency.getRate());
         Assertions.assertEquals(this.updateCurrencyParameter.getSymbol().toUpperCase(), currency.getSymbol());
@@ -96,7 +96,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
         this.currencyServiceImpl.updateCurrency(updateCurrencyParameter);
 
-        List<Currency> currencies = this.currencyRepository.findAll();
+        final List<Currency> currencies = this.currencyRepository.findAll();
 
         Assertions.assertEquals(1, currencies.size());
 
@@ -105,7 +105,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(this.updateCurrencyParameter.getDecimalPlaces(), currency.getDecimalPlaces());
         Assertions.assertEquals(this.updateCurrencyParameter.getDefaultCurrency(), currency.getDefaultCurrency());
         Assertions.assertEquals(this.updateCurrencyParameter.getIsoCode().toUpperCase(), currency.getIsoCode());
-        String label = StringUtils.capitalize(this.updateCurrencyParameter.getLabel().toLowerCase());
+        final String label = StringUtils.capitalize(this.updateCurrencyParameter.getLabel().toLowerCase());
         Assertions.assertEquals(label, currency.getLabel());
         Assertions.assertEquals(this.updateCurrencyParameter.getRate(), currency.getRate());
         Assertions.assertEquals(this.updateCurrencyParameter.getSymbol().toUpperCase(), currency.getSymbol());
@@ -114,8 +114,8 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCurrencyWithIsoCodeAlreadyUsed() {
-        Currency currency = this.currencyRepository.save(this.factory.getCurrency());
-        Currency otherCurrency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency otherCurrency = this.currencyRepository.save(this.factory.getCurrency());
 
         this.updateCurrencyParameter.setId(currency.getId());
         this.updateCurrencyParameter.setIsoCode(otherCurrency.getIsoCode());
@@ -127,7 +127,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCurrencyToNoDefaultCurrency() {
-        Currency currency = this.factory.getCurrency();
+        final Currency currency = this.factory.getCurrency();
         currency.setDefaultCurrency(true);
         this.currencyRepository.save(currency);
 

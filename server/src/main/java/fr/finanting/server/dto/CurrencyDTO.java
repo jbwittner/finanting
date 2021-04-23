@@ -14,7 +14,7 @@ public class CurrencyDTO {
     private Integer rate;
     private Integer decimalPlaces;
 
-    public CurrencyDTO(Currency currency){
+    public CurrencyDTO(final Currency currency){
         this.id = currency.getId();
         this.defaultCurrency = currency.getDefaultCurrency();
         this.label = currency.getLabel();
