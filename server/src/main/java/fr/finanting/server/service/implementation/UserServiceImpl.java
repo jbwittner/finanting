@@ -57,7 +57,14 @@ public class UserServiceImpl implements UserService {
         user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
 
         final List<Role> roles = new ArrayList<>();
+        final List<User> users = this.userRepository.findAll();
+
+        if(users.isEmpty()){
+            roles.add(Role.ADMIN);
+        }
+
         roles.add(Role.USER);
+
         user.setRoles(roles);
 
         this.userRepository.save(user);

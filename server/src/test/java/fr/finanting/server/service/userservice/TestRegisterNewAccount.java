@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.finanting.server.exception.UserEmailAlreadyExistException;
@@ -46,11 +45,10 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testRegisterNewAccount() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
+    public void testRegisterFirstNewAccount() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
         this.userService.registerNewAccount(this.newUserRegisterParameter);
 
-        final User user = this.userRepository.findByUserName(this.newUserRegisterParameter.getUserName())
-            .orElseThrow(() -> new UsernameNotFoundException(this.newUserRegisterParameter.getUserName()));
+        final User user = this.userRepository.findByUserName(this.newUserRegisterParameter.getUserName()).orElseThrow();
 
         final String userNameToCheck = newUserRegisterParameter.getUserName().toLowerCase();
         final String firstNameToCheck = StringUtils.capitalize(newUserRegisterParameter.getFirstName().toLowerCase());
@@ -60,9 +58,33 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(this.newUserRegisterParameter.getLastName().toUpperCase(), user.getLastName());
         Assertions.assertTrue(this.passwordEncoder.matches(this.newUserRegisterParameter.getPassword(), user.getPassword()));
         Assertions.assertEquals(userNameToCheck, user.getUserName());
-        for(final Role role : user.getRoles()){
-            Assertions.assertEquals(Role.USER.toString(), role.toString());
-        }
+        Assertions.assertEquals(2, user.getRoles().size());
+
+        Assertions.assertEquals(Role.ADMIN.toString(), user.getRoles().get(0).toString());
+        Assertions.assertEquals(Role.USER.toString(), user.getRoles().get(1).toString());
+
+    }
+
+    @Test
+    public void testRegisterAnotherNewAccount() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
+        this.userRepository.save(this.factory.getUser());
+
+        this.userService.registerNewAccount(this.newUserRegisterParameter);
+
+        final User user = this.userRepository.findByUserName(this.newUserRegisterParameter.getUserName()).orElseThrow();
+
+        final String userNameToCheck = newUserRegisterParameter.getUserName().toLowerCase();
+        final String firstNameToCheck = StringUtils.capitalize(newUserRegisterParameter.getFirstName().toLowerCase());
+
+        Assertions.assertEquals(this.newUserRegisterParameter.getEmail(), user.getEmail());
+        Assertions.assertEquals(firstNameToCheck, user.getFirstName());
+        Assertions.assertEquals(this.newUserRegisterParameter.getLastName().toUpperCase(), user.getLastName());
+        Assertions.assertTrue(this.passwordEncoder.matches(this.newUserRegisterParameter.getPassword(), user.getPassword()));
+        Assertions.assertEquals(userNameToCheck, user.getUserName());
+        Assertions.assertEquals(1, user.getRoles().size());
+
+        Assertions.assertEquals(Role.USER.toString(), user.getRoles().get(0).toString());
+
     }
 
     @Test
