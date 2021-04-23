@@ -13,25 +13,22 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Currency extends MotherPersistant {
 
-    @Column(name = "DEFAULT_CURRENCY")
-    private Boolean defaultCurrency;
+    @Column(name = "DEFAULT_CURRENCY", nullable = false)
+    private Boolean defaultCurrency = false;
 
-    @Column(name = "LABEL")
+    @Column(name = "LABEL", nullable = false)
     private String label;
 
-    @Column(name = "SYMBOL")
+    @Column(name = "SYMBOL", nullable = false, length = 3)
     private String symbol;
 
-    @Column(name = "CODE")
-    private String code;
+    @Column(name = "ISO_CODE", unique = true, nullable = false, length = 3)
+    private String isoCode;
 
-    @Column(name = "EURO_RATE")
-    private Integer euroRate;
+    @Column(name = "RATE", nullable = false)
+    private Integer rate;
 
-    @Column(name = "DECIMAL_PLACES")
+    @Column(name = "DECIMAL_PLACES", nullable = false)
     private Integer decimalPlaces;
-
-    @Column(name = "UPDATE_AUTOMATICALLY")
-    private Boolean updateAutomatically;
 
 }

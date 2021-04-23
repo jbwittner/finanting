@@ -4,6 +4,7 @@ import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.CategoryType;
 import fr.finanting.server.model.Classification;
+import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.model.embeddable.Contact;
@@ -355,6 +356,21 @@ public class TestObjectFactory {
 
     public Third getThird(final Group group, final Category category){
         return this.getThird(null, group, category);
+    }
+
+    public Currency getCurrency(){
+        Currency currency = new Currency();
+        currency.setDecimalPlaces(this.getRandomInteger());
+        currency.setDefaultCurrency(false);
+        currency.setIsoCode(this.getUniqueRandomAlphanumericString(3).toUpperCase());
+        currency.setSymbol(this.getUniqueRandomAlphanumericString(3).toUpperCase());
+
+        String label = StringUtils.capitalize(this.getUniqueRandomAlphanumericString().toLowerCase());
+        currency.setLabel(label);
+
+        currency.setRate(this.getRandomInteger());
+
+        return currency;
     }
 
 }
