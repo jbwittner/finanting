@@ -39,10 +39,35 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateCurrencyOk() throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
+    public void testUpdateNoDefaultCurrencyOk() throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
         Currency currency = this.currencyRepository.save(this.factory.getCurrency());
 
         this.updateCurrencyParameter.setId(currency.getId());
+
+        this.currencyServiceImpl.updateCurrency(updateCurrencyParameter);
+
+        List<Currency> currencies = this.currencyRepository.findAll();
+
+        Assertions.assertEquals(1, currencies.size());
+
+        currency = currencies.get(0);
+
+        Assertions.assertEquals(this.updateCurrencyParameter.getDecimalPlaces(), currency.getDecimalPlaces());
+        Assertions.assertEquals(this.updateCurrencyParameter.getDefaultCurrency(), currency.getDefaultCurrency());
+        Assertions.assertEquals(this.updateCurrencyParameter.getIsoCode().toUpperCase(), currency.getIsoCode());
+        String label = StringUtils.capitalize(this.updateCurrencyParameter.getLabel().toLowerCase());
+        Assertions.assertEquals(label, currency.getLabel());
+        Assertions.assertEquals(this.updateCurrencyParameter.getRate(), currency.getRate());
+        Assertions.assertEquals(this.updateCurrencyParameter.getSymbol().toUpperCase(), currency.getSymbol());
+
+    }
+
+    @Test
+    public void testUpdateDefaultCurrencyOk() throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
+        Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+
+        this.updateCurrencyParameter.setId(currency.getId());
+        this.updateCurrencyParameter.setDefaultCurrency(true);
 
         this.currencyServiceImpl.updateCurrency(updateCurrencyParameter);
 

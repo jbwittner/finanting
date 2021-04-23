@@ -1,5 +1,6 @@
 package fr.finanting.server.dto;
 
+import fr.finanting.server.model.Currency;
 import lombok.Data;
 
 @Data
@@ -12,5 +13,15 @@ public class CurrencyDTO {
     private String isoCode;
     private Integer rate;
     private Integer decimalPlaces;
+
+    public CurrencyDTO(Currency currency){
+        this.id = currency.getId();
+        this.defaultCurrency = currency.getDefaultCurrency();
+        this.label = currency.getLabel();
+        this.symbol = currency.getSymbol();
+        this.isoCode = currency.getIsoCode();
+        this.rate = currency.getRate();
+        this.decimalPlaces = currency.getDecimalPlaces();
+    }
     
 }

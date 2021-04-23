@@ -1,5 +1,8 @@
 package fr.finanting.server.service;
 
+import java.util.List;
+
+import fr.finanting.server.dto.CurrencyDTO;
 import fr.finanting.server.exception.CurrencyIsoCodeAlreadyExist;
 import fr.finanting.server.exception.CurrencyNotExistException;
 import fr.finanting.server.exception.NoDefaultCurrencyException;
@@ -13,5 +16,7 @@ public interface CurrencyService {
     
     public void updateCurrency(final UpdateCurrencyParameter updateCurrencyParameter)
         throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException;
+
+    public List<CurrencyDTO> getAllCurrencies();
 
 }

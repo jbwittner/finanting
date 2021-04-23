@@ -1,12 +1,15 @@
 package fr.finanting.server.service.implementation;
 
 import java.lang.StackWalker.Option;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.finanting.server.dto.CurrencyDTO;
 import fr.finanting.server.exception.CurrencyIsoCodeAlreadyExist;
 import fr.finanting.server.exception.CurrencyNotExistException;
 import fr.finanting.server.exception.NoDefaultCurrencyException;
@@ -99,6 +102,22 @@ public class CurrencyServiceImpl implements CurrencyService {
 
         this.currencyRepository.save(currentCurrency);
 
+    }
+
+    @Override
+    public List<CurrencyDTO> getAllCurrencies() {
+        List<CurrencyDTO> currencyDTOs = new ArrayList<>();
+
+        List<Currency> currencies = this.currencyRepository.findAll();
+
+        CurrencyDTO currencyDTO;
+
+        for(Currency currency : currencies){
+            currencyDTO = new CurrencyDTO(currency);
+            currencyDTOs.add(currencyDTO);
+        }
+
+        return currencyDTOs;
     }
     
 }
