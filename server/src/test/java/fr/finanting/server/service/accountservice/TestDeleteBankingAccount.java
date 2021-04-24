@@ -6,6 +6,7 @@ import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.DeleteBankingAccountParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
+import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
@@ -27,11 +28,14 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     @Autowired
     private BankingAccountRepository bankingAccountRepository;
 
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
     }
 
     @Test
@@ -39,7 +43,9 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         User user = this.factory.getUser();
         user = this.userRepository.save(user);
+
         BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
         bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
@@ -58,7 +64,9 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
         Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
-        BankingAccount bankingAccount = this.factory.getBankingAccount(group);
+        
+        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
         bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
@@ -76,7 +84,10 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
         Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(group));
+
+        BankingAccount bankingAccount = this.factory.getBankingAccount(group);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
@@ -90,7 +101,10 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteUserAccountNotUserAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
+
+        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
@@ -105,7 +119,10 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     public void testDeleteUserAccountUserNotExist()
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
+
+        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());

@@ -8,6 +8,7 @@ import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.BankingAccountRepository;
+import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
@@ -30,18 +31,24 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
     @Autowired
     private BankingAccountRepository bankingAccountRepository;
 
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
     }
 
     @Test
     public void testGetUserAccount()
             throws BankingAccountNotExistException, NotUserBankingAccountException, UserNotInGroupException {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
+
+        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         final BankingAccountDTO bankingAccountDTO = this.bankingAccountServiceImpl.getBankingAccount(bankingAccount.getId(), user.getUserName());
 
@@ -53,7 +60,10 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
             throws BankingAccountNotExistException, NotUserBankingAccountException, UserNotInGroupException {
         final Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(group));
+
+        BankingAccount bankingAccount = this.factory.getBankingAccount(group);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         final List<BankingAccount> bankingAccountList = new ArrayList<>();
         bankingAccountList.add(bankingAccount);
@@ -70,7 +80,10 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
     public void testGetGroupAccountNotInGroup() {
         final Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(group));
+
+        final BankingAccount bankingAccount = this.factory.getBankingAccount(group);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        final BankingAccount finalBankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         final List<BankingAccount> bankingAccountList = new ArrayList<>();
         bankingAccountList.add(bankingAccount);
@@ -81,7 +94,7 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
         final User user = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(UserNotInGroupException.class,
-                () -> this.bankingAccountServiceImpl.getBankingAccount(bankingAccount.getId(), user.getUserName()));
+                () -> this.bankingAccountServiceImpl.getBankingAccount(finalBankingAccount.getId(), user.getUserName()));
 
     }
 
@@ -98,12 +111,15 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testGetNotUserAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
+
+        final BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        final BankingAccount finalBankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
         Assertions.assertThrows(NotUserBankingAccountException.class,
-                () -> this.bankingAccountServiceImpl.getBankingAccount(bankingAccount.getId(), user2.getUserName()));
+                () -> this.bankingAccountServiceImpl.getBankingAccount(finalBankingAccount.getId(), user2.getUserName()));
     }
 
     private void checkAccount(final BankingAccountDTO bankingAccountDTO,

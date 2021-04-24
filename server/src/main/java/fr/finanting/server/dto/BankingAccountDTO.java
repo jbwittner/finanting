@@ -12,6 +12,7 @@ public class BankingAccountDTO {
     private String abbreviation;
     private Integer balance;
     private BankDetailsDTO bankDetailsDTO;
+    private CurrencyDTO defaultCurrencyDTO;
     
 
     AddressDTO addressDTO;
@@ -21,6 +22,7 @@ public class BankingAccountDTO {
         this.id = bankingAccount.getId();
         this.label = bankingAccount.getLabel();
         this.abbreviation = bankingAccount.getAbbreviation();
+        this.defaultCurrencyDTO = new CurrencyDTO(bankingAccount.getDefaultCurrency());
 
         if(bankingAccount.getAddress() != null){
             this.addressDTO = new AddressDTO(bankingAccount.getAddress());

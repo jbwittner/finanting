@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import fr.finanting.server.dto.BankingAccountDTO;
 import fr.finanting.server.model.BankingAccount;
+import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.model.embeddable.Address;
@@ -14,6 +15,7 @@ import fr.finanting.server.parameter.CreateBankingAccountParameter;
 import fr.finanting.server.parameter.DeleteBankingAccountParameter;
 import fr.finanting.server.parameter.UpdateBankingAccountParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
+import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.BankingAccountService;
@@ -27,18 +29,20 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     private final BankingAccountRepository bankingAccountRepository;
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final CurrencyRepository currencyRepository;
 
     @Autowired
     public BankingAccountServiceImpl(final BankingAccountRepository bankingAccountRepository,
-        final GroupRepository groupRepository, final UserRepository userRepository){
+        final GroupRepository groupRepository, final UserRepository userRepository, final CurrencyRepository currencyRepository){
             this.bankingAccountRepository = bankingAccountRepository;
             this.groupRepository = groupRepository;
             this.userRepository = userRepository;
+            this.currencyRepository = currencyRepository;
         }
 
     @Override
     public BankingAccountDTO createAccount(final CreateBankingAccountParameter createBankingAccountParameter, final String userName)
-            throws GroupNotExistException{
+            throws GroupNotExistException, CurrencyNotExistException{
 
         BankingAccount bankingAccount = new BankingAccount();
 
@@ -51,6 +55,11 @@ public class BankingAccountServiceImpl implements BankingAccountService {
                 .orElseThrow(() -> new GroupNotExistException(groupName));
             bankingAccount.setGroup(group);
         }
+
+        final Currency currency = this.currencyRepository.findByIsoCode(createBankingAccountParameter.getDefaultCurrencyISOCode())
+            .orElseThrow(() -> new CurrencyNotExistException(createBankingAccountParameter.getDefaultCurrencyISOCode()));
+
+        bankingAccount.setDefaultCurrency(currency);
 
         bankingAccount.setAbbreviation(createBankingAccountParameter.getAbbreviation().toUpperCase());
         bankingAccount.setInitialBalance(createBankingAccountParameter.getInitialBalance());
@@ -124,12 +133,17 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     @Override
     public BankingAccountDTO updateAccount(final UpdateBankingAccountParameter updateBankingAccountParameter, final String userName)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException{
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException{
 
         BankingAccount bankingAccount = this.bankingAccountRepository.findById(updateBankingAccountParameter.getAccountId())
             .orElseThrow(() -> new BankingAccountNotExistException(updateBankingAccountParameter.getAccountId()));
 
         this.checkIsAdminAccount(bankingAccount, userName);
+
+        final Currency currency = this.currencyRepository.findByIsoCode(updateBankingAccountParameter.getDefaultCurrencyISOCode())
+            .orElseThrow(() -> new CurrencyNotExistException(updateBankingAccountParameter.getDefaultCurrencyISOCode()));
+
+        bankingAccount.setDefaultCurrency(currency);
 
         bankingAccount.setAbbreviation(updateBankingAccountParameter.getAbbreviation().toUpperCase());
         bankingAccount.setInitialBalance(updateBankingAccountParameter.getInitialBalance());
