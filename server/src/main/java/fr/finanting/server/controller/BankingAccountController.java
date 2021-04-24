@@ -28,7 +28,7 @@ public class BankingAccountController {
     @PostMapping("/updateAccount")
     public BankingAccountDTO updateAccount(final Authentication authentication,
                                     @RequestBody final UpdateBankingAccountParameter updateBankingAccountParameter)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.bankingAccountService.updateAccount(updateBankingAccountParameter, userDetailsImpl.getUsername());
     }
@@ -44,7 +44,7 @@ public class BankingAccountController {
     @PostMapping("/createAccount")
     public BankingAccountDTO createAccount(final Authentication authentication,
                                     @RequestBody final CreateBankingAccountParameter createBankingAccountParameter)
-            throws UserNotExistException, GroupNotExistException {
+            throws UserNotExistException, GroupNotExistException, CurrencyNotExistException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.bankingAccountService.createAccount(createBankingAccountParameter, userDetailsImpl.getUsername());
     }

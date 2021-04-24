@@ -3,12 +3,14 @@ package fr.finanting.server.service.accountservice;
 import fr.finanting.server.dto.BankingAccountDTO;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.model.BankingAccount;
+import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.UpdateBankingAccountParameter;
 import fr.finanting.server.parameter.subpart.AddressParameter;
 import fr.finanting.server.parameter.subpart.BankDetailsParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
+import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
@@ -28,12 +30,15 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     @Autowired
     private BankingAccountRepository bankingAccountRepository;
 
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
     private UpdateBankingAccountParameter updateBankingAccountParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
 
         Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
@@ -56,16 +61,21 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         this.updateBankingAccountParameter.setLabel(this.faker.backToTheFuture().quote());
         this.updateBankingAccountParameter.setAbbreviation(this.factory.getRandomAlphanumericString());
 
+        Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        this.updateBankingAccountParameter.setDefaultCurrencyISOCode(currency.getIsoCode());
+
     }
 
     @Test
     public void testUpdateGroupAccountOk()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException {
         Group group = this.factory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
 
-        BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(group));
+        BankingAccount bankingAccount = this.factory.getBankingAccount(group);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
 
@@ -80,9 +90,12 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserAccountOk()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException {
         final User user = this.userRepository.save(this.factory.getUser());
-        BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
+
+        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
 
@@ -96,8 +109,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateAccountNotExist()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
+    public void testUpdateAccountNotExist() {
         final User user = this.userRepository.save(this.factory.getUser());
 
         this.updateBankingAccountParameter.setAccountId(this.factory.getRandomInteger());
@@ -115,7 +127,9 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
         final User user2 = this.userRepository.save(this.factory.getUser());
 
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(group));
+        BankingAccount bankingAccount = this.factory.getBankingAccount(group);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
 
@@ -124,10 +138,12 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateUserAccountNotUserAccount()
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
+    public void testUpdateUserAccountNotUserAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount bankingAccount = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
+        
+        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
 
@@ -135,6 +151,22 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
         Assertions.assertThrows(NotUserBankingAccountException.class,
                 () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user2.getUserName()));
+
+    }
+
+    @Test
+    public void testUpdateUserAccountISOCodeNotExiste() {
+        final User user = this.userRepository.save(this.factory.getUser());
+        
+        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
+
+        this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
+        this.updateBankingAccountParameter.setDefaultCurrencyISOCode(this.factory.getRandomAlphanumericString());
+
+        Assertions.assertThrows(CurrencyNotExistException.class,
+                () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user.getUserName()));
 
     }
 
@@ -158,6 +190,9 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(updateBankingAccountParameter.getBankDetailsParameter().getIban(),
                 bankingAccountDTO.getBankDetailsDTO().getIban());
 
+        Assertions.assertEquals(updateBankingAccountParameter.getDefaultCurrencyISOCode(),
+                bankingAccountDTO.getDefaultCurrencyDTO().getIsoCode());
+
         Assertions.assertEquals(updateBankingAccountParameter.getAbbreviation().toUpperCase(), bankingAccount.getAbbreviation());
         Assertions.assertEquals(updateBankingAccountParameter.getInitialBalance(), bankingAccount.getInitialBalance());
         Assertions.assertEquals(updateBankingAccountParameter.getLabel(), bankingAccount.getLabel());
@@ -173,6 +208,9 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
                 bankingAccount.getBankDetails().getAccountNumber());
         Assertions.assertEquals(updateBankingAccountParameter.getBankDetailsParameter().getIban(),
                 bankingAccount.getBankDetails().getIban());
+
+        Assertions.assertEquals(updateBankingAccountParameter.getDefaultCurrencyISOCode(),
+                bankingAccount.getDefaultCurrency().getIsoCode());
 
     }
 

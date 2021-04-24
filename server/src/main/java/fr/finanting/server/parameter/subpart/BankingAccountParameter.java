@@ -19,6 +19,10 @@ public class BankingAccountParameter {
     private String abbreviation;
 
     @NotNull
+    @Size(min=3, max=3)
+    private String defaultCurrencyISOCode; 
+
+    @NotNull
     private Integer initialBalance;
 
     private AddressParameter addressParameter;

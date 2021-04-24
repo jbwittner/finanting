@@ -6,4 +6,9 @@ public class CurrencyNotExistException extends FunctionalException {
         super("The currency with the id " + id + " not exist");
     }
 
+    public CurrencyNotExistException(final String ISOCode) {
+        super("The currency with the code " + ISOCode + " not exist");
+    }
+
+
 }

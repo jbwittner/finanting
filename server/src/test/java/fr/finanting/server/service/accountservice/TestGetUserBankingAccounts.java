@@ -4,6 +4,7 @@ import fr.finanting.server.dto.BankingAccountDTO;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.BankingAccountRepository;
+import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
@@ -25,19 +26,31 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
     @Autowired
     private BankingAccountRepository bankingAccountRepository;
 
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
     }
 
     @Test
     public void testGetUserAccountWithoutGroupAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
-        final BankingAccount bankingAccount1 = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
-        final BankingAccount bankingAccount2 = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
-        final BankingAccount bankingAccount3 = this.bankingAccountRepository.save(this.factory.getBankingAccount(user));
+
+        BankingAccount bankingAccount1 = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount1.getDefaultCurrency());
+        bankingAccount1 = this.bankingAccountRepository.save(bankingAccount1);
+
+        BankingAccount bankingAccount2 = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount2.getDefaultCurrency());
+        bankingAccount2 = this.bankingAccountRepository.save(bankingAccount2);
+
+        BankingAccount bankingAccount3 = this.factory.getBankingAccount(user);
+        this.currencyRepository.save(bankingAccount3.getDefaultCurrency());
+        bankingAccount3 = this.bankingAccountRepository.save(bankingAccount3);
 
         final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
 
@@ -88,6 +101,8 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
                 bankingAccountDTO.getBankDetailsDTO().getAccountNumber());
         Assertions.assertEquals(bankingAccount.getBankDetails().getIban(),
                 bankingAccountDTO.getBankDetailsDTO().getIban());
+        Assertions.assertEquals(bankingAccount.getDefaultCurrency().getIsoCode(),
+                bankingAccountDTO.getDefaultCurrencyDTO().getIsoCode());      
 
     }
 }

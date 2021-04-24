@@ -254,6 +254,9 @@ public class TestObjectFactory {
         bankingAccount.setGroup(group);
         bankingAccount.setUser(user);
 
+        Currency defaultCurrency = this.getCurrency();
+        bankingAccount.setDefaultCurrency(defaultCurrency);
+
         return bankingAccount;
     }
 

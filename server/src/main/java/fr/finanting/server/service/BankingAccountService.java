@@ -11,13 +11,13 @@ import fr.finanting.server.parameter.UpdateBankingAccountParameter;
 public interface BankingAccountService {
 
     public BankingAccountDTO updateAccount(final UpdateBankingAccountParameter updateBankingAccountParameter, final String userName)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException;
+            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException;
 
     public void deleteAccount(final DeleteBankingAccountParameter deleteBankingAccountParameter, final String userName)
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException;
 
     public BankingAccountDTO createAccount(final CreateBankingAccountParameter createBankingAccountParameter, final String userName)
-            throws UserNotExistException, GroupNotExistException;
+            throws UserNotExistException, GroupNotExistException, CurrencyNotExistException;
 
     public List<BankingAccountDTO> getUserBankingAccounts(final String userName);
 

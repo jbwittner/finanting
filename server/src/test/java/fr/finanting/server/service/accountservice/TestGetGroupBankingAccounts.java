@@ -7,6 +7,7 @@ import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.BankingAccountRepository;
+import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
@@ -28,6 +29,9 @@ public class TestGetGroupBankingAccounts extends AbstractMotherIntegrationTest {
     @Autowired
     private BankingAccountRepository bankingAccountRepository;
 
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
 
     private User user;
@@ -35,7 +39,7 @@ public class TestGetGroupBankingAccounts extends AbstractMotherIntegrationTest {
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
 
         this.group = this.factory.getGroup();
         this.userRepository.save(this.group.getUserAdmin());
@@ -51,9 +55,18 @@ public class TestGetGroupBankingAccounts extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetGroupAccountWithoutGroupAccount() throws UserNotInGroupException, GroupNotExistException {
-        final BankingAccount bankingAccount1 = this.bankingAccountRepository.save(this.factory.getBankingAccount(this.group));
-        final BankingAccount bankingAccount2 = this.bankingAccountRepository.save(this.factory.getBankingAccount(this.group));
-        final BankingAccount bankingAccount3 = this.bankingAccountRepository.save(this.factory.getBankingAccount(this.group));
+        
+        BankingAccount bankingAccount1 = this.factory.getBankingAccount(this.group);
+        this.currencyRepository.save(bankingAccount1.getDefaultCurrency());
+        bankingAccount1 = this.bankingAccountRepository.save(bankingAccount1);
+
+        BankingAccount bankingAccount2 = this.factory.getBankingAccount(this.group);
+        this.currencyRepository.save(bankingAccount2.getDefaultCurrency());
+        bankingAccount2 = this.bankingAccountRepository.save(bankingAccount2);
+
+        BankingAccount bankingAccount3 = this.factory.getBankingAccount(this.group);
+        this.currencyRepository.save(bankingAccount3.getDefaultCurrency());
+        bankingAccount3 = this.bankingAccountRepository.save(bankingAccount3);
 
         final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getGroupBankingAccounts(this.group.getGroupName(), this.user.getUserName());
 

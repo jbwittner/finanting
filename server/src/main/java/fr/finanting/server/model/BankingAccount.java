@@ -41,6 +41,10 @@ public class BankingAccount extends MotherPersistant {
     @Column(name = "INITIAL_BALANCE", nullable = false)
     private Integer initialBalance = 0;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DEFAULT_CURRENCY_ID", nullable = false)
+    private Currency defaultCurrency;
+
     @Embedded
     private BankDetails bankDetails;
     
