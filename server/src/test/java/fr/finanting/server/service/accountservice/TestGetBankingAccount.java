@@ -81,7 +81,7 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
         final Group group = this.factory.getGroup();
         this.userRepository.save(group.getUserAdmin());
 
-        BankingAccount bankingAccount = this.factory.getBankingAccount(group);
+        final BankingAccount bankingAccount = this.factory.getBankingAccount(group);
         this.currencyRepository.save(bankingAccount.getDefaultCurrency());
         final BankingAccount finalBankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
@@ -112,7 +112,7 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
     public void testGetNotUserAccount() {
         final User user = this.userRepository.save(this.factory.getUser());
 
-        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        final BankingAccount bankingAccount = this.factory.getBankingAccount(user);
         this.currencyRepository.save(bankingAccount.getDefaultCurrency());
         final BankingAccount finalBankingAccount = this.bankingAccountRepository.save(bankingAccount);
 

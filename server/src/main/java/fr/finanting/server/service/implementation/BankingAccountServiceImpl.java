@@ -56,7 +56,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
             bankingAccount.setGroup(group);
         }
 
-        Currency currency = this.currencyRepository.findByIsoCode(createBankingAccountParameter.getDefaultCurrencyISOCode())
+        final Currency currency = this.currencyRepository.findByIsoCode(createBankingAccountParameter.getDefaultCurrencyISOCode())
             .orElseThrow(() -> new CurrencyNotExistException(createBankingAccountParameter.getDefaultCurrencyISOCode()));
 
         bankingAccount.setDefaultCurrency(currency);
@@ -140,7 +140,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
         this.checkIsAdminAccount(bankingAccount, userName);
 
-        Currency currency = this.currencyRepository.findByIsoCode(updateBankingAccountParameter.getDefaultCurrencyISOCode())
+        final Currency currency = this.currencyRepository.findByIsoCode(updateBankingAccountParameter.getDefaultCurrencyISOCode())
             .orElseThrow(() -> new CurrencyNotExistException(updateBankingAccountParameter.getDefaultCurrencyISOCode()));
 
         bankingAccount.setDefaultCurrency(currency);

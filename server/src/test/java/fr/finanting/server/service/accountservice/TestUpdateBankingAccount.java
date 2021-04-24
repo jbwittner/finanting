@@ -61,7 +61,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         this.updateBankingAccountParameter.setLabel(this.faker.backToTheFuture().quote());
         this.updateBankingAccountParameter.setAbbreviation(this.factory.getRandomAlphanumericString());
 
-        Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency = this.currencyRepository.save(this.factory.getCurrency());
         this.updateBankingAccountParameter.setDefaultCurrencyISOCode(currency.getIsoCode());
 
     }

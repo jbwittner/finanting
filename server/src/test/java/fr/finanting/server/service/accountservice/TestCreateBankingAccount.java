@@ -67,7 +67,7 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
         this.createBankingAccountParameter.setInitialBalance(this.factory.getRandomInteger());
         this.createBankingAccountParameter.setLabel(this.faker.backToTheFuture().quote());
 
-        Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency = this.currencyRepository.save(this.factory.getCurrency());
         this.createBankingAccountParameter.setDefaultCurrencyISOCode(currency.getIsoCode());
     }
 
