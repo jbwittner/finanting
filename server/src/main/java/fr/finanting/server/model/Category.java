@@ -9,6 +9,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
+
+import fr.finanting.server.exception.CategoryNoUserException;
+import fr.finanting.server.exception.UserNotInGroupException;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -53,6 +57,16 @@ public class Category extends MotherPersistant {
     @Override
     public String toString() {
         return "Category [id= " + this.id + ", abbreviation=" + abbreviation + ", label=" + label + ", user=" + user + "]";
+    }
+
+    public void checkIfUsable(User user) throws CategoryNoUserException, UserNotInGroupException{
+        if(this.group == null){
+            if(!this.user.getUserName().equals(user.getUserName())){
+                throw new CategoryNoUserException(this.id);
+            }
+        } else {
+            this.group.checkAreInGroup(user);
+        }
     }
     
 }

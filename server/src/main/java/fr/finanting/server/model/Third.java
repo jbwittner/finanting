@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 
+import fr.finanting.server.exception.ThirdNoUserException;
+import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.model.embeddable.Contact;
@@ -51,5 +53,15 @@ public class Third extends MotherPersistant {
 
     @Embedded
     private Contact contact;
+
+    public void checkIfUsable(User user) throws ThirdNoUserException, UserNotInGroupException{
+        if(this.group == null){
+            if(!this.user.getUserName().equals(user.getUserName())){
+                throw new ThirdNoUserException(this.id);
+            }
+        } else {
+            this.group.checkAreInGroup(user);
+        }
+    }
     
 }

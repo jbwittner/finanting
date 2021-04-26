@@ -39,7 +39,7 @@ public class Group extends MotherPersistant {
     private List<Category> categories = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable( name = "USERS_GROUPS_ASSOCIATIONS",
+    @JoinTable( name = "ASSOCIATIONS_USERS_GROUPS",
                 joinColumns = { 
                     @JoinColumn(name = "GROUP_ID_JOIN") }, inverseJoinColumns = { 
                     @JoinColumn(name = "USER_ID_INVERSE") })

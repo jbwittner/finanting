@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 
+import fr.finanting.server.exception.ClassificationNoUserException;
+import fr.finanting.server.exception.UserNotInGroupException;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,5 +36,15 @@ public class Classification extends MotherPersistant {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    public void checkIfUsable(User user) throws ClassificationNoUserException, UserNotInGroupException{
+        if(this.group == null){
+            if(!this.user.getUserName().equals(user.getUserName())){
+                throw new ClassificationNoUserException(this.id);
+            }
+        } else {
+            this.group.checkAreInGroup(user);
+        }
+    }
     
 }
