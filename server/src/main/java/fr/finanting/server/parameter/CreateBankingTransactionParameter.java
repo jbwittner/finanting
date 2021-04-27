@@ -1,6 +1,6 @@
 package fr.finanting.server.parameter;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,8 +11,10 @@ import lombok.Data;
 @Data
 public class CreateBankingTransactionParameter {
 
-    private Integer sourceAccountId;
-    private Integer targetAccountId;
+    @NotNull
+    private Integer accountId;
+
+    private Integer linkedAccountId;
     private Integer thirdId;
     private Integer categoryId;
     private Integer classificationId;
@@ -34,6 +36,6 @@ public class CreateBankingTransactionParameter {
     @NotNull
     private Integer currencyId;
 
-    private String descritpion;
+    private String description;
     
 }

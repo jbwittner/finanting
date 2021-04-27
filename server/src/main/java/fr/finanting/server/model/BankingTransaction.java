@@ -1,7 +1,7 @@
 package fr.finanting.server.model;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,12 +26,12 @@ import lombok.EqualsAndHashCode;
 public class BankingTransaction extends MotherPersistant {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SOURCE_ACCOUNT_ID")
-    private BankingAccount sourceAccount;
+    @JoinColumn(name = "ACCOUNT_ID")
+    private BankingAccount account;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TARGET_ACCOUNT_ID")
-    private BankingAccount targetAccount;
+    @JoinColumn(name = "LINKED_ACCOUNT_ID")
+    private BankingAccount linkedAccount;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MIRROR_TRANSACTION")
@@ -48,9 +50,11 @@ public class BankingTransaction extends MotherPersistant {
     private Classification classification;
 
     @Column(name = "TRANSACTION_DATE", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date transactionDate;
 
     @Column(name = "AMOUNT_DATE", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date amountDate;
 
     @Column(name = "AMOUNT", nullable = false)
@@ -64,7 +68,7 @@ public class BankingTransaction extends MotherPersistant {
     private Currency currency;
 
     @Column(name = "DESCRIPTION")
-    private String descritpion;
+    private String description;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable( name = "ASSOCIATIONS_TRANSACTIONS_FILES",

@@ -168,7 +168,7 @@ public class TestObjectFactory {
         return randomNumber;
     }
 
-    public Integer getUniqueRandomInteger(){
+    public int getUniqueRandomInteger(){
         return this.getUniqueRandomInteger(NUMBER_MAX);
     }
 
@@ -177,20 +177,29 @@ public class TestObjectFactory {
         return (int) random;
     }
 
+    public double getRandomDouble(final Integer max){
+        final double random = this.faker.random().nextDouble();
+        return random;
+    }
+
     public long getRandomLong(final Integer max){
         final double random = Math.random() * max;
         return (long) random;
     }
 
-    public Integer getRandomInteger(){
+    public int getRandomInteger(){
         return this.getRandomInteger(NUMBER_MAX);
     }
 
-    public Long getRandomLong(){
+    public double getRandomDouble(){
+        return this.getRandomDouble(NUMBER_MAX);
+    }
+
+    public long getRandomLong(){
         return this.getRandomLong(NUMBER_MAX);
     }
 
-    public Integer getRandomInteger(final Integer min, final Integer max){
+    public int getRandomInteger(final Integer min, final Integer max){
         return (int) (min + (Math.random() * (max - min)));
     }
 

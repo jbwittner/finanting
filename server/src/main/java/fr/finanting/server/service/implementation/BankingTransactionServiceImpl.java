@@ -1,9 +1,8 @@
 package fr.finanting.server.service.implementation;
 
-import javax.transaction.Transaction;
-
 import org.springframework.stereotype.Service;
 
+import fr.finanting.server.dto.BankingTransactionDTO;
 import fr.finanting.server.exception.BadAssociationBankingTransactionBankingAccountException;
 import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.CategoryNoUserException;
@@ -11,7 +10,6 @@ import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.ClassificationNoUserException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.CurrencyNotExistException;
-import fr.finanting.server.exception.SourceAndTargetBankingAccountNullException;
 import fr.finanting.server.exception.ThirdNoUserException;
 import fr.finanting.server.exception.ThirdNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
@@ -28,10 +26,8 @@ import fr.finanting.server.repository.BankingTransactionRepository;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.ClassificationRepository;
 import fr.finanting.server.repository.CurrencyRepository;
-import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.ThirdRepository;
 import fr.finanting.server.repository.UserRepository;
-import fr.finanting.server.service.BankingAccountService;
 import fr.finanting.server.service.BankingTransactionService;
 
 @Service
@@ -44,7 +40,6 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
     private ClassificationRepository classificationRepository;
     private CurrencyRepository currencyRepository;
     private UserRepository userRepository;
-    private GroupRepository groupRepository;
 
     public BankingTransactionServiceImpl(final BankingTransactionRepository bankingTransactionRepository,
                                             final BankingAccountRepository bankingAccountRepository,
@@ -52,8 +47,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
                                             final CategoryRepository categoryRepository,
                                             final ClassificationRepository classificationRepository,
                                             final CurrencyRepository currencyRepository,
-                                            final UserRepository userRepository,
-                                            final GroupRepository groupRepository){
+                                            final UserRepository userRepository){
         this.bankingTransactionRepository = bankingTransactionRepository;
         this.bankingAccountRepository = bankingAccountRepository;
         this.thirdRepository = thirdRepository;
@@ -61,7 +55,6 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         this.classificationRepository = classificationRepository;
         this.currencyRepository = currencyRepository;
         this.userRepository = userRepository;
-        this.groupRepository = groupRepository;
     }
 
     private void checkAssociationAccountTransaction(User user, BankingAccount bankingAccount)
@@ -77,39 +70,24 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
 
     }
 
-    private BankingAccount getAccount(Integer accountId, User user)
-        throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException{
-        
-        BankingAccount bankingAccount = null;
-
-        if(accountId != null){
-            bankingAccount = this.bankingAccountRepository.findById(accountId)
-                .orElseThrow(() -> new BankingAccountNotExistException(accountId));
-            
-            this.checkAssociationAccountTransaction(user, bankingAccount);
-        }
-
-        return bankingAccount;
-    }
-
-    public BankingTransaction createMirrorTransaction(final BankingTransaction bankingTransaction){
+    private BankingTransaction createMirrorTransaction(final BankingTransaction bankingTransaction){
         BankingTransaction mirrorBankingTransaction = new BankingTransaction();
 
-        mirrorBankingTransaction.setSourceAccount(bankingTransaction.getTargetAccount());
-        mirrorBankingTransaction.setTargetAccount(bankingTransaction.getSourceAccount());
+        mirrorBankingTransaction.setAccount(bankingTransaction.getLinkedAccount());
+        mirrorBankingTransaction.setLinkedAccount(bankingTransaction.getAccount());
 
         mirrorBankingTransaction.setThird(bankingTransaction.getThird());
         mirrorBankingTransaction.setCategory(bankingTransaction.getCategory());
         mirrorBankingTransaction.setClassification(bankingTransaction.getClassification());
         mirrorBankingTransaction.setCurrency(bankingTransaction.getCurrency());
 
-        mirrorBankingTransaction.setDescritpion(bankingTransaction.getDescritpion());
+        mirrorBankingTransaction.setDescription(bankingTransaction.getDescription());
 
         mirrorBankingTransaction.setAmountDate(bankingTransaction.getAmountDate());
         mirrorBankingTransaction.setTransactionDate(bankingTransaction.getTransactionDate());
 
-        Double amount = Math.pow(bankingTransaction.getAmount(), -1);
-        Double currencyAmount = Math.pow(bankingTransaction.getCurrencyAmount(), -1);
+        Double amount = bankingTransaction.getAmount() * -1L;
+        Double currencyAmount = bankingTransaction.getCurrencyAmount() * -1L;
 
         mirrorBankingTransaction.setAmount(amount);
         mirrorBankingTransaction.setCurrencyAmount(currencyAmount);
@@ -157,7 +135,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
             bankingTransaction.setClassification(classification);
         }
 
-        Integer currencyId = createBankingTransactionParameter.getCategoryId();
+        Integer currencyId = createBankingTransactionParameter.getCurrencyId();
         Currency currency = this.currencyRepository.findById(currencyId)
             .orElseThrow(() -> new CurrencyNotExistException(currencyId));
         bankingTransaction.setCurrency(currency);
@@ -168,41 +146,45 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         bankingTransaction.setAmount(createBankingTransactionParameter.getAmount());
         bankingTransaction.setCurrencyAmount(createBankingTransactionParameter.getCurrencyAmount());
 
-        bankingTransaction.setDescritpion(createBankingTransactionParameter.getDescritpion());
+        bankingTransaction.setDescription(createBankingTransactionParameter.getDescription());
 
     }
 
     @Override
-    public void createBankingTransaction(final CreateBankingTransactionParameter createBankingTransactionParameter, String userName)
-        throws SourceAndTargetBankingAccountNullException, BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException,
+    public BankingTransactionDTO createBankingTransaction(final CreateBankingTransactionParameter createBankingTransactionParameter, String userName)
+        throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException,
         UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException,
         ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException {
 
         User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        Integer sourceAccountId = createBankingTransactionParameter.getSourceAccountId();
-        Integer targetAccountId = createBankingTransactionParameter.getTargetAccountId();
-
-        if(sourceAccountId == null && targetAccountId == null){
-            throw new SourceAndTargetBankingAccountNullException();
-        }
-
         BankingTransaction bankingTransaction = new BankingTransaction();
 
-        BankingAccount sourceAccount = this.getAccount(sourceAccountId, user);
-        bankingTransaction.setSourceAccount(sourceAccount);
-
-        BankingAccount targetAccount = this.getAccount(targetAccountId, user);
-        bankingTransaction.setTargetAccount(targetAccount);
+        Integer accountId = createBankingTransactionParameter.getAccountId();
+        BankingAccount sourceAccount = this.bankingAccountRepository.findById(accountId)
+            .orElseThrow(() -> new BankingAccountNotExistException(accountId));
+        this.checkAssociationAccountTransaction(user, sourceAccount);
+        bankingTransaction.setAccount(sourceAccount);
 
         this.setBankingTransactionData(bankingTransaction, createBankingTransactionParameter, user);
 
-        if(sourceAccountId != null && targetAccountId != null){
+
+        if(createBankingTransactionParameter.getLinkedAccountId() != null){
+            Integer linkedAccountId = createBankingTransactionParameter.getLinkedAccountId();
+            BankingAccount linkedAccount = this.bankingAccountRepository.findById(linkedAccountId)
+                .orElseThrow(() -> new BankingAccountNotExistException(linkedAccountId));
+            this.checkAssociationAccountTransaction(user, linkedAccount);
+            bankingTransaction.setLinkedAccount(linkedAccount);
+
             BankingTransaction mirrorBankingTransaction = this.createMirrorTransaction(bankingTransaction);
             bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
         }
 
-        this.bankingTransactionRepository.save(bankingTransaction);
+        bankingTransaction = this.bankingTransactionRepository.save(bankingTransaction);
+
+        BankingTransactionDTO bankingTransactionDTO = new BankingTransactionDTO(bankingTransaction);
+
+        return bankingTransactionDTO;
         
     }
     
