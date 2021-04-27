@@ -202,8 +202,18 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
             Assertions.assertEquals(parameter.getTransactionDate(), mirrorTransaction.getTransactionDate());
             Assertions.assertEquals(parameter.getAmountDate(), mirrorTransaction.getAmountDate());
 
-            Double mirrorAmount = parameter.getAmount() * -1L;
-            Double mirrorCurrencyAmount = parameter.getCurrencyAmount() * -1L;
+            Double mirrorAmount;
+            Double mirrorCurrencyAmount = parameter.getCurrencyAmount() * -1;
+
+            if(!bankingTransaction.getLinkedAccount().getDefaultCurrency().equals(bankingTransaction.getAccount().getDefaultCurrency())){
+                mirrorAmount = mirrorCurrencyAmount
+                    * Double.valueOf(bankingTransaction.getAccount().getDefaultCurrency().getRate())
+                    / Double.valueOf(bankingTransaction.getLinkedAccount().getDefaultCurrency().getRate());
+            } else {
+                mirrorAmount = bankingTransaction.getAmount() * -1;
+            }
+
+
             Assertions.assertEquals(mirrorAmount, mirrorTransaction.getAmount());
             Assertions.assertEquals(mirrorCurrencyAmount, mirrorTransaction.getCurrencyAmount());
 
@@ -253,6 +263,60 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
         BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName());
         BankingTransaction bankingTransaction = this.bankingTransactionRepository.findById(bankingTransactionDTO.getId()).orElseThrow();
         this.checkData(bankingTransactionDTO, bankingTransaction, this.createUserBankingTransactionParameter);
+    }
+
+    @Test
+    public void testCreateUserTransactionWithLinkedAccountWithOtherDefaultCurrency() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException{
+        BankingAccount linkedBankingAccount = this.factory.getBankingAccount(user);
+        Currency currency = this.currencyRepository.save(linkedBankingAccount.getDefaultCurrency());
+        linkedBankingAccount.setDefaultCurrency(currency);
+        linkedBankingAccount = this.bankingAccountRepository.save(linkedBankingAccount);
+
+        this.createUserBankingTransactionParameter.setLinkedAccountId(linkedBankingAccount.getId());
+        
+        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName());
+        BankingTransaction bankingTransaction = this.bankingTransactionRepository.findById(bankingTransactionDTO.getId()).orElseThrow();
+        this.checkData(bankingTransactionDTO, bankingTransaction, this.createUserBankingTransactionParameter);
+    }
+
+    @Test
+    public void testCreateUserTransactionWithLinkedAccountWithOtherDefaultCurrencyWithSpecificValues() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException{
+        Double amountCurrency = Double.valueOf(150);
+        Double amount = Double.valueOf(15);
+        Integer rateAccountCurrency = 10;
+        Integer rateLinkedAccountCurrency = 20;
+        Double expectedMirrorAmount = Double.valueOf(-75);
+        Double expectedMirrorAmountCurrency = amountCurrency * -1;
+        
+        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        Currency currency = bankingAccount.getDefaultCurrency();
+        currency.setRate(rateAccountCurrency);
+        currency = this.currencyRepository.save(currency);
+        bankingAccount.setDefaultCurrency(currency);
+        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
+
+        BankingAccount linkedBankingAccount = this.factory.getBankingAccount(user);
+        Currency linkedCurrency = linkedBankingAccount.getDefaultCurrency();
+        linkedCurrency.setRate(rateLinkedAccountCurrency);
+        linkedCurrency = this.currencyRepository.save(linkedCurrency);
+        linkedBankingAccount.setDefaultCurrency(linkedCurrency);
+        linkedBankingAccount = this.bankingAccountRepository.save(linkedBankingAccount);
+
+        this.createUserBankingTransactionParameter.setAccountId(bankingAccount.getId());
+        this.createUserBankingTransactionParameter.setLinkedAccountId(linkedBankingAccount.getId());
+
+        this.createUserBankingTransactionParameter.setAmount(amount);
+        this.createUserBankingTransactionParameter.setCurrencyAmount(amountCurrency);
+        
+        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName());
+        BankingTransaction bankingTransaction = this.bankingTransactionRepository.findById(bankingTransactionDTO.getId()).orElseThrow();
+        this.checkData(bankingTransactionDTO, bankingTransaction, this.createUserBankingTransactionParameter);
+
+        Assertions.assertEquals(amount, bankingTransaction.getAmount());
+        Assertions.assertEquals(amountCurrency, bankingTransaction.getCurrencyAmount());
+        Assertions.assertEquals(expectedMirrorAmount, bankingTransaction.getMirrorTransaction().getAmount());
+        Assertions.assertEquals(expectedMirrorAmountCurrency, bankingTransaction.getMirrorTransaction().getCurrencyAmount());
+
     }
 
     @Test

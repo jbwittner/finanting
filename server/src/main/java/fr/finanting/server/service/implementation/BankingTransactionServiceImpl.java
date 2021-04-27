@@ -86,10 +86,23 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         mirrorBankingTransaction.setAmountDate(bankingTransaction.getAmountDate());
         mirrorBankingTransaction.setTransactionDate(bankingTransaction.getTransactionDate());
 
-        Double amount = bankingTransaction.getAmount() * -1L;
-        Double currencyAmount = bankingTransaction.getCurrencyAmount() * -1L;
+        Double currencyAmount = bankingTransaction.getCurrencyAmount() * -1;
+        mirrorBankingTransaction.setCurrencyAmount(currencyAmount);
+
+        Double amount;
+
+        if(!bankingTransaction.getLinkedAccount().getDefaultCurrency().equals(bankingTransaction.getAccount().getDefaultCurrency())){
+            //All currency have a rate to convert to the default currency of the application
+            //we used the curencyAmount because this is the value that the user paid
+            amount = currencyAmount
+                * Double.valueOf(bankingTransaction.getAccount().getDefaultCurrency().getRate())
+                / Double.valueOf(bankingTransaction.getLinkedAccount().getDefaultCurrency().getRate());
+        } else {
+            amount = bankingTransaction.getAmount() * -1;
+        }
 
         mirrorBankingTransaction.setAmount(amount);
+
         mirrorBankingTransaction.setCurrencyAmount(currencyAmount);
 
         mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
