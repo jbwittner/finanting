@@ -1,20 +1,19 @@
 package fr.finanting.server.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -70,11 +69,20 @@ public class BankingTransaction extends MotherPersistant {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable( name = "ASSOCIATIONS_TRANSACTIONS_FILES",
-                joinColumns = { 
-                    @JoinColumn(name = "TRANSACTIONS_ID_JOIN") }, inverseJoinColumns = { 
-                    @JoinColumn(name = "FILES_ID_INVERSE") })
-    private List<Files> files = new ArrayList<>();
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATE_TIMESTAMP")
+    private Date createTimestamp;
+ 
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "UPDATE_TIMESTAMP")
+    private Date updateTimestamp;
+
+    @Override
+    public String toString() {
+        return "BankingTransaction [id=" + this.id + ", amount=" + amount + ", amountDate=" + amountDate + ", currencyAmount="
+                + currencyAmount + ", transactionDate=" + transactionDate + "]";
+    }
     
 }

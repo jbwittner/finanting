@@ -186,6 +186,8 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
             BankingTransaction mirrorTransaction = bankingTransaction.getMirrorTransaction();
             Assertions.assertEquals(parameter.getAccountId(), mirrorTransaction.getLinkedAccount().getId());
             Assertions.assertEquals(parameter.getLinkedAccountId(), mirrorTransaction.getAccount().getId());
+
+            Assertions.assertEquals(bankingTransaction.getAccount().getId(), mirrorTransaction.getLinkedAccount().getId());
             
             if(parameter.getThirdId() != null){
                 Assertions.assertEquals(parameter.getThirdId(), mirrorTransaction.getThird().getId());

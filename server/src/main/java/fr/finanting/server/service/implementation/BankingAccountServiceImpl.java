@@ -65,18 +65,22 @@ public class BankingAccountServiceImpl implements BankingAccountService {
         bankingAccount.setInitialBalance(createBankingAccountParameter.getInitialBalance());
         bankingAccount.setLabel(createBankingAccountParameter.getLabel());
 
-        final Address address = new Address();
-        address.setAddress(createBankingAccountParameter.getAddressParameter().getAddress());
-        address.setCity(createBankingAccountParameter.getAddressParameter().getCity());
-        address.setStreet(createBankingAccountParameter.getAddressParameter().getStreet());
-        address.setZipCode(createBankingAccountParameter.getAddressParameter().getZipCode());
-        bankingAccount.setAddress(address);
-
-        final BankDetails bankDetails = new BankDetails();
-        bankDetails.setAccountNumber(createBankingAccountParameter.getBankDetailsParameter().getAccountNumber());
-        bankDetails.setIban(createBankingAccountParameter.getBankDetailsParameter().getIban());
-        bankDetails.setBankName(createBankingAccountParameter.getBankDetailsParameter().getBankName());
-        bankingAccount.setBankDetails(bankDetails);
+        if(createBankingAccountParameter.getAddressParameter() != null){
+            final Address address = new Address();
+            address.setAddress(createBankingAccountParameter.getAddressParameter().getAddress());
+            address.setCity(createBankingAccountParameter.getAddressParameter().getCity());
+            address.setStreet(createBankingAccountParameter.getAddressParameter().getStreet());
+            address.setZipCode(createBankingAccountParameter.getAddressParameter().getZipCode());
+            bankingAccount.setAddress(address);
+        }
+        
+        if(createBankingAccountParameter.getBankDetailsParameter() != null){
+            final BankDetails bankDetails = new BankDetails();
+            bankDetails.setAccountNumber(createBankingAccountParameter.getBankDetailsParameter().getAccountNumber());
+            bankDetails.setIban(createBankingAccountParameter.getBankDetailsParameter().getIban());
+            bankDetails.setBankName(createBankingAccountParameter.getBankDetailsParameter().getBankName());
+            bankingAccount.setBankDetails(bankDetails);
+        }
 
         bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 

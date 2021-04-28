@@ -20,6 +20,8 @@ public class BankingTransactionDTO {
     Double currencyAmount;
     CurrencyDTO currencyDTO;
     String description;
+    Date createTimestamp;
+    Date updateTimestamp;
 
     public BankingTransactionDTO(final BankingTransaction bankingTransaction){
 
@@ -52,6 +54,9 @@ public class BankingTransactionDTO {
         if(bankingTransaction.getClassification()!= null){
             this.classificationDTO = new ClassificationDTO(bankingTransaction.getClassification());
         }
+
+        this.createTimestamp = bankingTransaction.getCreateTimestamp();
+        this.updateTimestamp = bankingTransaction.getUpdateTimestamp();
     }
     
 }

@@ -190,6 +190,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
             bankingTransaction.setLinkedAccount(linkedAccount);
 
             BankingTransaction mirrorBankingTransaction = this.createMirrorTransaction(bankingTransaction);
+            mirrorBankingTransaction.setMirrorTransaction(bankingTransaction);
             bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
         }
 
