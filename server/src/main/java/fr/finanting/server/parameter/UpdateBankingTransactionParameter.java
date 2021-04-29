@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper=true)
-public class UpdateCurrencyParameter extends CreateCurrencyParameter {
+public class UpdateBankingTransactionParameter extends CreateBankingTransactionParameter {
 
     @NotNull
     private Integer id;

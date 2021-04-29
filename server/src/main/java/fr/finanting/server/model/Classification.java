@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import fr.finanting.server.exception.ClassificationNoUserException;
 import fr.finanting.server.exception.UserNotInGroupException;
+import fr.finanting.server.model.mother.MotherGroupUserElement;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "CLASSIFICATIONS")
 @Data
-public class Classification extends MotherPersistant {
+public class Classification extends MotherGroupUserElement {
 
     @Column(name = "LABEL", nullable = false)
     private String label;
@@ -28,23 +29,5 @@ public class Classification extends MotherPersistant {
 
     @Column(name = "DESCRIPTION")
     private String descritpion;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GROUP_ID")
-    private Group group;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
-
-    public void checkIfUsable(User user) throws ClassificationNoUserException, UserNotInGroupException{
-        if(this.group == null){
-            if(!this.user.getUserName().equals(user.getUserName())){
-                throw new ClassificationNoUserException(this.id);
-            }
-        } else {
-            this.group.checkAreInGroup(user);
-        }
-    }
     
 }

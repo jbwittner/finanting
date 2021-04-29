@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
+import fr.finanting.server.model.mother.MotherGroupUserElement;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,18 +23,10 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "BANKING_ACCOUNTS")
 @Data
-public class BankingAccount extends MotherPersistant {
+public class BankingAccount extends MotherGroupUserElement {
     
 	@Column(name = "LABEL", nullable = false)
     private String label;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GROUP_ID")
-    private Group group;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
 
 	@Column(name = "ABBREVIATION", nullable = false, length = 6)
     private String abbreviation;
@@ -55,4 +48,5 @@ public class BankingAccount extends MotherPersistant {
     public String toString() {
         return "BankingAccount [id= " + this.id + ", abbreviation=" + abbreviation + ", label=" + label + ", user=" + user + "]";
     }
+
 }

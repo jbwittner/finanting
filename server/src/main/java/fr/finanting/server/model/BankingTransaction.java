@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import fr.finanting.server.model.mother.MotherPersistant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

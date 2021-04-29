@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Table;
 
 import fr.finanting.server.exception.UserNotInGroupException;
+import fr.finanting.server.model.mother.MotherPersistant;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;

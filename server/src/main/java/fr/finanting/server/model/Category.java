@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.UserNotInGroupException;
+import fr.finanting.server.model.mother.MotherGroupUserElement;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,7 +25,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "CATEGORIES")
 @Data
-public class Category extends MotherPersistant {
+public class Category extends MotherGroupUserElement {
 
     @ManyToOne
     @JoinColumn(name = "PARENT_ID")
@@ -46,27 +47,9 @@ public class Category extends MotherPersistant {
     @Column(name = "ROLES")
     private CategoryType categoryType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GROUP_ID")
-    private Group group;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
-
     @Override
     public String toString() {
         return "Category [id= " + this.id + ", abbreviation=" + abbreviation + ", label=" + label + ", user=" + user + "]";
-    }
-
-    public void checkIfUsable(User user) throws CategoryNoUserException, UserNotInGroupException{
-        if(this.group == null){
-            if(!this.user.getUserName().equals(user.getUserName())){
-                throw new CategoryNoUserException(this.id);
-            }
-        } else {
-            this.group.checkAreInGroup(user);
-        }
     }
     
 }

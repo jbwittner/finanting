@@ -1,4 +1,4 @@
-package fr.finanting.server.model;
+package fr.finanting.server.model.mother;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
