@@ -38,11 +38,8 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
     protected void initDataBeforeEach() throws Exception {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
 
-        this.userOne = this.factory.getUser();
-        this.userOne = this.userRepository.save(this.userOne);
-
-        this.userTwo = this.factory.getUser();
-        this.userTwo = this.userRepository.save(this.userTwo);
+        this.userOne = this.testFactory.getUser();
+        this.userTwo = this.testFactory.getUser();
 
     }
 

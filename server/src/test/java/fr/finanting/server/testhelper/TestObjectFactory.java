@@ -221,6 +221,23 @@ public class TestObjectFactory {
         return user;
     }
 
+    public User getAdminUser(){
+        final User user = new User();
+        user.setEmail(this.faker.internet().emailAddress());
+        final String firstName = StringUtils.capitalize(this.faker.name().firstName().toLowerCase());
+        user.setFirstName(firstName);
+        user.setLastName(this.faker.name().lastName().toUpperCase());
+        user.setUserName(this.faker.name().username().toLowerCase());
+        user.setPassword(this.getRandomAlphanumericString());
+        
+        final List<Role> roles = new ArrayList<>();
+        roles.add(Role.ADMIN);
+        roles.add(Role.USER);
+        user.setRoles(roles);
+
+        return user;
+    }
+
     /**
      * Method to get a new group
      */
