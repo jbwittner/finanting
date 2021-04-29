@@ -67,7 +67,7 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testRegisterAnotherNewAccount() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
-        this.userRepository.save(this.factory.getUser());
+        this.testFactory.getUser();
 
         this.userService.registerNewAccount(this.newUserRegisterParameter);
 
@@ -90,14 +90,8 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testRegisterEmailAlreadyUsed() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
 
-        final User user = new User();
-        final Name name = this.factory.getUniqueRandomName();
-        user.setUserName(name.username());
-        user.setFirstName(name.firstName());
-        user.setLastName(name.lastName());
-        user.setPassword(this.passwordEncoder.encode(this.factory.getRandomAlphanumericString()));
-        user.setEmail(this.newUserRegisterParameter.getEmail());
-        this.userRepository.save(user);
+        final User user = this.testFactory.getUser();
+        this.newUserRegisterParameter.setEmail(user.getEmail());
 
         Assertions.assertThrows(UserEmailAlreadyExistException.class,
             () -> this.userService.registerNewAccount(this.newUserRegisterParameter));
@@ -107,14 +101,8 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testRegisterUserNameAlreadyUsed() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
 
-        final User user = new User();
-        final Name name = this.factory.getUniqueRandomName();
-        user.setUserName(this.newUserRegisterParameter.getUserName());
-        user.setFirstName(name.firstName());
-        user.setLastName(name.lastName());
-        user.setPassword(this.passwordEncoder.encode(this.factory.getRandomAlphanumericString()));
-        user.setEmail(this.factory.getUniqueRandomEmail());
-        this.userRepository.save(user);
+        final User user = this.testFactory.getUser();
+        this.newUserRegisterParameter.setUserName(user.getUserName());
 
         Assertions.assertThrows(UserNameAlreadyExistException.class,
             () -> this.userService.registerNewAccount(this.newUserRegisterParameter));

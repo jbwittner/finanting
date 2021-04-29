@@ -32,21 +32,7 @@ public class TestGetAccountInformations extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() throws Exception {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
-
-        this.user = new User();
-        final Name name = this.factory.getUniqueRandomName();
-        this.user.setUserName(name.username());
-        this.user.setFirstName(name.firstName());
-        this.user.setLastName(name.lastName());
-        this.user.setPassword(this.passwordEncoder.encode(this.factory.getRandomAlphanumericString()));
-        this.user.setEmail(this.factory.getUniqueRandomEmail());
-
-        final List<Role> roles = new ArrayList<>();
-        roles.add(Role.USER);
-        this.user.setRoles(roles);
-
-        this.userRepository.save(this.user);
-
+        this.user = this.testFactory.getUser();
     }
 
     @Test
