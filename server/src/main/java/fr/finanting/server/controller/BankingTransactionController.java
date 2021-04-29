@@ -25,9 +25,8 @@ public class BankingTransactionController {
     @PostMapping("/createBankingTransaction")
     public BankingTransactionDTO createBankingTransaction(final Authentication authentication,
                                     @RequestBody final CreateBankingTransactionParameter createBankingTransactionParameter)
-            throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException,
-                    ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException,
-                    CurrencyNotExistException, BadAssociationElementException {
+            throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException,
+            CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.bankingTransactionService.createBankingTransaction(createBankingTransactionParameter, userDetailsImpl.getUsername());
     }

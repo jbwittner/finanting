@@ -2,15 +2,9 @@ package fr.finanting.server.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Table;
 
-import fr.finanting.server.exception.ClassificationNoUserException;
-import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.mother.MotherGroupUserElement;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

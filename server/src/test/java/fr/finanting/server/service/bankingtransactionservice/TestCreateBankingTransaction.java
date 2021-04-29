@@ -9,15 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import fr.finanting.server.dto.BankingTransactionDTO;
-import fr.finanting.server.exception.BadAssociationBankingTransactionBankingAccountException;
 import fr.finanting.server.exception.BadAssociationElementException;
 import fr.finanting.server.exception.BankingAccountNotExistException;
-import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.CategoryNotExistException;
-import fr.finanting.server.exception.ClassificationNoUserException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.CurrencyNotExistException;
-import fr.finanting.server.exception.ThirdNoUserException;
 import fr.finanting.server.exception.ThirdNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.BankingAccount;
@@ -262,14 +258,14 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateUserTransaction() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserTransaction() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName());
         BankingTransaction bankingTransaction = this.bankingTransactionRepository.findById(bankingTransactionDTO.getId()).orElseThrow();
         this.checkData(bankingTransactionDTO, bankingTransaction, this.createUserBankingTransactionParameter);
     }
 
     @Test
-    public void testCreateUserTransactionWithLinkedAccountWithOtherDefaultCurrency() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserTransactionWithLinkedAccountWithOtherDefaultCurrency() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         BankingAccount linkedBankingAccount = this.factory.getBankingAccount(user);
         Currency currency = this.currencyRepository.save(linkedBankingAccount.getDefaultCurrency());
         linkedBankingAccount.setDefaultCurrency(currency);
@@ -283,7 +279,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateUserTransactionWithLinkedAccountWithOtherDefaultCurrencyWithSpecificValues() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserTransactionWithLinkedAccountWithOtherDefaultCurrencyWithSpecificValues() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         Double amountCurrency = Double.valueOf(150);
         Double amount = Double.valueOf(15);
         Integer rateAccountCurrency = 10;
@@ -323,7 +319,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateGroupTransaction() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateGroupTransaction() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createGroupBankingTransactionParameter, this.user.getUserName());
         BankingTransaction bankingTransaction = this.bankingTransactionRepository.findById(bankingTransactionDTO.getId()).orElseThrow();
         this.checkData(bankingTransactionDTO, bankingTransaction, this.createGroupBankingTransactionParameter);
@@ -331,7 +327,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
 
     @Test
-    public void testCreateUserWithoutLinkedAccount() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserWithoutLinkedAccount() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         this.createUserBankingTransactionParameter.setLinkedAccountId(null);
 
         BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName());
@@ -340,7 +336,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateUserWithoutThird() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserWithoutThird() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         this.createUserBankingTransactionParameter.setThirdId(null);
         
         BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName());
@@ -349,7 +345,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateUserWithoutCategory() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserWithoutCategory() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         this.createUserBankingTransactionParameter.setCategoryId(null);
         
         BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName());
@@ -358,7 +354,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateUserWithoutClassification() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserWithoutClassification() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         this.createUserBankingTransactionParameter.setClassificationId(null);
         
         BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName());
@@ -490,7 +486,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateUserTransactionwithGroupThird() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserTransactionwithGroupThird() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         Integer thirdId = this.createGroupBankingTransactionParameter.getThirdId();
         this.createUserBankingTransactionParameter.setThirdId(thirdId);
         
@@ -499,7 +495,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateUserTransactionwithGroupCategory() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserTransactionwithGroupCategory() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         Integer categoryId = this.createGroupBankingTransactionParameter.getCategoryId();
         this.createUserBankingTransactionParameter.setCategoryId(categoryId);
         
@@ -508,7 +504,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateUserTransactionwithGroupClassification() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateUserTransactionwithGroupClassification() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         Integer classificationId = this.createGroupBankingTransactionParameter.getClassificationId();
         this.createUserBankingTransactionParameter.setClassificationId(classificationId);
         
@@ -517,7 +513,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateGroupTransactionwithUserThird() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateGroupTransactionwithUserThird() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         Integer thirdId = this.createUserBankingTransactionParameter.getThirdId();
         this.createGroupBankingTransactionParameter.setThirdId(thirdId);
         
@@ -526,7 +522,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateGroupTransactionwithUserCategory() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateGroupTransactionwithUserCategory() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         Integer categoryId = this.createUserBankingTransactionParameter.getCategoryId();
         this.createGroupBankingTransactionParameter.setCategoryId(categoryId);
         
@@ -535,7 +531,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     }
 
     @Test
-    public void testCreateGroupTransactionwithUserClassification() throws BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException, ThirdNotExistException, ThirdNoUserException, CategoryNotExistException, CategoryNoUserException, ClassificationNotExistException, ClassificationNoUserException, CurrencyNotExistException, BadAssociationElementException{
+    public void testCreateGroupTransactionwithUserClassification() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
         Integer classificationId = this.createUserBankingTransactionParameter.getClassificationId();
         this.createGroupBankingTransactionParameter.setClassificationId(classificationId);
         

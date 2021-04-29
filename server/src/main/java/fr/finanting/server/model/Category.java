@@ -10,8 +10,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 
-import fr.finanting.server.exception.CategoryNoUserException;
-import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.mother.MotherGroupUserElement;
 
 import javax.persistence.JoinColumn;

@@ -10,7 +10,6 @@ import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.model.embeddable.Contact;
 import fr.finanting.server.model.mother.MotherGroupUserElement;
-import fr.finanting.server.model.mother.MotherPersistant;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
