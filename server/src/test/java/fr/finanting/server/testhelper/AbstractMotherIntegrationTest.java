@@ -6,6 +6,7 @@ import com.github.javafaker.Faker;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -17,12 +18,16 @@ public abstract class AbstractMotherIntegrationTest {
     protected final TestObjectFactory factory = new TestObjectFactory();
     protected final Faker faker = new Faker();
 
+    @Autowired
+    protected TestFactory testFactory;
+
     /**
      * Method launch before each test
      */
     @BeforeEach
     public void beforeEach() throws Exception {
         this.factory.resetAllList();
+        this.testFactory.resetAllList();
         this.initDataBeforeEach();
     }
 
@@ -32,6 +37,7 @@ public abstract class AbstractMotherIntegrationTest {
     @AfterEach
     public void afterEach(){
         this.factory.resetAllList();
+        this.testFactory.resetAllList();
     }
 
     /**

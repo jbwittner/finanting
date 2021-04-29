@@ -1,23 +1,5 @@
 package fr.finanting.server.testhelper;
 
-import fr.finanting.server.model.BankingAccount;
-import fr.finanting.server.model.BankingTransaction;
-import fr.finanting.server.model.Category;
-import fr.finanting.server.model.CategoryType;
-import fr.finanting.server.model.Classification;
-import fr.finanting.server.model.Currency;
-import fr.finanting.server.model.embeddable.Address;
-import fr.finanting.server.model.embeddable.BankDetails;
-import fr.finanting.server.model.embeddable.Contact;
-
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import fr.finanting.server.model.Group;
-import fr.finanting.server.model.Role;
-import fr.finanting.server.model.Third;
-import fr.finanting.server.model.User;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,10 +7,61 @@ import java.util.List;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 
-/**
- * Factory to help during tests
- */
-public class TestObjectFactory {
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import fr.finanting.server.model.BankingAccount;
+import fr.finanting.server.model.BankingTransaction;
+import fr.finanting.server.model.Category;
+import fr.finanting.server.model.CategoryType;
+import fr.finanting.server.model.Classification;
+import fr.finanting.server.model.Currency;
+import fr.finanting.server.model.Group;
+import fr.finanting.server.model.Role;
+import fr.finanting.server.model.Third;
+import fr.finanting.server.model.User;
+import fr.finanting.server.model.embeddable.Address;
+import fr.finanting.server.model.embeddable.BankDetails;
+import fr.finanting.server.model.embeddable.Contact;
+import fr.finanting.server.repository.BankingAccountRepository;
+import fr.finanting.server.repository.BankingTransactionRepository;
+import fr.finanting.server.repository.CategoryRepository;
+import fr.finanting.server.repository.ClassificationRepository;
+import fr.finanting.server.repository.CurrencyRepository;
+import fr.finanting.server.repository.GroupRepository;
+import fr.finanting.server.repository.ThirdRepository;
+import fr.finanting.server.repository.UserRepository;
+
+@Component
+public class TestFactory {
+
+    @Autowired
+    private BankingAccountRepository bankingAccountRepository;
+
+    @Autowired
+    private BankingTransactionRepository bankingTransactionRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ClassificationRepository classificationRepository;
+
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
+
+    @Autowired
+    private ThirdRepository thirdRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    private final Faker faker = new Faker();
 
     public static final Integer NUMBER_MAX = 20_000_000;
 
@@ -42,8 +75,6 @@ public class TestObjectFactory {
     private List<Integer> listRandomNumber = new ArrayList<>();
     private List<String> listRandomName = new ArrayList<>();
 
-    protected final Faker faker = new Faker();
-    
     public void resetAllList(){
         
         this.listRandomString = new ArrayList<>();
@@ -218,12 +249,9 @@ public class TestObjectFactory {
         roles.add(Role.USER);
         user.setRoles(roles);
 
-        return user;
+        return this.userRepository.save(user);
     }
 
-    /**
-     * Method to get a new group
-     */
     public Group getGroup(){
         final Group group = new Group();
         group.setGroupName(this.faker.company().name());
@@ -232,7 +260,7 @@ public class TestObjectFactory {
         final List<User> users = new ArrayList<>();
         users.add(user);
         group.setUsers(users);
-        return group;
+        return this.groupRepository.save(group);
     }
 
     private Address getAddress(){
@@ -252,6 +280,21 @@ public class TestObjectFactory {
         return bankDetails;
     }
 
+    public Currency getCurrency(){
+        final Currency currency = new Currency();
+        currency.setDecimalPlaces(this.getRandomInteger());
+        currency.setDefaultCurrency(false);
+        currency.setIsoCode(this.getUniqueRandomAlphanumericString(3).toUpperCase());
+        currency.setSymbol(this.getUniqueRandomAlphanumericString(3).toUpperCase());
+
+        final String label = StringUtils.capitalize(this.getUniqueRandomAlphanumericString().toLowerCase());
+        currency.setLabel(label);
+
+        currency.setRate(this.getRandomInteger());
+
+        return this.currencyRepository.save(currency);
+    }
+
     private BankingAccount getBankingAccount(final User user, final Group group){
         final BankingAccount bankingAccount = new BankingAccount();
 
@@ -268,7 +311,7 @@ public class TestObjectFactory {
         final Currency defaultCurrency = this.getCurrency();
         bankingAccount.setDefaultCurrency(defaultCurrency);
 
-        return bankingAccount;
+        return this.bankingAccountRepository.save(bankingAccount);
     }
 
     public BankingAccount getBankingAccount(final User user){
@@ -297,7 +340,7 @@ public class TestObjectFactory {
         category.setGroup(group);
         category.setUser(user);
 
-        return category;
+        return this.categoryRepository.save(category);
     }
 
     public Category getCategory(final User user, final boolean isExpense){
@@ -318,7 +361,7 @@ public class TestObjectFactory {
         classification.setUser(user);
         classification.setGroup(group);
 
-        return classification;
+        return this.classificationRepository.save(classification);
 
     }
 
@@ -353,7 +396,7 @@ public class TestObjectFactory {
         third.setUser(user);
         third.setGroup(group);
 
-        return third;
+        return this.thirdRepository.save(third);
     }
 
     public Third getThird(final User user){
@@ -370,29 +413,6 @@ public class TestObjectFactory {
 
     public Third getThird(final Group group, final Category category){
         return this.getThird(null, group, category);
-    }
-
-    public Currency getCurrency(){
-        final Currency currency = new Currency();
-        currency.setDecimalPlaces(this.getRandomInteger());
-        currency.setDefaultCurrency(false);
-        currency.setIsoCode(this.getUniqueRandomAlphanumericString(3).toUpperCase());
-        currency.setSymbol(this.getUniqueRandomAlphanumericString(3).toUpperCase());
-
-        final String label = StringUtils.capitalize(this.getUniqueRandomAlphanumericString().toLowerCase());
-        currency.setLabel(label);
-
-        currency.setRate(this.getRandomInteger());
-
-        return currency;
-    }
-
-    public BankingTransaction getBankingTransaction(User user, Boolean isLinked){
-        return this.getBankingTransaction(user, null, isLinked);
-    }
-
-    public BankingTransaction getBankingTransaction(Group group, Boolean isLinked){
-        return this.getBankingTransaction(null, group, isLinked);
     }
 
     public BankingTransaction getBankingTransaction(User user, Group group, Boolean isLinked){
@@ -419,26 +439,37 @@ public class TestObjectFactory {
             mirrorTransaction.setAccount(linkedBankingAccount);
             mirrorTransaction.setLinkedAccount(bankingAccount);
 
-            bankingTransaction.setAmountDate(bankingTransaction.getAmountDate());
-            bankingTransaction.setCategory(bankingTransaction.getCategory());
-            bankingTransaction.setClassification(bankingTransaction.getClassification());
-            bankingTransaction.setCreateTimestamp(bankingTransaction.getCreateTimestamp());
+            mirrorTransaction.setAmountDate(bankingTransaction.getAmountDate());
+            mirrorTransaction.setCategory(bankingTransaction.getCategory());
+            mirrorTransaction.setClassification(bankingTransaction.getClassification());
+            mirrorTransaction.setCreateTimestamp(bankingTransaction.getCreateTimestamp());
 
             currency = this.getCurrency();
-            bankingTransaction.setCurrency(this.getCurrency());
-            bankingTransaction.setCurrencyAmount(amountCurrency);
+            mirrorTransaction.setCurrency(this.getCurrency());
+            mirrorTransaction.setCurrencyAmount(amountCurrency);
 
             amount = amountCurrency
                 * Double.valueOf(bankingTransaction.getAccount().getDefaultCurrency().getRate())
                 / Double.valueOf(bankingTransaction.getLinkedAccount().getDefaultCurrency().getRate());
 
-            bankingTransaction.setAmount(amount);
+                mirrorTransaction.setAmount(amount);
 
-            bankingTransaction.setDescription(bankingTransaction.getDescription());
-            bankingTransaction.setThird(bankingTransaction.getThird());
+            mirrorTransaction.setDescription(bankingTransaction.getDescription());
+            mirrorTransaction.setThird(bankingTransaction.getThird());
+
+            mirrorTransaction = this.bankingTransactionRepository.save(mirrorTransaction);
+            bankingTransaction.setMirrorTransaction(mirrorTransaction);
         }
 
-        return bankingTransaction;
+        return this.bankingTransactionRepository.save(bankingTransaction);
     }
 
+    public BankingTransaction getBankingTransaction(User user, Boolean isLinked){
+        return this.getBankingTransaction(user, null, isLinked);
+    }
+
+    public BankingTransaction getBankingTransaction(Group group, Boolean isLinked){
+        return this.getBankingTransaction(null, group, isLinked);
+    }
+    
 }

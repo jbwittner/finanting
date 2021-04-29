@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import fr.finanting.server.dto.BankingTransactionDTO;
 import fr.finanting.server.exception.BadAssociationElementException;
 import fr.finanting.server.exception.BankingAccountNotExistException;
+import fr.finanting.server.exception.BankingTransactionNotExistException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.CurrencyNotExistException;
@@ -18,6 +19,7 @@ import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Third;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.CreateBankingTransactionParameter;
+import fr.finanting.server.parameter.UpdateBankingTransactionParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.BankingTransactionRepository;
 import fr.finanting.server.repository.CategoryRepository;
@@ -54,9 +56,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         this.userRepository = userRepository;
     }
 
-    private BankingTransaction createMirrorTransaction(final BankingTransaction bankingTransaction){
-        BankingTransaction mirrorBankingTransaction = new BankingTransaction();
-
+    private void setMirrorTransactionDate(final BankingTransaction mirrorBankingTransaction, final BankingTransaction bankingTransaction){
         mirrorBankingTransaction.setAccount(bankingTransaction.getLinkedAccount());
         mirrorBankingTransaction.setLinkedAccount(bankingTransaction.getAccount());
 
@@ -88,16 +88,12 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         mirrorBankingTransaction.setAmount(amount);
 
         mirrorBankingTransaction.setCurrencyAmount(currencyAmount);
-
-        mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
-
-        return mirrorBankingTransaction;
     }
 
-    private void setBankingTransactionData(final BankingTransaction bankingTransaction, final CreateBankingTransactionParameter createBankingTransactionParameter, final User user)
+    private void setBankingTransactionData(final BankingTransaction bankingTransaction, final CreateBankingTransactionParameter bankingTransactionParameter, final User user)
         throws ThirdNotExistException, BadAssociationElementException, UserNotInGroupException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException {
 
-        Integer thirdId = createBankingTransactionParameter.getThirdId();
+        Integer thirdId = bankingTransactionParameter.getThirdId();
 
         if(thirdId != null){
             Third third = this.thirdRepository.findById(thirdId)
@@ -108,7 +104,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
             bankingTransaction.setThird(third);
         }
 
-        Integer categoryId = createBankingTransactionParameter.getCategoryId();
+        Integer categoryId = bankingTransactionParameter.getCategoryId();
 
         if(categoryId != null){
             Category category = this.categoryRepository.findById(categoryId)
@@ -119,7 +115,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
             bankingTransaction.setCategory(category);
         }
 
-        Integer classificationId = createBankingTransactionParameter.getClassificationId();
+        Integer classificationId = bankingTransactionParameter.getClassificationId();
 
         if(classificationId != null){
             Classification classification = this.classificationRepository.findById(classificationId)
@@ -130,18 +126,18 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
             bankingTransaction.setClassification(classification);
         }
 
-        Integer currencyId = createBankingTransactionParameter.getCurrencyId();
+        Integer currencyId = bankingTransactionParameter.getCurrencyId();
         Currency currency = this.currencyRepository.findById(currencyId)
             .orElseThrow(() -> new CurrencyNotExistException(currencyId));
         bankingTransaction.setCurrency(currency);
 
-        bankingTransaction.setAmountDate(createBankingTransactionParameter.getAmountDate());
-        bankingTransaction.setTransactionDate(createBankingTransactionParameter.getTransactionDate());
+        bankingTransaction.setAmountDate(bankingTransactionParameter.getAmountDate());
+        bankingTransaction.setTransactionDate(bankingTransactionParameter.getTransactionDate());
 
-        bankingTransaction.setAmount(createBankingTransactionParameter.getAmount());
-        bankingTransaction.setCurrencyAmount(createBankingTransactionParameter.getCurrencyAmount());
+        bankingTransaction.setAmount(bankingTransactionParameter.getAmount());
+        bankingTransaction.setCurrencyAmount(bankingTransactionParameter.getCurrencyAmount());
 
-        bankingTransaction.setDescription(createBankingTransactionParameter.getDescription());
+        bankingTransaction.setDescription(bankingTransactionParameter.getDescription());
 
     }
 
@@ -173,7 +169,10 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
             
             bankingTransaction.setLinkedAccount(linkedAccount);
 
-            BankingTransaction mirrorBankingTransaction = this.createMirrorTransaction(bankingTransaction);
+            BankingTransaction mirrorBankingTransaction = new BankingTransaction();
+            this.setMirrorTransactionDate(mirrorBankingTransaction, bankingTransaction);
+            mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
+
             mirrorBankingTransaction.setMirrorTransaction(bankingTransaction);
             bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
         }
@@ -186,8 +185,11 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         
     }
 
-    /*
-    public BankingTransactionDTO updateBankingTransaction(final UpdateBankingTransactionParameter updateBankingTransactionParameter, final String userName) throws BankingTransactionNotExistException, BankingAccountNotExistException, BadAssociationBankingTransactionBankingAccountException, UserNotInGroupException{
+    
+    public BankingTransactionDTO updateBankingTransaction(final UpdateBankingTransactionParameter updateBankingTransactionParameter, final String userName)
+        throws BankingTransactionNotExistException, BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException,
+        ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
+
         User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         BankingTransaction bankingTransaction = this.bankingTransactionRepository.findById(updateBankingTransactionParameter.getId())
@@ -196,74 +198,64 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         BankingAccount currentAccount = bankingTransaction.getAccount();
         BankingAccount linkedAccount = bankingTransaction.getLinkedAccount();
 
-        boolean updateAccount = !currentAccount.getId().equals(updateBankingTransactionParameter.getAccountId());
-        boolean updateLinkedAccount = false;
+        boolean needUpdateAccount = !currentAccount.getId().equals(updateBankingTransactionParameter.getAccountId());
+        boolean needUpdateLinkedAccount = false;
 
         if(linkedAccount != null){
-            updateLinkedAccount = !linkedAccount.getId().equals(updateBankingTransactionParameter.getLinkedAccountId());
+            needUpdateLinkedAccount = !linkedAccount.getId().equals(updateBankingTransactionParameter.getLinkedAccountId());
         }
+
         BankingAccount newAccount = null;
         BankingAccount newLinkedAccount = null;
 
-        if(updateAccount && updateLinkedAccount) {
+        if(needUpdateAccount && needUpdateLinkedAccount){
             newAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getAccountId())
-                .orElseThrow(() -> new BankingTransactionNotExistException(updateBankingTransactionParameter.getAccountId()));
+                .orElseThrow(() -> new BankingAccountNotExistException(updateBankingTransactionParameter.getAccountId()));
+            newAccount.checkIfUsable(user);
+
+            bankingTransaction.setAccount(newAccount);
 
             newLinkedAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getLinkedAccountId())
-                .orElseThrow(() -> new BankingTransactionNotExistException(updateBankingTransactionParameter.getLinkedAccountId()));
+                .orElseThrow(() -> new BankingAccountNotExistException(updateBankingTransactionParameter.getLinkedAccountId()));
+            newLinkedAccount.checkIfUsable(user);
 
-            this.checkAssociationLinkedAccountTransaction(user, newAccount, newLinkedAccount);
+            newAccount.checkIfCanAssociated(newLinkedAccount);
 
-            BankingTransaction mirrorTransaction = bankingTransaction.getMirrorTransaction();
-            mirrorTransaction.setAccount(newLinkedAccount);
-            this.bankingTransactionRepository.save(mirrorTransaction);
-        }
+            bankingTransaction.setLinkedAccount(newLinkedAccount);
 
 
-
-        if(currentAccount.getId().equals(updateBankingTransactionParameter.getAccountId())){
-            if(linkedAccount != null){
-                // if we have the same account and a new linked account
-                if(!linkedAccount.getId().equals(updateBankingTransactionParameter.getLinkedAccountId())){
-                    BankingAccount newLinkedAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getLinkedAccountId())
-                        .orElseThrow(() -> new BankingTransactionNotExistException(updateBankingTransactionParameter.getLinkedAccountId()));
-        
-                    this.checkAssociationLinkedAccountTransaction(user, currentAccount, newLinkedAccount);
-
-                    bankingTransaction.setLinkedAccount(newLinkedAccount);
-
-                    BankingTransaction mirrorTransaction = bankingTransaction.getMirrorTransaction();
-                    mirrorTransaction.setAccount(newLinkedAccount);
-                    this.bankingTransactionRepository.save(mirrorTransaction);
-                }
-            }
-
-
-
-        } else {
-
-        }
-
-
-        if(!currentAccount.getId().equals(updateBankingTransactionParameter.getAccountId())){
-            BankingAccount newAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getAccountId())
+        } else if(needUpdateAccount) {
+            newAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getAccountId())
                 .orElseThrow(() -> new BankingAccountNotExistException(updateBankingTransactionParameter.getAccountId()));
-            
-            if(bankingTransaction.getLinkedAccount() != null){
-                BankingAccount oldLinkedAccount = bankingTransaction.getLinkedAccount();
+            newAccount.checkIfUsable(user);
 
-                if(oldLinkedAccount.getId().equals(updateBankingTransactionParameter.getLinkedAccountId())){
-
-                }
-                
+            if(linkedAccount != null){
+                newAccount.checkIfCanAssociated(linkedAccount);
             }
+
+            bankingTransaction.setAccount(newAccount);
+        } else if(needUpdateLinkedAccount){
+            newLinkedAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getLinkedAccountId())
+                .orElseThrow(() -> new BankingAccountNotExistException(updateBankingTransactionParameter.getLinkedAccountId()));
+            newLinkedAccount.checkIfUsable(user);
+
+            currentAccount.checkIfCanAssociated(newLinkedAccount);
         }
 
+        this.setBankingTransactionData(bankingTransaction, updateBankingTransactionParameter, user);
+
+        if(linkedAccount != null){
+            BankingTransaction mirrorBankingTransaction = bankingTransaction.getMirrorTransaction();
+            this.setMirrorTransactionDate(mirrorBankingTransaction, bankingTransaction);
+            mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
+            bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
+        }
+        
         BankingTransactionDTO bankingTransactionDTO = new BankingTransactionDTO(bankingTransaction);
 
         return bankingTransactionDTO;
 
     }
-    */
+
     
 }
