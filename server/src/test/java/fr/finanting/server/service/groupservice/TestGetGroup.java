@@ -30,9 +30,8 @@ public class TestGetGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetGroup() throws UserNotInGroupException, GroupNotExistException {
-        Group group = this.factory.getGroup();
-        final User user = this.userRepository.save(group.getUserAdmin());
-        group = this.groupRepository.save(group);
+        Group group = this.testFactory.getGroup();
+        final User user = group.getUserAdmin();
 
         final GroupDTO groupDTO = this.groupServiceImpl.getGroup(group.getGroupName(), user.getUserName());
         Assertions.assertEquals(group.getGroupName(), groupDTO.getGroupName());
@@ -43,11 +42,9 @@ public class TestGetGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetGroupUserNotInGroup() {
-        Group group = this.factory.getGroup();
-        this.userRepository.save(group.getUserAdmin());
-        group = this.groupRepository.save(group);
+        Group group = this.testFactory.getGroup();
 
-        final User user2 = this.userRepository.save(this.factory.getUser());
+        final User user2 = this.testFactory.getUser();
 
         final Group finalGroup = group;
 
@@ -58,10 +55,10 @@ public class TestGetGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetGroupNotExist() {
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
         Assertions.assertThrows(GroupNotExistException.class,
-                () -> this.groupServiceImpl.getGroup(this.factory.getRandomAlphanumericString(), user.getUserName()));
+                () -> this.groupServiceImpl.getGroup(this.testFactory.getRandomAlphanumericString(), user.getUserName()));
 
     }
 

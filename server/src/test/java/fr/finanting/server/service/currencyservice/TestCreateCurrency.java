@@ -28,12 +28,12 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
     protected void initDataBeforeEach() throws Exception {
         this.currencyServiceImpl = new CurrencyServiceImpl(this.currencyRepository);
         this.createCurrencyParameter = new CreateCurrencyParameter();
-        this.createCurrencyParameter.setDecimalPlaces(this.factory.getRandomInteger());
+        this.createCurrencyParameter.setDecimalPlaces(this.testFactory.getRandomInteger());
         this.createCurrencyParameter.setDefaultCurrency(false);
-        this.createCurrencyParameter.setIsoCode(this.factory.getRandomAlphanumericString(3));
-        this.createCurrencyParameter.setLabel(this.factory.getRandomAlphanumericString().toLowerCase());
-        this.createCurrencyParameter.setRate(this.factory.getRandomInteger());
-        this.createCurrencyParameter.setSymbol(this.factory.getRandomAlphanumericString(3).toLowerCase());
+        this.createCurrencyParameter.setIsoCode(this.testFactory.getRandomAlphanumericString(3));
+        this.createCurrencyParameter.setLabel(this.testFactory.getRandomAlphanumericString().toLowerCase());
+        this.createCurrencyParameter.setRate(this.testFactory.getRandomInteger());
+        this.createCurrencyParameter.setSymbol(this.testFactory.getRandomAlphanumericString(3).toLowerCase());
     }
 
     @Test
@@ -58,9 +58,8 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
 
     @Test
     public void testCreateAnotherDefaultCurrencyOk() throws CurrencyIsoCodeAlreadyExist, NoDefaultCurrencyException{
-        Currency otherCurrency = this.factory.getCurrency();
+        Currency otherCurrency = this.testFactory.getCurrency();
         otherCurrency.setDefaultCurrency(true);
-        otherCurrency = this.currencyRepository.save(otherCurrency);
 
         this.createCurrencyParameter.setDefaultCurrency(true);
         this.currencyServiceImpl.createCurrency(this.createCurrencyParameter);
@@ -87,9 +86,8 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
 
     @Test
     public void testCreateAnotherNoDefaultCurrencyOk() throws CurrencyIsoCodeAlreadyExist, NoDefaultCurrencyException{
-        Currency otherCurrency = this.factory.getCurrency();
+        Currency otherCurrency = this.testFactory.getCurrency();
         otherCurrency.setDefaultCurrency(true);
-        this.currencyRepository.save(otherCurrency);
 
         this.currencyServiceImpl.createCurrency(this.createCurrencyParameter);
 
@@ -122,7 +120,8 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
 
     @Test
     public void testCreateCurrencyWithAlreadyExitedIsoCode(){
-        final Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency = this.testFactory.getCurrency();
+        currency.setDefaultCurrency(true);
 
         this.createCurrencyParameter.setIsoCode(currency.getIsoCode());
 

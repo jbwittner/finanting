@@ -30,17 +30,17 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
         this.currencyServiceImpl = new CurrencyServiceImpl(this.currencyRepository);
 
         this.updateCurrencyParameter = new UpdateCurrencyParameter();
-        this.updateCurrencyParameter.setDecimalPlaces(this.factory.getRandomInteger());
+        this.updateCurrencyParameter.setDecimalPlaces(this.testFactory.getRandomInteger());
         this.updateCurrencyParameter.setDefaultCurrency(false);
-        this.updateCurrencyParameter.setIsoCode(this.factory.getUniqueRandomAlphanumericString(3));
-        this.updateCurrencyParameter.setLabel(this.factory.getUniqueRandomAlphanumericString().toLowerCase());
-        this.updateCurrencyParameter.setRate(this.factory.getRandomInteger());
-        this.updateCurrencyParameter.setSymbol(this.factory.getUniqueRandomAlphanumericString(3).toLowerCase());        
+        this.updateCurrencyParameter.setIsoCode(this.testFactory.getUniqueRandomAlphanumericString(3));
+        this.updateCurrencyParameter.setLabel(this.testFactory.getUniqueRandomAlphanumericString().toLowerCase());
+        this.updateCurrencyParameter.setRate(this.testFactory.getRandomInteger());
+        this.updateCurrencyParameter.setSymbol(this.testFactory.getUniqueRandomAlphanumericString(3).toLowerCase());        
     }
 
     @Test
     public void testUpdateNoDefaultCurrencyOk() throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
-        Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        Currency currency = this.testFactory.getCurrency();
 
         this.updateCurrencyParameter.setId(currency.getId());
 
@@ -64,7 +64,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateDefaultCurrencyOk() throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
-        Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        Currency currency = this.testFactory.getCurrency();
 
         this.updateCurrencyParameter.setId(currency.getId());
         this.updateCurrencyParameter.setDefaultCurrency(true);
@@ -89,7 +89,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCurrencyWithoutUpdateIsoCode() throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
-        Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        Currency currency = this.testFactory.getCurrency();
 
         this.updateCurrencyParameter.setId(currency.getId());
         this.updateCurrencyParameter.setIsoCode(currency.getIsoCode());
@@ -114,8 +114,8 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCurrencyWithIsoCodeAlreadyUsed() {
-        final Currency currency = this.currencyRepository.save(this.factory.getCurrency());
-        final Currency otherCurrency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency = this.testFactory.getCurrency();
+        final Currency otherCurrency = this.testFactory.getCurrency();
 
         this.updateCurrencyParameter.setId(currency.getId());
         this.updateCurrencyParameter.setIsoCode(otherCurrency.getIsoCode());
@@ -127,9 +127,8 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCurrencyToNoDefaultCurrency() {
-        final Currency currency = this.factory.getCurrency();
+        final Currency currency = this.testFactory.getCurrency();
         currency.setDefaultCurrency(true);
-        this.currencyRepository.save(currency);
 
         this.updateCurrencyParameter.setId(currency.getId());
 
@@ -140,7 +139,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCurrencyWithCurrencyNotExist() {
-        this.updateCurrencyParameter.setId(this.factory.getRandomInteger());
+        this.updateCurrencyParameter.setId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(CurrencyNotExistException.class,
             () -> this.currencyServiceImpl.updateCurrency(updateCurrencyParameter));

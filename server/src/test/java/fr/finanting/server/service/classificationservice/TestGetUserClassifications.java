@@ -42,13 +42,13 @@ public class TestGetUserClassifications extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserClassifications(){
 
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
         final List<Classification> classifications = new ArrayList<>();
 
         for(int index = 0; index < NUMBER_CLASSIFICATIONS; index ++){
 
-            final Classification classification = this.classificationRepository.save(this.factory.getClassification(user));
+            final Classification classification = this.testFactory.getClassification(user);
             classifications.add(classification);
             
         }

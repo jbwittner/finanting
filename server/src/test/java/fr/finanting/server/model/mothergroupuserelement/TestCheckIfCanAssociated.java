@@ -1,8 +1,5 @@
 package fr.finanting.server.model.mothergroupuserelement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,34 +11,26 @@ import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
 public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
 
+    private User userOne;
+    private User userTwo;
+
     private Group groupeOne;
     private Group groupeTwo;
 
-    private Group getGroup(Integer groupId){
-        final Group group = new Group();
-        group.setId(groupId);
-        group.setGroupName(this.faker.company().name());
-        final User user = this.factory.getUser();
-        user.setId(groupId * 10);
-        group.setUserAdmin(user);
-        final List<User> users = new ArrayList<>();
-        users.add(user);
-        group.setUsers(users);
-        return group;
-    }
-
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.groupeOne = this.getGroup(1);
-        this.groupeTwo = this.getGroup(2);
+        this.userOne = this.testFactory.getUser();
+        this.userTwo = this.testFactory.getUser();
+        this.groupeOne = this.testFactory.getGroup(userOne);
+        this.groupeTwo = this.testFactory.getGroup(userTwo);
     }
 
     @Test
     public void testUserCheckIfCanAssociatedOk() throws BadAssociationElementException{
         MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
         MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
-        motherGroupUserElementOne.setUser(this.groupeOne.getUserAdmin());
-        motherGroupUserElementTwo.setUser(this.groupeOne.getUserAdmin());
+        motherGroupUserElementOne.setUser(this.userOne);
+        motherGroupUserElementTwo.setUser(this.userOne);
         
         motherGroupUserElementOne.checkIfCanAssociated(motherGroupUserElementTwo);
     }
@@ -60,7 +49,7 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
     public void testUserCheckIfCanAssociatedWithGroup() throws BadAssociationElementException{
         MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
         MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
-        motherGroupUserElementOne.setUser(this.groupeOne.getUserAdmin());
+        motherGroupUserElementOne.setUser(this.userOne);
         motherGroupUserElementTwo.setGroup(this.groupeOne);
         
         Assertions.assertThrows(BadAssociationElementException.class,
@@ -73,7 +62,7 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
         MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
         MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
         motherGroupUserElementOne.setGroup(this.groupeOne);
-        motherGroupUserElementTwo.setUser(this.groupeOne.getUserAdmin());
+        motherGroupUserElementTwo.setUser(this.userOne);
         
         Assertions.assertThrows(BadAssociationElementException.class,
             () -> motherGroupUserElementOne.checkIfCanAssociated(motherGroupUserElementTwo));
@@ -84,8 +73,8 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
     public void testUserCheckIfCanAssociatedWithAnotherUser() throws BadAssociationElementException{
         MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
         MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
-        motherGroupUserElementOne.setUser(this.groupeOne.getUserAdmin());
-        motherGroupUserElementTwo.setUser(this.groupeTwo.getUserAdmin());
+        motherGroupUserElementOne.setUser(this.userOne);
+        motherGroupUserElementTwo.setUser(this.userTwo);
         
         Assertions.assertThrows(BadAssociationElementException.class,
             () -> motherGroupUserElementOne.checkIfCanAssociated(motherGroupUserElementTwo));

@@ -34,7 +34,7 @@ public class TestCreateGroup extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() throws Exception {
         this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
-        this.userPrincipal = this.userRepository.save(factory.getUser());
+        this.userPrincipal = this.testFactory.getUser();
     }
 
     @Test
@@ -61,7 +61,7 @@ public class TestCreateGroup extends AbstractMotherIntegrationTest {
         final List<String> usersNameList = new ArrayList<>(); 
 
         for(Integer index = 0; index < NUMBER_ACCOUNT; index ++){
-            final User user = this.userRepository.save(factory.getUser());
+            final User user = this.testFactory.getUser();
             usersNameList.add(user.getUserName());
         }
 
@@ -98,9 +98,7 @@ public class TestCreateGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGroupNameAlreadyUsed() throws GroupNameAlreadyExistException, UserNotExistException{
-        final Group group = this.factory.getGroup();
-        this.userRepository.save(group.getUserAdmin());
-        this.groupRepository.save(group);
+        final Group group = this.testFactory.getGroup();
 
         final GroupCreationParameter groupCreationParameter = new GroupCreationParameter();
         groupCreationParameter.setGroupName(group.getGroupName());

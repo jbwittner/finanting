@@ -200,9 +200,13 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
 
         boolean needUpdateAccount = !currentAccount.getId().equals(updateBankingTransactionParameter.getAccountId());
         boolean needUpdateLinkedAccount = false;
+        boolean needDeleteLinkedAccount = false;
 
         if(linkedAccount != null){
             needUpdateLinkedAccount = !linkedAccount.getId().equals(updateBankingTransactionParameter.getLinkedAccountId());
+            needDeleteLinkedAccount = updateBankingTransactionParameter.getLinkedAccountId() == null;
+        } else {
+            needUpdateLinkedAccount = updateBankingTransactionParameter.getLinkedAccountId() != null;
         }
 
         BankingAccount newAccount = null;
@@ -240,17 +244,35 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
             newLinkedAccount.checkIfUsable(user);
 
             currentAccount.checkIfCanAssociated(newLinkedAccount);
+
+            bankingTransaction.setLinkedAccount(newLinkedAccount);
+
         }
 
         this.setBankingTransactionData(bankingTransaction, updateBankingTransactionParameter, user);
 
-        if(linkedAccount != null){
-            BankingTransaction mirrorBankingTransaction = bankingTransaction.getMirrorTransaction();
-            this.setMirrorTransactionDate(mirrorBankingTransaction, bankingTransaction);
-            mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
-            bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
+        if(needUpdateLinkedAccount){
+
+            BankingTransaction mirrorBankingTransaction;
+
+            if(linkedAccount != null){
+                mirrorBankingTransaction = bankingTransaction.getMirrorTransaction();
+                this.setMirrorTransactionDate(mirrorBankingTransaction, bankingTransaction);
+                mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
+                bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
+            } else if (updateBankingTransactionParameter.getLinkedAccountId() != null) {
+                mirrorBankingTransaction = new BankingTransaction();
+                this.setMirrorTransactionDate(mirrorBankingTransaction, bankingTransaction);
+                mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
+                bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
+            } else if (needDeleteLinkedAccount) {
+                bankingTransaction.setMirrorTransaction(null);
+                mirrorBankingTransaction = bankingTransaction.getMirrorTransaction();
+                this.bankingTransactionRepository.delete(mirrorBankingTransaction);
+            }
+
         }
-        
+
         BankingTransactionDTO bankingTransactionDTO = new BankingTransactionDTO(bankingTransaction);
 
         return bankingTransactionDTO;

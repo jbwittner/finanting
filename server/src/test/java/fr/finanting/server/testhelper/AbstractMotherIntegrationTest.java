@@ -15,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles;
 @Transactional
 public abstract class AbstractMotherIntegrationTest {
 
-    protected final TestObjectFactory factory = new TestObjectFactory();
     protected final Faker faker = new Faker();
 
     @Autowired
@@ -26,7 +25,6 @@ public abstract class AbstractMotherIntegrationTest {
      */
     @BeforeEach
     public void beforeEach() throws Exception {
-        this.factory.resetAllList();
         this.testFactory.resetAllList();
         this.initDataBeforeEach();
     }
@@ -36,7 +34,6 @@ public abstract class AbstractMotherIntegrationTest {
      */
     @AfterEach
     public void afterEach(){
-        this.factory.resetAllList();
         this.testFactory.resetAllList();
     }
 

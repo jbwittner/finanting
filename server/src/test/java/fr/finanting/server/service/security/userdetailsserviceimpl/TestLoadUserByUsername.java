@@ -25,8 +25,7 @@ public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    
 
     private UserDetailsServiceImpl userdetDetailsServiceImpl;
 
@@ -36,19 +35,7 @@ public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
     protected void initDataBeforeEach() throws Exception {
         this.userdetDetailsServiceImpl = new UserDetailsServiceImpl(this.userRepository);
 
-        this.user = new User();
-        final Name name = this.factory.getUniqueRandomName();
-        this.user.setUserName(name.username());
-        this.user.setFirstName(name.firstName());
-        this.user.setLastName(name.lastName());
-        this.user.setPassword(this.passwordEncoder.encode(this.factory.getRandomAlphanumericString()));
-        this.user.setEmail(this.factory.getUniqueRandomEmail());
-
-        final List<Role> roles = new ArrayList<>();
-        roles.add(Role.USER);
-        this.user.setRoles(roles);
-
-        this.userRepository.save(this.user);
+        this.user = this.testFactory.getUser();
         
     }
 
@@ -74,7 +61,7 @@ public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
 
     @Test
     public void testLoadFailed() throws UsernameNotFoundException {
-        final String randomUserName = this.factory.getUniqueRandomAlphanumericString();
+        final String randomUserName = this.testFactory.getUniqueRandomAlphanumericString();
 
         Assertions.assertThrows(UsernameNotFoundException.class,
             () -> this.userdetDetailsServiceImpl.loadUserByUsername(randomUserName));

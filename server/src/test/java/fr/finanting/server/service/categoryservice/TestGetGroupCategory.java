@@ -38,34 +38,30 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() throws Exception {
         this.categoryServiceImpl = new CategoryServiceImpl(this.userRepository, this.groupRepository, this.categoryRepository);
-
     }
 
     @Test
     public void testGetUserCategory() throws GroupNotExistException, UserNotInGroupException{
 
-        Group group = this.factory.getGroup();
-        final User user = this.userRepository.save(group.getUserAdmin());
-        group = this.groupRepository.save(group);
+        Group group = this.testFactory.getGroup();
+        final User user = group.getUserAdmin();
 
         final List<Category> categories = new ArrayList<>();
 
         for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
 
-            Category motherCategory = this.categoryRepository.save(this.factory.getCategory(group, true));
+            Category motherCategory = this.testFactory.getCategory(group, true);
 
             final List<Category> childCategories = new ArrayList<>();
 
             for(int childIndex = 0; childIndex < NUMBER_CHILD_CATEGORY; childIndex++){
 
-                final Category childCategory = this.factory.getCategory(group, true);
+                final Category childCategory = this.testFactory.getCategory(group, true);
                 childCategory.setParent(motherCategory);
-                this.categoryRepository.save(childCategory);
                 childCategories.add(childCategory);
             }
 
             motherCategory.setChild(childCategories);
-            motherCategory = this.categoryRepository.save(motherCategory);
             categories.add(motherCategory);
 
         }
@@ -118,24 +114,22 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserCategoryNotExistGroup() throws GroupNotExistException, UserNotInGroupException{
 
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
         Assertions.assertThrows(GroupNotExistException.class,
-            () -> this.categoryServiceImpl.getGroupCategory(this.factory.getRandomAlphanumericString(), user.getUserName()));
+            () -> this.categoryServiceImpl.getGroupCategory(this.testFactory.getRandomAlphanumericString(), user.getUserName()));
 
     }
 
     @Test
     public void testGetUserCategorytNoUserGroup() throws GroupNotExistException, UserNotInGroupException{
 
-        final Group group = this.factory.getGroup();
-        this.userRepository.save(group.getUserAdmin());
-        final Group finalGroup = this.groupRepository.save(group);
+        final Group group = this.testFactory.getGroup();
 
-        final User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.testFactory.getUser();
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.categoryServiceImpl.getGroupCategory(finalGroup.getGroupName(), otherUser.getUserName()));
+            () -> this.categoryServiceImpl.getGroupCategory(group.getGroupName(), otherUser.getUserName()));
 
     }
     

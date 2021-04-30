@@ -38,19 +38,11 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetUserAccountWithoutGroupAccount() {
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
-        BankingAccount bankingAccount1 = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount1.getDefaultCurrency());
-        bankingAccount1 = this.bankingAccountRepository.save(bankingAccount1);
-
-        BankingAccount bankingAccount2 = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount2.getDefaultCurrency());
-        bankingAccount2 = this.bankingAccountRepository.save(bankingAccount2);
-
-        BankingAccount bankingAccount3 = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount3.getDefaultCurrency());
-        bankingAccount3 = this.bankingAccountRepository.save(bankingAccount3);
+        BankingAccount bankingAccount1 = this.testFactory.getBankingAccount(user);
+        BankingAccount bankingAccount2 = this.testFactory.getBankingAccount(user);
+        BankingAccount bankingAccount3 = this.testFactory.getBankingAccount(user);
 
         final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
 
@@ -75,7 +67,7 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetUserAccountWithoutUserAccount() {
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
         final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
 

@@ -1,7 +1,6 @@
 package fr.finanting.server.service.bankingtransactionservice;
 
 import java.util.Date;
-import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -58,9 +57,6 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private GroupRepository groupRepository;
-
     private BankingTransactionServiceImpl bankingTransactionServiceImpl;
 
     private CreateBankingTransactionParameter createGroupBankingTransactionParameter;
@@ -79,17 +75,9 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
                                                                                 this.currencyRepository,
                                                                                 this.userRepository);
 
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(user);
 
-        this.user = this.userRepository.save(this.factory.getUser());
-
-        final List<User> users = this.group.getUsers();
-        users.add(user);
-        this.group.setUsers(users);
-
-        this.group = this.groupRepository.save(group);
-        
         this.prepareUserData(user);
         this.prepareGroupData(group);
 
@@ -98,26 +86,22 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     private void prepareUserData(User user){
         this.createUserBankingTransactionParameter = new CreateBankingTransactionParameter();
 
-        BankingAccount userBankingAccount = this.factory.getBankingAccount(user);
-        Currency currency = this.currencyRepository.save(userBankingAccount.getDefaultCurrency());
-        userBankingAccount.setDefaultCurrency(currency);
-        userBankingAccount = this.bankingAccountRepository.save(userBankingAccount);
+        BankingAccount userBankingAccount = this.testFactory.getBankingAccount(user);
 
-        BankingAccount linkedUserBankingAccount = this.factory.getBankingAccount(user);
-        linkedUserBankingAccount.setDefaultCurrency(currency);
-        linkedUserBankingAccount = this.bankingAccountRepository.save(linkedUserBankingAccount);
+        BankingAccount linkedUserBankingAccount = this.testFactory.getBankingAccount(user);
+        linkedUserBankingAccount.setDefaultCurrency(userBankingAccount.getDefaultCurrency());
 
-        Third third = this.thirdRepository.save(this.factory.getThird(user));
-        Category category = this.categoryRepository.save(this.factory.getCategory(user, true));
-        Classification classification = this.classificationRepository.save(this.factory.getClassification(user));
+        Third third = this.testFactory.getThird(user);
+        Category category = this.testFactory.getCategory(user, true);
+        Classification classification = this.testFactory.getClassification(user);
 
         String description = this.faker.chuckNorris().fact();
 
         Date amountDate = new Date(System.currentTimeMillis());
         Date transactionDate = new Date(System.currentTimeMillis());
 
-        Double amount = this.factory.getRandomDouble();
-        Double currencyAmount = this.factory.getRandomDouble();
+        Double amount = this.testFactory.getRandomDouble();
+        Double currencyAmount = this.testFactory.getRandomDouble();
 
         this.createUserBankingTransactionParameter.setAccountId(userBankingAccount.getId());
         this.createUserBankingTransactionParameter.setLinkedAccountId(linkedUserBankingAccount.getId());
@@ -128,7 +112,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
         this.createUserBankingTransactionParameter.setAmountDate(amountDate);
         this.createUserBankingTransactionParameter.setAmount(amount);
         this.createUserBankingTransactionParameter.setCurrencyAmount(currencyAmount);
-        this.createUserBankingTransactionParameter.setCurrencyId(currency.getId());
+        this.createUserBankingTransactionParameter.setCurrencyId(userBankingAccount.getDefaultCurrency().getId());
         this.createUserBankingTransactionParameter.setDescription(description);
 
     }
@@ -136,26 +120,21 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
     private void prepareGroupData(Group group){
         this.createGroupBankingTransactionParameter = new CreateBankingTransactionParameter();
 
-        BankingAccount groupBankingAccount = this.factory.getBankingAccount(group);
-        Currency currency = this.currencyRepository.save(groupBankingAccount.getDefaultCurrency());
-        groupBankingAccount.setDefaultCurrency(currency);
-        groupBankingAccount = this.bankingAccountRepository.save(groupBankingAccount);
+        BankingAccount groupBankingAccount = this.testFactory.getBankingAccount(group);
+        BankingAccount linkedGroupBankingAccount = this.testFactory.getBankingAccount(group);
+        linkedGroupBankingAccount.setDefaultCurrency(groupBankingAccount.getDefaultCurrency());
 
-        BankingAccount linkedGroupBankingAccount = this.factory.getBankingAccount(group);
-        linkedGroupBankingAccount.setDefaultCurrency(currency);
-        linkedGroupBankingAccount = this.bankingAccountRepository.save(linkedGroupBankingAccount);
-
-        Third third = this.thirdRepository.save(this.factory.getThird(group));
-        Category category = this.categoryRepository.save(this.factory.getCategory(group, true));
-        Classification classification = this.classificationRepository.save(this.factory.getClassification(group));
+        Third third = this.testFactory.getThird(group);
+        Category category = this.testFactory.getCategory(group, true);
+        Classification classification = this.testFactory.getClassification(group);
 
         String description = this.faker.chuckNorris().fact();
 
         Date amountDate = new Date(System.currentTimeMillis());
         Date transactionDate = new Date(System.currentTimeMillis());
 
-        Double amount = this.factory.getRandomDouble();
-        Double currencyAmount = this.factory.getRandomDouble();
+        Double amount = this.testFactory.getRandomDouble();
+        Double currencyAmount = this.testFactory.getRandomDouble();
 
         this.createGroupBankingTransactionParameter.setAccountId(groupBankingAccount.getId());
         this.createGroupBankingTransactionParameter.setLinkedAccountId(linkedGroupBankingAccount.getId());
@@ -166,7 +145,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
         this.createGroupBankingTransactionParameter.setAmountDate(amountDate);
         this.createGroupBankingTransactionParameter.setAmount(amount);
         this.createGroupBankingTransactionParameter.setCurrencyAmount(currencyAmount);
-        this.createGroupBankingTransactionParameter.setCurrencyId(currency.getId());
+        this.createGroupBankingTransactionParameter.setCurrencyId(groupBankingAccount.getDefaultCurrency().getId());
         this.createGroupBankingTransactionParameter.setDescription(description);
 
     }
@@ -266,11 +245,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserTransactionWithLinkedAccountWithOtherDefaultCurrency() throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
-        BankingAccount linkedBankingAccount = this.factory.getBankingAccount(user);
-        Currency currency = this.currencyRepository.save(linkedBankingAccount.getDefaultCurrency());
-        linkedBankingAccount.setDefaultCurrency(currency);
-        linkedBankingAccount = this.bankingAccountRepository.save(linkedBankingAccount);
-
+        BankingAccount linkedBankingAccount = this.testFactory.getBankingAccount(user);
         this.createUserBankingTransactionParameter.setLinkedAccountId(linkedBankingAccount.getId());
         
         BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName());
@@ -287,19 +262,15 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
         Double expectedMirrorAmount = Double.valueOf(-75);
         Double expectedMirrorAmountCurrency = amountCurrency * -1;
         
-        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
+        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
         Currency currency = bankingAccount.getDefaultCurrency();
         currency.setRate(rateAccountCurrency);
-        currency = this.currencyRepository.save(currency);
         bankingAccount.setDefaultCurrency(currency);
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
-        BankingAccount linkedBankingAccount = this.factory.getBankingAccount(user);
+        BankingAccount linkedBankingAccount = this.testFactory.getBankingAccount(user);
         Currency linkedCurrency = linkedBankingAccount.getDefaultCurrency();
         linkedCurrency.setRate(rateLinkedAccountCurrency);
-        linkedCurrency = this.currencyRepository.save(linkedCurrency);
         linkedBankingAccount.setDefaultCurrency(linkedCurrency);
-        linkedBankingAccount = this.bankingAccountRepository.save(linkedBankingAccount);
 
         this.createUserBankingTransactionParameter.setAccountId(bankingAccount.getId());
         this.createUserBankingTransactionParameter.setLinkedAccountId(linkedBankingAccount.getId());
@@ -364,7 +335,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserWithBankingAccountNotExistException() {
-        this.createUserBankingTransactionParameter.setAccountId(this.factory.getRandomInteger());
+        this.createUserBankingTransactionParameter.setAccountId(this.testFactory.getRandomInteger());
         
         Assertions.assertThrows(BankingAccountNotExistException.class,
             () -> this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName()));
@@ -372,7 +343,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserWithLinkedBankingAccountNotExistException() {
-        this.createUserBankingTransactionParameter.setLinkedAccountId(this.factory.getRandomInteger());
+        this.createUserBankingTransactionParameter.setLinkedAccountId(this.testFactory.getRandomInteger());
         
         Assertions.assertThrows(BankingAccountNotExistException.class,
             () -> this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName()));
@@ -380,7 +351,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserWithThirdNotExistException() {
-        this.createUserBankingTransactionParameter.setThirdId(this.factory.getRandomInteger());
+        this.createUserBankingTransactionParameter.setThirdId(this.testFactory.getRandomInteger());
         
         Assertions.assertThrows(ThirdNotExistException.class,
             () -> this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName()));
@@ -388,7 +359,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserWithCategoryNotExistException() {
-        this.createUserBankingTransactionParameter.setCategoryId(this.factory.getRandomInteger());
+        this.createUserBankingTransactionParameter.setCategoryId(this.testFactory.getRandomInteger());
         
         Assertions.assertThrows(CategoryNotExistException.class,
             () -> this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName()));
@@ -396,7 +367,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserWithClassificationNotExistException() {
-        this.createUserBankingTransactionParameter.setClassificationId(this.factory.getRandomInteger());
+        this.createUserBankingTransactionParameter.setClassificationId(this.testFactory.getRandomInteger());
         
         Assertions.assertThrows(ClassificationNotExistException.class,
             () -> this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName()));
@@ -404,7 +375,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserWithCurrencyNotExistException() {
-        this.createUserBankingTransactionParameter.setCurrencyId(this.factory.getRandomInteger());
+        this.createUserBankingTransactionParameter.setCurrencyId(this.testFactory.getRandomInteger());
         
         Assertions.assertThrows(CurrencyNotExistException.class,
             () -> this.bankingTransactionServiceImpl.createBankingTransaction(this.createUserBankingTransactionParameter, this.user.getUserName()));
@@ -412,11 +383,8 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserWithAccountBadAssociationBankingTransactionBankingAccountException() {
-        User otherUser = this.userRepository.save(this.factory.getUser());
-        BankingAccount otherBankingAccount = this.factory.getBankingAccount(otherUser);
-        Currency currency = this.currencyRepository.save(otherBankingAccount.getDefaultCurrency());
-        otherBankingAccount.setDefaultCurrency(currency);
-        otherBankingAccount = this.bankingAccountRepository.save(otherBankingAccount);
+        User otherUser = this.testFactory.getUser();
+        BankingAccount otherBankingAccount = this.testFactory.getBankingAccount(otherUser);
 
         this.createUserBankingTransactionParameter.setAccountId(otherBankingAccount.getId());
         
@@ -426,11 +394,8 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserWithLinkedAccountBadAssociationBankingTransactionBankingAccountException() {
-        User otherUser = this.userRepository.save(this.factory.getUser());
-        BankingAccount otherBankingAccount = this.factory.getBankingAccount(otherUser);
-        Currency currency = this.currencyRepository.save(otherBankingAccount.getDefaultCurrency());
-        otherBankingAccount.setDefaultCurrency(currency);
-        otherBankingAccount = this.bankingAccountRepository.save(otherBankingAccount);
+        User otherUser = this.testFactory.getUser();
+        BankingAccount otherBankingAccount = this.testFactory.getBankingAccount(otherUser);
 
         this.createUserBankingTransactionParameter.setLinkedAccountId(otherBankingAccount.getId());
         
@@ -440,10 +405,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateTransactionWithUserAccountAndGroupLinkedBankingTransactionBankingAccountException() {
-        BankingAccount groupBankingAccount = this.factory.getBankingAccount(this.group);
-        Currency currency = this.currencyRepository.save(groupBankingAccount.getDefaultCurrency());
-        groupBankingAccount.setDefaultCurrency(currency);
-        groupBankingAccount = this.bankingAccountRepository.save(groupBankingAccount);
+        BankingAccount groupBankingAccount = this.testFactory.getBankingAccount(this.group);
 
         this.createUserBankingTransactionParameter.setLinkedAccountId(groupBankingAccount.getId());
         
@@ -453,10 +415,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateTransactionWithGroupAccountAndUserLinkedBankingTransactionBankingAccountException() {
-        BankingAccount userBankingAccount = this.factory.getBankingAccount(this.user);
-        Currency currency = this.currencyRepository.save(userBankingAccount.getDefaultCurrency());
-        userBankingAccount.setDefaultCurrency(currency);
-        userBankingAccount = this.bankingAccountRepository.save(userBankingAccount);
+        BankingAccount userBankingAccount = this.testFactory.getBankingAccount(this.user);
 
         this.createGroupBankingTransactionParameter.setLinkedAccountId(userBankingAccount.getId());
         
@@ -466,10 +425,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateTransactionWithGroupAccountAndOtherGroupLinkedBankingTransactionBankingAccountException() {
-        BankingAccount userBankingAccount = this.factory.getBankingAccount(this.user);
-        Currency currency = this.currencyRepository.save(userBankingAccount.getDefaultCurrency());
-        userBankingAccount.setDefaultCurrency(currency);
-        userBankingAccount = this.bankingAccountRepository.save(userBankingAccount);
+        BankingAccount userBankingAccount = this.testFactory.getBankingAccount(this.user);
 
         this.createGroupBankingTransactionParameter.setLinkedAccountId(userBankingAccount.getId());
         
@@ -479,7 +435,7 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testCreateUserWithGroupAccountBadAssociationBankingTransactionBankingAccountException() {
-        User otherUser = this.userRepository.save(this.factory.getUser());
+        User otherUser = this.testFactory.getUser();
 
         Assertions.assertThrows(UserNotInGroupException.class,
             () -> this.bankingTransactionServiceImpl.createBankingTransaction(this.createGroupBankingTransactionParameter, otherUser.getUserName()));

@@ -15,54 +15,44 @@ import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
 public class TestCheckIfUsable extends AbstractMotherIntegrationTest {
 
-    private Group groupeOne;
-    private Group groupeTwo;
+    private User userOne;
+    private User userTwo;
 
-    private Group getGroup(Integer groupId){
-        final Group group = new Group();
-        group.setId(groupId);
-        group.setGroupName(this.faker.company().name());
-        final User user = this.factory.getUser();
-        user.setId(groupId * 10);
-        group.setUserAdmin(user);
-        final List<User> users = new ArrayList<>();
-        users.add(user);
-        group.setUsers(users);
-        return group;
-    }
+    private Group groupeOne;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.groupeOne = this.getGroup(1);
-        this.groupeTwo = this.getGroup(2);
+        this.userOne = this.testFactory.getUser();
+        this.userTwo = this.testFactory.getUser();
+        this.groupeOne = this.testFactory.getGroup(userOne);
     }
 
     @Test
     public void testGroupOk() throws BadAssociationElementException, UserNotInGroupException{
         MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
         motherGroupElement.setGroup(this.groupeOne);
-        motherGroupElement.checkIfUsable(this.groupeOne.getUserAdmin());
+        motherGroupElement.checkIfUsable(this.userOne);
     }
 
     @Test
     public void testUserOk() throws BadAssociationElementException, UserNotInGroupException{
         MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
-        motherGroupElement.setUser(this.groupeOne.getUserAdmin());
-        motherGroupElement.checkIfUsable(this.groupeOne.getUserAdmin());
+        motherGroupElement.setUser(this.userOne);
+        motherGroupElement.checkIfUsable(this.userOne);
     }
 
     @Test
     public void testGroupWithOtherUser(){
         MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
         motherGroupElement.setGroup(this.groupeOne);
-        Assertions.assertThrows(UserNotInGroupException.class, () -> motherGroupElement.checkIfUsable(this.groupeTwo.getUserAdmin()));
+        Assertions.assertThrows(UserNotInGroupException.class, () -> motherGroupElement.checkIfUsable(this.userTwo));
     }
 
     @Test
     public void testUserWithOtherUser(){
         MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
-        motherGroupElement.setUser(this.groupeOne.getUserAdmin());
-        Assertions.assertThrows(BadAssociationElementException.class, () -> motherGroupElement.checkIfUsable(this.groupeTwo.getUserAdmin()));
+        motherGroupElement.setUser(this.userOne);
+        Assertions.assertThrows(BadAssociationElementException.class, () -> motherGroupElement.checkIfUsable(this.userTwo));
     }
 
 }

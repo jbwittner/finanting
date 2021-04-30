@@ -33,9 +33,7 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() throws Exception {
         this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
-        this.groupRepository.save(this.group);
+        this.group = this.testFactory.getGroup();
     }
 
     @Test
@@ -43,7 +41,7 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
         final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
         addUsersGroupParameter.setGroupName(this.group.getGroupName());
         final List<String> userList = new ArrayList<>();
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
         userList.add(user.getUserName());
         addUsersGroupParameter.setUsersName(userList);
         
@@ -94,7 +92,7 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
         final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
         addUsersGroupParameter.setGroupName(this.group.getGroupName());
 
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
         Assertions.assertThrows(NotAdminGroupException.class,
             () -> this.groupServiceImpl.addUsersGroup(addUsersGroupParameter, user.getUserName()));

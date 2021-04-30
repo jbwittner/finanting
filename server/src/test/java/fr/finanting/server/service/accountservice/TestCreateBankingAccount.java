@@ -44,12 +44,11 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() throws Exception {
         this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
-        this.group = this.factory.getGroup();
-        this.user = this.userRepository.save(this.group.getUserAdmin());
-        this.group = this.groupRepository.save(this.group);
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(this.user);
 
         this.createBankingAccountParameter = new CreateBankingAccountParameter();
-        this.createBankingAccountParameter.setAbbreviation(this.factory.getRandomAlphanumericString());
+        this.createBankingAccountParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString());
 
         final AddressParameter addressParameter = new AddressParameter();
         addressParameter.setAddress(this.faker.address().fullAddress());
@@ -60,14 +59,14 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
 
         final BankDetailsParameter bankDetailsParameter = new BankDetailsParameter();
         bankDetailsParameter.setBankName(this.faker.dragonBall().character());
-        bankDetailsParameter.setAccountNumber(this.factory.getRandomAlphanumericString());
-        bankDetailsParameter.setIban(this.factory.getRandomAlphanumericString());
+        bankDetailsParameter.setAccountNumber(this.testFactory.getRandomAlphanumericString());
+        bankDetailsParameter.setIban(this.testFactory.getRandomAlphanumericString());
         this.createBankingAccountParameter.setBankDetailsParameter(bankDetailsParameter);
 
-        this.createBankingAccountParameter.setInitialBalance(this.factory.getRandomInteger());
+        this.createBankingAccountParameter.setInitialBalance(this.testFactory.getRandomInteger());
         this.createBankingAccountParameter.setLabel(this.faker.backToTheFuture().quote());
 
-        final Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency = this.currencyRepository.save(this.testFactory.getCurrency());
         this.createBankingAccountParameter.setDefaultCurrencyISOCode(currency.getIsoCode());
     }
 
@@ -111,7 +110,7 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateGroupAccountGroupNotExist() {
 
-        this.createBankingAccountParameter.setGroupName(this.factory.getRandomAlphanumericString());
+        this.createBankingAccountParameter.setGroupName(this.testFactory.getRandomAlphanumericString());
         
         Assertions.assertThrows(GroupNotExistException.class,
             () -> this.bankingAccountServiceImpl.createAccount(createBankingAccountParameter, this.user.getUserName()));
@@ -120,7 +119,7 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateAccountWithCurrencyNotExist() {
 
-        this.createBankingAccountParameter.setDefaultCurrencyISOCode(this.factory.getRandomAlphanumericString());
+        this.createBankingAccountParameter.setDefaultCurrencyISOCode(this.testFactory.getRandomAlphanumericString());
         
         Assertions.assertThrows(CurrencyNotExistException.class,
             () -> this.bankingAccountServiceImpl.createAccount(createBankingAccountParameter, this.user.getUserName()));

@@ -40,9 +40,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     protected void initDataBeforeEach() throws Exception {
         this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
 
-        Group group = this.factory.getGroup();
-        this.userRepository.save(group.getUserAdmin());
-        group = this.groupRepository.save(group);
+        Group group = this.testFactory.getGroup();
 
         this.updateBankingAccountParameter = new UpdateBankingAccountParameter();
         final AddressParameter addressParameter = new AddressParameter();
@@ -53,15 +51,15 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         this.updateBankingAccountParameter.setAddressParameter(addressParameter);
 
         final BankDetailsParameter bankDetailsParameter = new BankDetailsParameter();
-        bankDetailsParameter.setAccountNumber(this.factory.getRandomAlphanumericString());
-        bankDetailsParameter.setIban(this.factory.getRandomAlphanumericString());
+        bankDetailsParameter.setAccountNumber(this.testFactory.getRandomAlphanumericString());
+        bankDetailsParameter.setIban(this.testFactory.getRandomAlphanumericString());
         this.updateBankingAccountParameter.setBankDetailsParameter(bankDetailsParameter);
 
-        this.updateBankingAccountParameter.setInitialBalance(this.factory.getRandomInteger());
+        this.updateBankingAccountParameter.setInitialBalance(this.testFactory.getRandomInteger());
         this.updateBankingAccountParameter.setLabel(this.faker.backToTheFuture().quote());
-        this.updateBankingAccountParameter.setAbbreviation(this.factory.getRandomAlphanumericString());
+        this.updateBankingAccountParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString());
 
-        final Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency = this.currencyRepository.save(this.testFactory.getCurrency());
         this.updateBankingAccountParameter.setDefaultCurrencyISOCode(currency.getIsoCode());
 
     }
@@ -69,11 +67,11 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateGroupAccountOk()
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException {
-        Group group = this.factory.getGroup();
+        Group group = this.testFactory.getGroup();
         final User user = this.userRepository.save(group.getUserAdmin());
         group = this.groupRepository.save(group);
 
-        BankingAccount bankingAccount = this.factory.getBankingAccount(group);
+        BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
         this.currencyRepository.save(bankingAccount.getDefaultCurrency());
         bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
@@ -91,11 +89,8 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateUserAccountOk()
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException {
-        final User user = this.userRepository.save(this.factory.getUser());
-
-        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
+        final User user = this.testFactory.getUser();
+        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
 
@@ -110,9 +105,9 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateAccountNotExist() {
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
-        this.updateBankingAccountParameter.setAccountId(this.factory.getRandomInteger());
+        this.updateBankingAccountParameter.setAccountId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(BankingAccountNotExistException.class,
                 () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user.getUserName()));
@@ -121,16 +116,9 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupAccountNotAdmin() {
-        Group group = this.factory.getGroup();
-        this.userRepository.save(group.getUserAdmin());
-        group = this.groupRepository.save(group);
-
-        final User user2 = this.userRepository.save(this.factory.getUser());
-
-        BankingAccount bankingAccount = this.factory.getBankingAccount(group);
-        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
-
+        Group group = this.testFactory.getGroup();
+        final User user2 = this.testFactory.getUser();
+        BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
 
         Assertions.assertThrows(NotAdminGroupException.class,
@@ -139,15 +127,10 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserAccountNotUserAccount() {
-        final User user = this.userRepository.save(this.factory.getUser());
-        
-        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
-
+        final User user = this.testFactory.getUser();
+        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
-
-        final User user2 = this.userRepository.save(this.factory.getUser());
+        final User user2 = this.testFactory.getUser();
 
         Assertions.assertThrows(NotUserBankingAccountException.class,
                 () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user2.getUserName()));
@@ -156,14 +139,11 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserAccountISOCodeNotExiste() {
-        final User user = this.userRepository.save(this.factory.getUser());
-        
-        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
+        final User user = this.testFactory.getUser();
+        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
-        this.updateBankingAccountParameter.setDefaultCurrencyISOCode(this.factory.getRandomAlphanumericString());
+        this.updateBankingAccountParameter.setDefaultCurrencyISOCode(this.testFactory.getRandomAlphanumericString());
 
         Assertions.assertThrows(CurrencyNotExistException.class,
                 () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user.getUserName()));

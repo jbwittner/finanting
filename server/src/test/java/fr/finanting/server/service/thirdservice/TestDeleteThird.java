@@ -47,21 +47,14 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
                                                     this.groupRepository,
                                                     this.categoryRepository);
         
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(user);
 
-        this.user = this.userRepository.save(this.factory.getUser());
-
-        final List<User> users = this.group.getUsers();
-        users.add(user);
-        this.group.setUsers(users);
-
-        this.group = this.groupRepository.save(group);
     }
 
     @Test
     public void testDeleteUserThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        final Third third = this.thirdRepository.save(this.factory.getThird(this.user));
+        final Third third = this.testFactory.getThird(this.user);
 
         final Integer thirdId = third.getId();
 
@@ -77,7 +70,7 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteGroupThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        final Third third = this.thirdRepository.save(this.factory.getThird(this.group));
+        final Third third = this.testFactory.getThird(this.group);
 
         final Integer thirdId = third.getId();
 
@@ -93,8 +86,8 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteOtherUserThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        final User otherUser = this.userRepository.save(this.factory.getUser());
-        final Third third = this.thirdRepository.save(this.factory.getThird(otherUser));
+        final User otherUser = this.testFactory.getUser();
+        final Third third = this.testFactory.getThird(otherUser);
 
         final Integer thirdId = third.getId();
 
@@ -107,11 +100,8 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteOtherGroupThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        Group otherGroup = this.factory.getGroup();
-        this.userRepository.save(otherGroup.getUserAdmin());
-        otherGroup = this.groupRepository.save(otherGroup);
-
-        final Third third = this.thirdRepository.save(this.factory.getThird(otherGroup));
+        Group otherGroup = this.testFactory.getGroup();
+        final Third third = this.testFactory.getThird(otherGroup);
 
         final Integer thirdId = third.getId();
 
@@ -125,7 +115,7 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteNotExistentThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
         final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
-        deleteThirdParameter.setId(this.factory.getRandomInteger());
+        deleteThirdParameter.setId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(ThirdNotExistException.class,
             () -> this.thirdServiceImpl.deleteThird(deleteThirdParameter, this.user.getUserName()));

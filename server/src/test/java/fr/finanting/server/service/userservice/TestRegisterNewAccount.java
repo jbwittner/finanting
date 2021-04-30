@@ -34,13 +34,13 @@ public class TestRegisterNewAccount extends AbstractMotherIntegrationTest {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
 
         this.newUserRegisterParameter = new UserRegisterParameter();
-        this.newUserRegisterParameter.setEmail(this.factory.getUniqueRandomEmail());
-        final Name name = this.factory.getUniqueRandomName();
+        this.newUserRegisterParameter.setEmail(this.testFactory.getUniqueRandomEmail());
+        final Name name = this.testFactory.getUniqueRandomName();
         this.newUserRegisterParameter.setUserName(name.username());
         this.newUserRegisterParameter.setFirstName(name.firstName());
         this.newUserRegisterParameter.setLastName(name.lastName());
-        this.newUserRegisterParameter.setPassword(this.factory.getRandomAlphanumericString());
-        this.newUserRegisterParameter.setEmail(this.factory.getUniqueRandomEmail());
+        this.newUserRegisterParameter.setPassword(this.testFactory.getRandomAlphanumericString());
+        this.newUserRegisterParameter.setEmail(this.testFactory.getUniqueRandomEmail());
         
     }
 

@@ -49,7 +49,7 @@ public class TestGetUserThird extends AbstractMotherIntegrationTest {
                                                     this.groupRepository,
                                                     this.categoryRepository);
         
-        this.user = this.userRepository.save(this.factory.getUser());
+        this.user = this.testFactory.getUser();
     }
 
     private void checkData(final Third expected, final ThirdDTO actual){
@@ -89,10 +89,10 @@ public class TestGetUserThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetUserThird() {
-        final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
-        final Third third1 = this.thirdRepository.save(this.factory.getThird(this.user, category));
-        final Third third2 = this.thirdRepository.save(this.factory.getThird(this.user, category));
-        final Third third3 = this.thirdRepository.save(this.factory.getThird(this.user, category));
+        final Category category = this.testFactory.getCategory(this.user, true);
+        final Third third1 = this.testFactory.getThird(this.user, category);
+        final Third third2 = this.testFactory.getThird(this.user, category);
+        final Third third3 = this.testFactory.getThird(this.user, category);
 
         final List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getUserThird(this.user.getUserName());
 

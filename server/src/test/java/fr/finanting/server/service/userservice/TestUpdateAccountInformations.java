@@ -48,10 +48,10 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
      */
     @Test
     public void testUpdateNewData() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
-        final Name name = this.factory.getUniqueRandomName();
+        final Name name = this.testFactory.getUniqueRandomName();
 
         final UserUpdateParameter userUpdateParameter = new UserUpdateParameter();
-        userUpdateParameter.setEmail(this.factory.getUniqueRandomEmail());
+        userUpdateParameter.setEmail(this.testFactory.getUniqueRandomEmail());
         userUpdateParameter.setFirstName(name.firstName());
         userUpdateParameter.setLastName(name.lastName());
         userUpdateParameter.setUserName(name.username());
@@ -94,7 +94,7 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
      */
     @Test
     public void testEmailAlreadyUsed() {
-        final Name name = this.factory.getUniqueRandomName();
+        final Name name = this.testFactory.getUniqueRandomName();
 
         final UserUpdateParameter userUpdateParameter = new UserUpdateParameter();
         userUpdateParameter.setEmail(this.userTwo.getEmail());
@@ -111,10 +111,10 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
      */
     @Test
     public void testUserNameAlreadyUsed() {
-        final Name name = this.factory.getUniqueRandomName();
+        final Name name = this.testFactory.getUniqueRandomName();
 
         final UserUpdateParameter userUpdateParameter = new UserUpdateParameter();
-        userUpdateParameter.setEmail(this.factory.getUniqueRandomEmail());
+        userUpdateParameter.setEmail(this.testFactory.getUniqueRandomEmail());
         userUpdateParameter.setFirstName(name.firstName());
         userUpdateParameter.setLastName(name.lastName());
         userUpdateParameter.setUserName(this.userTwo.getUserName());

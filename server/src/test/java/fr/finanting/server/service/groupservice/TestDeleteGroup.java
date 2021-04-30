@@ -30,9 +30,7 @@ public class TestDeleteGroup extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() throws Exception {
         this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
-        this.groupRepository.save(this.group);
+        this.group = this.testFactory.getGroup();
     }
 
     @Test
@@ -49,7 +47,7 @@ public class TestDeleteGroup extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteNonExistentGroup() throws GroupNotExistException, NotAdminGroupException {
         final DeleteGroupParameter deleteGroupParameter = new DeleteGroupParameter();
-        deleteGroupParameter.setGroupName(this.factory.getRandomAlphanumericString());
+        deleteGroupParameter.setGroupName(this.testFactory.getRandomAlphanumericString());
         final String userName = this.group.getUserAdmin().getUserName();
 
         Assertions.assertThrows(GroupNotExistException.class,
@@ -61,8 +59,7 @@ public class TestDeleteGroup extends AbstractMotherIntegrationTest {
     public void testDeleteNonAdminGroup() throws GroupNotExistException, NotAdminGroupException {
         final DeleteGroupParameter deleteGroupParameter = new DeleteGroupParameter();
         deleteGroupParameter.setGroupName(this.group.getGroupName());
-        User user = this.factory.getUser();
-        user = this.userRepository.save(user);
+        User user = this.testFactory.getUser();
         final String userName = user.getUserName();
 
         Assertions.assertThrows(NotAdminGroupException.class,

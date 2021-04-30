@@ -36,11 +36,11 @@ public class TestRemoveUsersGroup extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() throws Exception {
         this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
-        this.group = this.factory.getGroup();
+        this.group = this.testFactory.getGroup();
         this.userRepository.save(this.group.getUserAdmin());
         final List<User> users = this.group.getUsers();
         for(Integer index = 0; index < NUMBER_USERS; index ++){
-            final User user = this.userRepository.save(this.factory.getUser());
+            final User user = this.testFactory.getUser();
             users.add(user);
         }
         this.groupRepository.save(this.group);
@@ -111,7 +111,7 @@ public class TestRemoveUsersGroup extends AbstractMotherIntegrationTest {
         final RemoveUsersGroupParameter removeUsersGroupParameter = new RemoveUsersGroupParameter();
         removeUsersGroupParameter.setGroupName(this.group.getGroupName());
 
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
         Assertions.assertThrows(NotAdminGroupException.class,
             () -> this.groupServiceImpl.removeUsersGroup(removeUsersGroupParameter, user.getUserName()));
@@ -135,7 +135,7 @@ public class TestRemoveUsersGroup extends AbstractMotherIntegrationTest {
     @Test
     public void testUserNotInGroup() throws GroupNotExistException, NotAdminGroupException, UserNotInGroupException, UserNotExistException {
         final List<String> usersName = new ArrayList<>();
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
         usersName.add(user.getUserName());
 
         final RemoveUsersGroupParameter removeUsersGroupParameter = new RemoveUsersGroupParameter();

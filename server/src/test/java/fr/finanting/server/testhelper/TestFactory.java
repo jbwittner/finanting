@@ -10,6 +10,7 @@ import com.github.javafaker.Name;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import fr.finanting.server.model.BankingAccount;
@@ -36,6 +37,9 @@ import fr.finanting.server.repository.UserRepository;
 
 @Component
 public class TestFactory {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private BankingAccountRepository bankingAccountRepository;
@@ -243,7 +247,7 @@ public class TestFactory {
         user.setFirstName(firstName);
         user.setLastName(this.faker.name().lastName().toUpperCase());
         user.setUserName(this.faker.name().username().toLowerCase());
-        user.setPassword(this.getRandomAlphanumericString());
+        user.setPassword(this.passwordEncoder.encode(this.getRandomAlphanumericString()));
         
         final List<Role> roles = new ArrayList<>();
         roles.add(Role.USER);
@@ -259,6 +263,18 @@ public class TestFactory {
         group.setUserAdmin(user);
         final List<User> users = new ArrayList<>();
         users.add(user);
+        group.setUsers(users);
+        return this.groupRepository.save(group);
+    }
+
+    public Group getGroup(User userToAdd){
+        final Group group = new Group();
+        group.setGroupName(this.faker.company().name());
+        final User user = this.getUser();
+        group.setUserAdmin(user);
+        final List<User> users = new ArrayList<>();
+        users.add(user);
+        users.add(userToAdd);
         group.setUsers(users);
         return this.groupRepository.save(group);
     }
@@ -422,6 +438,7 @@ public class TestFactory {
         Double amount = this.getRandomDouble();
         bankingTransaction.setAmount(amount);
         bankingTransaction.setAmountDate(new Date());
+        bankingTransaction.setTransactionDate(new Date());
         bankingTransaction.setCategory(this.getCategory(user, group, true));
         bankingTransaction.setClassification(this.getClassification(user, group));
         bankingTransaction.setCreateTimestamp(new Date());

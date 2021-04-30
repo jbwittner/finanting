@@ -44,16 +44,8 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
                                                                                 this.groupRepository,
                                                                                 this.userRepository);
 
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
-
-        this.user = this.userRepository.save(this.factory.getUser());
-
-        final List<User> users = this.group.getUsers();
-        users.add(user);
-        this.group.setUsers(users);
-
-        this.group = this.groupRepository.save(group);
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(user);
     }
 
     @Test
@@ -63,7 +55,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
 
         for(int index = 0; index < NUMBER_CLASSIFICATIONS; index ++){
 
-            final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.group));
+            final Classification classification = this.testFactory.getClassification(this.group);
             classifications.add(classification);
             
         }
@@ -100,7 +92,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
     @Test
     public void testGetGroupClassificationsWithUserNotInGroup(){
 
-        final User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.testFactory.getUser();
 
         Assertions.assertThrows(UserNotInGroupException.class,
             () -> this.classificationServiceImpl.getGroupClassifications(this.group.getGroupName(), otherUser.getUserName()));

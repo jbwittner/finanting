@@ -53,16 +53,8 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
                                                     this.groupRepository,
                                                     this.categoryRepository);
         
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
-
-        this.user = this.userRepository.save(this.factory.getUser());
-
-        final List<User> users = this.group.getUsers();
-        users.add(user);
-        this.group.setUsers(users);
-
-        this.group = this.groupRepository.save(group);
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(user);
     }
 
     private void checkData(final Third expected, final ThirdDTO actual){
@@ -102,10 +94,10 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetUserThird() throws UserNotInGroupException, GroupNotExistException {
-        final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
-        final Third third1 = this.thirdRepository.save(this.factory.getThird(this.group, category));
-        final Third third2 = this.thirdRepository.save(this.factory.getThird(this.group, category));
-        final Third third3 = this.thirdRepository.save(this.factory.getThird(this.group, category));
+        final Category category = this.testFactory.getCategory(this.group, true);
+        final Third third1 = this.testFactory.getThird(this.group, category);
+        final Third third2 = this.testFactory.getThird(this.group, category);
+        final Third third3 = this.testFactory.getThird(this.group, category);
 
         final List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getGroupThird(this.group.getGroupName(), this.user.getUserName());
 
@@ -137,7 +129,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserThirdUserNotInGroup() throws GroupNotExistException, UserNotInGroupException{
 
-        final User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.testFactory.getUser();
 
         Assertions.assertThrows(UserNotInGroupException.class,
             () -> this.thirdServiceImpl.getGroupThird(this.group.getGroupName(), otherUser.getUserName()));
@@ -148,7 +140,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     public void testGetUserThirdGroupNotExist() throws GroupNotExistException, UserNotInGroupException{
 
         Assertions.assertThrows(GroupNotExistException.class,
-            () -> this.thirdServiceImpl.getGroupThird(this.factory.getRandomAlphanumericString(), this.user.getUserName()));
+            () -> this.thirdServiceImpl.getGroupThird(this.testFactory.getRandomAlphanumericString(), this.user.getUserName()));
 
     }
 
