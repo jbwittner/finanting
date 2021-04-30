@@ -456,7 +456,9 @@ public class TestFactory {
             mirrorTransaction.setAccount(linkedBankingAccount);
             mirrorTransaction.setLinkedAccount(bankingAccount);
 
+            mirrorTransaction.setTransactionDate(new Date());
             mirrorTransaction.setAmountDate(bankingTransaction.getAmountDate());
+
             mirrorTransaction.setCategory(bankingTransaction.getCategory());
             mirrorTransaction.setClassification(bankingTransaction.getClassification());
             mirrorTransaction.setCreateTimestamp(bankingTransaction.getCreateTimestamp());

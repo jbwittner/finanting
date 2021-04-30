@@ -29,7 +29,6 @@ import fr.finanting.server.repository.BankingTransactionRepository;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.ClassificationRepository;
 import fr.finanting.server.repository.CurrencyRepository;
-import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.ThirdRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.BankingTransactionServiceImpl;
@@ -167,14 +166,20 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
             
             if(parameter.getThirdId() != null){
                 Assertions.assertEquals(parameter.getThirdId(), mirrorTransaction.getThird().getId());
+            } else {
+                Assertions.assertNull(mirrorTransaction.getThird());
             }
 
             if(parameter.getCategoryId() != null){
                 Assertions.assertEquals(parameter.getCategoryId(), mirrorTransaction.getCategory().getId());
+            } else {
+                Assertions.assertNull(mirrorTransaction.getCategory());
             }
 
             if(parameter.getClassificationId() != null){
                 Assertions.assertEquals(parameter.getClassificationId(), mirrorTransaction.getClassification().getId());
+            } else {
+                Assertions.assertNull(mirrorTransaction.getClassification());
             }
 
             Assertions.assertEquals(parameter.getTransactionDate(), mirrorTransaction.getTransactionDate());
@@ -198,22 +203,34 @@ public class TestCreateBankingTransaction extends AbstractMotherIntegrationTest 
             Assertions.assertEquals(parameter.getCurrencyId(), mirrorTransaction.getCurrency().getId());
             Assertions.assertEquals(parameter.getDescription(), mirrorTransaction.getDescription());
 
+        } else {
+            Assertions.assertNull(bankingTransactionDTO.getLinkedBankingAccountDTO());
+            Assertions.assertNull(bankingTransaction.getLinkedAccount());
+            Assertions.assertNull(bankingTransaction.getMirrorTransaction());
         }
 
         if(parameter.getThirdId() != null){
             Assertions.assertEquals(parameter.getThirdId(), bankingTransactionDTO.getThirdDTO().getId());
             Assertions.assertEquals(parameter.getThirdId(), bankingTransaction.getThird().getId());
+        } else {
+            Assertions.assertNull(bankingTransactionDTO.getThirdDTO());
+            Assertions.assertNull(bankingTransaction.getThird());
         }
 
         if(parameter.getCategoryId() != null){
             Assertions.assertEquals(parameter.getCategoryId(), bankingTransactionDTO.getCategoryDTO().getId());
             Assertions.assertEquals(parameter.getCategoryId(), bankingTransaction.getCategory().getId());
+        } else {
+            Assertions.assertNull(bankingTransactionDTO.getCategoryDTO());
+            Assertions.assertNull(bankingTransaction.getCategory());
         }
-
 
         if(parameter.getClassificationId() != null){
             Assertions.assertEquals(parameter.getClassificationId(), bankingTransactionDTO.getClassificationDTO().getId());
             Assertions.assertEquals(parameter.getClassificationId(), bankingTransaction.getClassification().getId());
+        } else {
+            Assertions.assertNull(bankingTransactionDTO.getClassificationDTO());
+            Assertions.assertNull(bankingTransaction.getClassification());
         }
 
         Assertions.assertEquals(parameter.getTransactionDate(), bankingTransactionDTO.getTransactionDate());

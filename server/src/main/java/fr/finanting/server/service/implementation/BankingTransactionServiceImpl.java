@@ -212,7 +212,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         BankingAccount newAccount = null;
         BankingAccount newLinkedAccount = null;
 
-        if(needUpdateAccount && needUpdateLinkedAccount){
+        if(needUpdateAccount && needUpdateLinkedAccount && !needDeleteLinkedAccount){
             newAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getAccountId())
                 .orElseThrow(() -> new BankingAccountNotExistException(updateBankingTransactionParameter.getAccountId()));
             newAccount.checkIfUsable(user);
@@ -227,50 +227,53 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
 
             bankingTransaction.setLinkedAccount(newLinkedAccount);
 
-
-        } else if(needUpdateAccount) {
+        }
+        
+        if(needUpdateAccount) {
             newAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getAccountId())
                 .orElseThrow(() -> new BankingAccountNotExistException(updateBankingTransactionParameter.getAccountId()));
             newAccount.checkIfUsable(user);
 
-            if(linkedAccount != null){
-                newAccount.checkIfCanAssociated(linkedAccount);
-            }
-
             bankingTransaction.setAccount(newAccount);
-        } else if(needUpdateLinkedAccount){
+        } 
+        
+        if(needUpdateLinkedAccount && !needDeleteLinkedAccount){
             newLinkedAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getLinkedAccountId())
                 .orElseThrow(() -> new BankingAccountNotExistException(updateBankingTransactionParameter.getLinkedAccountId()));
             newLinkedAccount.checkIfUsable(user);
 
-            currentAccount.checkIfCanAssociated(newLinkedAccount);
-
             bankingTransaction.setLinkedAccount(newLinkedAccount);
+        } else if(needDeleteLinkedAccount){
+            bankingTransaction.setLinkedAccount(null);
+        }
 
+        currentAccount = bankingTransaction.getAccount();
+        linkedAccount = bankingTransaction.getLinkedAccount();
+
+        if(currentAccount != null && linkedAccount != null){
+            currentAccount.checkIfCanAssociated(linkedAccount);
         }
 
         this.setBankingTransactionData(bankingTransaction, updateBankingTransactionParameter, user);
 
-        if(needUpdateLinkedAccount){
+        if((currentAccount != null && linkedAccount != null) && !needDeleteLinkedAccount){
 
             BankingTransaction mirrorBankingTransaction;
 
-            if(linkedAccount != null){
+            if(bankingTransaction.getMirrorTransaction() != null){
                 mirrorBankingTransaction = bankingTransaction.getMirrorTransaction();
-                this.setMirrorTransactionDate(mirrorBankingTransaction, bankingTransaction);
-                mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
-                bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
-            } else if (updateBankingTransactionParameter.getLinkedAccountId() != null) {
+            } else {
                 mirrorBankingTransaction = new BankingTransaction();
-                this.setMirrorTransactionDate(mirrorBankingTransaction, bankingTransaction);
-                mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
-                bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
-            } else if (needDeleteLinkedAccount) {
-                bankingTransaction.setMirrorTransaction(null);
-                mirrorBankingTransaction = bankingTransaction.getMirrorTransaction();
-                this.bankingTransactionRepository.delete(mirrorBankingTransaction);
             }
 
+            this.setMirrorTransactionDate(mirrorBankingTransaction, bankingTransaction);
+            mirrorBankingTransaction = this.bankingTransactionRepository.save(mirrorBankingTransaction);
+            bankingTransaction.setMirrorTransaction(mirrorBankingTransaction);
+
+        } else if (needDeleteLinkedAccount) {
+            BankingTransaction mirrorBankingTransaction = bankingTransaction.getMirrorTransaction();
+            bankingTransaction.setMirrorTransaction(null);
+            this.bankingTransactionRepository.delete(mirrorBankingTransaction);
         }
 
         BankingTransactionDTO bankingTransactionDTO = new BankingTransactionDTO(bankingTransaction);
