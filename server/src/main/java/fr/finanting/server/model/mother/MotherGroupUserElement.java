@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import fr.finanting.server.exception.BadAssociationElementException;
+import fr.finanting.server.exception.NotUserElementException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
@@ -26,10 +27,10 @@ public class MotherGroupUserElement extends MotherPersistant {
     @JoinColumn(name = "USER_ID")
     protected User user;
 
-    public void checkIfUsable(User user) throws BadAssociationElementException, UserNotInGroupException{
+    public void checkIfUsable(User user) throws NotUserElementException, UserNotInGroupException{
         if(this.group == null){
             if(!this.user.getId().equals(user.getId())){
-                throw new BadAssociationElementException();
+                throw new NotUserElementException();
             }
         } else {
             this.group.checkAreInGroup(user);

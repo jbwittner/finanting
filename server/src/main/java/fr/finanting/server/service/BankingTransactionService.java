@@ -6,6 +6,7 @@ import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.CurrencyNotExistException;
+import fr.finanting.server.exception.NotUserElementException;
 import fr.finanting.server.exception.ThirdNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.parameter.CreateBankingTransactionParameter;
@@ -14,6 +15,6 @@ public interface BankingTransactionService {
 
     public BankingTransactionDTO createBankingTransaction(final CreateBankingTransactionParameter createBankingTransactionParameter, String userName)
         throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException,
-        CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException;
+        CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException;
     
 }

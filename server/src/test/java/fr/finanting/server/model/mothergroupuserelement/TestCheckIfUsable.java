@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import fr.finanting.server.exception.BadAssociationElementException;
+import fr.finanting.server.exception.NotUserElementException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
@@ -28,14 +29,14 @@ public class TestCheckIfUsable extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testGroupOk() throws BadAssociationElementException, UserNotInGroupException{
+    public void testGroupOk() throws NotUserElementException, UserNotInGroupException{
         MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
         motherGroupElement.setGroup(this.groupeOne);
         motherGroupElement.checkIfUsable(this.userOne);
     }
 
     @Test
-    public void testUserOk() throws BadAssociationElementException, UserNotInGroupException{
+    public void testUserOk() throws NotUserElementException, UserNotInGroupException{
         MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
         motherGroupElement.setUser(this.userOne);
         motherGroupElement.checkIfUsable(this.userOne);
@@ -52,7 +53,7 @@ public class TestCheckIfUsable extends AbstractMotherIntegrationTest {
     public void testUserWithOtherUser(){
         MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
         motherGroupElement.setUser(this.userOne);
-        Assertions.assertThrows(BadAssociationElementException.class, () -> motherGroupElement.checkIfUsable(this.userTwo));
+        Assertions.assertThrows(NotUserElementException.class, () -> motherGroupElement.checkIfUsable(this.userTwo));
     }
 
 }

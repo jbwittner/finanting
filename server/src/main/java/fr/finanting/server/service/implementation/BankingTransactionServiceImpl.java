@@ -9,6 +9,7 @@ import fr.finanting.server.exception.BankingTransactionNotExistException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.CurrencyNotExistException;
+import fr.finanting.server.exception.NotUserElementException;
 import fr.finanting.server.exception.ThirdNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.BankingAccount;
@@ -91,7 +92,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
     }
 
     private void setBankingTransactionData(final BankingTransaction bankingTransaction, final CreateBankingTransactionParameter bankingTransactionParameter, final User user)
-        throws ThirdNotExistException, BadAssociationElementException, UserNotInGroupException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException {
+        throws ThirdNotExistException, BadAssociationElementException, UserNotInGroupException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException {
 
         Integer thirdId = bankingTransactionParameter.getThirdId();
 
@@ -150,7 +151,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
     @Override
     public BankingTransactionDTO createBankingTransaction(final CreateBankingTransactionParameter createBankingTransactionParameter, final String userName)
         throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException,
-        ClassificationNotExistException, CurrencyNotExistException {
+        ClassificationNotExistException, CurrencyNotExistException, NotUserElementException {
 
         User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -194,7 +195,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
     
     public BankingTransactionDTO updateBankingTransaction(final UpdateBankingTransactionParameter updateBankingTransactionParameter, final String userName)
         throws BankingTransactionNotExistException, BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException,
-        ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException{
+        ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException{
 
         User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -203,6 +204,8 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
 
         BankingAccount currentAccount = bankingTransaction.getAccount();
         BankingAccount currentLinkedAccount = bankingTransaction.getLinkedAccount();
+
+        currentAccount.checkIfUsable(user);
 
         if(!currentAccount.getId().equals(updateBankingTransactionParameter.getAccountId())){
             BankingAccount newAccount = this.bankingAccountRepository.findById(updateBankingTransactionParameter.getAccountId())
