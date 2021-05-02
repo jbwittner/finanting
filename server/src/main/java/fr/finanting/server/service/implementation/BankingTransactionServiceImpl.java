@@ -1,5 +1,8 @@
 package fr.finanting.server.service.implementation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import fr.finanting.server.dto.BankingTransactionDTO;
@@ -192,7 +195,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         
     }
 
-    
+    @Override
     public BankingTransactionDTO updateBankingTransaction(final UpdateBankingTransactionParameter updateBankingTransactionParameter, final String userName)
         throws BankingTransactionNotExistException, BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException,
         ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException{
@@ -249,6 +252,44 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
 
         return bankingTransactionDTO;
 
+    }
+
+    @Override
+    public BankingTransactionDTO getBankingTransaction(Integer id, String userName) throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException {
+
+        User user = this.userRepository.findByUserName(userName).orElseThrow();
+
+        BankingTransaction bankingTransaction = this.bankingTransactionRepository.findById(id)
+            .orElseThrow(() -> new BankingTransactionNotExistException(id));
+
+        bankingTransaction.getAccount().checkIfUsable(user);
+
+        BankingTransactionDTO bankingTransactionDTO = new BankingTransactionDTO(bankingTransaction);
+
+        return bankingTransactionDTO;
+    }
+
+    @Override
+    public List<BankingTransactionDTO> getAccountBankingTransaction(Integer id, String userName)
+            throws NotUserElementException, UserNotInGroupException, BankingAccountNotExistException {
+        
+        User user = this.userRepository.findByUserName(userName).orElseThrow();
+
+        BankingAccount bankingAccount = this.bankingAccountRepository.findById(id)
+                .orElseThrow(() -> new BankingAccountNotExistException(id));
+
+        bankingAccount.checkIfUsable(user);
+
+        List<BankingTransaction> bankingTransactions = this.bankingTransactionRepository.findByAccount(bankingAccount);
+
+        List<BankingTransactionDTO> bankingTransactionDTOs = new ArrayList<>();
+
+        for(BankingTransaction bankingTransaction : bankingTransactions){
+            BankingTransactionDTO bankingTransactionDTO = new BankingTransactionDTO(bankingTransaction);
+            bankingTransactionDTOs.add(bankingTransactionDTO);
+        }
+
+        return bankingTransactionDTOs;
     }
     
 }

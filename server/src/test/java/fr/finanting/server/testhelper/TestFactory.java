@@ -431,8 +431,7 @@ public class TestFactory {
         return this.getThird(null, group, category);
     }
 
-    public BankingTransaction getBankingTransaction(User user, Group group, Boolean isLinked){
-        BankingAccount bankingAccount = this.getBankingAccount(user, group);
+    public BankingTransaction getBankingTransaction(User user, Group group, BankingAccount bankingAccount, Boolean isLinked){
         BankingTransaction bankingTransaction = new BankingTransaction();
         bankingTransaction.setAccount(bankingAccount);
         Double amount = this.getRandomDouble();
@@ -483,12 +482,22 @@ public class TestFactory {
         return this.bankingTransactionRepository.save(bankingTransaction);
     }
 
+    public BankingTransaction getBankingTransaction(User user, BankingAccount bankingAccount, Boolean isLinked){
+        return this.getBankingTransaction(user, null, bankingAccount, isLinked);
+    }
+
+    public BankingTransaction getBankingTransaction(Group group, BankingAccount bankingAccount, Boolean isLinked){
+        return this.getBankingTransaction(null, group, bankingAccount, isLinked);
+    }
+
     public BankingTransaction getBankingTransaction(User user, Boolean isLinked){
-        return this.getBankingTransaction(user, null, isLinked);
+        BankingAccount bankingAccount = this.getBankingAccount(user);
+        return this.getBankingTransaction(user, null, bankingAccount, isLinked);
     }
 
     public BankingTransaction getBankingTransaction(Group group, Boolean isLinked){
-        return this.getBankingTransaction(null, group, isLinked);
+        BankingAccount bankingAccount = this.getBankingAccount(group);
+        return this.getBankingTransaction(null, group, bankingAccount, isLinked);
     }
     
 }
