@@ -40,8 +40,6 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     protected void initDataBeforeEach() throws Exception {
         this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
 
-        Group group = this.testFactory.getGroup();
-
         this.updateBankingAccountParameter = new UpdateBankingAccountParameter();
         final AddressParameter addressParameter = new AddressParameter();
         addressParameter.setAddress(this.faker.address().fullAddress());

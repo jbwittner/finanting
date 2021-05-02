@@ -1,31 +1,18 @@
 package fr.finanting.server.service.bankingtransactionservice;
 
-import java.util.Date;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import fr.finanting.server.dto.BankingTransactionDTO;
-import fr.finanting.server.exception.BadAssociationElementException;
-import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.BankingTransactionNotExistException;
-import fr.finanting.server.exception.CategoryNotExistException;
-import fr.finanting.server.exception.ClassificationNotExistException;
-import fr.finanting.server.exception.CurrencyNotExistException;
 import fr.finanting.server.exception.NotUserElementException;
-import fr.finanting.server.exception.ThirdNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.BankingTransaction;
-import fr.finanting.server.model.Category;
-import fr.finanting.server.model.Classification;
-import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Group;
-import fr.finanting.server.model.Third;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.CreateBankingTransactionParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.BankingTransactionRepository;
 import fr.finanting.server.repository.CategoryRepository;

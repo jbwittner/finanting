@@ -1,12 +1,8 @@
 package fr.finanting.server.model.mothergroupuserelement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import fr.finanting.server.exception.BadAssociationElementException;
 import fr.finanting.server.exception.NotUserElementException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Group;

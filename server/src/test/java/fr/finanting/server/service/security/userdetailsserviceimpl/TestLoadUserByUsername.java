@@ -1,10 +1,6 @@
 package fr.finanting.server.service.security.userdetailsserviceimpl;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
-import com.github.javafaker.Name;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;

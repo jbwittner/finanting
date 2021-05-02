@@ -1,6 +1,5 @@
 package fr.finanting.server.service.thirdservice;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
