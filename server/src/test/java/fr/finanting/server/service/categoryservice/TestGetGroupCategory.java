@@ -43,14 +43,14 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserCategory() throws GroupNotExistException, UserNotInGroupException{
 
-        Group group = this.testFactory.getGroup();
+        final Group group = this.testFactory.getGroup();
         final User user = group.getUserAdmin();
 
         final List<Category> categories = new ArrayList<>();
 
         for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
 
-            Category motherCategory = this.testFactory.getCategory(group, true);
+            final Category motherCategory = this.testFactory.getCategory(group, true);
 
             final List<Category> childCategories = new ArrayList<>();
 

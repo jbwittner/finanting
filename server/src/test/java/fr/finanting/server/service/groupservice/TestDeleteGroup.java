@@ -59,7 +59,7 @@ public class TestDeleteGroup extends AbstractMotherIntegrationTest {
     public void testDeleteNonAdminGroup() throws GroupNotExistException, NotAdminGroupException {
         final DeleteGroupParameter deleteGroupParameter = new DeleteGroupParameter();
         deleteGroupParameter.setGroupName(this.group.getGroupName());
-        User user = this.testFactory.getUser();
+        final User user = this.testFactory.getUser();
         final String userName = user.getUserName();
 
         Assertions.assertThrows(NotAdminGroupException.class,

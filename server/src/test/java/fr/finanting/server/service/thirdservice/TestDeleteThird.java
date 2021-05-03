@@ -99,7 +99,7 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteOtherGroupThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        Group otherGroup = this.testFactory.getGroup();
+        final Group otherGroup = this.testFactory.getGroup();
         final Third third = this.testFactory.getThird(otherGroup);
 
         final Integer thirdId = third.getId();

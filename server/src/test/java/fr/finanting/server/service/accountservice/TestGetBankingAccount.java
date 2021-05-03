@@ -46,7 +46,7 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
             throws BankingAccountNotExistException, NotUserBankingAccountException, UserNotInGroupException {
         final User user = this.testFactory.getUser();
 
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         final BankingAccountDTO bankingAccountDTO = this.bankingAccountServiceImpl.getBankingAccount(bankingAccount.getId(), user.getUserName());
 
@@ -60,7 +60,7 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
         final User user = this.testFactory.getUser();
         final Group group = this.testFactory.getGroup(user);
 
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
         final List<BankingAccount> bankingAccountList = new ArrayList<>();
         bankingAccountList.add(bankingAccount);

@@ -37,7 +37,7 @@ public class TestGetUserGroups extends AbstractMotherIntegrationTest {
         final List<Group> groups = new ArrayList<>();
 
         for(int index = 0; index < numberGroups; index ++){
-            Group group = this.testFactory.getGroup();
+            final Group group = this.testFactory.getGroup();
             groups.add(group);
         }
 

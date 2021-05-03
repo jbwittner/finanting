@@ -114,9 +114,9 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupAccountNotAdmin() {
-        Group group = this.testFactory.getGroup();
+        final Group group = this.testFactory.getGroup();
         final User user2 = this.testFactory.getUser();
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
 
         Assertions.assertThrows(NotAdminGroupException.class,
@@ -126,7 +126,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateUserAccountNotUserAccount() {
         final User user = this.testFactory.getUser();
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
         final User user2 = this.testFactory.getUser();
 
@@ -138,7 +138,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateUserAccountISOCodeNotExiste() {
         final User user = this.testFactory.getUser();
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
         this.updateBankingAccountParameter.setDefaultCurrencyISOCode(this.testFactory.getRandomAlphanumericString());

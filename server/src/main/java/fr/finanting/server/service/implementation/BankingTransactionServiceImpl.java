@@ -139,6 +139,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         Integer currencyId = bankingTransactionParameter.getCurrencyId();
         Currency currency = this.currencyRepository.findById(currencyId)
             .orElseThrow(() -> new CurrencyNotExistException(currencyId));
+            
         bankingTransaction.setCurrency(currency);
 
         bankingTransaction.setAmountDate(bankingTransactionParameter.getAmountDate());

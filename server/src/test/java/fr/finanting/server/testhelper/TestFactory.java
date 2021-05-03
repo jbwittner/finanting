@@ -214,7 +214,7 @@ public class TestFactory {
         return (int) random;
     }
 
-    public double getRandomDouble(final Integer max){
+    public double getRandomDouble(){
         final double random = this.faker.random().nextDouble();
         return random;
     }
@@ -226,10 +226,6 @@ public class TestFactory {
 
     public int getRandomInteger(){
         return this.getRandomInteger(NUMBER_MAX);
-    }
-
-    public double getRandomDouble(){
-        return this.getRandomDouble(NUMBER_MAX);
     }
 
     public long getRandomLong(){
@@ -267,7 +263,7 @@ public class TestFactory {
         return this.groupRepository.save(group);
     }
 
-    public Group getGroup(User userToAdd){
+    public Group getGroup(final User userToAdd){
         final Group group = new Group();
         group.setGroupName(this.faker.company().name());
         final User user = this.getUser();
@@ -431,8 +427,8 @@ public class TestFactory {
         return this.getThird(null, group, category);
     }
 
-    public BankingTransaction getBankingTransaction(User user, Group group, BankingAccount bankingAccount, Boolean isLinked){
-        BankingTransaction bankingTransaction = new BankingTransaction();
+    public BankingTransaction getBankingTransaction(final User user, final Group group, final BankingAccount bankingAccount, final Boolean isLinked){
+        final BankingTransaction bankingTransaction = new BankingTransaction();
         bankingTransaction.setAccount(bankingAccount);
         Double amount = this.getRandomDouble();
         bankingTransaction.setAmount(amount);
@@ -443,12 +439,12 @@ public class TestFactory {
         bankingTransaction.setCreateTimestamp(new Date());
         Currency currency = this.getCurrency();
         bankingTransaction.setCurrency(this.getCurrency());
-        Double amountCurrency = amount * currency.getRate();
+        final Double amountCurrency = amount * currency.getRate();
         bankingTransaction.setCurrencyAmount(amountCurrency);
         bankingTransaction.setDescription(this.faker.chuckNorris().fact());
         bankingTransaction.setThird(this.getThird(user, group, null));
         if(isLinked){
-            BankingAccount linkedBankingAccount = this.getBankingAccount(user, group);
+            final BankingAccount linkedBankingAccount = this.getBankingAccount(user, group);
             bankingTransaction.setLinkedAccount(linkedBankingAccount);
 
             BankingTransaction mirrorTransaction = new BankingTransaction();
@@ -482,21 +478,21 @@ public class TestFactory {
         return this.bankingTransactionRepository.save(bankingTransaction);
     }
 
-    public BankingTransaction getBankingTransaction(User user, BankingAccount bankingAccount, Boolean isLinked){
+    public BankingTransaction getBankingTransaction(final User user, final BankingAccount bankingAccount, final Boolean isLinked){
         return this.getBankingTransaction(user, null, bankingAccount, isLinked);
     }
 
-    public BankingTransaction getBankingTransaction(Group group, BankingAccount bankingAccount, Boolean isLinked){
+    public BankingTransaction getBankingTransaction(final Group group, final BankingAccount bankingAccount, final Boolean isLinked){
         return this.getBankingTransaction(null, group, bankingAccount, isLinked);
     }
 
-    public BankingTransaction getBankingTransaction(User user, Boolean isLinked){
-        BankingAccount bankingAccount = this.getBankingAccount(user);
+    public BankingTransaction getBankingTransaction(final User user, final Boolean isLinked){
+        final BankingAccount bankingAccount = this.getBankingAccount(user);
         return this.getBankingTransaction(user, null, bankingAccount, isLinked);
     }
 
-    public BankingTransaction getBankingTransaction(Group group, Boolean isLinked){
-        BankingAccount bankingAccount = this.getBankingAccount(group);
+    public BankingTransaction getBankingTransaction(final Group group, final Boolean isLinked){
+        final BankingAccount bankingAccount = this.getBankingAccount(group);
         return this.getBankingTransaction(null, group, bankingAccount, isLinked);
     }
     

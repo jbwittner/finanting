@@ -79,14 +79,13 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
         this.userUpdateBankingTransactionParameter = new UpdateBankingTransactionParameter();
         this.groupUpdateBankingTransactionParameter = new UpdateBankingTransactionParameter();
 
-        BankingAccount newUserBankingAccount = this.testFactory.getBankingAccount(this.user);
-        BankingAccount newOtherUserBankingAccount = this.testFactory.getBankingAccount(this.user);
-        BankingAccount newGroupBankingAccount = this.testFactory.getBankingAccount(this.group);
-        BankingAccount newOtherGroupBankingAccount = this.testFactory.getBankingAccount(this.group);
+        final BankingAccount newUserBankingAccount = this.testFactory.getBankingAccount(this.user);
+        final BankingAccount newOtherUserBankingAccount = this.testFactory.getBankingAccount(this.user);
+        final BankingAccount newGroupBankingAccount = this.testFactory.getBankingAccount(this.group);
+        final BankingAccount newOtherGroupBankingAccount = this.testFactory.getBankingAccount(this.group);
 
-
-        Double amount = this.testFactory.getRandomDouble();
-        Double currencyAmount = newUserBankingAccount.getDefaultCurrency().getRate() * amount;
+        final Double amount = this.testFactory.getRandomDouble();
+        final Double currencyAmount = newUserBankingAccount.getDefaultCurrency().getRate() * amount;
 
         this.userUpdateBankingTransactionParameter.setAccountId(newUserBankingAccount.getId());
         this.userUpdateBankingTransactionParameter.setLinkedAccountId(newOtherUserBankingAccount.getId());
@@ -119,48 +118,51 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
         Assertions.assertEquals(parameter.getAccountId(), bankingTransactionDTO.getBankingAccountDTO().getId());
         Assertions.assertEquals(parameter.getAccountId(), bankingTransaction.getAccount().getId());
 
-        if(parameter.getLinkedAccountId() != null){
+        if(parameter.getLinkedAccountId() == null){
+            Assertions.assertNull(bankingTransactionDTO.getLinkedBankingAccountDTO());
+            Assertions.assertNull(bankingTransaction.getLinkedAccount());
+            Assertions.assertNull(bankingTransaction.getMirrorTransaction());
+        } else {
             Assertions.assertEquals(parameter.getLinkedAccountId(), bankingTransactionDTO.getLinkedBankingAccountDTO().getId());
             Assertions.assertEquals(parameter.getLinkedAccountId(), bankingTransaction.getLinkedAccount().getId());
 
-            BankingTransaction mirrorTransaction = bankingTransaction.getMirrorTransaction();
+            final BankingTransaction mirrorTransaction = bankingTransaction.getMirrorTransaction();
             Assertions.assertEquals(parameter.getAccountId(), mirrorTransaction.getLinkedAccount().getId());
             Assertions.assertEquals(parameter.getLinkedAccountId(), mirrorTransaction.getAccount().getId());
 
             Assertions.assertEquals(bankingTransaction.getAccount().getId(), mirrorTransaction.getLinkedAccount().getId());
             
-            if(parameter.getThirdId() != null){
-                Assertions.assertEquals(parameter.getThirdId(), mirrorTransaction.getThird().getId());
-            } else {
+            if(parameter.getThirdId() == null){
                 Assertions.assertNull(mirrorTransaction.getThird());
+            } else {
+                Assertions.assertEquals(parameter.getThirdId(), mirrorTransaction.getThird().getId());
             }
 
-            if(parameter.getCategoryId() != null){
-                Assertions.assertEquals(parameter.getCategoryId(), mirrorTransaction.getCategory().getId());
-            } else {
+            if(parameter.getCategoryId() == null){
                 Assertions.assertNull(mirrorTransaction.getCategory());
+            } else {
+                Assertions.assertEquals(parameter.getCategoryId(), mirrorTransaction.getCategory().getId());
             }
 
-            if(parameter.getClassificationId() != null){
-                Assertions.assertEquals(parameter.getClassificationId(), mirrorTransaction.getClassification().getId());
-            } else {
+            if(parameter.getClassificationId() == null){
                 Assertions.assertNull(mirrorTransaction.getClassification());
+            } else {
+                Assertions.assertEquals(parameter.getClassificationId(), mirrorTransaction.getClassification().getId());
             }
 
             Assertions.assertEquals(parameter.getTransactionDate(), mirrorTransaction.getTransactionDate());
             Assertions.assertEquals(parameter.getAmountDate(), mirrorTransaction.getAmountDate());
 
             Double mirrorAmount;
-            Double mirrorCurrencyAmount = parameter.getCurrencyAmount() * -1;
+            final Double mirrorCurrencyAmount = parameter.getCurrencyAmount() * -1;
 
-            if(!bankingTransaction.getLinkedAccount().getDefaultCurrency().equals(bankingTransaction.getAccount().getDefaultCurrency())){
+            if(bankingTransaction.getLinkedAccount().getDefaultCurrency().equals(bankingTransaction.getAccount().getDefaultCurrency())){
+                mirrorAmount = bankingTransaction.getAmount() * -1;
+            } else {
                 mirrorAmount = mirrorCurrencyAmount
                     * Double.valueOf(bankingTransaction.getAccount().getDefaultCurrency().getRate())
                     / Double.valueOf(bankingTransaction.getLinkedAccount().getDefaultCurrency().getRate());
-            } else {
-                mirrorAmount = bankingTransaction.getAmount() * -1;
             }
-
 
             Assertions.assertEquals(mirrorAmount, mirrorTransaction.getAmount());
             Assertions.assertEquals(mirrorCurrencyAmount, mirrorTransaction.getCurrencyAmount());
@@ -168,52 +170,48 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             Assertions.assertEquals(parameter.getCurrencyId(), mirrorTransaction.getCurrency().getId());
             Assertions.assertEquals(parameter.getDescription(), mirrorTransaction.getDescription());
 
-            if(parameter.getThirdId() != null){
-                Assertions.assertEquals(parameter.getThirdId(), mirrorTransaction.getThird().getId());
-            } else {
+            if(parameter.getThirdId() == null){
                 Assertions.assertNull(mirrorTransaction.getThird());
+            } else {
+                Assertions.assertEquals(parameter.getThirdId(), mirrorTransaction.getThird().getId());
             }
     
-            if(parameter.getCategoryId() != null){
-                Assertions.assertEquals(parameter.getCategoryId(), mirrorTransaction.getCategory().getId());
-            } else {
+            if(parameter.getCategoryId() == null){
                 Assertions.assertNull(mirrorTransaction.getCategory());
+            } else {
+                Assertions.assertEquals(parameter.getCategoryId(), mirrorTransaction.getCategory().getId());
             }
     
-            if(parameter.getClassificationId() != null){
-                Assertions.assertEquals(parameter.getClassificationId(), mirrorTransaction.getClassification().getId());
-            } else {
+            if(parameter.getClassificationId() == null){
                 Assertions.assertNull(mirrorTransaction.getClassification());
+            } else {
+                Assertions.assertEquals(parameter.getClassificationId(), mirrorTransaction.getClassification().getId());
             }
 
-        } else {
-            Assertions.assertNull(bankingTransactionDTO.getLinkedBankingAccountDTO());
-            Assertions.assertNull(bankingTransaction.getLinkedAccount());
-            Assertions.assertNull(bankingTransaction.getMirrorTransaction());
         }
 
-        if(parameter.getThirdId() != null){
-            Assertions.assertEquals(parameter.getThirdId(), bankingTransactionDTO.getThirdDTO().getId());
-            Assertions.assertEquals(parameter.getThirdId(), bankingTransaction.getThird().getId());
-        } else {
+        if(parameter.getThirdId() == null){
             Assertions.assertNull(bankingTransactionDTO.getThirdDTO());
             Assertions.assertNull(bankingTransaction.getThird());
+        } else {
+            Assertions.assertEquals(parameter.getThirdId(), bankingTransactionDTO.getThirdDTO().getId());
+            Assertions.assertEquals(parameter.getThirdId(), bankingTransaction.getThird().getId());
         }
 
-        if(parameter.getCategoryId() != null){
-            Assertions.assertEquals(parameter.getCategoryId(), bankingTransactionDTO.getCategoryDTO().getId());
-            Assertions.assertEquals(parameter.getCategoryId(), bankingTransaction.getCategory().getId());
-        } else {
+        if(parameter.getCategoryId() == null){
             Assertions.assertNull(bankingTransactionDTO.getCategoryDTO());
             Assertions.assertNull(bankingTransaction.getCategory());
+        } else {
+            Assertions.assertEquals(parameter.getCategoryId(), bankingTransactionDTO.getCategoryDTO().getId());
+            Assertions.assertEquals(parameter.getCategoryId(), bankingTransaction.getCategory().getId());
         }
 
-        if(parameter.getClassificationId() != null){
-            Assertions.assertEquals(parameter.getClassificationId(), bankingTransactionDTO.getClassificationDTO().getId());
-            Assertions.assertEquals(parameter.getClassificationId(), bankingTransaction.getClassification().getId());
-        } else {
+        if(parameter.getClassificationId() == null){
             Assertions.assertNull(bankingTransactionDTO.getClassificationDTO());
             Assertions.assertNull(bankingTransaction.getClassification());
+        } else {
+            Assertions.assertEquals(parameter.getClassificationId(), bankingTransactionDTO.getClassificationDTO().getId());
+            Assertions.assertEquals(parameter.getClassificationId(), bankingTransaction.getClassification().getId());
         }
 
         Assertions.assertEquals(parameter.getTransactionDate(), bankingTransactionDTO.getTransactionDate());
@@ -243,11 +241,11 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -262,12 +260,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setLinkedAccountId(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -282,12 +280,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -302,11 +300,11 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, true);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -321,12 +319,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, true);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setLinkedAccountId(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -341,12 +339,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, true);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -361,11 +359,11 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction groupBankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
 
-        Integer id = groupBankingTransaction.getId();
+        final Integer id = groupBankingTransaction.getId();
 
         this.groupUpdateBankingTransactionParameter.setId(id);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
 
         groupBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -380,12 +378,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction groupBankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
 
-        Integer id = groupBankingTransaction.getId();
+        final Integer id = groupBankingTransaction.getId();
 
         this.groupUpdateBankingTransactionParameter.setId(id);
         this.groupUpdateBankingTransactionParameter.setLinkedAccountId(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
 
         groupBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -400,12 +398,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction groupBankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
 
-        Integer id = groupBankingTransaction.getId();
+        final Integer id = groupBankingTransaction.getId();
 
         this.groupUpdateBankingTransactionParameter.setId(id);
         this.groupUpdateBankingTransactionParameter.setAccountId(groupBankingTransaction.getAccount().getId());
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
 
         groupBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -420,13 +418,13 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction groupBankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
 
-        Integer id = groupBankingTransaction.getId();
+        final Integer id = groupBankingTransaction.getId();
 
         this.groupUpdateBankingTransactionParameter.setId(id);
         this.groupUpdateBankingTransactionParameter.setAccountId(groupBankingTransaction.getAccount().getId());
         this.groupUpdateBankingTransactionParameter.setLinkedAccountId(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
 
         groupBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -441,11 +439,11 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction groupBankingTransaction = this.testFactory.getBankingTransaction(this.group, true);
 
-        Integer id = groupBankingTransaction.getId();
+        final Integer id = groupBankingTransaction.getId();
 
         this.groupUpdateBankingTransactionParameter.setId(id);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
 
         groupBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -460,17 +458,17 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction groupBankingTransaction = this.testFactory.getBankingTransaction(this.group, true);
 
-        Integer id = groupBankingTransaction.getId();
-        Integer mirrorTransactionId = groupBankingTransaction.getMirrorTransaction().getId();
+        final Integer id = groupBankingTransaction.getId();
+        final Integer mirrorTransactionId = groupBankingTransaction.getMirrorTransaction().getId();
 
         this.groupUpdateBankingTransactionParameter.setId(id);
         this.groupUpdateBankingTransactionParameter.setLinkedAccountId(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
 
         groupBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
         
-        Optional<BankingTransaction> optionalMirrorBankingTransaction = this.bankingTransactionRepository.findById(mirrorTransactionId);
+        final Optional<BankingTransaction> optionalMirrorBankingTransaction = this.bankingTransactionRepository.findById(mirrorTransactionId);
 
         Assertions.assertFalse(optionalMirrorBankingTransaction.isPresent());
 
@@ -485,12 +483,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction groupBankingTransaction = this.testFactory.getBankingTransaction(this.group, true);
 
-        Integer id = groupBankingTransaction.getId();
+        final Integer id = groupBankingTransaction.getId();
 
         this.groupUpdateBankingTransactionParameter.setId(id);
         this.groupUpdateBankingTransactionParameter.setAccountId(groupBankingTransaction.getAccount().getId());
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
 
         groupBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -505,13 +503,13 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
         this.userUpdateBankingTransactionParameter.setLinkedAccountId(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -526,13 +524,13 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, true);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
         this.userUpdateBankingTransactionParameter.setLinkedAccountId(userBankingTransaction.getLinkedAccount().getId());
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -547,7 +545,7 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
@@ -555,7 +553,7 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
         this.userUpdateBankingTransactionParameter.setThirdId(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -570,7 +568,7 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
@@ -578,7 +576,7 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
         this.userUpdateBankingTransactionParameter.setCategoryId(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -593,7 +591,7 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
@@ -601,7 +599,7 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
         this.userUpdateBankingTransactionParameter.setClassificationId(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -616,7 +614,7 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
             CurrencyNotExistException, NotUserElementException{
         BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
@@ -624,7 +622,7 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
         this.userUpdateBankingTransactionParameter.setDescription(null);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, this.user.getUserName());
 
         userBankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -644,8 +642,8 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateTransactionWithBankingAccountNotExist() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
-        Integer id = userBankingTransaction.getId();
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(this.testFactory.getRandomInteger());
@@ -657,8 +655,8 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateTransactionWithLinkedBankingAccountNotExist() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
-        Integer id = userBankingTransaction.getId();
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
@@ -671,14 +669,14 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateUserTransactionWithOtherUser() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(userBankingTransaction.getAccount().getId());
 
-        User otherUser = this.testFactory.getUser();
+        final User otherUser = this.testFactory.getUser();
 
         Assertions.assertThrows(NotUserElementException.class,
             () -> this.bankingTransactionServiceImpl.updateBankingTransaction(this.userUpdateBankingTransactionParameter, otherUser.getUserName()));
@@ -687,13 +685,13 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateUserTransactionWithOtherUserBankingAccount() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        User otherUser = this.testFactory.getUser();
+        final User otherUser = this.testFactory.getUser();
 
-        BankingAccount otherUserBankingAccount = this.testFactory.getBankingAccount(otherUser);
+        final BankingAccount otherUserBankingAccount = this.testFactory.getBankingAccount(otherUser);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setAccountId(otherUserBankingAccount.getId());
@@ -705,13 +703,13 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateUserTransactionWithOtherUserLinkedBankingAccount() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        User otherUser = this.testFactory.getUser();
+        final User otherUser = this.testFactory.getUser();
 
-        BankingAccount otherUserBankingAccount = this.testFactory.getBankingAccount(otherUser);
+        final BankingAccount otherUserBankingAccount = this.testFactory.getBankingAccount(otherUser);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setLinkedAccountId(otherUserBankingAccount.getId());
@@ -723,12 +721,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateUserTransactionWithOtherUserThird() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        User otherUser = this.testFactory.getUser();
+        final User otherUser = this.testFactory.getUser();
 
-        Integer id = userBankingTransaction.getId();
-        Integer thirdId = this.testFactory.getThird(otherUser).getId();
+        final Integer id = userBankingTransaction.getId();
+        final Integer thirdId = this.testFactory.getThird(otherUser).getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setThirdId(thirdId);
@@ -740,12 +738,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateUserTransactionWithOtherUserCategory() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        User otherUser = this.testFactory.getUser();
+        final User otherUser = this.testFactory.getUser();
 
-        Integer id = userBankingTransaction.getId();
-        Integer categoryId = this.testFactory.getCategory(otherUser, true).getId();
+        final Integer id = userBankingTransaction.getId();
+        final Integer categoryId = this.testFactory.getCategory(otherUser, true).getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setCategoryId(categoryId);
@@ -757,12 +755,12 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateUserTransactionWithOtherUserClassification() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        User otherUser = this.testFactory.getUser();
+        final User otherUser = this.testFactory.getUser();
 
-        Integer id = userBankingTransaction.getId();
-        Integer classificationId = this.testFactory.getClassification(otherUser).getId();
+        final Integer id = userBankingTransaction.getId();
+        final Integer classificationId = this.testFactory.getClassification(otherUser).getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setClassificationId(classificationId);
@@ -774,9 +772,9 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateUserTransactionWithGroupThird() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setThirdId(this.groupUpdateBankingTransactionParameter.getThirdId());
@@ -788,9 +786,9 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateUserTransactionWithGroupCategory() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setCategoryId(this.groupUpdateBankingTransactionParameter.getCategoryId());
@@ -802,9 +800,9 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateUserTransactionWithGroupClassification() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setClassificationId(this.groupUpdateBankingTransactionParameter.getClassificationId());
@@ -821,11 +819,11 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
         BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = bankingTransaction.getId();
+        final Integer id = bankingTransaction.getId();
 
         this.groupUpdateBankingTransactionParameter.setId(id);
 
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionServiceImpl.updateBankingTransaction(this.groupUpdateBankingTransactionParameter, this.user.getUserName());
 
         bankingTransaction = this.bankingTransactionRepository.findById(id).orElseThrow();
 
@@ -834,13 +832,13 @@ public class TestUpdateBankingTransaction extends AbstractMotherIntegrationTest 
 
     @Test
     public void testUpdateGroupTransactionWithOtherGroupBankingAccount() {
-        BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
+        final BankingTransaction userBankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
 
-        Group group = this.testFactory.getGroup(this.user);
+        final Group group = this.testFactory.getGroup(this.user);
 
-        BankingAccount otherUserBankingAccount = this.testFactory.getBankingAccount(group);
+        final BankingAccount otherUserBankingAccount = this.testFactory.getBankingAccount(group);
 
-        Integer id = userBankingTransaction.getId();
+        final Integer id = userBankingTransaction.getId();
 
         this.userUpdateBankingTransactionParameter.setId(id);
         this.userUpdateBankingTransactionParameter.setLinkedAccountId(otherUserBankingAccount.getId());

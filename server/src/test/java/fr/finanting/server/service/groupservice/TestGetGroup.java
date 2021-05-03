@@ -30,7 +30,7 @@ public class TestGetGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetGroup() throws UserNotInGroupException, GroupNotExistException {
-        Group group = this.testFactory.getGroup();
+        final Group group = this.testFactory.getGroup();
         final User user = group.getUserAdmin();
 
         final GroupDTO groupDTO = this.groupServiceImpl.getGroup(group.getGroupName(), user.getUserName());
@@ -42,7 +42,7 @@ public class TestGetGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetGroupUserNotInGroup() {
-        Group group = this.testFactory.getGroup();
+        final Group group = this.testFactory.getGroup();
 
         final User user2 = this.testFactory.getUser();
 

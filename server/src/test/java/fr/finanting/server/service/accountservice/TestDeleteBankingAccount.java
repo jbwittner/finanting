@@ -41,9 +41,9 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteUserAccountOk()
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
-        User user = this.testFactory.getUser();
+        final User user = this.testFactory.getUser();
 
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());

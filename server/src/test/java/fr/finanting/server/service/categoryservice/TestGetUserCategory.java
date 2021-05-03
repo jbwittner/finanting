@@ -47,7 +47,7 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
 
         for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
 
-            Category motherCategory = this.testFactory.getCategory(user, true);
+            final Category motherCategory = this.testFactory.getCategory(user, true);
 
             final List<Category> childCategories = new ArrayList<>();
 

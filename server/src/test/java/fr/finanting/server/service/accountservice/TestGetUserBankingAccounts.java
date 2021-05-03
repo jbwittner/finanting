@@ -40,9 +40,9 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
     public void testGetUserAccountWithoutGroupAccount() {
         final User user = this.testFactory.getUser();
 
-        BankingAccount bankingAccount1 = this.testFactory.getBankingAccount(user);
-        BankingAccount bankingAccount2 = this.testFactory.getBankingAccount(user);
-        BankingAccount bankingAccount3 = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount1 = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount2 = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount3 = this.testFactory.getBankingAccount(user);
 
         final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
 

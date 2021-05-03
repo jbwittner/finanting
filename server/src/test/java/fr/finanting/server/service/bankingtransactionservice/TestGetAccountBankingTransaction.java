@@ -65,7 +65,7 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
         Assertions.assertEquals(bankingTransaction.getAccount().getId(), bankingTransactionDTO.getBankingAccountDTO().getId());
 
         if(bankingTransaction.getLinkedAccount() != null){
-            BankingAccount linkedAccount = bankingTransaction.getLinkedAccount();
+            final BankingAccount linkedAccount = bankingTransaction.getLinkedAccount();
             Assertions.assertEquals(linkedAccount.getId(), bankingTransactionDTO.getLinkedBankingAccountDTO().getId());
         }
 
@@ -81,20 +81,20 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
     @Test
     public void testGetUserAccountBankingTransaction() throws NotUserElementException, UserNotInGroupException, BankingAccountNotExistException  {
 
-        User user = this.testFactory.getUser();
+        final User user = this.testFactory.getUser();
 
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
-        BankingTransaction bankingTransaction1 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
-        BankingTransaction bankingTransaction2 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
-        BankingTransaction bankingTransaction3 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
-        BankingTransaction bankingTransaction4 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
+        final BankingTransaction bankingTransaction1 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
+        final BankingTransaction bankingTransaction2 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
+        final BankingTransaction bankingTransaction3 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
+        final BankingTransaction bankingTransaction4 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
 
-        List<BankingTransactionDTO> bankingTransactionDTOs = this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), user.getUserName());
+        final List<BankingTransactionDTO> bankingTransactionDTOs = this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), user.getUserName());
 
         Assertions.assertEquals(4, bankingTransactionDTOs.size());
 
-        for(BankingTransactionDTO bankingTransactionDTO : bankingTransactionDTOs){
+        for(final BankingTransactionDTO bankingTransactionDTO : bankingTransactionDTOs){
             BankingTransaction bankingTransactionToCheck = null;
 
             if(bankingTransactionDTO.getId().equals(bankingTransaction1.getId())){
@@ -117,21 +117,21 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
     @Test
     public void testGetGroupAccountBankingTransaction() throws NotUserElementException, UserNotInGroupException, BankingAccountNotExistException {
 
-        User user = this.testFactory.getUser();
-        Group group = this.testFactory.getGroup(user);
+        final User user = this.testFactory.getUser();
+        final Group group = this.testFactory.getGroup(user);
 
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
-        BankingTransaction bankingTransaction1 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
-        BankingTransaction bankingTransaction2 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
-        BankingTransaction bankingTransaction3 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
-        BankingTransaction bankingTransaction4 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
+        final BankingTransaction bankingTransaction1 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
+        final BankingTransaction bankingTransaction2 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
+        final BankingTransaction bankingTransaction3 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
+        final BankingTransaction bankingTransaction4 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
 
-        List<BankingTransactionDTO> bankingTransactionDTOs = this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), user.getUserName());
+        final List<BankingTransactionDTO> bankingTransactionDTOs = this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), user.getUserName());
 
         Assertions.assertEquals(4, bankingTransactionDTOs.size());
 
-        for(BankingTransactionDTO bankingTransactionDTO : bankingTransactionDTOs){
+        for(final BankingTransactionDTO bankingTransactionDTO : bankingTransactionDTOs){
             BankingTransaction bankingTransactionToCheck = null;
 
             if(bankingTransactionDTO.getId().equals(bankingTransaction1.getId())){
@@ -154,10 +154,10 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
     @Test
     public void testGetUserAccountBankingTransactionWithOtherUser() {
 
-        User user = this.testFactory.getUser();
-        User otherUser = this.testFactory.getUser();
+        final User user = this.testFactory.getUser();
+        final User otherUser = this.testFactory.getUser();
 
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         Assertions.assertThrows(NotUserElementException.class,
             () -> this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), otherUser.getUserName()));
@@ -167,10 +167,10 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
     @Test
     public void testGetGroupAccountBankingTransactionWithUserNotInGroup() {
 
-        User user = this.testFactory.getUser();
-        Group group = this.testFactory.getGroup();
+        final User user = this.testFactory.getUser();
+        final Group group = this.testFactory.getGroup();
 
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
         Assertions.assertThrows(UserNotInGroupException.class,
             () -> this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), user.getUserName()));
@@ -179,7 +179,7 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
     @Test
     public void testGetAccountBankingTransactionNotExist() {
 
-        User user = this.testFactory.getUser();
+        final User user = this.testFactory.getUser();
 
         Assertions.assertThrows(BankingAccountNotExistException.class,
             () -> this.bankingTransactionServiceImpl.getAccountBankingTransaction(this.testFactory.getRandomInteger(), user.getUserName()));

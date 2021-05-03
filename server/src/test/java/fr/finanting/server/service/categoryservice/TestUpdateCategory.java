@@ -229,7 +229,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateCategoryNoUserGroupCategory() {
 
-        Group otherGroup = this.testFactory.getGroup();
+        final Group otherGroup = this.testFactory.getGroup();
         final Category otherCathegory = this.testFactory.getCategory(otherGroup, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
@@ -282,7 +282,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupCategoryWithNoUserGroupParentCategory() {
-        Group otherGroup = this.testFactory.getGroup();
+        final Group otherGroup = this.testFactory.getGroup();
 
         final Category parentCategory = this.testFactory.getCategory(otherGroup, true);
         final Category category = this.testFactory.getCategory(this.group, true);
@@ -298,7 +298,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupCategoryWithOtherUserGroupParentCategory() {
-        Group otherGroup = this.testFactory.getGroup(this.user);
+        final Group otherGroup = this.testFactory.getGroup(this.user);
 
         final Category parentCategory = this.testFactory.getCategory(otherGroup, true);
         final Category category = this.testFactory.getCategory(this.group, true);

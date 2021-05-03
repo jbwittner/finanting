@@ -48,9 +48,9 @@ public class TestGetGroupBankingAccounts extends AbstractMotherIntegrationTest {
     @Test
     public void testGetGroupAccountWithoutGroupAccount() throws UserNotInGroupException, GroupNotExistException {
         
-        BankingAccount bankingAccount1 = this.testFactory.getBankingAccount(this.group);
-        BankingAccount bankingAccount2 = this.testFactory.getBankingAccount(this.group);
-        BankingAccount bankingAccount3 = this.testFactory.getBankingAccount(this.group);
+        final BankingAccount bankingAccount1 = this.testFactory.getBankingAccount(this.group);
+        final BankingAccount bankingAccount2 = this.testFactory.getBankingAccount(this.group);
+        final BankingAccount bankingAccount3 = this.testFactory.getBankingAccount(this.group);
 
         final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getGroupBankingAccounts(this.group.getGroupName(), this.user.getUserName());
 

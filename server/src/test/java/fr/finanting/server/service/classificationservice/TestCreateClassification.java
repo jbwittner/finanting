@@ -93,7 +93,7 @@ public class TestCreateClassification extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateGroupClassificationWithUserNotInGroup() throws GroupNotExistException, UserNotInGroupException {
 
-        Group group = this.testFactory.getGroup();
+        final Group group = this.testFactory.getGroup();
 
         this.createClassificationParameter.setGroupName(group.getGroupName());
 

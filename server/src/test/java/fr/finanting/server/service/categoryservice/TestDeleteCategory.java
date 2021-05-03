@@ -75,7 +75,7 @@ public class TestDeleteCategory extends AbstractMotherIntegrationTest {
 
         categories.add(childCategoryOne);
 
-        Category category = this.testFactory.getCategory(this.user, true);
+        final Category category = this.testFactory.getCategory(this.user, true);
         category.setChild(categories);
 
         final DeleteCategoryParameter deleteCategoryParameter = new DeleteCategoryParameter();
