@@ -27,7 +27,7 @@ public class MotherGroupUserElement extends MotherPersistant {
     @JoinColumn(name = "USER_ID")
     protected User user;
 
-    public void checkIfUsable(User user) throws NotUserElementException, UserNotInGroupException{
+    public void checkIfUsable(final User user) throws NotUserElementException, UserNotInGroupException{
         if(this.group == null){
             if(!this.user.getId().equals(user.getId())){
                 throw new NotUserElementException();
@@ -37,7 +37,7 @@ public class MotherGroupUserElement extends MotherPersistant {
         }
     }
 
-    public void checkIfCanAssociated(MotherGroupUserElement otherMotherGroupUserElement) throws BadAssociationElementException{
+    public void checkIfCanAssociated(final MotherGroupUserElement otherMotherGroupUserElement) throws BadAssociationElementException{
         
         if(this.user != null && otherMotherGroupUserElement.getUser() != null){
             if(!this.user.getId().equals(otherMotherGroupUserElement.getUser().getId())){

@@ -21,7 +21,7 @@ public class BankingTransactionController {
     private BankingTransactionService bankingTransactionService;
 
     @Autowired
-    public BankingTransactionController(BankingTransactionService bankingTransactionService){
+    public BankingTransactionController(final BankingTransactionService bankingTransactionService){
         this.bankingTransactionService = bankingTransactionService;
     }
 

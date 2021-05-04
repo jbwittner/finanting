@@ -27,8 +27,8 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUserCheckIfCanAssociatedOk() throws BadAssociationElementException{
-        MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
-        MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
         motherGroupUserElementOne.setUser(this.userOne);
         motherGroupUserElementTwo.setUser(this.userOne);
         
@@ -37,8 +37,8 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGroupCheckIfCanAssociatedOk() throws BadAssociationElementException{
-        MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
-        MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
         motherGroupUserElementOne.setGroup(this.groupeOne);
         motherGroupUserElementTwo.setGroup(this.groupeOne);
         
@@ -47,8 +47,8 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUserCheckIfCanAssociatedWithGroup() throws BadAssociationElementException{
-        MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
-        MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
         motherGroupUserElementOne.setUser(this.userOne);
         motherGroupUserElementTwo.setGroup(this.groupeOne);
         
@@ -59,8 +59,8 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGroupCheckIfCanAssociatedWithUser() throws BadAssociationElementException{
-        MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
-        MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
         motherGroupUserElementOne.setGroup(this.groupeOne);
         motherGroupUserElementTwo.setUser(this.userOne);
         
@@ -71,8 +71,8 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUserCheckIfCanAssociatedWithAnotherUser() throws BadAssociationElementException{
-        MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
-        MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
         motherGroupUserElementOne.setUser(this.userOne);
         motherGroupUserElementTwo.setUser(this.userTwo);
         
@@ -83,8 +83,8 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGroupCheckIfCanAssociatedWithAnotherGroup() throws BadAssociationElementException{
-        MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
-        MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
         motherGroupUserElementOne.setGroup(this.groupeOne);
         motherGroupUserElementTwo.setGroup(this.groupeTwo);
         

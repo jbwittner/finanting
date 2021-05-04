@@ -26,28 +26,28 @@ public class TestCheckIfUsable extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGroupOk() throws NotUserElementException, UserNotInGroupException{
-        MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
         motherGroupElement.setGroup(this.groupeOne);
         motherGroupElement.checkIfUsable(this.userOne);
     }
 
     @Test
     public void testUserOk() throws NotUserElementException, UserNotInGroupException{
-        MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
         motherGroupElement.setUser(this.userOne);
         motherGroupElement.checkIfUsable(this.userOne);
     }
 
     @Test
     public void testGroupWithOtherUser(){
-        MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
         motherGroupElement.setGroup(this.groupeOne);
         Assertions.assertThrows(UserNotInGroupException.class, () -> motherGroupElement.checkIfUsable(this.userTwo));
     }
 
     @Test
     public void testUserWithOtherUser(){
-        MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
+        final MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
         motherGroupElement.setUser(this.userOne);
         Assertions.assertThrows(NotUserElementException.class, () -> motherGroupElement.checkIfUsable(this.userTwo));
     }

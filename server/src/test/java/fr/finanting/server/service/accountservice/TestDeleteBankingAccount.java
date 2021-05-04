@@ -59,8 +59,8 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     public void testDeleteGroupAccountOk()
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
 
-        Group group = this.testFactory.getGroup();
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
+        final Group group = this.testFactory.getGroup();
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());
@@ -75,9 +75,9 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteGroupAccountNotAdmin() {
 
-        User user = this.testFactory.getUser();
-        Group group = this.testFactory.getGroup(user);
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
+        final User user = this.testFactory.getUser();
+        final Group group = this.testFactory.getGroup(user);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());
@@ -88,9 +88,8 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteUserAccountNotUserAccount() {
-        User user = this.testFactory.getUser();
-
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+        final User user = this.testFactory.getUser();
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         final User user2 = this.testFactory.getUser();
 
@@ -107,7 +106,7 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
 
         final User user = this.testFactory.getUser();
 
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());
