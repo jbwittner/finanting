@@ -70,13 +70,13 @@ public class TestDeleteAccountBankingTransaction extends AbstractMotherIntegrati
     protected void testDeleteUserBankingTransaction()
         throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException{
 
-        BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = bankingTransaction.getId();
+        final Integer id = bankingTransaction.getId();
 
         this.bankingTransactionServiceImpl.deleteAccountBankingTransaction(id, this.user.getUserName());
 
-        Optional<BankingTransaction> result = this.bankingTransactionRepository.findById(id);
+        final Optional<BankingTransaction> result = this.bankingTransactionRepository.findById(id);
 
         Assertions.assertFalse(result.isPresent());
     }
@@ -85,15 +85,15 @@ public class TestDeleteAccountBankingTransaction extends AbstractMotherIntegrati
     protected void testDeleteUserBankingTransactionWithMirrorTransaction()
         throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException{
 
-        BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.user, true);
+        final BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.user, true);
 
-        Integer id = bankingTransaction.getId();
-        Integer mirrorId = bankingTransaction.getMirrorTransaction().getId();
+        final Integer id = bankingTransaction.getId();
+        final Integer mirrorId = bankingTransaction.getMirrorTransaction().getId();
 
         this.bankingTransactionServiceImpl.deleteAccountBankingTransaction(id, this.user.getUserName());
 
-        Optional<BankingTransaction> result = this.bankingTransactionRepository.findById(id);
-        Optional<BankingTransaction> resultMirror = this.bankingTransactionRepository.findById(mirrorId);
+        final Optional<BankingTransaction> result = this.bankingTransactionRepository.findById(id);
+        final Optional<BankingTransaction> resultMirror = this.bankingTransactionRepository.findById(mirrorId);
 
         Assertions.assertFalse(result.isPresent());
         Assertions.assertFalse(resultMirror.isPresent());
@@ -103,13 +103,13 @@ public class TestDeleteAccountBankingTransaction extends AbstractMotherIntegrati
     protected void testDeleteGroupBankingTransaction()
         throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException{
 
-        BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
+        final BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
 
-        Integer id = bankingTransaction.getId();
+        final Integer id = bankingTransaction.getId();
 
         this.bankingTransactionServiceImpl.deleteAccountBankingTransaction(id, this.user.getUserName());
 
-        Optional<BankingTransaction> result = this.bankingTransactionRepository.findById(id);
+        final Optional<BankingTransaction> result = this.bankingTransactionRepository.findById(id);
 
         Assertions.assertFalse(result.isPresent());
     }
@@ -118,15 +118,15 @@ public class TestDeleteAccountBankingTransaction extends AbstractMotherIntegrati
     protected void testDeleteGroupBankingTransactionWithMirrorTransaction()
         throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException{
 
-        BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.group, true);
+        final BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.group, true);
 
-        Integer id = bankingTransaction.getId();
-        Integer mirrorId = bankingTransaction.getMirrorTransaction().getId();
+        final Integer id = bankingTransaction.getId();
+        final Integer mirrorId = bankingTransaction.getMirrorTransaction().getId();
 
         this.bankingTransactionServiceImpl.deleteAccountBankingTransaction(id, this.user.getUserName());
 
-        Optional<BankingTransaction> result = this.bankingTransactionRepository.findById(id);
-        Optional<BankingTransaction> resultMirror = this.bankingTransactionRepository.findById(mirrorId);
+        final Optional<BankingTransaction> result = this.bankingTransactionRepository.findById(id);
+        final Optional<BankingTransaction> resultMirror = this.bankingTransactionRepository.findById(mirrorId);
 
         Assertions.assertFalse(result.isPresent());
         Assertions.assertFalse(resultMirror.isPresent());
@@ -135,7 +135,7 @@ public class TestDeleteAccountBankingTransaction extends AbstractMotherIntegrati
     @Test
     protected void testDeleteBankingTransactionNotExist() {
 
-        Integer id = this.testFactory.getRandomInteger();
+        final Integer id = this.testFactory.getRandomInteger();
         Assertions.assertThrows(BankingTransactionNotExistException.class,
             () -> this.bankingTransactionServiceImpl.deleteAccountBankingTransaction(id, this.user.getUserName()));
 
@@ -145,9 +145,9 @@ public class TestDeleteAccountBankingTransaction extends AbstractMotherIntegrati
     protected void testDeleteNotUserElement() {
 
         final User otherUser = this.testFactory.getUser();
-        BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
+        final BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.user, false);
 
-        Integer id = bankingTransaction.getId();
+        final Integer id = bankingTransaction.getId();
 
         Assertions.assertThrows(NotUserElementException.class,
             () -> this.bankingTransactionServiceImpl.deleteAccountBankingTransaction(id, otherUser.getUserName()));
@@ -158,9 +158,9 @@ public class TestDeleteAccountBankingTransaction extends AbstractMotherIntegrati
     protected void testDeleteUserNotInGroup() {
 
         final User otherUser = this.testFactory.getUser();
-        BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
+        final BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.group, false);
 
-        Integer id = bankingTransaction.getId();
+        final Integer id = bankingTransaction.getId();
 
         Assertions.assertThrows(UserNotInGroupException.class,
             () -> this.bankingTransactionServiceImpl.deleteAccountBankingTransaction(id, otherUser.getUserName()));
