@@ -9,6 +9,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
+
+import fr.finanting.server.model.mother.MotherGroupUserElement;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -20,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "CATEGORIES")
 @Data
-public class Category extends MotherPersistant {
+public class Category extends MotherGroupUserElement {
 
     @ManyToOne
     @JoinColumn(name = "PARENT_ID")
@@ -41,14 +44,6 @@ public class Category extends MotherPersistant {
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLES")
     private CategoryType categoryType;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GROUP_ID")
-    private Group group;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
 
     @Override
     public String toString() {

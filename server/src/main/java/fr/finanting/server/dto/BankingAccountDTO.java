@@ -8,7 +8,6 @@ public class BankingAccountDTO {
 
     private Integer id;
     private String label;
-    private String bankName;
     private String abbreviation;
     private Integer balance;
     private BankDetailsDTO bankDetailsDTO;

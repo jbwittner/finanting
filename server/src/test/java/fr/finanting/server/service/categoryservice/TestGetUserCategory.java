@@ -41,26 +41,24 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserCategory(){
 
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
         final List<Category> categories = new ArrayList<>();
 
         for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
 
-            Category motherCategory = this.categoryRepository.save(this.factory.getCategory(user, true));
+            final Category motherCategory = this.testFactory.getCategory(user, true);
 
             final List<Category> childCategories = new ArrayList<>();
 
             for(int childIndex = 0; childIndex < NUMBER_CHILD_CATEGORY; childIndex++){
 
-                final Category childCategory = this.factory.getCategory(user, true);
+                final Category childCategory = this.testFactory.getCategory(user, true);
                 childCategory.setParent(motherCategory);
-                this.categoryRepository.save(childCategory);
                 childCategories.add(childCategory);
             }
 
             motherCategory.setChild(childCategories);
-            motherCategory = this.categoryRepository.save(motherCategory);
             categories.add(motherCategory);
 
         }

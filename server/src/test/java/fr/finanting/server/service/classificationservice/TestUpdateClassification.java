@@ -1,7 +1,5 @@
 package fr.finanting.server.service.classificationservice;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,25 +39,17 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
                                                                                 this.groupRepository,
                                                                                 this.userRepository);
                                                                             
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
-
-        this.user = this.userRepository.save(this.factory.getUser());
-
-        final List<User> users = this.group.getUsers();
-        users.add(user);
-        this.group.setUsers(users);
-
-        this.group = this.groupRepository.save(group);
-
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(user);
+                                                                        
     }
 
     @Test
     public void testUpdateUserClassification() throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
-        final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.user));
+        final Classification classification = this.testFactory.getClassification(this.user);
 
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
-        updateClassificationParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5).toLowerCase());
+        updateClassificationParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5).toLowerCase());
         updateClassificationParameter.setDescritpion(this.faker.superhero().descriptor());
         updateClassificationParameter.setLabel(this.faker.company().name());
         updateClassificationParameter.setId(classification.getId());
@@ -78,10 +68,10 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupClassification() throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
-        final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.group));
+        final Classification classification = this.testFactory.getClassification(this.group);
 
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
-        updateClassificationParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5).toLowerCase());
+        updateClassificationParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5).toLowerCase());
         updateClassificationParameter.setDescritpion(this.faker.superhero().descriptor());
         updateClassificationParameter.setLabel(this.faker.company().name());
         updateClassificationParameter.setId(classification.getId());
@@ -101,7 +91,7 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateClassificationNotExist() {
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
-        updateClassificationParameter.setId(this.factory.getRandomInteger());
+        updateClassificationParameter.setId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(ClassificationNotExistException.class,
             () -> this.classificationServiceImpl.updateClassification(updateClassificationParameter, this.user.getUserName()));
@@ -109,9 +99,9 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateClassificationUserNotInGroup() {
-        final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.group));
+        final Classification classification = this.testFactory.getClassification(this.group);
 
-        final User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.testFactory.getUser();
 
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
         updateClassificationParameter.setId(classification.getId());
@@ -122,9 +112,9 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateNoUserClassificationNotExist() {
-        final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.user));
+        final Classification classification = this.testFactory.getClassification(this.user);
 
-        final User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.testFactory.getUser();
 
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
         updateClassificationParameter.setId(classification.getId());

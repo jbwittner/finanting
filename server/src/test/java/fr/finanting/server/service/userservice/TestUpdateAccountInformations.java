@@ -38,11 +38,8 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
     protected void initDataBeforeEach() throws Exception {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
 
-        this.userOne = this.factory.getUser();
-        this.userOne = this.userRepository.save(this.userOne);
-
-        this.userTwo = this.factory.getUser();
-        this.userTwo = this.userRepository.save(this.userTwo);
+        this.userOne = this.testFactory.getUser();
+        this.userTwo = this.testFactory.getUser();
 
     }
 
@@ -51,10 +48,10 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
      */
     @Test
     public void testUpdateNewData() throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
-        final Name name = this.factory.getUniqueRandomName();
+        final Name name = this.testFactory.getUniqueRandomName();
 
         final UserUpdateParameter userUpdateParameter = new UserUpdateParameter();
-        userUpdateParameter.setEmail(this.factory.getUniqueRandomEmail());
+        userUpdateParameter.setEmail(this.testFactory.getUniqueRandomEmail());
         userUpdateParameter.setFirstName(name.firstName());
         userUpdateParameter.setLastName(name.lastName());
         userUpdateParameter.setUserName(name.username());
@@ -97,7 +94,7 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
      */
     @Test
     public void testEmailAlreadyUsed() {
-        final Name name = this.factory.getUniqueRandomName();
+        final Name name = this.testFactory.getUniqueRandomName();
 
         final UserUpdateParameter userUpdateParameter = new UserUpdateParameter();
         userUpdateParameter.setEmail(this.userTwo.getEmail());
@@ -114,10 +111,10 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
      */
     @Test
     public void testUserNameAlreadyUsed() {
-        final Name name = this.factory.getUniqueRandomName();
+        final Name name = this.testFactory.getUniqueRandomName();
 
         final UserUpdateParameter userUpdateParameter = new UserUpdateParameter();
-        userUpdateParameter.setEmail(this.factory.getUniqueRandomEmail());
+        userUpdateParameter.setEmail(this.testFactory.getUniqueRandomEmail());
         userUpdateParameter.setFirstName(name.firstName());
         userUpdateParameter.setLastName(name.lastName());
         userUpdateParameter.setUserName(this.userTwo.getUserName());

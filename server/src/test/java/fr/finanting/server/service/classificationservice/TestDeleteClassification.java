@@ -41,22 +41,14 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
                                                                                 this.groupRepository,
                                                                                 this.userRepository);
                                                                             
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
-
-        this.user = this.userRepository.save(this.factory.getUser());
-
-        final List<User> users = this.group.getUsers();
-        users.add(user);
-        this.group.setUsers(users);
-
-        this.group = this.groupRepository.save(group);
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(user);
 
     }
 
     @Test
     public void testDeleteUserClassification() throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
-        final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.user));
+        final Classification classification = this.testFactory.getClassification(this.user);
 
         final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
         deleteClassificationParameter.setId(classification.getId());
@@ -71,7 +63,7 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteGroupClassification() throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
-        final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.group));
+        final Classification classification = this.testFactory.getClassification(this.group);
 
         final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
         deleteClassificationParameter.setId(classification.getId());
@@ -87,7 +79,7 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteClassificationNotExist() {
         final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
-        deleteClassificationParameter.setId(this.factory.getRandomInteger());
+        deleteClassificationParameter.setId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(ClassificationNotExistException.class,
             () -> this.classificationServiceImpl.deleteClassification(deleteClassificationParameter, this.user.getUserName()));
@@ -95,9 +87,9 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteClassificationUserNotInGroup() {
-        final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.group));
+        final Classification classification = this.testFactory.getClassification(this.group);
 
-        final User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.testFactory.getUser();
 
         final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
         deleteClassificationParameter.setId(classification.getId());
@@ -108,9 +100,9 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteNoUserClassificationNotExist() {
-        final Classification classification = this.classificationRepository.save(this.factory.getClassification(this.user));
+        final Classification classification = this.testFactory.getClassification(this.user);
 
-        final User otherUser = this.userRepository.save(this.factory.getUser());
+        final User otherUser = this.testFactory.getUser();
 
         final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
         deleteClassificationParameter.setId(classification.getId());

@@ -36,9 +36,9 @@ public class TestGetAllCurrencies extends AbstractMotherIntegrationTest {
 
     @Test
     public void testGetAllCurrencies(){
-        final Currency currency1 = this.currencyRepository.save(this.factory.getCurrency());
-        final Currency currency2 = this.currencyRepository.save(this.factory.getCurrency());
-        final Currency currency3 = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency1 = this.testFactory.getCurrency();
+        final Currency currency2 = this.testFactory.getCurrency();
+        final Currency currency3 = this.testFactory.getCurrency();
 
         final List<CurrencyDTO> currencyDTOs = this.currencyServiceImpl.getAllCurrencies();
 

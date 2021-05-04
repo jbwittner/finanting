@@ -17,8 +17,6 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.CategoryServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,16 +42,8 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     protected void initDataBeforeEach() throws Exception {
         this.categoryServiceImpl = new CategoryServiceImpl(this.userRepository, this.groupRepository, this.categoryRepository);
 
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
-
-        this.user = this.userRepository.save(this.factory.getUser());
-
-        final List<User> users = this.group.getUsers();
-        users.add(user);
-        this.group.setUsers(users);
-
-        this.group = this.groupRepository.save(group);
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(user);
         
     }
 
@@ -61,13 +51,13 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     public void testUpdateCategoryWithoutParentCategory()
         throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException {
 
-        Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
+        Category category = this.testFactory.getCategory(this.user, true);
 
         final Integer categoryId = category.getId();
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(categoryId);
-        updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
@@ -89,13 +79,13 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     public void testCreateSimpleGroupCategory()
         throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException {
 
-        Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+        Category category = this.testFactory.getCategory(this.group, true);
 
         final Integer categoryId = category.getId();
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(categoryId);
-        updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
@@ -117,16 +107,15 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     public void testUpdateCategoryRemoveUserParentCategory()
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException{
         
-        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.user, true));
-        Category category = this.factory.getCategory(this.user, true);
+        final Category parentCategory = this.testFactory.getCategory(this.user, true);
+        Category category = this.testFactory.getCategory(this.user, true);
         category.setParent(parentCategory);
-        category = this.categoryRepository.save(category);
 
         final Integer categoryId = category.getId();
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(categoryId);
-        updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
@@ -142,13 +131,13 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     public void testUpdateCategoryAddUserParentCategory()
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException{
         
-        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.user, true));
-        Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
+        final Category parentCategory = this.testFactory.getCategory(this.user, true);
+        Category category = this.testFactory.getCategory(this.user, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         final Integer categoryId = category.getId();
         updateCategoryParameter.setId(categoryId);
-        updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
@@ -166,13 +155,13 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     public void testUpdateCategoryAddGroupParentCategory()
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException{
         
-        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.group, true));
-        Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+        final Category parentCategory = this.testFactory.getCategory(this.group, true);
+        Category category = this.testFactory.getCategory(this.group, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         final Integer categoryId = category.getId();
         updateCategoryParameter.setId(categoryId);
-        updateCategoryParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
         updateCategoryParameter.setDescritpion(this.faker.superhero().descriptor());
         updateCategoryParameter.setLabel(this.faker.company().name());
@@ -188,9 +177,9 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCategoryWithNoUserParentCategory() {
-        final User otherUser = this.userRepository.save(this.factory.getUser());
-        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(otherUser, true));
-        final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
+        final User otherUser = this.testFactory.getUser();
+        final Category parentCategory = this.testFactory.getCategory(otherUser, true);
+        final Category category = this.testFactory.getCategory(this.user, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
@@ -203,11 +192,11 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCategoryWithNoExistParentCategory() {
-        final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
+        final Category category = this.testFactory.getCategory(this.user, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
-        updateCategoryParameter.setParentId(this.factory.getRandomInteger());
+        updateCategoryParameter.setParentId(this.testFactory.getRandomInteger());
         updateCategoryParameter.setCategoryType(CategoryType.EXPENSE);
 
         Assertions.assertThrows(CategoryNotExistException.class,
@@ -216,8 +205,8 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateCategoryWithBadAssociationCategoryType() {
-        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.user, false));
-        final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
+        final Category parentCategory = this.testFactory.getCategory(this.user, false);
+        final Category category = this.testFactory.getCategory(this.user, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
@@ -231,7 +220,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateCategoryWithNoExistCategory() {
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
-        updateCategoryParameter.setId(this.factory.getRandomInteger());
+        updateCategoryParameter.setId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(CategoryNotExistException.class,
             () -> this.categoryServiceImpl.updateCategory(updateCategoryParameter, this.user.getUserName()));
@@ -240,10 +229,8 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateCategoryNoUserGroupCategory() {
 
-        Group otherGroup = this.factory.getGroup();
-        this.userRepository.save(otherGroup.getUserAdmin());
-        otherGroup = this.groupRepository.save(otherGroup);
-        final Category otherCathegory = this.categoryRepository.save(this.factory.getCategory(otherGroup, true));
+        final Group otherGroup = this.testFactory.getGroup();
+        final Category otherCathegory = this.testFactory.getCategory(otherGroup, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(otherCathegory.getId());
@@ -255,8 +242,8 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateCategoryNoUserCategory() {
 
-        final User otherUser = this.userRepository.save(this.factory.getUser());
-        final Category otherCathegory = this.categoryRepository.save(this.factory.getCategory(otherUser, true));
+        final User otherUser = this.testFactory.getUser();
+        final Category otherCathegory = this.testFactory.getCategory(otherUser, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(otherCathegory.getId());
@@ -267,8 +254,8 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateUserCategoryWithGroupParentCategory() {
-        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.group, true));
-        final Category category = this.categoryRepository.save(this.factory.getCategory(this.user, true));
+        final Category parentCategory = this.testFactory.getCategory(this.group, true);
+        final Category category = this.testFactory.getCategory(this.user, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
@@ -281,8 +268,8 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupCategoryWithUserParentCategory() {
-        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(this.user, true));
-        final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+        final Category parentCategory = this.testFactory.getCategory(this.user, true);
+        final Category category = this.testFactory.getCategory(this.group, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
@@ -295,12 +282,10 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupCategoryWithNoUserGroupParentCategory() {
-        Group otherGroup = this.factory.getGroup();
-        this.userRepository.save(otherGroup.getUserAdmin());
-        otherGroup = this.groupRepository.save(otherGroup);
+        final Group otherGroup = this.testFactory.getGroup();
 
-        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(otherGroup, true));
-        final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+        final Category parentCategory = this.testFactory.getCategory(otherGroup, true);
+        final Category category = this.testFactory.getCategory(this.group, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());
@@ -313,17 +298,10 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
     @Test
     public void testUpdateGroupCategoryWithOtherUserGroupParentCategory() {
-        Group otherGroup = this.factory.getGroup();
-        this.userRepository.save(otherGroup.getUserAdmin());
+        final Group otherGroup = this.testFactory.getGroup(this.user);
 
-        final List<User> users = otherGroup.getUsers();
-        users.add(this.user);
-        otherGroup.setUsers(users);
-
-        otherGroup = this.groupRepository.save(otherGroup);
-
-        final Category parentCategory = this.categoryRepository.save(this.factory.getCategory(otherGroup, true));
-        final Category category = this.categoryRepository.save(this.factory.getCategory(this.group, true));
+        final Category parentCategory = this.testFactory.getCategory(otherGroup, true);
+        final Category category = this.testFactory.getCategory(this.group, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         updateCategoryParameter.setId(category.getId());

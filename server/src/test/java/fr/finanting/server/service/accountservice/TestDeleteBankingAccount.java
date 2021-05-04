@@ -41,12 +41,9 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteUserAccountOk()
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
-        User user = this.factory.getUser();
-        user = this.userRepository.save(user);
+        final User user = this.testFactory.getUser();
 
-        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());
@@ -61,18 +58,14 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteGroupAccountOk()
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
-        Group group = this.factory.getGroup();
-        final User user = this.userRepository.save(group.getUserAdmin());
-        group = this.groupRepository.save(group);
-        
-        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
+
+        final Group group = this.testFactory.getGroup();
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());
 
-        this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user.getUserName());
+        this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, group.getUserAdmin().getUserName());
 
         final Optional<BankingAccount> accountOptional = this.bankingAccountRepository.findById(bankingAccount.getId());
 
@@ -81,32 +74,24 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteGroupAccountNotAdmin() {
-        Group group = this.factory.getGroup();
-        this.userRepository.save(group.getUserAdmin());
-        group = this.groupRepository.save(group);
 
-        BankingAccount bankingAccount = this.factory.getBankingAccount(group);
-        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
-
-        final User user2 = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
+        final Group group = this.testFactory.getGroup(user);
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());
 
         Assertions.assertThrows(NotAdminGroupException.class,
-                () -> this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user2.getUserName()));
+                () -> this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user.getUserName()));
     }
 
     @Test
     public void testDeleteUserAccountNotUserAccount() {
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
-        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
-
-        final User user2 = this.userRepository.save(this.factory.getUser());
+        final User user2 = this.testFactory.getUser();
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());
@@ -118,11 +103,10 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testDeleteUserAccountUserNotExist()
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
-        final User user = this.userRepository.save(this.factory.getUser());
 
-        BankingAccount bankingAccount = this.factory.getBankingAccount(user);
-        this.currencyRepository.save(bankingAccount.getDefaultCurrency());
-        bankingAccount = this.bankingAccountRepository.save(bankingAccount);
+        final User user = this.testFactory.getUser();
+
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
         deleteBankingAccountParameter.setId(bankingAccount.getId());
@@ -136,10 +120,10 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteAccountNotExist() {
-        final User user = this.userRepository.save(this.factory.getUser());
+        final User user = this.testFactory.getUser();
 
         final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
-        deleteBankingAccountParameter.setId(this.factory.getRandomInteger());
+        deleteBankingAccountParameter.setId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(BankingAccountNotExistException.class,
                 () -> this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user.getUserName()));

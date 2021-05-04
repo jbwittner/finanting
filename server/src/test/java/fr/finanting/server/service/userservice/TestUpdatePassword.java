@@ -37,13 +37,13 @@ public class TestUpdatePassword extends AbstractMotherIntegrationTest {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
 
         this.user = new User();
-        final Name name = this.factory.getUniqueRandomName();
+        final Name name = this.testFactory.getUniqueRandomName();
         this.user.setUserName(name.username());
         this.user.setFirstName(name.firstName());
         this.user.setLastName(name.lastName());
-        this.previousPassword = this.factory.getUniqueRandomAlphanumericString();
+        this.previousPassword = this.testFactory.getUniqueRandomAlphanumericString();
         this.user.setPassword(this.passwordEncoder.encode(this.previousPassword));
-        this.user.setEmail(this.factory.getUniqueRandomEmail());
+        this.user.setEmail(this.testFactory.getUniqueRandomEmail());
 
         final List<Role> roles = new ArrayList<>();
         roles.add(Role.USER);
@@ -55,7 +55,7 @@ public class TestUpdatePassword extends AbstractMotherIntegrationTest {
     
     @Test
     public void testUpdatePasword() throws BadPasswordException {
-        final String newPassword = this.factory.getUniqueRandomAlphanumericString();
+        final String newPassword = this.testFactory.getUniqueRandomAlphanumericString();
 
         final PasswordUpdateParameter passwordUpdateParameter = new PasswordUpdateParameter();
         passwordUpdateParameter.setNewPassword(newPassword);
@@ -72,11 +72,11 @@ public class TestUpdatePassword extends AbstractMotherIntegrationTest {
 
     @Test
     public void testBadOldPasword() throws BadPasswordException {
-        final String newPassword = this.factory.getUniqueRandomAlphanumericString();
+        final String newPassword = this.testFactory.getUniqueRandomAlphanumericString();
 
         final PasswordUpdateParameter passwordUpdateParameter = new PasswordUpdateParameter();
         passwordUpdateParameter.setNewPassword(newPassword);
-        passwordUpdateParameter.setPreviousPassword(this.factory.getUniqueRandomAlphanumericString());
+        passwordUpdateParameter.setPreviousPassword(this.testFactory.getUniqueRandomAlphanumericString());
 
         Assertions.assertThrows(BadPasswordException.class,
             () -> this.userService.updatePassword(passwordUpdateParameter, this.user.getUserName()));

@@ -44,12 +44,11 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() throws Exception {
         this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
-        this.group = this.factory.getGroup();
-        this.user = this.userRepository.save(this.group.getUserAdmin());
-        this.group = this.groupRepository.save(this.group);
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(this.user);
 
         this.createBankingAccountParameter = new CreateBankingAccountParameter();
-        this.createBankingAccountParameter.setAbbreviation(this.factory.getRandomAlphanumericString());
+        this.createBankingAccountParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString());
 
         final AddressParameter addressParameter = new AddressParameter();
         addressParameter.setAddress(this.faker.address().fullAddress());
@@ -60,14 +59,14 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
 
         final BankDetailsParameter bankDetailsParameter = new BankDetailsParameter();
         bankDetailsParameter.setBankName(this.faker.dragonBall().character());
-        bankDetailsParameter.setAccountNumber(this.factory.getRandomAlphanumericString());
-        bankDetailsParameter.setIban(this.factory.getRandomAlphanumericString());
+        bankDetailsParameter.setAccountNumber(this.testFactory.getRandomAlphanumericString());
+        bankDetailsParameter.setIban(this.testFactory.getRandomAlphanumericString());
         this.createBankingAccountParameter.setBankDetailsParameter(bankDetailsParameter);
 
-        this.createBankingAccountParameter.setInitialBalance(this.factory.getRandomInteger());
+        this.createBankingAccountParameter.setInitialBalance(this.testFactory.getRandomInteger());
         this.createBankingAccountParameter.setLabel(this.faker.backToTheFuture().quote());
 
-        final Currency currency = this.currencyRepository.save(this.factory.getCurrency());
+        final Currency currency = this.currencyRepository.save(this.testFactory.getCurrency());
         this.createBankingAccountParameter.setDefaultCurrencyISOCode(currency.getIsoCode());
     }
 
@@ -83,9 +82,35 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
+    public void testCreateUserAccountWithoutAddress() throws UserNotExistException, GroupNotExistException, CurrencyNotExistException {
+
+        this.createBankingAccountParameter.setAddressParameter(null);
+
+        final BankingAccountDTO bankingAccountDTO =
+                this.bankingAccountServiceImpl.createAccount(createBankingAccountParameter, this.user.getUserName());
+
+        final BankingAccount bankingAccount = this.bankingAccountRepository.findById(bankingAccountDTO.getId()).orElseThrow();
+
+        this.checkAccount(bankingAccountDTO, bankingAccount, createBankingAccountParameter, this.user);
+    }
+
+    @Test
+    public void testCreateUserAccountWithoutBankDetails() throws UserNotExistException, GroupNotExistException, CurrencyNotExistException {
+
+        this.createBankingAccountParameter.setBankDetailsParameter(null);
+
+        final BankingAccountDTO bankingAccountDTO =
+                this.bankingAccountServiceImpl.createAccount(createBankingAccountParameter, this.user.getUserName());
+
+        final BankingAccount bankingAccount = this.bankingAccountRepository.findById(bankingAccountDTO.getId()).orElseThrow();
+
+        this.checkAccount(bankingAccountDTO, bankingAccount, createBankingAccountParameter, this.user);
+    }
+
+    @Test
     public void testCreateGroupAccountGroupNotExist() {
 
-        this.createBankingAccountParameter.setGroupName(this.factory.getRandomAlphanumericString());
+        this.createBankingAccountParameter.setGroupName(this.testFactory.getRandomAlphanumericString());
         
         Assertions.assertThrows(GroupNotExistException.class,
             () -> this.bankingAccountServiceImpl.createAccount(createBankingAccountParameter, this.user.getUserName()));
@@ -94,7 +119,7 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateAccountWithCurrencyNotExist() {
 
-        this.createBankingAccountParameter.setDefaultCurrencyISOCode(this.factory.getRandomAlphanumericString());
+        this.createBankingAccountParameter.setDefaultCurrencyISOCode(this.testFactory.getRandomAlphanumericString());
         
         Assertions.assertThrows(CurrencyNotExistException.class,
             () -> this.bankingAccountServiceImpl.createAccount(createBankingAccountParameter, this.user.getUserName()));
@@ -122,39 +147,38 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(createBankingAccountParameter.getAbbreviation().toUpperCase(), bankingAccountDTO.getAbbreviation());
         Assertions.assertEquals(createBankingAccountParameter.getInitialBalance(), bankingAccountDTO.getBalance());
         Assertions.assertEquals(createBankingAccountParameter.getLabel(), bankingAccountDTO.getLabel());
-        Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getCity(),
-                bankingAccountDTO.getAddressDTO().getCity());
-        Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getStreet(),
-                bankingAccountDTO.getAddressDTO().getStreet());
-        Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getAddress(),
-                bankingAccountDTO.getAddressDTO().getAddress());
-        Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getZipCode(),
-                bankingAccountDTO.getAddressDTO().getZipCode());
-        Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getAccountNumber(),
-                bankingAccountDTO.getBankDetailsDTO().getAccountNumber());
-        Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getIban(),
-                bankingAccountDTO.getBankDetailsDTO().getIban());
-        Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getBankName(),
-                bankingAccountDTO.getBankDetailsDTO().getBankName());
 
-        Assertions.assertEquals(createBankingAccountParameter.getDefaultCurrencyISOCode(),
-                bankingAccountDTO.getDefaultCurrencyDTO().getIsoCode());
+        if(createBankingAccountParameter.getAddressParameter() != null){
+                Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getCity(), bankingAccountDTO.getAddressDTO().getCity());
+                Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getStreet(), bankingAccountDTO.getAddressDTO().getStreet());
+                Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getAddress(), bankingAccountDTO.getAddressDTO().getAddress());
+                Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getZipCode(), bankingAccountDTO.getAddressDTO().getZipCode());
+        }
+
+        if(createBankingAccountParameter.getBankDetailsParameter() != null){
+                Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getAccountNumber(), bankingAccountDTO.getBankDetailsDTO().getAccountNumber());
+                Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getIban(), bankingAccountDTO.getBankDetailsDTO().getIban());
+                Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getBankName(), bankingAccountDTO.getBankDetailsDTO().getBankName());
+        }
+
+        Assertions.assertEquals(createBankingAccountParameter.getDefaultCurrencyISOCode(), bankingAccountDTO.getDefaultCurrencyDTO().getIsoCode());
 
         Assertions.assertEquals(createBankingAccountParameter.getAbbreviation().toUpperCase(), bankingAccount.getAbbreviation());
         Assertions.assertEquals(createBankingAccountParameter.getInitialBalance(), bankingAccount.getInitialBalance());
         Assertions.assertEquals(createBankingAccountParameter.getLabel(), bankingAccount.getLabel());
-        Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getCity(),
-                bankingAccount.getAddress().getCity());
-        Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getStreet(),
-                bankingAccount.getAddress().getStreet());
-        Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getAddress(),
-                bankingAccount.getAddress().getAddress());
-        Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getZipCode(),
-                bankingAccount.getAddress().getZipCode());
-        Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getAccountNumber(),
-                bankingAccount.getBankDetails().getAccountNumber());
-        Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getIban(),
-                bankingAccount.getBankDetails().getIban());
+
+        if(createBankingAccountParameter.getAddressParameter() != null){
+                Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getCity(), bankingAccount.getAddress().getCity());
+                Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getStreet(), bankingAccount.getAddress().getStreet());
+                Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getAddress(), bankingAccount.getAddress().getAddress());
+                Assertions.assertEquals(createBankingAccountParameter.getAddressParameter().getZipCode(), bankingAccount.getAddress().getZipCode());
+        }
+
+        if(createBankingAccountParameter.getBankDetailsParameter() != null){
+                Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getAccountNumber(), bankingAccount.getBankDetails().getAccountNumber());
+                Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getIban(), bankingAccount.getBankDetails().getIban());
+                Assertions.assertEquals(createBankingAccountParameter.getBankDetailsParameter().getBankName(), bankingAccount.getBankDetails().getBankName());
+        }
 
         Assertions.assertEquals(createBankingAccountParameter.getDefaultCurrencyISOCode(),
                 bankingAccount.getDefaultCurrency().getIsoCode());

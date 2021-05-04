@@ -2,12 +2,9 @@ package fr.finanting.server.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Table;
 
-
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import fr.finanting.server.model.mother.MotherGroupUserElement;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "CLASSIFICATIONS")
 @Data
-public class Classification extends MotherPersistant {
+public class Classification extends MotherGroupUserElement {
 
     @Column(name = "LABEL", nullable = false)
     private String label;
@@ -26,13 +23,5 @@ public class Classification extends MotherPersistant {
 
     @Column(name = "DESCRIPTION")
     private String descritpion;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "GROUP_ID")
-    private Group group;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
     
 }

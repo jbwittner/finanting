@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import fr.finanting.server.model.mother.MotherPersistant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

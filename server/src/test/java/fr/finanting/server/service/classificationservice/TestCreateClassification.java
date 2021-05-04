@@ -1,7 +1,5 @@
 package fr.finanting.server.service.classificationservice;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,19 +39,11 @@ public class TestCreateClassification extends AbstractMotherIntegrationTest {
                                                                         this.groupRepository,
                                                                         this.userRepository);
 
-        this.group = this.factory.getGroup();
-        this.userRepository.save(this.group.getUserAdmin());
-
-        this.user = this.userRepository.save(this.factory.getUser());
-
-        final List<User> users = this.group.getUsers();
-        users.add(user);
-        this.group.setUsers(users);
-
-        this.group = this.groupRepository.save(group);
+        this.user = this.testFactory.getUser();
+        this.group = this.testFactory.getGroup(user);
 
         this.createClassificationParameter = new CreateClassificationParameter();
-        this.createClassificationParameter.setAbbreviation(this.factory.getRandomAlphanumericString(5).toLowerCase());
+        this.createClassificationParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5).toLowerCase());
         this.createClassificationParameter.setDescritpion(this.faker.superhero().descriptor());
         this.createClassificationParameter.setLabel(this.faker.company().name());
     }
@@ -103,9 +93,7 @@ public class TestCreateClassification extends AbstractMotherIntegrationTest {
     @Test
     public void testCreateGroupClassificationWithUserNotInGroup() throws GroupNotExistException, UserNotInGroupException {
 
-        Group group = this.factory.getGroup();
-        this.userRepository.save(group.getUserAdmin());
-        group = this.groupRepository.save(group);
+        final Group group = this.testFactory.getGroup();
 
         this.createClassificationParameter.setGroupName(group.getGroupName());
 

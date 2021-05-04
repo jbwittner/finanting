@@ -33,13 +33,11 @@ public class TestGetUserGroups extends AbstractMotherIntegrationTest {
     public void testGetUserGroupsWithGroups() {
         final int numberGroups = 10;
 
-        final User user = this.factory.getUser();
+        final User user = this.testFactory.getUser();
         final List<Group> groups = new ArrayList<>();
 
         for(int index = 0; index < numberGroups; index ++){
-            Group group = this.factory.getGroup();
-            this.userRepository.save(group.getUserAdmin());
-            group = this.groupRepository.save(group);
+            final Group group = this.testFactory.getGroup();
             groups.add(group);
         }
 
@@ -77,9 +75,7 @@ public class TestGetUserGroups extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserGroupsWithoutGroups() {
 
-        final User user = this.factory.getUser();
-
-        this.userRepository.save(user);
+        final User user = this.testFactory.getUser();
 
         final List<GroupDTO> groupsDTO = this.groupServiceImpl.getUserGroups(user.getUserName());
 

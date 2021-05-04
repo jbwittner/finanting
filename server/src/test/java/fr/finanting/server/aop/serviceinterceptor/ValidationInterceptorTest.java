@@ -28,8 +28,8 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
         final ServiceInterceptor serviceInterceptor = new ServiceInterceptor();
 
         final ObjectToValidate objectToValidate = new ObjectToValidate();
-        objectToValidate.setEmail(this.factory.getUniqueRandomEmail());
-        objectToValidate.setName(this.factory.getRandomAlphanumericString());
+        objectToValidate.setEmail(this.testFactory.getUniqueRandomEmail());
+        objectToValidate.setName(this.testFactory.getRandomAlphanumericString());
 
         final Object[] objects = new Object[1];
         objects[0] = objectToValidate;
