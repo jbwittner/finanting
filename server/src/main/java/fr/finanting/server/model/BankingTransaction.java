@@ -2,6 +2,7 @@ package fr.finanting.server.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +34,7 @@ public class BankingTransaction extends MotherPersistant {
     @JoinColumn(name = "LINKED_ACCOUNT_ID")
     private BankingAccount linkedAccount;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "MIRROR_TRANSACTION")
     private BankingTransaction mirrorTransaction;
 

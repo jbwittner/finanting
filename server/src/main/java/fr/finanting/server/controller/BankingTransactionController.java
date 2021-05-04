@@ -29,7 +29,7 @@ public class BankingTransactionController {
     public BankingTransactionDTO createBankingTransaction(final Authentication authentication,
                                     @RequestBody final CreateBankingTransactionParameter createBankingTransactionParameter)
             throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException,
-            CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException {
+                CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.bankingTransactionService.createBankingTransaction(createBankingTransactionParameter, userDetailsImpl.getUsername());
     }
@@ -38,7 +38,7 @@ public class BankingTransactionController {
     public void updateBankingTransaction(final Authentication authentication,
                                     @RequestBody final UpdateBankingTransactionParameter updateBankingTransactionParameter)
             throws BankingTransactionNotExistException, BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException,
-            ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException{
+                ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException{
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         this.bankingTransactionService.updateBankingTransaction(updateBankingTransactionParameter, userDetailsImpl.getUsername());
     }
@@ -57,6 +57,14 @@ public class BankingTransactionController {
             throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException, BankingAccountNotExistException{
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.bankingTransactionService.getAccountBankingTransaction(id, userDetailsImpl.getUsername());
+    }
+
+    @DeleteMapping("/deleteAccountBankingTransaction/{id}")
+    public void deleteAccountBankingTransaction(final Authentication authentication,
+                                                        @PathVariable final Integer id)
+            throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException {
+        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
+        this.bankingTransactionService.deleteAccountBankingTransaction(id, userDetailsImpl.getUsername());
     }
     
 }

@@ -30,5 +30,8 @@ public interface BankingTransactionService {
 
     public List<BankingTransactionDTO> getAccountBankingTransaction(final Integer id, final String userName) 
         throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException, BankingAccountNotExistException;
+
+    public void deleteAccountBankingTransaction(final Integer id, final String userName)
+        throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException;
     
 }

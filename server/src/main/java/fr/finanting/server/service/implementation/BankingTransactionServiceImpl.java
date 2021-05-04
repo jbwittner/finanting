@@ -292,5 +292,19 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
 
         return bankingTransactionDTOs;
     }
+
+    @Override
+    public void deleteAccountBankingTransaction(final Integer id, final String userName)
+        throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException {
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
+
+        final BankingTransaction bankingTransaction = this.bankingTransactionRepository.findById(id)
+            .orElseThrow(() -> new BankingTransactionNotExistException(id));
+
+        bankingTransaction.getAccount().checkIfUsable(user);
+
+        this.bankingTransactionRepository.delete(bankingTransaction);
+        
+    }
     
 }
