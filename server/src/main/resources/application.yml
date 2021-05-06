@@ -1,7 +1,7 @@
 Application:
   db-param:
     host: localhost
-    port: 3306
+    port: 9000
     db-name: finanting
     user: finanting_user
     password: FinantingPass2020
@@ -19,7 +19,7 @@ logging:
         data: INFO
 
 server:
-  port : 3314
+  port : 9080
 
 spring:
   jpa:

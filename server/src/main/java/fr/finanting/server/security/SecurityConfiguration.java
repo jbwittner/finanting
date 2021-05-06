@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.finanting.server.model.Role;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -37,13 +39,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
  
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
             .antMatcher("/**").authorizeRequests()
             .antMatchers("/admin/*").hasAnyRole(Role.ADMIN.toString())
             .antMatchers("/", "/user/registerNewAccount").permitAll()
             .anyRequest().authenticated()
             .and().formLogin().permitAll()
             .and().logout().permitAll();     
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("http://localhost:9200");
+            }
+        };
     }
 
     @Bean

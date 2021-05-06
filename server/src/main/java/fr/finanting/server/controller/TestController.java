@@ -5,8 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import fr.finanting.server.model.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +18,7 @@ import fr.finanting.server.model.ModelApiResponse;
 import fr.finanting.server.model.Pet;
 
 @RestController
+@RequestMapping
 public class TestController implements PetApi{
 
     @Override
@@ -32,7 +36,7 @@ public class TestController implements PetApi{
     @Override
     public ResponseEntity<List<Pet>> findPetsByStatus(@NotNull @Valid List<String> status) {
         // TODO Auto-generated method stub
-        return null;
+        return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
     }
 
     @Override
@@ -42,11 +46,17 @@ public class TestController implements PetApi{
     }
 
     @Override
-    public ResponseEntity<Pet> getPetById(Long petId) {
-        Pet newPet = new Pet();
-        newPet.setName("Name");
-        ResponseEntity<Pet> responseEntity = new ResponseEntity<Pet>(newPet, HttpStatus.OK);
+    public ResponseEntity<Test> getPetById(Long petId) {
+        Test newTest = new Test();
+        newTest.setId(0L);
+        newTest.setUsername("Name");
+        ResponseEntity<Test> responseEntity = new ResponseEntity<>(newTest, HttpStatus.OK);
         return responseEntity;
+    }
+
+    @GetMapping("/toto")
+    public ResponseEntity<String> getToto() {
+        return new ResponseEntity<>("petId.toString()", HttpStatus.OK);
     }
 
     @Override

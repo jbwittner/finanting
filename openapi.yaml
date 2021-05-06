@@ -1,0 +1,99 @@
+openapi: 3.0.1
+info:
+  title: Swagger Finanting
+  description: This is a sample server Finanting server.
+  contact:
+    email: jeanbaptiste.wittner@outlook.com
+  license:
+    name: GPL-3.0 License
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+  version: 1.0.5
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: //localhost:9080/
+tags:
+  - name: admin
+    description: Administration of the application
+  - name: bankingAccount
+    description: Management of banking accounts
+  - name: bankingTransaction
+    description: Management of banking transactions
+  - name: category
+    description: Management of categories
+  - name: classification
+    description: Management of classifications
+  - name: currency
+    description: Management of currencies
+  - name: group
+    description: Management of groups
+  - name: third
+    description: Management of thirds
+  - name: user
+    description: Management of users
+
+paths:
+  /login:
+    post:
+      summary: Login to the application
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        403:
+          description: forbidden
+          content: {}
+      security:
+        - basicAuth: []
+  /admin/test:
+    post:
+      tags:
+        - admin
+      summary: Test of admin endpoint
+      responses:
+        200:
+          description: successful operation
+          content: {}
+        403:
+          description: forbidden
+          content: {}
+      security:
+        - basicAuth: []
+
+components:
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+  schemas:
+    UserRegistrationParameter:
+      type: object
+      properties:
+        userName:
+          type: string
+          nullable: false
+          minLength: 1
+        email:
+          type: string
+          format: email
+          nullable: false
+          minLength: 1
+        firstName:
+          type: string
+          nullable: false
+          minLength: 1
+        lastName:
+          type: string
+          nullable: false
+          minLength: 1
+        password:
+          type: string
+          nullable: false
+          minLength: 1
+      required:
+        - userName
+        - email
+        - firstName
+        - lastName
+        - password
