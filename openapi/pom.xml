@@ -4,10 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>fr.finanting</groupId>
     <artifactId>finanting-openapi</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>${application.name} - ${application.service}</name>
@@ -23,7 +20,6 @@
         <java.version>11</java.version>
         <application.name>finanting</application.name>
         <application.service>Open-API</application.service>
-        <swagger-annotations-version>1.5.21</swagger-annotations-version>
     </properties>
 
     <dependencies>
