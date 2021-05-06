@@ -10,9 +10,9 @@ info:
   version: 1.0.5
 externalDocs:
   description: Find out more about Swagger
-  url: http://swagger.io
+  url: https://swagger.io
 servers:
-  - url: //localhost:9080/
+  - url: http://localhost:9080
 tags:
   - name: admin
     description: Administration of the application
@@ -34,30 +34,73 @@ tags:
     description: Management of users
 
 paths:
-  /login:
-    post:
-      summary: Login to the application
+  /user:
+    put:
+      tags:
+        - user
+      summary: Register a new user account
+      operationId: userRegistration
+      requestBody:
+        description: Object that needs to be send to register a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationParameter'
       responses:
         200:
           description: successful operation
-          content: {}
-        403:
-          description: forbidden
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
       security:
         - basicAuth: []
-  /admin/test:
     post:
       tags:
-        - admin
-      summary: Test of admin endpoint
+        - user
+      summary: Update account informations
+      operationId: userUpdate
+      requestBody:
+        description: Object that needs to be send to update a user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateParameter'
       responses:
         200:
           description: successful operation
-          content: {}
-        403:
-          description: forbidden
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+    get:
+      tags:
+        - user
+      summary: Get account informations
+      operationId: userGet
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+
+  /user/updatePassword:
+    post:
+      tags:
+        - user
+      summary: Update the password of the user
+      operationId: userPasswordUpdate
+      requestBody:
+        description: Object that needs to be send to update a user password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordUpdateParameter'
+      responses:
+        200:
+          description: successful operation
       security:
         - basicAuth: []
 
@@ -67,6 +110,25 @@ components:
       type: http
       scheme: basic
   schemas:
+    UserDTO:
+      type: object
+      properties:
+        userName:
+          type: string
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+            enum:
+              - ADMIN
+              - USER
     UserRegistrationParameter:
       type: object
       properties:
@@ -97,3 +159,44 @@ components:
         - firstName
         - lastName
         - password
+
+    UserUpdateParameter:
+      type: object
+      properties:
+        userName:
+          type: string
+          nullable: false
+          minLength: 1
+        email:
+          type: string
+          format: email
+          nullable: false
+          minLength: 1
+        firstName:
+          type: string
+          nullable: false
+          minLength: 1
+        lastName:
+          type: string
+          nullable: false
+          minLength: 1
+      required:
+        - userName
+        - email
+        - firstName
+        - lastName
+
+    PasswordUpdateParameter:
+      type: object
+      properties:
+        previousPassword:
+          type: string
+          nullable: false
+          minLength: 1
+        newPassword:
+          type: string
+          nullable: false
+          minLength: 1
+      required:
+        - previousPassword
+        - newPassword
