@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import fr.finanting.server.swagger2java.api.PetApi;
-import fr.finanting.server.swagger2java.model.ModelApiResponse;
-import fr.finanting.server.swagger2java.model.Pet;
+import fr.finanting.server.api.PetApi;
+import fr.finanting.server.model.ModelApiResponse;
+import fr.finanting.server.model.Pet;
 
 @RestController
 public class TestController implements PetApi{

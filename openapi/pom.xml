@@ -95,8 +95,8 @@
                             <inputSpec>${project.parent.basedir}/swagger.json</inputSpec>
                             <language>spring</language>
                             <library>spring-boot</library>
-                            <apiPackage>fr.finanting.server.swagger2java.api</apiPackage>
-                            <modelPackage>fr.finanting.server.swagger2java.model</modelPackage>
+                            <apiPackage>fr.finanting.server.api</apiPackage>
+                            <modelPackage>fr.finanting.server.model</modelPackage>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
                                 <dateLibrary>java11</dateLibrary>
