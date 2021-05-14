@@ -61,6 +61,12 @@ public class UserController extends MotherController implements UserApi {
     }
     */
 
+    @PostMapping("/testtt")
+    public void registerNewAccount(@RequestBody final UserRegisterParameter userRegisterParameter)
+            throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
+        this.userService.registerNewAccount(userRegisterParameter);
+    }
+
     @Override
     public ResponseEntity<UserDTO> userGet() {
         String userName = this.getCurrentPrincipalName();
