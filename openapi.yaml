@@ -34,7 +34,7 @@ tags:
     description: Management of users
 
 paths:
-  /user:
+  /user/registration:
     put:
       tags:
         - user
@@ -55,6 +55,7 @@ paths:
                 $ref: '#/components/schemas/UserDTO'
       security:
         - basicAuth: []
+  /user:
     post:
       tags:
         - user

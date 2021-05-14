@@ -1,6 +1,6 @@
 package fr.finanting.server.exception;
 
-public abstract class FunctionalException extends Exception{
+public abstract class FunctionalException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 

@@ -29,9 +29,6 @@ public class GlobalExceptionHandler {
 
         ErrorDetails errorDetails;
 
-        System.out.println(ex);
-        System.out.println(request);
-
         if(ex instanceof FunctionalException){
             
             this.logger.info("Handling - exception : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
@@ -56,7 +53,7 @@ public class GlobalExceptionHandler {
             throw ex;
         }
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, HttpStatus.FAILED_DEPENDENCY);
         
     }
 }
