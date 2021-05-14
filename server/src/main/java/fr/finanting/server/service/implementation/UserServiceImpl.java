@@ -4,21 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.finanting.server.codegen.model.PasswordUpdateParameter;
+import fr.finanting.server.codegen.model.UserDTO;
+import fr.finanting.server.codegen.model.UserUpdateParameter;
+import fr.finanting.server.dto.UserDTOBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.finanting.server.dto.UserDTO;
 import fr.finanting.server.exception.BadPasswordException;
 import fr.finanting.server.exception.UserEmailAlreadyExistException;
 import fr.finanting.server.exception.UserNameAlreadyExistException;
 import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.PasswordUpdateParameter;
 import fr.finanting.server.parameter.UserRegisterParameter;
-import fr.finanting.server.parameter.UserUpdateParameter;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.UserService;
 
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final UserDTOBuilder USER_DTO_BUILDER = new UserDTOBuilder();
 
     @Autowired
     public UserServiceImpl(final UserRepository userRepository, final PasswordEncoder passwordEncoder) {
@@ -69,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
         this.userRepository.save(user);
 
-        final UserDTO userDTO = new UserDTO(user);
+        final UserDTO userDTO = USER_DTO_BUILDER.transform(user);
 
         return userDTO;
     }
@@ -79,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
         final User user = this.userRepository.findByUserName(userName).get();
 
-        final UserDTO userDTO = new UserDTO(user);
+        final UserDTO userDTO = USER_DTO_BUILDER.transform(user);
 
         return userDTO;
     }
@@ -116,7 +118,7 @@ public class UserServiceImpl implements UserService {
 
         this.userRepository.save(user);
 
-        final UserDTO userDTO = new UserDTO(user);
+        final UserDTO userDTO = USER_DTO_BUILDER.transform(user);
 
         return userDTO;
     }

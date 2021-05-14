@@ -98,7 +98,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>../openapi.yaml</inputSpec>
+                            <inputSpec>${project.parent.basedir}/openapi.yaml</inputSpec>
                             <language>spring</language>
                             <library>spring-boot</library>
                             <apiPackage>fr.finanting.server.codegen.api</apiPackage>
