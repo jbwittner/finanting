@@ -15,7 +15,7 @@ public class UserDTOBuilder extends Transformer<User, UserDTO> {
 
         userDTO.setUserName(input.getUserName());
         userDTO.setEmail(input.getEmail());
-        userDTO.setFirstName(input.getUserName());
+        userDTO.setFirstName(input.getFirstName());
         userDTO.setLastName(input.getLastName());
 
         List<UserDTO.RolesEnum> rolesEnumList = new ArrayList<>();

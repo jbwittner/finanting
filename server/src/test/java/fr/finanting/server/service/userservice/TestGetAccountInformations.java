@@ -41,7 +41,7 @@ public class TestGetAccountInformations extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(this.user.getLastName(), userDTO.getLastName());
 
         for(final UserDTO.RolesEnum role : userDTO.getRoles()){
-            Assertions.assertEquals(Role.USER.toString(), role);
+            Assertions.assertEquals(Role.USER.toString(), role.toString());
         }
     }
     
