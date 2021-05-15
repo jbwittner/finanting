@@ -6,6 +6,7 @@ import fr.finanting.server.codegen.api.GroupApi;
 import fr.finanting.server.codegen.model.GroupDTO;
 import fr.finanting.server.codegen.model.GroupParameter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import fr.finanting.server.service.GroupService;
@@ -53,12 +54,6 @@ public class GroupController extends MotherController implements GroupApi {
         return this.groupService.removeUsersGroup(removeUsersGroupParameter, userDetailsImpl.getUsername());
     }
 
-    @GetMapping("/getUserGroups")
-    public List<GroupDTO> getUserGroups(final Authentication authentication) {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.groupService.getUserGroups(userDetailsImpl.getUsername());
-    }
-
     @GetMapping("/getBankingAccount/{groupName}")
     public GroupDTO getGroup(final Authentication authentication,
                               @PathVariable final String groupName)
@@ -73,6 +68,13 @@ public class GroupController extends MotherController implements GroupApi {
     public ResponseEntity<GroupDTO> createGroup(GroupParameter body) {
         String userName = this.getCurrentPrincipalName();
         GroupDTO groupDTO = this.groupService.createGroup(body, userName);
-        return null;
+        return new ResponseEntity<>(groupDTO, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<GroupDTO>> getGroups() {
+        String userName = this.getCurrentPrincipalName();
+        List<GroupDTO> groupDTOList = this.groupService.getUserGroups(userName);
+        return new ResponseEntity<>(groupDTOList, HttpStatus.OK);
     }
 }

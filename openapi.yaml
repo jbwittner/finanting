@@ -123,6 +123,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDTO'
+    get:
+      tags:
+        - group
+      summary : Get groups of user
+      operationId: getGroups
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupDTO'
 components:
   securitySchemes:
     basicAuth:     # <-- arbitrary name for the security scheme
