@@ -18,7 +18,6 @@ import fr.finanting.server.exception.UserNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.DeleteGroupParameter;
 import fr.finanting.server.parameter.RemoveUsersGroupParameter;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
@@ -48,11 +47,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTO getGroup(final String groupName, final String userName)
+    public GroupDTO getGroup(final Integer groupId, final String userName)
             throws GroupNotExistException, UserNotInGroupException {
 
-        final Group group = this.groupRepository.findByGroupName(groupName)
-                .orElseThrow(() -> new GroupNotExistException(groupName));
+        final Group group = this.groupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupNotExistException(groupId));
 
         boolean isGroupMember = false;
 

@@ -33,7 +33,7 @@ public class TestGetGroup extends AbstractMotherIntegrationTest {
         final Group group = this.testFactory.getGroup();
         final User user = group.getUserAdmin();
 
-        final GroupDTO groupDTO = this.groupServiceImpl.getGroup(group.getGroupName(), user.getUserName());
+        final GroupDTO groupDTO = this.groupServiceImpl.getGroup(group.getId(), user.getUserName());
         Assertions.assertEquals(group.getGroupName(), groupDTO.getGroupName());
         Assertions.assertEquals(group.getUserAdmin().getUserName(), groupDTO.getUserAdmin().getUserName());
         Assertions.assertEquals(group.getUserAdmin().getUserName(), groupDTO.getGroupUsers().get(0).getUserName());
@@ -47,7 +47,7 @@ public class TestGetGroup extends AbstractMotherIntegrationTest {
         final User user2 = this.testFactory.getUser();
 
         Assertions.assertThrows(UserNotInGroupException.class,
-                () -> this.groupServiceImpl.getGroup(group.getGroupName(), user2.getUserName()));
+                () -> this.groupServiceImpl.getGroup(group.getId(), user2.getUserName()));
 
     }
 
@@ -56,7 +56,7 @@ public class TestGetGroup extends AbstractMotherIntegrationTest {
         final User user = this.testFactory.getUser();
 
         Assertions.assertThrows(GroupNotExistException.class,
-                () -> this.groupServiceImpl.getGroup(this.testFactory.getRandomAlphanumericString(), user.getUserName()));
+                () -> this.groupServiceImpl.getGroup(this.testFactory.getRandomInteger(), user.getUserName()));
 
     }
 

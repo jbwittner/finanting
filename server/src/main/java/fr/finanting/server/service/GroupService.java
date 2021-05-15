@@ -10,7 +10,6 @@ import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.NotAdminGroupException;
 import fr.finanting.server.exception.UserNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
-import fr.finanting.server.parameter.DeleteGroupParameter;
 import fr.finanting.server.parameter.RemoveUsersGroupParameter;
 
 public interface GroupService {
@@ -29,6 +28,6 @@ public interface GroupService {
 
     List<GroupDTO> getUserGroups(final String userName);
 
-    GroupDTO getGroup(final String groupName, final String userName)
+    GroupDTO getGroup(final Integer groupId, final String userName)
             throws GroupNotExistException, UserNotInGroupException;
 }

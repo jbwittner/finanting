@@ -89,7 +89,9 @@ public class GroupController extends MotherController implements GroupApi {
 
     @Override
     public ResponseEntity<GroupDTO> getGroup(Integer groupId) {
-        return null;
+        String userName = this.getCurrentPrincipalName();
+        GroupDTO groupDTO = this.groupService.getGroup(groupId, userName);
+        return new ResponseEntity<>(groupDTO, HttpStatus.OK);
     }
 
     @Override
