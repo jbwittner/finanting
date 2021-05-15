@@ -103,6 +103,8 @@ public class GroupController extends MotherController implements GroupApi {
 
     @Override
     public ResponseEntity<GroupDTO> removeUserGroup(RemoveUsersGroupParameter body) {
-        return null;
+        String userName = this.getCurrentPrincipalName();
+        GroupDTO groupDTO = this.groupService.removeUsersGroup(body, userName);
+        return new ResponseEntity<>(groupDTO, HttpStatus.OK);
     }
 }

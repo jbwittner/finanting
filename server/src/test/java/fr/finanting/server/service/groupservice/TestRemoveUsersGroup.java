@@ -14,7 +14,7 @@ import fr.finanting.server.exception.UserNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.RemoveUsersGroupParameter;
+import fr.finanting.server.codegen.model.RemoveUsersGroupParameter;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.GroupServiceImpl;
