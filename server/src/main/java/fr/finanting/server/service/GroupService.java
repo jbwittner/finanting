@@ -24,7 +24,7 @@ public interface GroupService {
     GroupDTO removeUsersGroup(RemoveUsersGroupParameter removeUsersGroupParameter, String userName)
         throws GroupNotExistException, NotAdminGroupException, UserNotInGroupException, UserNotExistException;
 
-    void deleteGroup(DeleteGroupParameter deleteGroupParameter, String userName)
+    void deleteGroup(Integer groupId, String userName)
         throws GroupNotExistException, NotAdminGroupException;
 
     List<GroupDTO> getUserGroups(final String userName);

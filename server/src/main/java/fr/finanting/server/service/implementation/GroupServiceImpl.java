@@ -174,12 +174,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void deleteGroup(final DeleteGroupParameter deleteGroupParameter, final String userName)
+    public void deleteGroup(final Integer groupId, final String userName)
             throws GroupNotExistException, NotAdminGroupException {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
-        final Group group = this.groupRepository.findByGroupName(deleteGroupParameter.getGroupName())
-            .orElseThrow(() -> new GroupNotExistException(deleteGroupParameter.getGroupName()));
+        final Group group = this.groupRepository.findById(groupId)
+            .orElseThrow(() -> new GroupNotExistException(groupId));
 
         final User userAdmin = group.getUserAdmin();
 

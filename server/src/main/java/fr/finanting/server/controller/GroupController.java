@@ -82,7 +82,9 @@ public class GroupController extends MotherController implements GroupApi {
 
     @Override
     public ResponseEntity<Void> deleteGroup(Integer groupId) {
-        return null;
+        String userName = this.getCurrentPrincipalName();
+        this.groupService.deleteGroup(groupId, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
