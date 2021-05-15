@@ -3,11 +3,13 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.GroupDTO;
+import fr.finanting.server.codegen.model.GroupParameter;
+import fr.finanting.server.dto.GroupDTOBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.finanting.server.dto.GroupDTO;
 import fr.finanting.server.exception.GroupNameAlreadyExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.NotAdminGroupException;
@@ -17,7 +19,6 @@ import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.parameter.AddUsersGroupParameter;
 import fr.finanting.server.parameter.DeleteGroupParameter;
-import fr.finanting.server.parameter.GroupCreationParameter;
 import fr.finanting.server.parameter.RemoveUsersGroupParameter;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
@@ -30,6 +31,8 @@ public class GroupServiceImpl implements GroupService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
 
+    private static final GroupDTOBuilder GROUP_DTO_BUILDER = new GroupDTOBuilder();
+
     @Autowired
     public GroupServiceImpl(final UserRepository userRepository, final GroupRepository groupRepository){
         this.userRepository = userRepository;
@@ -40,18 +43,7 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupDTO> getUserGroups(final String userName){
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
-
-        final List<Group> groups = user.getGroups();
-
-        final List<GroupDTO> groupDTOList = new ArrayList<>();
-        GroupDTO groupDTO;
-
-        for(final Group group : groups){
-            groupDTO = new GroupDTO(group);
-            groupDTOList.add(groupDTO);
-        }
-
-        return groupDTOList;
+        return GROUP_DTO_BUILDER.transformAll(user.getGroups());
 
     }
 
@@ -76,41 +68,43 @@ public class GroupServiceImpl implements GroupService {
             throw new UserNotInGroupException(user, group);
         }
 
-        return new GroupDTO(group);
+        return GROUP_DTO_BUILDER.transform(group);
 
     }
 
     @Override
-    public GroupDTO createGroup(final GroupCreationParameter groupCreationParameter, final String userName)
+    public GroupDTO createGroup(final GroupParameter groupParameter, final String userName)
         throws GroupNameAlreadyExistException, UserNotExistException {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final Boolean groupExist = this.groupRepository.existsByGroupName(groupCreationParameter.getGroupName());
+        final boolean groupExist = this.groupRepository.existsByGroupName(groupParameter.getGroupName());
 
         if(groupExist){
-            throw new GroupNameAlreadyExistException(groupCreationParameter.getGroupName());
+            throw new GroupNameAlreadyExistException(groupParameter.getGroupName());
         }
 
         final Group group = new Group();
-        group.setGroupName(groupCreationParameter.getGroupName());
+        group.setGroupName(groupParameter.getGroupName());
         group.setUserAdmin(user);
 
         final List<User> userList = new ArrayList<>();
         userList.add(user);
 
-        for(final String userNameToAdd : groupCreationParameter.getUsersName()){
-            final User userToAdd = this.userRepository.findByUserName(userNameToAdd)
-                .orElseThrow(() -> new UserNotExistException(userNameToAdd));
+        if(groupParameter.getUsersName() != null){
+            groupParameter.getUsersName().forEach((userNameToAdd) -> {
+                final User userToAdd = this.userRepository.findByUserName(userNameToAdd)
+                        .orElseThrow(() -> new UserNotExistException(userNameToAdd));
 
-            userList.add(userToAdd);
+                userList.add(userToAdd);
+            });
         }
 
         group.setUsers(userList);
 
         this.groupRepository.save(group);
 
-        return new GroupDTO(group);
+        return GROUP_DTO_BUILDER.transform(group);
     }
 
     @Override
@@ -133,8 +127,9 @@ public class GroupServiceImpl implements GroupService {
             boolean areAlreadyOnGroup = false;
 
             for(final User userGroup : group.getUsers()){
-                if(userGroup.getUserName().equals(userNameToAdd)){
+                if (userGroup.getUserName().equals(userNameToAdd)) {
                     areAlreadyOnGroup = true;
+                    break;
                 }
             }
 
@@ -145,7 +140,7 @@ public class GroupServiceImpl implements GroupService {
             }
         }
 
-        return new GroupDTO(group);
+        return GROUP_DTO_BUILDER.transform(group);
     }
 
     @Override
@@ -175,7 +170,7 @@ public class GroupServiceImpl implements GroupService {
             }
         }
 
-        return new GroupDTO(group);
+        return GROUP_DTO_BUILDER.transform(group);
     }
 
     @Override

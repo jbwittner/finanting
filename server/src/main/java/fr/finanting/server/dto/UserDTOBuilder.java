@@ -20,15 +20,19 @@ public class UserDTOBuilder extends Transformer<User, UserDTO> {
 
         List<UserDTO.RolesEnum> rolesEnumList = new ArrayList<>();
 
-        for(Role role : input.getRoles()){
+        input.getRoles().forEach((role) -> {
             UserDTO.RolesEnum rolesEnum = UserDTO.RolesEnum.fromValue(role.toString());
             rolesEnumList.add(rolesEnum);
-        }
+        });
 
         userDTO.setRoles(rolesEnumList);
-
         return userDTO;
+    }
 
+    public List<UserDTO> transformAll(List<User> user){
+        List<UserDTO> userDTOList = new ArrayList<>();
+        user.forEach((userLoop) -> userDTOList.add(this.transform(userLoop)));
+        return  userDTOList;
     }
 
 }

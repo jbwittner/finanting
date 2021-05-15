@@ -2,26 +2,16 @@ package fr.finanting.server.controller;
 
 import java.util.List;
 
+import fr.finanting.server.codegen.api.GroupApi;
+import fr.finanting.server.codegen.model.GroupDTO;
+import fr.finanting.server.codegen.model.GroupParameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import fr.finanting.server.dto.GroupDTO;
-import fr.finanting.server.exception.GroupNameAlreadyExistException;
-import fr.finanting.server.exception.GroupNotExistException;
-import fr.finanting.server.exception.NotAdminGroupException;
-import fr.finanting.server.exception.UserNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
-import fr.finanting.server.parameter.AddUsersGroupParameter;
-import fr.finanting.server.parameter.DeleteGroupParameter;
-import fr.finanting.server.parameter.GroupCreationParameter;
-import fr.finanting.server.parameter.RemoveUsersGroupParameter;
-import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.GroupService;
 
 @RestController
-@RequestMapping("group")
-public class GroupController {
+public class GroupController extends MotherController implements GroupApi {
 
     protected final GroupService groupService;
 
@@ -30,6 +20,7 @@ public class GroupController {
         this.groupService = groupService;
     }
 
+    /*
     @PostMapping("/createGroup")
     public GroupDTO createGroup(final Authentication authentication,
                                 @RequestBody final GroupCreationParameter groupCreationParameter)
@@ -76,4 +67,12 @@ public class GroupController {
         return this.groupService.getGroup(groupName, userDetailsImpl.getUsername());
     }
 
+     */
+
+    @Override
+    public ResponseEntity<GroupDTO> createGroup(GroupParameter body) {
+        String userName = this.getCurrentPrincipalName();
+        GroupDTO groupDTO = this.groupService.createGroup(body, userName);
+        return null;
+    }
 }

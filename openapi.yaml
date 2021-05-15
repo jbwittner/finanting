@@ -104,7 +104,25 @@ paths:
           description: successful operation
       security:
         - basicAuth: []
-
+  /group:
+    put:
+      tags:
+        - group
+      summary : Create a new group
+      operationId: createGroup
+      requestBody:
+        description: Object that needs to be send to create a group
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDTO'
 components:
   securitySchemes:
     basicAuth:     # <-- arbitrary name for the security scheme
@@ -130,30 +148,33 @@ components:
             enum:
               - ADMIN
               - USER
+
+    GroupDTO:
+      type: object
+      properties:
+        groupName:
+          type: string
+        userAdmin:
+          $ref: '#/components/schemas/UserDTO'
+        groupUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDTO'
+
     UserRegistrationParameter:
       type: object
       properties:
         userName:
           type: string
-          nullable: false
-          minLength: 1
         email:
           type: string
           format: email
-          nullable: false
-          minLength: 1
         firstName:
           type: string
-          nullable: false
-          minLength: 1
         lastName:
           type: string
-          nullable: false
-          minLength: 1
         password:
           type: string
-          nullable: false
-          minLength: 1
       required:
         - userName
         - email
@@ -166,21 +187,13 @@ components:
       properties:
         userName:
           type: string
-          nullable: false
-          minLength: 1
         email:
           type: string
           format: email
-          nullable: false
-          minLength: 1
         firstName:
           type: string
-          nullable: false
-          minLength: 1
         lastName:
           type: string
-          nullable: false
-          minLength: 1
       required:
         - userName
         - email
@@ -192,12 +205,20 @@ components:
       properties:
         previousPassword:
           type: string
-          nullable: false
-          minLength: 1
         newPassword:
           type: string
-          nullable: false
-          minLength: 1
       required:
         - previousPassword
         - newPassword
+
+    GroupParameter:
+      type: object
+      properties:
+        groupName:
+          type: string
+        usersName:
+          type: array
+          items:
+            type: string
+      required:
+        - groupName
