@@ -3,6 +3,7 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.AddUsersGroupParameter;
 import fr.finanting.server.codegen.model.GroupDTO;
 import fr.finanting.server.codegen.model.GroupParameter;
 import fr.finanting.server.dto.GroupDTOBuilder;
@@ -17,7 +18,6 @@ import fr.finanting.server.exception.UserNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.AddUsersGroupParameter;
 import fr.finanting.server.parameter.DeleteGroupParameter;
 import fr.finanting.server.parameter.RemoveUsersGroupParameter;
 import fr.finanting.server.repository.GroupRepository;

@@ -3,6 +3,7 @@ package fr.finanting.server.service.groupservice;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.AddUsersGroupParameter;
 import fr.finanting.server.codegen.model.GroupDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,6 @@ import fr.finanting.server.exception.NotAdminGroupException;
 import fr.finanting.server.exception.UserNotExistException;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.AddUsersGroupParameter;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.GroupServiceImpl;

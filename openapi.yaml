@@ -137,6 +137,80 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GroupDTO'
+  /group/{groupId}:
+    delete:
+      tags:
+        - group
+      summary : Delete a group
+      operationId: deleteGroup
+      parameters:
+        - name: groupId
+          in: path
+          description: Group id to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+    get:
+      tags:
+        - group
+      summary : Get a group
+      operationId: getGroup
+      parameters:
+        - name: groupId
+          in: path
+          description: Group id to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDTO'
+  /group/removeUsersGroup:
+    post:
+      tags:
+        - group
+      summary : Remove user to a group
+      operationId: removeUserGroup
+      requestBody:
+        description: Object that needs to be send to remove a user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveUsersGroupParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDTO'
+  /group/addUserGroup:
+    post:
+      tags:
+        - group
+      summary : Add user to a group
+      operationId: addUserGroup
+      requestBody:
+        description: Object that needs to be send to add a user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUsersGroupParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDTO'
+
 components:
   securitySchemes:
     basicAuth:     # <-- arbitrary name for the security scheme
@@ -236,3 +310,29 @@ components:
             type: string
       required:
         - groupName
+
+    RemoveUsersGroupParameter:
+      type: object
+      properties:
+        groupName:
+          type: string
+        usersName:
+          type: array
+          items:
+            type: string
+      required:
+        - groupName
+        - usersName
+
+    AddUsersGroupParameter:
+      type: object
+      properties:
+        groupName:
+          type: string
+        usersName:
+          type: array
+          items:
+            type: string
+      required:
+        - groupName
+        - usersName
