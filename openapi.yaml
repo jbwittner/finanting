@@ -228,29 +228,11 @@ paths:
       responses:
         201:
           description: aaaaaaaaaaaaa
-    post:
-      tags:
-        - category
-      summary: aaaaaaaaaaaaa
-      operationId: updateCategory
-      requestBody:
-        description: aaaaaaaaaaaaa
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CategoryParameter'
-      responses:
-        200:
-          description: aaaaaaaaaaaaa
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CategoryDTO'
     get:
       tags:
         - category
       summary: aaaaaaaaaaaaa
-      operationId: getCategories
+      operationId: getUserCategories
       responses:
         200:
           description: successful operation
@@ -259,7 +241,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CategoryDTO'
+                  $ref: '#/components/schemas/TreeCategoryDTO'
 
   /category/{categoryId}:
     delete:
@@ -274,6 +256,28 @@ paths:
           required: true
           schema:
             type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: updateCategory
+      parameters:
+        - name: categoryId
+          in: path
+          description: aaaaaaaaaaaaa
+          required: true
+          schema:
+            type: integer
+
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryParameter'
       responses:
         200:
           description: aaaaaaaaaaaaa
@@ -299,7 +303,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CategoryDTO'
+                  $ref: '#/components/schemas/TreeCategoryDTO'
 
 components:
   securitySchemes:
@@ -355,6 +359,27 @@ components:
           enum:
             - EXPENSE
             - REVENUE
+
+    TreeCategoryDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        categoryType:
+          type: string
+          enum:
+            - EXPENSE
+            - REVENUE
+        childTreeCategoriesDTOs:
+          type: array
+          items:
+            $ref: '#/components/schemas/TreeCategoryDTO'
 
     UserRegistrationParameter:
       type: object

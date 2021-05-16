@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.finanting.server.codegen.model.CategoryParameter;
+import fr.finanting.server.codegen.model.TreeCategoryDTO;
+import fr.finanting.server.dto.TreeCategoryDTOBuilder;
 import fr.finanting.server.model.CategoryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.finanting.server.dto.TreeCategoriesDTO;
 import fr.finanting.server.exception.BadAssociationCategoryTypeException;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroupException;
 import fr.finanting.server.exception.CategoryNoUserException;
@@ -19,7 +20,6 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.UpdateCategoryParameter;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
@@ -32,6 +32,8 @@ public class CategoryServiceImpl implements CategoryService {
     private GroupRepository groupRepository;
     private CategoryRepository categoryRepository;
 
+    private static final TreeCategoryDTOBuilder TREE_CATEGORY_DTO_BUILDER = new TreeCategoryDTOBuilder();
+
     @Autowired
     public CategoryServiceImpl(final UserRepository userRepository, final GroupRepository groupRepository, final CategoryRepository categoryRepository) {
         this.userRepository = userRepository;
@@ -39,8 +41,8 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    private boolean canAssociateCategory(CategoryType categoryType, CategoryParameter.CategoryTypeEnum categoryTypeEnum){
-        return categoryType.name().equals(categoryTypeEnum.name());
+    private boolean canNotAssociateCategory(CategoryType categoryType, CategoryParameter.CategoryTypeEnum categoryTypeEnum){
+        return !categoryType.name().equals(categoryTypeEnum.name());
     }
 
     @Override
@@ -56,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
             final Integer id = categoryParameter.getParentId();
             final Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
-            if(!this.canAssociateCategory(parentCategory.getCategoryType(), categoryParameter.getCategoryType())){
+            if(this.canNotAssociateCategory(parentCategory.getCategoryType(), categoryParameter.getCategoryType())){
                 throw new BadAssociationCategoryTypeException();
             }
 
@@ -106,27 +108,27 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategory(final UpdateCategoryParameter updateCategoryParameter, final String userName)
+    public void updateCategory(final Integer categoryId, CategoryParameter categoryParameter, final String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException{
 
-        final Category category = this.categoryRepository.findById(updateCategoryParameter.getId())
-            .orElseThrow(() -> new CategoryNotExistException(updateCategoryParameter.getId()));
+        final Category category = this.categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new CategoryNotExistException(categoryId));
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         if(category.getGroup() != null){
             category.getGroup().checkAreInGroup(user);
         } else if (!category.getUser().getUserName().equals(userName)){
-            throw new CategoryNoUserException(updateCategoryParameter.getId());
+            throw new CategoryNoUserException(categoryId);
         }
 
-        if(updateCategoryParameter.getParentId() == null){
+        if(categoryParameter.getParentId() == null){
             category.setParent(null);
         } else {
-            final Integer id = updateCategoryParameter.getParentId();
+            final Integer id = categoryParameter.getParentId();
             final Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
-            if(!parentCategory.getCategoryType().equals(updateCategoryParameter.getCategoryType())){
+            if(this.canNotAssociateCategory(parentCategory.getCategoryType(), categoryParameter.getCategoryType())){
                 throw new BadAssociationCategoryTypeException();
             }
 
@@ -155,30 +157,30 @@ public class CategoryServiceImpl implements CategoryService {
 
         }
 
-        category.setLabel(updateCategoryParameter.getLabel());
-        category.setAbbreviation(updateCategoryParameter.getAbbreviation().toUpperCase());
-        category.setDescritpion(updateCategoryParameter.getDescritpion());
-        category.setCategoryType(updateCategoryParameter.getCategoryType());
+        category.setLabel(categoryParameter.getLabel());
+        category.setAbbreviation(categoryParameter.getAbbreviation().toUpperCase());
+        category.setDescritpion(categoryParameter.getDescription());
+        category.setCategoryType(CategoryType.valueOf(categoryParameter.getCategoryType().name()));
 
         this.categoryRepository.saveAndFlush(category);
 
     }
 
     @Override
-    public List<TreeCategoriesDTO> getUserCategory(final String userName){
+    public List<TreeCategoryDTO> getUserCategory(final String userName){
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final List<Category> motherCategories = this.categoryRepository.findByUserAndGroupIsNullAndParentIsNull(user);
         return this.getTreeCategoryDTO(motherCategories);
     }
 
     @Override
-    public List<TreeCategoriesDTO> getGroupCategory(final String groupName, final String userName)
+    public List<TreeCategoryDTO> getGroupCategory(final Integer groupId, final String userName)
         throws GroupNotExistException, UserNotInGroupException{
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final Group group = this.groupRepository.findByGroupName(groupName)
-                .orElseThrow(() -> new GroupNotExistException(groupName));
+        final Group group = this.groupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupNotExistException(groupId));
 
         group.checkAreInGroup(user);
 
@@ -186,12 +188,12 @@ public class CategoryServiceImpl implements CategoryService {
         return this.getTreeCategoryDTO(motherCategories);
     }
 
-    private List<TreeCategoriesDTO> getTreeCategoryDTO(final List<Category> categories){
+    private List<TreeCategoryDTO> getTreeCategoryDTO(final List<Category> categories){
 
-        final List<TreeCategoriesDTO> treeCategoriesDTOs = new ArrayList<>();
+        final List<TreeCategoryDTO> treeCategoriesDTOs = new ArrayList<>();
 
         for(final Category motherCategory : categories){
-            final TreeCategoriesDTO treeCategoriesDTO = new TreeCategoriesDTO(motherCategory);
+            final TreeCategoryDTO treeCategoriesDTO = TREE_CATEGORY_DTO_BUILDER.transform(motherCategory);
             treeCategoriesDTOs.add(treeCategoriesDTO);
         }
 
