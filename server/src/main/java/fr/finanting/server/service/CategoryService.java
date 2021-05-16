@@ -11,7 +11,6 @@ import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.DeleteCategoryWithChildException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
-import fr.finanting.server.parameter.DeleteCategoryParameter;
 import fr.finanting.server.parameter.UpdateCategoryParameter;
 
 public interface CategoryService {
@@ -22,7 +21,7 @@ public interface CategoryService {
     void updateCategory(UpdateCategoryParameter updateCategoryParameter, String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException;
 
-    void deleteCategory(DeleteCategoryParameter deleteCategoryParameter, String userName)
+    void deleteCategory(Integer categoryId, String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException;
 
     List<TreeCategoriesDTO> getUserCategory(String userName);

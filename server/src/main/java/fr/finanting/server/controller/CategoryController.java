@@ -32,7 +32,9 @@ public class CategoryController extends MotherController implements CategoryApi 
 
     @Override
     public ResponseEntity<Void> deleteCategory(Integer categoryId) {
-        return null;
+        final String userName = this.getCurrentPrincipalName();
+        this.categoryService.deleteCategory(categoryId, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override

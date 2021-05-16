@@ -7,7 +7,6 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.DeleteCategoryParameter;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
@@ -54,10 +53,7 @@ public class TestDeleteCategory extends AbstractMotherIntegrationTest {
 
         final Category category = this.testFactory.getCategory(this.user, true);
 
-        final DeleteCategoryParameter deleteCategoryParameter = new DeleteCategoryParameter();
-        deleteCategoryParameter.setId(category.getId());
-
-        this.categoryServiceImpl.deleteCategory(deleteCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.deleteCategory(category.getId(), this.user.getUserName());
 
         final Optional<Category> optionalCategory = this.categoryRepository.findById(category.getId());
 
@@ -78,11 +74,8 @@ public class TestDeleteCategory extends AbstractMotherIntegrationTest {
         final Category category = this.testFactory.getCategory(this.user, true);
         category.setChild(categories);
 
-        final DeleteCategoryParameter deleteCategoryParameter = new DeleteCategoryParameter();
-        deleteCategoryParameter.setId(category.getId());
-
         Assertions.assertThrows(DeleteCategoryWithChildException.class,
-            () -> this.categoryServiceImpl.deleteCategory(deleteCategoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.deleteCategory(category.getId(), this.user.getUserName()));
 
     }
 
@@ -92,10 +85,7 @@ public class TestDeleteCategory extends AbstractMotherIntegrationTest {
 
         final Category category = this.testFactory.getCategory(this.group, true);
 
-        final DeleteCategoryParameter deleteCategoryParameter = new DeleteCategoryParameter();
-        deleteCategoryParameter.setId(category.getId());
-
-        this.categoryServiceImpl.deleteCategory(deleteCategoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.deleteCategory(category.getId(), this.user.getUserName());
 
         final Optional<Category> optionalCategory = this.categoryRepository.findById(category.getId());
 
@@ -110,11 +100,8 @@ public class TestDeleteCategory extends AbstractMotherIntegrationTest {
 
         final Category category = this.testFactory.getCategory(this.user, true);
 
-        final DeleteCategoryParameter deleteCategoryParameter = new DeleteCategoryParameter();
-        deleteCategoryParameter.setId(category.getId());
-
         Assertions.assertThrows(CategoryNoUserException.class,
-            () -> this.categoryServiceImpl.deleteCategory(deleteCategoryParameter, otherUser.getUserName()));
+            () -> this.categoryServiceImpl.deleteCategory(category.getId(), otherUser.getUserName()));
         
     }
 
@@ -125,22 +112,16 @@ public class TestDeleteCategory extends AbstractMotherIntegrationTest {
 
         final Category category = this.testFactory.getCategory(this.group, true);
 
-        final DeleteCategoryParameter deleteCategoryParameter = new DeleteCategoryParameter();
-        deleteCategoryParameter.setId(category.getId());
-
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.categoryServiceImpl.deleteCategory(deleteCategoryParameter, otherUser.getUserName()));
+            () -> this.categoryServiceImpl.deleteCategory(category.getId(), otherUser.getUserName()));
 
     }
 
     @Test
     public void testDeleteParentNotExistCategory() {
 
-        final DeleteCategoryParameter deleteCategoryParameter = new DeleteCategoryParameter();
-        deleteCategoryParameter.setId(this.testFactory.getRandomInteger());
-
         Assertions.assertThrows(CategoryNotExistException.class,
-            () -> this.categoryServiceImpl.deleteCategory(deleteCategoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.deleteCategory(this.testFactory.getRandomInteger(), this.user.getUserName()));
 
     }
     

@@ -19,7 +19,6 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.DeleteCategoryParameter;
 import fr.finanting.server.parameter.UpdateCategoryParameter;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.GroupRepository;
@@ -200,18 +199,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(final DeleteCategoryParameter deleteCategoryParameter, final String userName)
+    public void deleteCategory(final Integer categoryId, final String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final Category category = this.categoryRepository.findById(deleteCategoryParameter.getId())
-            .orElseThrow(() -> new CategoryNotExistException(deleteCategoryParameter.getId()));
+        final Category category = this.categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new CategoryNotExistException(categoryId));
 
         if(category.getGroup() != null){
             category.getGroup().checkAreInGroup(user);
         } else if (!category.getUser().getUserName().equals(userName)){
-            throw new CategoryNoUserException(deleteCategoryParameter.getId());
+            throw new CategoryNoUserException(categoryId);
         }
 
         final List<Category> childs = category.getChild();
