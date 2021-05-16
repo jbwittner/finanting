@@ -11,7 +11,6 @@ import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.DeleteCategoryWithChildException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
-import fr.finanting.server.parameter.UpdateCategoryParameter;
 
 public interface CategoryService {
 

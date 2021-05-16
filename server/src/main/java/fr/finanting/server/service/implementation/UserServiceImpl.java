@@ -20,7 +20,6 @@ import fr.finanting.server.exception.UserEmailAlreadyExistException;
 import fr.finanting.server.exception.UserNameAlreadyExistException;
 import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.UserRegisterParameter;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.UserService;
 

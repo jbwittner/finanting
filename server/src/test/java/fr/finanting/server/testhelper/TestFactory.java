@@ -75,13 +75,15 @@ public class TestFactory {
     public static final int LENGTH_DOMAIN = 10;
 
     private List<String> listRandomString = new ArrayList<>();
+    private List<String> listRandomCaseSensitiveString = new ArrayList<>();
     private List<String> listRandomEmail = new ArrayList<>();
     private List<Integer> listRandomNumber = new ArrayList<>();
     private List<String> listRandomName = new ArrayList<>();
 
     public void resetAllList(){
-        
+
         this.listRandomString = new ArrayList<>();
+        this.listRandomCaseSensitiveString = new ArrayList<>();
         this.listRandomNumber = new ArrayList<>();
         this.listRandomEmail = new ArrayList<>();
         this.listRandomName = new ArrayList<>();
@@ -106,6 +108,21 @@ public class TestFactory {
 
         return randomString;
     }
+
+    public String getUniqueRandomAlphanumericStringCaseSensitive(final int length){
+        boolean isNotUnique = true;
+        String randomString = "";
+
+        while (isNotUnique){
+            randomString = RandomStringUtils.randomAlphanumeric(length).toLowerCase();
+            isNotUnique = listRandomCaseSensitiveString.contains(randomString);
+        }
+
+        listRandomString.add(randomString);
+
+        return randomString;
+    }
+
 
     public String getUniqueRandomAlphanumericString(){
 
@@ -215,8 +232,7 @@ public class TestFactory {
     }
 
     public double getRandomDouble(){
-        final double random = this.faker.random().nextDouble();
-        return random;
+        return this.faker.random().nextDouble();
     }
 
     public long getRandomLong(final Integer max){
@@ -296,7 +312,7 @@ public class TestFactory {
         final Currency currency = new Currency();
         currency.setDecimalPlaces(this.getRandomInteger());
         currency.setDefaultCurrency(false);
-        currency.setIsoCode(this.getUniqueRandomAlphanumericString(3).toUpperCase());
+        currency.setIsoCode(this.getUniqueRandomAlphanumericStringCaseSensitive(3).toUpperCase());
         currency.setSymbol(this.getUniqueRandomAlphanumericString(3).toUpperCase());
 
         final String label = StringUtils.capitalize(this.getUniqueRandomAlphanumericString().toLowerCase());
@@ -458,7 +474,6 @@ public class TestFactory {
             mirrorTransaction.setClassification(bankingTransaction.getClassification());
             mirrorTransaction.setCreateTimestamp(bankingTransaction.getCreateTimestamp());
 
-            currency = this.getCurrency();
             mirrorTransaction.setCurrency(this.getCurrency());
             mirrorTransaction.setCurrencyAmount(amountCurrency);
 
