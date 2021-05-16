@@ -47,7 +47,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UserRegistrationParameter'
       responses:
-        200:
+        201:
           description: successful operation
           content:
             application/json:
@@ -117,7 +117,7 @@ paths:
             schema:
               $ref: '#/components/schemas/GroupParameter'
       responses:
-        200:
+        201:
           description: successful operation
           content:
             application/json:
@@ -137,6 +137,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GroupDTO'
+
   /group/{groupId}:
     delete:
       tags:
@@ -172,6 +173,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDTO'
+
   /group/removeUsersGroup:
     post:
       tags:
@@ -211,6 +213,94 @@ paths:
               schema:
                 $ref: '#/components/schemas/GroupDTO'
 
+  /category:
+    put:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: createCategory
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryParameter'
+      responses:
+        201:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: updateCategory
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryParameter'
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryDTO'
+    get:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: getCategories
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryDTO'
+
+  /category/{categoryId}:
+    delete:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: deleteCategory
+      parameters:
+        - name: categoryId
+          in: path
+          description: aaaaaaaaaaaaa
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+
+  /category/{groupId}:
+    get:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: getGroupCategories
+      parameters:
+        - name: groupId
+          in: path
+          description: aaaaaaaaaaaaa
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryDTO'
+
 components:
   securitySchemes:
     basicAuth:     # <-- arbitrary name for the security scheme
@@ -248,6 +338,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserDTO'
+
+    CategoryDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        categoryType:
+          type: string
+          enum:
+            - EXPENSE
+            - REVENUE
 
     UserRegistrationParameter:
       type: object
@@ -336,3 +443,25 @@ components:
       required:
         - groupName
         - usersName
+
+    CategoryParameter:
+      type: object
+      properties:
+        parentId:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        groupName:
+          type: string
+        categoryType:
+          type: string
+          enum:
+            - EXPENSE
+            - REVENUE
+      required:
+        - label
+        - abbreviation

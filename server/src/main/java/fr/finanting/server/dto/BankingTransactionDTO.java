@@ -2,6 +2,7 @@ package fr.finanting.server.dto;
 
 import java.util.Date;
 
+import fr.finanting.server.codegen.model.CategoryDTO;
 import fr.finanting.server.model.BankingTransaction;
 import lombok.Data;
 
@@ -22,6 +23,8 @@ public class BankingTransactionDTO {
     String description;
     Date createTimestamp;
     Date updateTimestamp;
+
+    private static final CategoryDTOBuilder CATEGORY_DTO_BUILDER = new CategoryDTOBuilder();
 
     public BankingTransactionDTO(final BankingTransaction bankingTransaction){
 
@@ -48,7 +51,7 @@ public class BankingTransactionDTO {
         }
 
         if(bankingTransaction.getCategory() != null){
-            this.categoryDTO = new CategoryDTO(bankingTransaction.getCategory());
+            this.categoryDTO = CATEGORY_DTO_BUILDER.transform(bankingTransaction.getCategory());
         }
 
         if(bankingTransaction.getClassification()!= null){

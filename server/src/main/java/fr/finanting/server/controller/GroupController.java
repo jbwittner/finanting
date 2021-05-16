@@ -23,49 +23,6 @@ public class GroupController extends MotherController implements GroupApi {
         this.groupService = groupService;
     }
 
-    /*
-    @PostMapping("/createGroup")
-    public GroupDTO createGroup(final Authentication authentication,
-                                @RequestBody final GroupCreationParameter groupCreationParameter)
-            throws GroupNameAlreadyExistException, UserNotExistException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.groupService.createGroup(groupCreationParameter, userDetailsImpl.getUsername());
-    }
-
-    @DeleteMapping("/deleteGroup")
-    public void deleteGroup(final Authentication authentication,
-                            @RequestBody final DeleteGroupParameter deleteGroupParameter)
-            throws GroupNotExistException, NotAdminGroupException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.groupService.deleteGroup(deleteGroupParameter, userDetailsImpl.getUsername());
-    }
-
-    @PostMapping("/addUsersGroup")
-    public GroupDTO addUsersGroup(final Authentication authentication,
-                                  @RequestBody final AddUsersGroupParameter addUsersGroupParameter)
-            throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.groupService.addUsersGroup(addUsersGroupParameter, userDetailsImpl.getUsername());
-    }
-
-    @PostMapping("/removeUsersGroup")
-    public GroupDTO removeUsersGroup(final Authentication authentication,
-                                     @RequestBody final RemoveUsersGroupParameter removeUsersGroupParameter)
-            throws GroupNotExistException, NotAdminGroupException, UserNotInGroupException, UserNotExistException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.groupService.removeUsersGroup(removeUsersGroupParameter, userDetailsImpl.getUsername());
-    }
-
-    @GetMapping("/getBankingAccount/{groupName}")
-    public GroupDTO getGroup(final Authentication authentication,
-                              @PathVariable final String groupName)
-            throws UserNotInGroupException, GroupNotExistException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.groupService.getGroup(groupName, userDetailsImpl.getUsername());
-    }
-
-     */
-
     @Override
     public ResponseEntity<GroupDTO> addUserGroup(AddUsersGroupParameter body) {
         String userName = this.getCurrentPrincipalName();
@@ -77,7 +34,7 @@ public class GroupController extends MotherController implements GroupApi {
     public ResponseEntity<GroupDTO> createGroup(GroupParameter body) {
         String userName = this.getCurrentPrincipalName();
         GroupDTO groupDTO = this.groupService.createGroup(body, userName);
-        return new ResponseEntity<>(groupDTO, HttpStatus.OK);
+        return new ResponseEntity<>(groupDTO, HttpStatus.CREATED);
     }
 
     @Override

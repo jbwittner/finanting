@@ -1,5 +1,6 @@
 package fr.finanting.server.dto;
 
+import fr.finanting.server.codegen.model.CategoryDTO;
 import fr.finanting.server.model.Third;
 import lombok.Data;
 
@@ -15,6 +16,8 @@ public class ThirdDTO {
     private AddressDTO addressDTO;
     private ContactDTO contactDTO;
 
+    private static final CategoryDTOBuilder CATEGORY_DTO_BUILDER = new CategoryDTOBuilder();
+
     public ThirdDTO(final Third third){
         this.id = third.getId();
         this.label = third.getLabel();
@@ -22,23 +25,19 @@ public class ThirdDTO {
         this.descritpion = third.getDescritpion();
         
         if(third.getDefaultCategory() != null){
-            final CategoryDTO categoryDTO = new CategoryDTO(third.getDefaultCategory());
-            this.categoryDTO = categoryDTO;
+            this.categoryDTO = CATEGORY_DTO_BUILDER.transform(third.getDefaultCategory());
         }
 
         if(third.getBankDetails() != null){
-            final BankDetailsDTO bankDetailsDTO = new BankDetailsDTO(third.getBankDetails());
-            this.bankDetailsDTO = bankDetailsDTO;
+            this.bankDetailsDTO = new BankDetailsDTO(third.getBankDetails());
         }
 
         if(third.getAddress() != null){
-            final AddressDTO addressDTO = new AddressDTO(third.getAddress());
-            this.addressDTO = addressDTO;
+            this.addressDTO = new AddressDTO(third.getAddress());
         }
 
         if(third.getContact() != null){
-            final ContactDTO contactDTO = new ContactDTO(third.getContact());
-            this.contactDTO = contactDTO;
+            this.contactDTO = new ContactDTO(third.getContact());
         }
     }
 

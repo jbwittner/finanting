@@ -2,13 +2,13 @@ package fr.finanting.server.service.thirdservice;
 
 import java.util.List;
 
+import fr.finanting.server.codegen.model.CategoryDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.finanting.server.dto.AddressDTO;
 import fr.finanting.server.dto.BankDetailsDTO;
-import fr.finanting.server.dto.CategoryDTO;
 import fr.finanting.server.dto.ContactDTO;
 import fr.finanting.server.dto.ThirdDTO;
 import fr.finanting.server.exception.GroupNotExistException;
@@ -86,8 +86,8 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
         final CategoryDTO categoryDTO = actual.getCategoryDTO();
         Assertions.assertEquals(category.getId(), categoryDTO.getId());
         Assertions.assertEquals(category.getAbbreviation(), categoryDTO.getAbbreviation());
-        Assertions.assertEquals(category.getCategoryType(), categoryDTO.getCategoryType());
-        Assertions.assertEquals(category.getDescritpion(), categoryDTO.getDescritpion());
+        Assertions.assertEquals(category.getCategoryType().name(), categoryDTO.getCategoryType().name());
+        Assertions.assertEquals(category.getDescritpion(), categoryDTO.getDescription());
         Assertions.assertEquals(category.getLabel(), categoryDTO.getLabel());
 
     }

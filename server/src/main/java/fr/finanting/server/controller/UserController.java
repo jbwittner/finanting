@@ -38,7 +38,7 @@ public class UserController extends MotherController implements UserApi {
     @Override
     public ResponseEntity<UserDTO> userRegistration(UserRegistrationParameter body) {
         UserDTO userDTO = this.userService.registerNewAccount(body);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @Override

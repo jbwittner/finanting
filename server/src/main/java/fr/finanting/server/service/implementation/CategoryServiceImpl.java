@@ -3,6 +3,8 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.CategoryParameter;
+import fr.finanting.server.model.CategoryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,6 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.CreateCategoryParameter;
 import fr.finanting.server.parameter.DeleteCategoryParameter;
 import fr.finanting.server.parameter.UpdateCategoryParameter;
 import fr.finanting.server.repository.CategoryRepository;
@@ -39,8 +40,12 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    private boolean canAssociateCategory(CategoryType categoryType, CategoryParameter.CategoryTypeEnum categoryTypeEnum){
+        return categoryType.name().equals(categoryTypeEnum.name());
+    }
+
     @Override
-    public void createCategory(final CreateCategoryParameter createCategoryParameter, final String userName)
+    public void createCategory(final CategoryParameter categoryParameter, final String userName)
         throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException{
 
         final Category category = new Category();
@@ -48,24 +53,24 @@ public class CategoryServiceImpl implements CategoryService {
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         // check if the new category are a sub category
-        if(createCategoryParameter.getParentId() != null){
-            final Integer id = createCategoryParameter.getParentId();
+        if(categoryParameter.getParentId() != null){
+            final Integer id = categoryParameter.getParentId();
             final Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
-            if(!parentCategory.getCategoryType().equals(createCategoryParameter.getCategoryType())){
+            if(!this.canAssociateCategory(parentCategory.getCategoryType(), categoryParameter.getCategoryType())){
                 throw new BadAssociationCategoryTypeException();
             }
 
             boolean areGoodAssociation = false;
 
-            if(parentCategory.getGroup() != null && createCategoryParameter.getGroupName() != null){
+            if(parentCategory.getGroup() != null && categoryParameter.getGroupName() != null){
                 parentCategory.getGroup().checkAreInGroup(user);
 
-                if(parentCategory.getGroup().getGroupName().equals(createCategoryParameter.getGroupName())){
+                if(parentCategory.getGroup().getGroupName().equals(categoryParameter.getGroupName())){
                     areGoodAssociation = true;
                 }
 
-            } else if(parentCategory.getUser() != null  && createCategoryParameter.getGroupName() == null){
+            } else if(parentCategory.getUser() != null  && categoryParameter.getGroupName() == null){
                 if(parentCategory.getUser().getUserName().equals(userName)){
                     areGoodAssociation = true;
                 } else {
@@ -81,15 +86,17 @@ public class CategoryServiceImpl implements CategoryService {
 
         }
 
-        category.setLabel(createCategoryParameter.getLabel());
-        category.setAbbreviation(createCategoryParameter.getAbbreviation().toUpperCase());
-        category.setDescritpion(createCategoryParameter.getDescritpion());
-        category.setCategoryType(createCategoryParameter.getCategoryType());
+        category.setLabel(categoryParameter.getLabel());
+        category.setAbbreviation(categoryParameter.getAbbreviation().toUpperCase());
+        category.setDescritpion(categoryParameter.getDescription());
 
-        if(createCategoryParameter.getGroupName() == null){
+        CategoryType categoryType = CategoryType.valueOf(categoryParameter.getCategoryType().toString());
+        category.setCategoryType(categoryType);
+
+        if(categoryParameter.getGroupName() == null){
             category.setUser(user);
         } else {
-            final String groupName = createCategoryParameter.getGroupName();
+            final String groupName = categoryParameter.getGroupName();
             final Group group = this.groupRepository.findByGroupName(groupName)
                 .orElseThrow(() -> new GroupNotExistException(groupName));
             category.setGroup(group);

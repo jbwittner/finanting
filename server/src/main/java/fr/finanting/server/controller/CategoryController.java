@@ -1,22 +1,20 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.dto.TreeCategoriesDTO;
-import fr.finanting.server.exception.*;
-import fr.finanting.server.parameter.CreateCategoryParameter;
-import fr.finanting.server.parameter.DeleteCategoryParameter;
-import fr.finanting.server.parameter.UpdateCategoryParameter;
-import fr.finanting.server.security.UserDetailsImpl;
+import fr.finanting.server.codegen.api.CategoryApi;
+import fr.finanting.server.codegen.model.CategoryDTO;
+import fr.finanting.server.codegen.model.CategoryParameter;
 import fr.finanting.server.service.CategoryService;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("category")
-public class CategoryController {
+public class CategoryController extends MotherController implements CategoryApi {
 
     protected final CategoryService categoryService;
 
@@ -25,6 +23,34 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    @Override
+    public ResponseEntity<Void> createCategory(CategoryParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        this.categoryService.createCategory(body, userName);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteCategory(Integer categoryId) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<CategoryDTO>> getCategories() {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<CategoryDTO>> getGroupCategories(Integer groupId) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CategoryDTO> updateCategory(CategoryParameter body) {
+        return null;
+    }
+
+    /*
     @PostMapping("/createCategory")
     public void createCategory(final Authentication authentication,
                                     @RequestBody final CreateCategoryParameter createCategoryParameter)
@@ -62,5 +88,7 @@ public class CategoryController {
         final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
         return this.categoryService.getUserCategory(userDetailsImpl.getUsername());
     }
+
+     */
     
 }
