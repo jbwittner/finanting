@@ -4,6 +4,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import fr.finanting.server.codegen.model.AddressParameter;
+import fr.finanting.server.codegen.model.BankDetailsParameter;
 import lombok.Data;
 
 @Data

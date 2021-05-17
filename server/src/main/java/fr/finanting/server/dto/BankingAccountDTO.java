@@ -1,5 +1,7 @@
 package fr.finanting.server.dto;
 
+import fr.finanting.server.codegen.model.AddressDTO;
+import fr.finanting.server.codegen.model.BankDetailsDTO;
 import fr.finanting.server.codegen.model.CurrencyDTO;
 import fr.finanting.server.model.BankingAccount;
 import lombok.Data;
@@ -13,10 +15,11 @@ public class BankingAccountDTO {
     private Integer balance;
     private BankDetailsDTO bankDetailsDTO;
     private CurrencyDTO defaultCurrencyDTO;
-
-    AddressDTO addressDTO;
+    private AddressDTO addressDTO;
 
     private static final CurrencyDTOBuilder CURRENCY_DTO_BUILDER = new CurrencyDTOBuilder();
+    private static final BankDetailsDTOBuilder BANK_DETAILS_DTO_BUILDER = new BankDetailsDTOBuilder();
+    private static final AddressDTOBuilder ADDRESS_DTO_BUILDER = new AddressDTOBuilder();
 
     public BankingAccountDTO(final BankingAccount bankingAccount){
 
@@ -26,11 +29,11 @@ public class BankingAccountDTO {
         this.defaultCurrencyDTO = CURRENCY_DTO_BUILDER.transform(bankingAccount.getDefaultCurrency());
 
         if(bankingAccount.getAddress() != null){
-            this.addressDTO = new AddressDTO(bankingAccount.getAddress());
+            this.addressDTO = ADDRESS_DTO_BUILDER.transform(bankingAccount.getAddress());
         }
 
         if(bankingAccount.getBankDetails() != null){
-            this.bankDetailsDTO = new BankDetailsDTO(bankingAccount.getBankDetails());
+            this.bankDetailsDTO = BANK_DETAILS_DTO_BUILDER.transform(bankingAccount.getBankDetails());
         }
 
     }

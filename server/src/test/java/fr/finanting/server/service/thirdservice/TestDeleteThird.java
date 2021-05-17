@@ -12,7 +12,6 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.Third;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.DeleteThirdParameter;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.ThirdRepository;
@@ -57,10 +56,7 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
         final Integer thirdId = third.getId();
 
-        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
-        deleteThirdParameter.setId(thirdId);
-
-        this.thirdServiceImpl.deleteThird(deleteThirdParameter, this.user.getUserName());
+        this.thirdServiceImpl.deleteThird(thirdId, this.user.getUserName());
 
         final Optional<Third> optionalThird = this.thirdRepository.findById(thirdId);
 
@@ -73,10 +69,7 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
         final Integer thirdId = third.getId();
 
-        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
-        deleteThirdParameter.setId(thirdId);
-
-        this.thirdServiceImpl.deleteThird(deleteThirdParameter, this.user.getUserName());
+        this.thirdServiceImpl.deleteThird(thirdId, this.user.getUserName());
 
         final Optional<Third> optionalThird = this.thirdRepository.findById(thirdId);
 
@@ -90,11 +83,8 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
         final Integer thirdId = third.getId();
 
-        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
-        deleteThirdParameter.setId(thirdId);
-
         Assertions.assertThrows(ThirdNoUserException.class,
-            () -> this.thirdServiceImpl.deleteThird(deleteThirdParameter, this.user.getUserName()));
+            () -> this.thirdServiceImpl.deleteThird(thirdId, this.user.getUserName()));
     }
 
     @Test
@@ -104,20 +94,14 @@ public class TestDeleteThird extends AbstractMotherIntegrationTest {
 
         final Integer thirdId = third.getId();
 
-        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
-        deleteThirdParameter.setId(thirdId);
-
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.thirdServiceImpl.deleteThird(deleteThirdParameter, this.user.getUserName()));
+            () -> this.thirdServiceImpl.deleteThird(thirdId, this.user.getUserName()));
     }
 
     @Test
     public void testDeleteNotExistentThird() throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
-        final DeleteThirdParameter deleteThirdParameter = new DeleteThirdParameter();
-        deleteThirdParameter.setId(this.testFactory.getRandomInteger());
-
         Assertions.assertThrows(ThirdNotExistException.class,
-            () -> this.thirdServiceImpl.deleteThird(deleteThirdParameter, this.user.getUserName()));
+            () -> this.thirdServiceImpl.deleteThird(this.testFactory.getRandomInteger(), this.user.getUserName()));
     }
     
 }

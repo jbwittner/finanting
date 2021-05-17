@@ -2,15 +2,11 @@ package fr.finanting.server.service.thirdservice;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.model.CategoryDTO;
+import fr.finanting.server.codegen.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.finanting.server.dto.AddressDTO;
-import fr.finanting.server.dto.BankDetailsDTO;
-import fr.finanting.server.dto.ContactDTO;
-import fr.finanting.server.dto.ThirdDTO;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Third;
 import fr.finanting.server.model.User;
@@ -55,7 +51,7 @@ public class TestGetUserThird extends AbstractMotherIntegrationTest {
     private void checkData(final Third expected, final ThirdDTO actual){
         Assertions.assertEquals(expected.getId(), actual.getId());
         Assertions.assertEquals(expected.getAbbreviation(), actual.getAbbreviation());
-        Assertions.assertEquals(expected.getDescritpion(), actual.getDescritpion());
+        Assertions.assertEquals(expected.getDescritpion(), actual.getDescription());
 
         final Address address = expected.getAddress();
         final AddressDTO addressDTO = actual.getAddressDTO();

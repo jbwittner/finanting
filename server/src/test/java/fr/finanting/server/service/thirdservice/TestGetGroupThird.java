@@ -2,15 +2,11 @@ package fr.finanting.server.service.thirdservice;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.model.CategoryDTO;
+import fr.finanting.server.codegen.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.finanting.server.dto.AddressDTO;
-import fr.finanting.server.dto.BankDetailsDTO;
-import fr.finanting.server.dto.ContactDTO;
-import fr.finanting.server.dto.ThirdDTO;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
@@ -60,7 +56,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     private void checkData(final Third expected, final ThirdDTO actual){
         Assertions.assertEquals(expected.getId(), actual.getId());
         Assertions.assertEquals(expected.getAbbreviation(), actual.getAbbreviation());
-        Assertions.assertEquals(expected.getDescritpion(), actual.getDescritpion());
+        Assertions.assertEquals(expected.getDescritpion(), actual.getDescription());
 
         final Address address = expected.getAddress();
         final AddressDTO addressDTO = actual.getAddressDTO();
@@ -99,7 +95,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
         final Third third2 = this.testFactory.getThird(this.group, category);
         final Third third3 = this.testFactory.getThird(this.group, category);
 
-        final List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getGroupThird(this.group.getGroupName(), this.user.getUserName());
+        final List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getGroupThird(this.group.getId(), this.user.getUserName());
 
         Assertions.assertEquals(3, thirdDTOs.size());
 
@@ -120,7 +116,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     @Test
     public void testGetUserThirdWithoutThird() throws UserNotInGroupException, GroupNotExistException {
 
-        final List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getGroupThird(this.group.getGroupName(), this.user.getUserName());
+        final List<ThirdDTO> thirdDTOs = this.thirdServiceImpl.getGroupThird(this.group.getId(), this.user.getUserName());
 
         Assertions.assertEquals(0, thirdDTOs.size());
 
@@ -132,7 +128,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
         final User otherUser = this.testFactory.getUser();
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.thirdServiceImpl.getGroupThird(this.group.getGroupName(), otherUser.getUserName()));
+            () -> this.thirdServiceImpl.getGroupThird(this.group.getId(), otherUser.getUserName()));
 
     }
 
@@ -140,7 +136,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     public void testGetUserThirdGroupNotExist() throws GroupNotExistException, UserNotInGroupException{
 
         Assertions.assertThrows(GroupNotExistException.class,
-            () -> this.thirdServiceImpl.getGroupThird(this.testFactory.getRandomAlphanumericString(), this.user.getUserName()));
+            () -> this.thirdServiceImpl.getGroupThird(this.testFactory.getRandomInteger(), this.user.getUserName()));
 
     }
 

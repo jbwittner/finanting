@@ -465,6 +465,100 @@ paths:
         200:
           description: aaaaaaaaaaaaa
 
+  /third:
+    put:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: createThird
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThirdParameter'
+      responses:
+        201:
+          description: aaaaaaaaaaaaa
+    get:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: getUserThird
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ThirdDTO'
+
+  /third/{thirdId}:
+    delete:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: deleteThird
+      parameters:
+      - name: thirdId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: updateThird
+      parameters:
+      - name: thirdId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateThirdParameter'
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+  
+  /third/{groupId}:
+    get:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: getGroupThird
+      parameters:
+      - name: groupId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ThirdDTO'
+
+
+
 components:
   securitySchemes:
     basicAuth:     # <-- arbitrary name for the security scheme
@@ -570,6 +664,60 @@ components:
           type: integer
         decimalPlaces:
           type: integer
+    
+    BankDetailsDTO:
+      type: object
+      properties:
+        iban:
+          type: string
+        accountNumber:
+          type: string
+        bankName:
+          type: string
+  
+    AddressDTO:
+      type: object
+      properties:
+        address:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+          
+    ContactDTO:
+      type: object
+      properties:
+        homePhone:
+          type: string
+        portablePhone:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+          
+    ThirdDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        categoryDTO:
+          $ref: '#/components/schemas/CategoryDTO'
+        bankDetailsDTO:
+          $ref: '#/components/schemas/BankDetailsDTO'
+        addressDTO:
+          $ref: '#/components/schemas/AddressDTO'
+        contactDTO:
+          $ref: '#/components/schemas/ContactDTO'
 
     UserRegistrationParameter:
       type: object
@@ -754,3 +902,81 @@ components:
         - isoCode
         - rate
         - decimalPlaces
+
+    ContactParameter:
+      type: object
+      properties:
+        homePhone:
+          type: string
+        portablePhone:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+        
+    BankDetailsParameter:
+      type: object
+      properties:
+        bankName:
+          type: string
+        iban:
+          type: string
+        accountNumber:
+          type: string
+        
+    AddressParameter:
+      type: object
+      properties:
+        address:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+        
+    ThirdParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        defaultCategoryId:
+          type: integer
+        groupName:
+          type: string
+        contactParameter:
+          $ref: '#/components/schemas/ContactParameter'
+        bankDetailsParameter:
+          $ref: '#/components/schemas/BankDetailsParameter'
+        addressParameter:
+          $ref: '#/components/schemas/AddressParameter'
+      required:
+        - label
+        - abbreviation
+    
+    UpdateThirdParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        defaultCategoryId:
+          type: integer
+        contactParameter:
+          $ref: '#/components/schemas/ContactParameter'
+        bankDetailsParameter:
+          $ref: '#/components/schemas/BankDetailsParameter'
+        addressParameter:
+          $ref: '#/components/schemas/AddressParameter'
+      required:
+        - label
+        - abbreviation

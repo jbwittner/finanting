@@ -5,6 +5,7 @@ import java.util.Date;
 import fr.finanting.server.codegen.model.CategoryDTO;
 import fr.finanting.server.codegen.model.ClassificationDTO;
 import fr.finanting.server.codegen.model.CurrencyDTO;
+import fr.finanting.server.codegen.model.ThirdDTO;
 import fr.finanting.server.model.BankingTransaction;
 import lombok.Data;
 
@@ -29,6 +30,7 @@ public class BankingTransactionDTO {
     private static final CategoryDTOBuilder CATEGORY_DTO_BUILDER = new CategoryDTOBuilder();
     private static final ClassificationDTOBuilder CLASSIFICATION_DTO_BUILDER = new ClassificationDTOBuilder();
     private static final CurrencyDTOBuilder CURRENCY_DTO_BUILDER = new CurrencyDTOBuilder();
+    private static final ThirdDTOBuilder THIRD_DTO_BUILDER = new ThirdDTOBuilder();
 
     public BankingTransactionDTO(final BankingTransaction bankingTransaction){
 
@@ -51,7 +53,7 @@ public class BankingTransactionDTO {
         }
 
         if(bankingTransaction.getThird() != null){
-            this.thirdDTO = new ThirdDTO(bankingTransaction.getThird());
+            this.thirdDTO = THIRD_DTO_BUILDER.transform(bankingTransaction.getThird());
         }
 
         if(bankingTransaction.getCategory() != null){
