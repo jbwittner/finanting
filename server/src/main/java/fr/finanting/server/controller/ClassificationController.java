@@ -31,7 +31,9 @@ public class ClassificationController extends MotherController implements Classi
 
     @Override
     public ResponseEntity<Void> deleteClassification(Integer classificationId) {
-        return null;
+        final String userName = this.getCurrentPrincipalName();
+        this.classificationService.deleteClassification(classificationId, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override

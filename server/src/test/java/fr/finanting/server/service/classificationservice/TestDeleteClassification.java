@@ -50,10 +50,7 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
     public void testDeleteUserClassification() throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
         final Classification classification = this.testFactory.getClassification(this.user);
 
-        final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
-        deleteClassificationParameter.setId(classification.getId());
-
-        this.classificationServiceImpl.deleteClassification(deleteClassificationParameter, this.user.getUserName());
+        this.classificationServiceImpl.deleteClassification(classification.getId(), this.user.getUserName());
 
         final List<Classification> classifications = this.classificationRepository.findAll();
 
@@ -65,10 +62,7 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
     public void testDeleteGroupClassification() throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
         final Classification classification = this.testFactory.getClassification(this.group);
 
-        final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
-        deleteClassificationParameter.setId(classification.getId());
-
-        this.classificationServiceImpl.deleteClassification(deleteClassificationParameter, this.user.getUserName());
+        this.classificationServiceImpl.deleteClassification(classification.getId(), this.user.getUserName());
 
         final List<Classification> classifications = this.classificationRepository.findAll();
 
@@ -78,11 +72,8 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteClassificationNotExist() {
-        final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
-        deleteClassificationParameter.setId(this.testFactory.getRandomInteger());
-
         Assertions.assertThrows(ClassificationNotExistException.class,
-            () -> this.classificationServiceImpl.deleteClassification(deleteClassificationParameter, this.user.getUserName()));
+            () -> this.classificationServiceImpl.deleteClassification(this.testFactory.getRandomInteger(), this.user.getUserName()));
     }
 
     @Test
@@ -91,11 +82,8 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
 
         final User otherUser = this.testFactory.getUser();
 
-        final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
-        deleteClassificationParameter.setId(classification.getId());
-
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.classificationServiceImpl.deleteClassification(deleteClassificationParameter, otherUser.getUserName()));
+            () -> this.classificationServiceImpl.deleteClassification(classification.getId(), otherUser.getUserName()));
     }
 
     @Test
@@ -104,11 +92,8 @@ public class TestDeleteClassification extends AbstractMotherIntegrationTest {
 
         final User otherUser = this.testFactory.getUser();
 
-        final DeleteClassificationParameter deleteClassificationParameter = new DeleteClassificationParameter();
-        deleteClassificationParameter.setId(classification.getId());
-
         Assertions.assertThrows(ClassificationNoUserException.class,
-            () -> this.classificationServiceImpl.deleteClassification(deleteClassificationParameter, otherUser.getUserName()));
+            () -> this.classificationServiceImpl.deleteClassification(classification.getId(), otherUser.getUserName()));
     }
 
     

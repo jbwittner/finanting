@@ -19,7 +19,7 @@ public interface ClassificationService {
     void updateClassification(final UpdateClassificationParameter updateClassificationParameter, final String userName)
         throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException;
 
-    void deleteClassification(final DeleteClassificationParameter deleteClassificationParameter, final String userName)
+    void deleteClassification(final Integer classificationId, final String userName)
         throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException;
 
     List<ClassificationDTO> getUserClassifications(final String userName);

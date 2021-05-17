@@ -92,12 +92,12 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     @Override
-    public void deleteClassification(final DeleteClassificationParameter deleteClassificationParameter, final String userName) throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
+    public void deleteClassification(final Integer classificationId, final String userName) throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final Classification classification = this.classificationRepository.findById(deleteClassificationParameter.getId())
-            .orElseThrow(() -> new ClassificationNotExistException(deleteClassificationParameter.getId()));
+        final Classification classification = this.classificationRepository.findById(classificationId)
+            .orElseThrow(() -> new ClassificationNotExistException(classificationId));
         
         if(classification.getGroup() == null){
             if(!classification.getUser().getUserName().equals(userName)){
