@@ -2,24 +2,18 @@ package fr.finanting.server.controller;
 
 import java.util.List;
 
+import fr.finanting.server.codegen.api.CurrencyApi;
+import fr.finanting.server.codegen.model.CurrencyDTO;
+import fr.finanting.server.codegen.model.CurrencyParameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.finanting.server.dto.CurrencyDTO;
-import fr.finanting.server.exception.CurrencyIsoCodeAlreadyExist;
-import fr.finanting.server.exception.CurrencyNotExistException;
-import fr.finanting.server.exception.NoDefaultCurrencyException;
-import fr.finanting.server.parameter.CreateCurrencyParameter;
-import fr.finanting.server.parameter.UpdateCurrencyParameter;
 import fr.finanting.server.service.CurrencyService;
 
 @RestController
-@RequestMapping("currency")
-public class CurrencyController {
+public class CurrencyController extends MotherController implements CurrencyApi {
 
     private CurrencyService currencyService;
 
@@ -28,25 +22,28 @@ public class CurrencyController {
         this.currencyService = currencyService;
     }
 
-    @PostMapping("/createCurrency")
-    public void createCurrency(@RequestBody final CreateCurrencyParameter createCurrencyParameter)
-        throws CurrencyIsoCodeAlreadyExist, NoDefaultCurrencyException {
-
-        this.currencyService.createCurrency(createCurrencyParameter);
-
+    @Override
+    public ResponseEntity<Void> createCurrency(CurrencyParameter body) {
+        this.currencyService.createCurrency(body);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/updateCurrency")
-    public void updateCurrency(@RequestBody final UpdateCurrencyParameter updateCurrencyParameter)
-        throws CurrencyIsoCodeAlreadyExist, NoDefaultCurrencyException, CurrencyNotExistException {
-
-        this.currencyService.updateCurrency(updateCurrencyParameter);
-        
+    @Override
+    public ResponseEntity<Void> deleteCurrency(Integer currencyId) {
+        this.currencyService.deleteCurrency(currencyId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/getAllCurrencies")
-    public List<CurrencyDTO> getAllCurrencies() {
-        return this.currencyService.getAllCurrencies();
+    @Override
+    public ResponseEntity<List<CurrencyDTO>> getAllCurrencies() {
+        List<CurrencyDTO> currencyDTOList = this.currencyService.getAllCurrencies();
+        return new ResponseEntity<>(currencyDTOList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> updateCurrency(Integer currencyId, CurrencyParameter body) {
+        this.currencyService.updateCurrency(currencyId, body);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }

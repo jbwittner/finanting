@@ -397,6 +397,74 @@ paths:
                 items:
                   $ref: '#/components/schemas/ClassificationDTO'
 
+  /currency:
+    put:
+      tags:
+        - currency
+      summary: aaaaaaaaaaaaa
+      operationId: createCurrency
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyParameter'
+      responses:
+        201:
+          description: aaaaaaaaaaaaa
+    get:
+      tags:
+        - currency
+      summary: aaaaaaaaaaaaa
+      operationId: getAllCurrencies
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CurrencyDTO'
+
+  /currency/{currencyId}:
+    delete:
+      tags:
+        - currency
+      summary: aaaaaaaaaaaaa
+      operationId: deleteCurrency
+      parameters:
+      - name: currencyId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - currency
+      summary: aaaaaaaaaaaaa
+      operationId: updateCurrency
+      parameters:
+      - name: currencyId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyParameter'
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+
 components:
   securitySchemes:
     basicAuth:     # <-- arbitrary name for the security scheme
@@ -484,6 +552,24 @@ components:
           type: string
         description:
           type: string
+
+    CurrencyDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        defaultCurrency:
+          type: boolean
+        label:
+          type: string
+        symbol:
+          type: string
+        isoCode:
+          type: string
+        rate:
+          type: integer
+        decimalPlaces:
+          type: integer
 
     UserRegistrationParameter:
       type: object
@@ -642,3 +728,29 @@ components:
       required:
         - label
         - abbreviation
+    
+    CurrencyParameter:
+      type: object
+      properties:
+        defaultCurrency:
+          type: boolean
+        label:
+          type: string
+        symbol:
+          type: string
+          maxLength: 3
+        isoCode:
+          type: string
+          minLength: 3
+          maxLength: 3
+        rate:
+          type: integer
+        decimalPlaces:
+          type: integer
+      required:
+        - defaultCurrency
+        - label
+        - symbol
+        - isoCode
+        - rate
+        - decimalPlaces

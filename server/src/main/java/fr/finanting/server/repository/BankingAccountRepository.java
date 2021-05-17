@@ -1,6 +1,7 @@
 package fr.finanting.server.repository;
 
 import fr.finanting.server.model.BankingAccount;
+import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 
@@ -10,5 +11,7 @@ public interface BankingAccountRepository extends AbstractRepository<BankingAcco
 
     List<BankingAccount> findByUser(User user);
     List<BankingAccount> findByGroup(Group group);
+
+    Boolean existsByDefaultCurrency(final Currency currency);
 
 }

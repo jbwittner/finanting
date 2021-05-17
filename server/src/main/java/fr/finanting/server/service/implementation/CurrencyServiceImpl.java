@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.finanting.server.codegen.model.CurrencyDTO;
+import fr.finanting.server.codegen.model.CurrencyParameter;
+import fr.finanting.server.dto.CurrencyDTOBuilder;
+import fr.finanting.server.exception.CurrencyUsedException;
+import fr.finanting.server.model.BankingAccount;
+import fr.finanting.server.repository.BankingAccountRepository;
+import fr.finanting.server.repository.BankingTransactionRepository;
+import fr.finanting.server.repository.ThirdRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.finanting.server.dto.CurrencyDTO;
 import fr.finanting.server.exception.CurrencyIsoCodeAlreadyExist;
 import fr.finanting.server.exception.CurrencyNotExistException;
 import fr.finanting.server.exception.NoDefaultCurrencyException;
 import fr.finanting.server.model.Currency;
-import fr.finanting.server.parameter.CreateCurrencyParameter;
-import fr.finanting.server.parameter.UpdateCurrencyParameter;
 import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.service.CurrencyService;
 
@@ -22,27 +27,38 @@ import fr.finanting.server.service.CurrencyService;
 public class CurrencyServiceImpl implements CurrencyService {
 
     private CurrencyRepository currencyRepository;
+    private ThirdRepository thirdRepository;
+    private BankingAccountRepository bankingAccountRepository;
+    private BankingTransactionRepository bankingTransactionRepository;
+
+    private static final CurrencyDTOBuilder CURRENCY_DTO_BUILDER = new CurrencyDTOBuilder();
 
     @Autowired
-    public CurrencyServiceImpl(final CurrencyRepository currencyRepository){
+    public CurrencyServiceImpl(final CurrencyRepository currencyRepository,
+                               final ThirdRepository thirdRepository,
+                               final BankingAccountRepository bankingAccountRepository,
+                               final BankingTransactionRepository bankingTransactionRepository){
         this.currencyRepository = currencyRepository;
+        this.thirdRepository = thirdRepository;
+        this.bankingAccountRepository = bankingAccountRepository;
+        this.bankingTransactionRepository = bankingTransactionRepository;
     }
 
     @Override
-    public void createCurrency(final CreateCurrencyParameter createCurrencyParameter) throws CurrencyIsoCodeAlreadyExist, NoDefaultCurrencyException{
+    public void createCurrency(final CurrencyParameter currencyParameter) throws CurrencyIsoCodeAlreadyExist, NoDefaultCurrencyException{
 
-        final String isoCode = createCurrencyParameter.getIsoCode().toUpperCase();
+        final String isoCode = currencyParameter.getIsoCode().toUpperCase();
 
         if(this.currencyRepository.existsByIsoCode(isoCode)){
             throw new CurrencyIsoCodeAlreadyExist(isoCode);
         }
 
         if(!this.currencyRepository.existsByDefaultCurrency(true)&&
-            createCurrencyParameter.getDefaultCurrency().equals(false)){
+                currencyParameter.isDefaultCurrency().equals(false)){
             throw new NoDefaultCurrencyException();
         }
 
-        if(createCurrencyParameter.getDefaultCurrency().equals(true)){
+        if(currencyParameter.isDefaultCurrency().equals(true)){
             final Optional<Currency> optionalDefaultApplicationCurrency = this.currencyRepository.findByDefaultCurrency(true);
             if(optionalDefaultApplicationCurrency.isPresent()){
                 final Currency defaultApplicationCurrency = optionalDefaultApplicationCurrency.get();
@@ -53,26 +69,26 @@ public class CurrencyServiceImpl implements CurrencyService {
 
         final Currency currency = new Currency();
 
-        currency.setDefaultCurrency(createCurrencyParameter.getDefaultCurrency());
-        final String label = StringUtils.capitalize(createCurrencyParameter.getLabel().toLowerCase());
+        currency.setDefaultCurrency(currencyParameter.isDefaultCurrency());
+        final String label = StringUtils.capitalize(currencyParameter.getLabel().toLowerCase());
         currency.setLabel(label);
-        currency.setSymbol(createCurrencyParameter.getSymbol().toUpperCase());
+        currency.setSymbol(currencyParameter.getSymbol().toUpperCase());
         currency.setIsoCode(isoCode);
-        currency.setRate(createCurrencyParameter.getRate());
-        currency.setDecimalPlaces(createCurrencyParameter.getDecimalPlaces());
+        currency.setRate(currencyParameter.getRate());
+        currency.setDecimalPlaces(currencyParameter.getDecimalPlaces());
 
         this.currencyRepository.save(currency);
         
     }
 
     @Override
-    public void updateCurrency(final UpdateCurrencyParameter updateCurrencyParameter) throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
-        final String isoCode = updateCurrencyParameter.getIsoCode().toUpperCase();
+    public void updateCurrency(Integer currencyId, CurrencyParameter currencyParameter) throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
+        final String isoCode = currencyParameter.getIsoCode().toUpperCase();
 
-        final Optional<Currency> optionalCurrency = this.currencyRepository.findById(updateCurrencyParameter.getId());
+        final Optional<Currency> optionalCurrency = this.currencyRepository.findById(currencyId);
 
-        if(!optionalCurrency.isPresent()){
-            throw new CurrencyNotExistException(updateCurrencyParameter.getId());
+        if(optionalCurrency.isEmpty()){
+            throw new CurrencyNotExistException(currencyId);
         }
 
         final Currency currentCurrency = optionalCurrency.get();
@@ -86,18 +102,18 @@ public class CurrencyServiceImpl implements CurrencyService {
             }
         }
 
-        if(updateCurrencyParameter.getDefaultCurrency().equals(false) &&
+        if(currencyParameter.isDefaultCurrency().equals(false) &&
             currentCurrency.getDefaultCurrency().equals(true)){
             throw new NoDefaultCurrencyException();
         }
 
-        currentCurrency.setDefaultCurrency(updateCurrencyParameter.getDefaultCurrency());
-        final String label = StringUtils.capitalize(updateCurrencyParameter.getLabel().toLowerCase());
+        currentCurrency.setDefaultCurrency(currencyParameter.isDefaultCurrency());
+        final String label = StringUtils.capitalize(currencyParameter.getLabel().toLowerCase());
         currentCurrency.setLabel(label);
-        currentCurrency.setSymbol(updateCurrencyParameter.getSymbol().toUpperCase());
+        currentCurrency.setSymbol(currencyParameter.getSymbol().toUpperCase());
         currentCurrency.setIsoCode(isoCode);
-        currentCurrency.setRate(updateCurrencyParameter.getRate());
-        currentCurrency.setDecimalPlaces(updateCurrencyParameter.getDecimalPlaces());
+        currentCurrency.setRate(currencyParameter.getRate());
+        currentCurrency.setDecimalPlaces(currencyParameter.getDecimalPlaces());
 
         this.currencyRepository.save(currentCurrency);
 
@@ -105,18 +121,28 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public List<CurrencyDTO> getAllCurrencies() {
-        final List<CurrencyDTO> currencyDTOs = new ArrayList<>();
-
         final List<Currency> currencies = this.currencyRepository.findAll();
+        return CURRENCY_DTO_BUILDER.transformAll(currencies);
+    }
 
-        CurrencyDTO currencyDTO;
+    @Override
+    public void deleteCurrency(Integer currencyId) {
+        final Optional<Currency> optionalCurrency = this.currencyRepository.findById(currencyId);
 
-        for(final Currency currency : currencies){
-            currencyDTO = new CurrencyDTO(currency);
-            currencyDTOs.add(currencyDTO);
+        if(optionalCurrency.isEmpty()){
+            throw new CurrencyNotExistException(currencyId);
         }
 
-        return currencyDTOs;
+        final Currency currency = optionalCurrency.get();
+
+        if(this.bankingAccountRepository.existsByDefaultCurrency(currency) ||
+            this.thirdRepository.existsByDefaultCurrency(currency) ||
+            this.bankingTransactionRepository.existsByCurrency(currency)){
+            throw new CurrencyUsedException(currency.getIsoCode());
+        }
+
+        this.currencyRepository.delete(currency);
+
     }
-    
+
 }

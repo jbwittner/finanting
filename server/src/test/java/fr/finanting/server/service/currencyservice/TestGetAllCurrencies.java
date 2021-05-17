@@ -2,11 +2,14 @@ package fr.finanting.server.service.currencyservice;
 
 import java.util.List;
 
+import fr.finanting.server.codegen.model.CurrencyDTO;
+import fr.finanting.server.repository.BankingAccountRepository;
+import fr.finanting.server.repository.BankingTransactionRepository;
+import fr.finanting.server.repository.ThirdRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.finanting.server.dto.CurrencyDTO;
 import fr.finanting.server.model.Currency;
 import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.service.implementation.CurrencyServiceImpl;
@@ -17,18 +20,30 @@ public class TestGetAllCurrencies extends AbstractMotherIntegrationTest {
     @Autowired
     private CurrencyRepository currencyRepository;
 
+    @Autowired
+    private ThirdRepository thirdRepository;
+
+    @Autowired
+    private BankingAccountRepository bankingAccountRepository;
+
+    @Autowired
+    private BankingTransactionRepository bankingTransactionRepository;
+
     private CurrencyServiceImpl currencyServiceImpl;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.currencyServiceImpl = new CurrencyServiceImpl(this.currencyRepository);
+        this.currencyServiceImpl = new CurrencyServiceImpl(this.currencyRepository,
+                this.thirdRepository,
+                this.bankingAccountRepository,
+                this.bankingTransactionRepository);
     }
 
     private void checkData(final Currency expectedData, final CurrencyDTO currentData){
         Assertions.assertEquals(expectedData.getDecimalPlaces(), currentData.getDecimalPlaces());
         Assertions.assertEquals(expectedData.getId(), currentData.getId());
         Assertions.assertEquals(expectedData.getRate(), currentData.getRate());
-        Assertions.assertEquals(expectedData.getDefaultCurrency(), currentData.getDefaultCurrency());
+        Assertions.assertEquals(expectedData.getDefaultCurrency(), currentData.isDefaultCurrency());
         Assertions.assertEquals(expectedData.getIsoCode(), currentData.getIsoCode());
         Assertions.assertEquals(expectedData.getLabel(), currentData.getLabel());
         Assertions.assertEquals(expectedData.getSymbol(), currentData.getSymbol());

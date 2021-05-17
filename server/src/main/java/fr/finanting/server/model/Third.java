@@ -36,6 +36,10 @@ public class Third extends MotherGroupUserElement {
     @JoinColumn(name = "CATEGORY_ID")
     private Category defaultCategory;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CURRENCY_ID")
+    private Currency defaultCurrency;
+
     @Embedded
     private BankDetails bankDetails;
     
