@@ -308,10 +308,10 @@ public class TestFactory {
         return bankDetails;
     }
 
-    public Currency getCurrency(){
+    public Currency getCurrency(boolean isDefault){
         final Currency currency = new Currency();
         currency.setDecimalPlaces(this.getRandomInteger());
-        currency.setDefaultCurrency(false);
+        currency.setDefaultCurrency(isDefault);
         currency.setIsoCode(this.getUniqueRandomAlphanumericStringCaseSensitive(3).toUpperCase());
         currency.setSymbol(this.getUniqueRandomAlphanumericString(3).toUpperCase());
 
@@ -321,6 +321,10 @@ public class TestFactory {
         currency.setRate(this.getRandomInteger());
 
         return this.currencyRepository.save(currency);
+    }
+
+    public Currency getCurrency(){
+        return this.getCurrency(false);
     }
 
     private BankingAccount getBankingAccount(final User user, final Group group){
