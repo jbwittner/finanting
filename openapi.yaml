@@ -137,7 +137,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GroupDTO'
-
+                  
   /group/{groupId}:
     delete:
       tags:
@@ -145,12 +145,12 @@ paths:
       summary : Delete a group
       operationId: deleteGroup
       parameters:
-        - name: groupId
-          in: path
-          description: Group id to delete
-          required: true
-          schema:
-            type: integer
+      - name: groupId
+        in: path
+        description: Group id to delete
+        required: true
+        schema:
+          type: integer
       responses:
         200:
           description: successful operation
@@ -160,12 +160,12 @@ paths:
       summary : Get a group
       operationId: getGroup
       parameters:
-        - name: groupId
-          in: path
-          description: Group id to delete
-          required: true
-          schema:
-            type: integer
+      - name: groupId
+        in: path
+        description: Group id to delete
+        required: true
+        schema:
+          type: integer
       responses:
         200:
           description: successful operation
@@ -173,7 +173,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDTO'
-
+                
   /group/removeUsersGroup:
     post:
       tags:
@@ -212,7 +212,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GroupDTO'
-
+  
   /category:
     put:
       tags:
@@ -242,7 +242,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TreeCategoryDTO'
-
+                
   /category/{categoryId}:
     delete:
       tags:
@@ -250,12 +250,12 @@ paths:
       summary: aaaaaaaaaaaaa
       operationId: deleteCategory
       parameters:
-        - name: categoryId
-          in: path
-          description: aaaaaaaaaaaaa
-          required: true
-          schema:
-            type: integer
+      - name: categoryId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
       responses:
         200:
           description: aaaaaaaaaaaaa
@@ -265,12 +265,12 @@ paths:
       summary: aaaaaaaaaaaaa
       operationId: updateCategory
       parameters:
-        - name: categoryId
-          in: path
-          description: aaaaaaaaaaaaa
-          required: true
-          schema:
-            type: integer
+      - name: categoryId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
 
       requestBody:
         description: aaaaaaaaaaaaa
@@ -281,7 +281,7 @@ paths:
       responses:
         200:
           description: aaaaaaaaaaaaa
-
+  
   /category/{groupId}:
     get:
       tags:
@@ -289,12 +289,12 @@ paths:
       summary: aaaaaaaaaaaaa
       operationId: getGroupCategories
       parameters:
-        - name: groupId
-          in: path
-          description: aaaaaaaaaaaaa
-          required: true
-          schema:
-            type: integer
+      - name: groupId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
       responses:
         200:
           description: successful operation
@@ -304,6 +304,98 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TreeCategoryDTO'
+  
+  /classification:
+    put:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: createClassification
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassificationParameter'
+      responses:
+        201:
+          description: aaaaaaaaaaaaa
+    get:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: getUserClassification
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassificationDTO'
+
+  /classification/{classificationId}:
+    delete:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: deleteClassification
+      parameters:
+      - name: classificationId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: updateClassification
+      parameters:
+      - name: classificationId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassificationParameter'
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+  
+  /classification/{groupId}:
+    get:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: getGroupClassifications
+      parameters:
+      - name: groupId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassificationDTO'
 
 components:
   securitySchemes:
@@ -342,7 +434,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserDTO'
-
+            
     CategoryDTO:
       type: object
       properties:
@@ -380,6 +472,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TreeCategoryDTO'
+            
+    ClassificationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
 
     UserRegistrationParameter:
       type: object
@@ -430,7 +534,7 @@ components:
       required:
         - previousPassword
         - newPassword
-
+    
     GroupParameter:
       type: object
       properties:
@@ -442,7 +546,7 @@ components:
             type: string
       required:
         - groupName
-
+        
     RemoveUsersGroupParameter:
       type: object
       properties:
@@ -455,7 +559,7 @@ components:
       required:
         - groupName
         - usersName
-
+        
     AddUsersGroupParameter:
       type: object
       properties:
@@ -468,7 +572,7 @@ components:
       required:
         - groupName
         - usersName
-
+    
     CategoryParameter:
       type: object
       properties:
@@ -487,6 +591,21 @@ components:
           enum:
             - EXPENSE
             - REVENUE
+      required:
+        - label
+        - abbreviation
+
+    ClassificationParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        groupName:
+          type: string
       required:
         - label
         - abbreviation

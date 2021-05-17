@@ -3,6 +3,7 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.ClassificationParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,6 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Classification;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.CreateClassificationParameter;
 import fr.finanting.server.parameter.DeleteClassificationParameter;
 import fr.finanting.server.parameter.UpdateClassificationParameter;
 import fr.finanting.server.repository.ClassificationRepository;
@@ -39,27 +39,27 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
 	@Override
-	public void createClassification(final CreateClassificationParameter createClassificationParameter, final String userName)
+	public void createClassification(final ClassificationParameter classificationParameter, final String userName)
         throws GroupNotExistException, UserNotInGroupException {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         final Classification classification = new Classification();
 
-        if(createClassificationParameter.getGroupName() == null){
+        if(classificationParameter.getGroupName() == null){
             classification.setUser(user);
         } else {
-            final Group group = this.groupRepository.findByGroupName(createClassificationParameter.getGroupName())
-                .orElseThrow(() -> new GroupNotExistException(createClassificationParameter.getGroupName()));
+            final Group group = this.groupRepository.findByGroupName(classificationParameter.getGroupName())
+                .orElseThrow(() -> new GroupNotExistException(classificationParameter.getGroupName()));
 
             group.checkAreInGroup(user);
 
             classification.setGroup(group);
         }
 
-        classification.setAbbreviation(createClassificationParameter.getAbbreviation().toUpperCase());
-        classification.setDescritpion(createClassificationParameter.getDescritpion());
-        classification.setLabel(createClassificationParameter.getLabel());
+        classification.setAbbreviation(classificationParameter.getAbbreviation().toUpperCase());
+        classification.setDescritpion(classificationParameter.getDescription());
+        classification.setLabel(classificationParameter.getLabel());
 
         this.classificationRepository.save(classification);
 		
