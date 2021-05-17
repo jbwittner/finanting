@@ -1,6 +1,6 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.dto.BankingAccountDTO;
+import fr.finanting.server.codegen.model.BankingAccountDTO;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.BankingAccountRepository;
@@ -94,7 +94,7 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(bankingAccount.getBankDetails().getIban(),
                 bankingAccountDTO.getBankDetailsDTO().getIban());
         Assertions.assertEquals(bankingAccount.getDefaultCurrency().getIsoCode(),
-                bankingAccountDTO.getDefaultCurrencyDTO().getIsoCode());      
+                bankingAccountDTO.getCurrencyDTO().getIsoCode());
 
     }
 }

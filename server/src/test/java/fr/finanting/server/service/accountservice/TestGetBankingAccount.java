@@ -1,6 +1,6 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.dto.BankingAccountDTO;
+import fr.finanting.server.codegen.model.BankingAccountDTO;
 import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.NotUserBankingAccountException;
 import fr.finanting.server.exception.UserNotInGroupException;

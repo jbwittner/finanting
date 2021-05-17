@@ -1,19 +1,20 @@
 package fr.finanting.server.service.implementation;
 
+import fr.finanting.server.codegen.model.BankingAccountDTO;
+import fr.finanting.server.codegen.model.BankingAccountParameter;
+import fr.finanting.server.codegen.model.UpdateBankingAccountParameter;
+import fr.finanting.server.dto.BankDetailsDTOBuilder;
+import fr.finanting.server.dto.BankingAccountDTOBuilder;
 import fr.finanting.server.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.finanting.server.dto.BankingAccountDTO;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
-import fr.finanting.server.parameter.CreateBankingAccountParameter;
-import fr.finanting.server.parameter.DeleteBankingAccountParameter;
-import fr.finanting.server.parameter.UpdateBankingAccountParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.repository.GroupRepository;
@@ -31,6 +32,8 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
 
+    private static final BankingAccountDTOBuilder BANKING_ACCOUNT_DTO_BUILDER = new BankingAccountDTOBuilder();
+
     @Autowired
     public BankingAccountServiceImpl(final BankingAccountRepository bankingAccountRepository,
         final GroupRepository groupRepository, final UserRepository userRepository, final CurrencyRepository currencyRepository){
@@ -41,50 +44,50 @@ public class BankingAccountServiceImpl implements BankingAccountService {
         }
 
     @Override
-    public BankingAccountDTO createAccount(final CreateBankingAccountParameter createBankingAccountParameter, final String userName)
+    public BankingAccountDTO createAccount(final BankingAccountParameter bankingAccountParameter, final String userName)
             throws GroupNotExistException, CurrencyNotExistException{
 
         BankingAccount bankingAccount = new BankingAccount();
 
-        if(createBankingAccountParameter.getGroupName() == null){
+        if(bankingAccountParameter.getGroupName() == null){
             final User user = this.userRepository.findByUserName(userName).orElseThrow();
             bankingAccount.setUser(user);
         } else {
-            final String groupName = createBankingAccountParameter.getGroupName();
+            final String groupName = bankingAccountParameter.getGroupName();
             final Group group = this.groupRepository.findByGroupName(groupName)
                 .orElseThrow(() -> new GroupNotExistException(groupName));
             bankingAccount.setGroup(group);
         }
 
-        final Currency currency = this.currencyRepository.findByIsoCode(createBankingAccountParameter.getDefaultCurrencyISOCode())
-            .orElseThrow(() -> new CurrencyNotExistException(createBankingAccountParameter.getDefaultCurrencyISOCode()));
+        final Currency currency = this.currencyRepository.findByIsoCode(bankingAccountParameter.getDefaultCurrencyISOCode())
+            .orElseThrow(() -> new CurrencyNotExistException(bankingAccountParameter.getDefaultCurrencyISOCode()));
 
         bankingAccount.setDefaultCurrency(currency);
 
-        bankingAccount.setAbbreviation(createBankingAccountParameter.getAbbreviation().toUpperCase());
-        bankingAccount.setInitialBalance(createBankingAccountParameter.getInitialBalance());
-        bankingAccount.setLabel(createBankingAccountParameter.getLabel());
+        bankingAccount.setAbbreviation(bankingAccountParameter.getAbbreviation().toUpperCase());
+        bankingAccount.setInitialBalance(bankingAccountParameter.getInitialBalance());
+        bankingAccount.setLabel(bankingAccountParameter.getLabel());
 
-        if(createBankingAccountParameter.getAddressParameter() != null){
+        if(bankingAccountParameter.getAddressParameter() != null){
             final Address address = new Address();
-            address.setAddress(createBankingAccountParameter.getAddressParameter().getAddress());
-            address.setCity(createBankingAccountParameter.getAddressParameter().getCity());
-            address.setStreet(createBankingAccountParameter.getAddressParameter().getStreet());
-            address.setZipCode(createBankingAccountParameter.getAddressParameter().getZipCode());
+            address.setAddress(bankingAccountParameter.getAddressParameter().getAddress());
+            address.setCity(bankingAccountParameter.getAddressParameter().getCity());
+            address.setStreet(bankingAccountParameter.getAddressParameter().getStreet());
+            address.setZipCode(bankingAccountParameter.getAddressParameter().getZipCode());
             bankingAccount.setAddress(address);
         }
         
-        if(createBankingAccountParameter.getBankDetailsParameter() != null){
+        if(bankingAccountParameter.getBankDetailsParameter() != null){
             final BankDetails bankDetails = new BankDetails();
-            bankDetails.setAccountNumber(createBankingAccountParameter.getBankDetailsParameter().getAccountNumber());
-            bankDetails.setIban(createBankingAccountParameter.getBankDetailsParameter().getIban());
-            bankDetails.setBankName(createBankingAccountParameter.getBankDetailsParameter().getBankName());
+            bankDetails.setAccountNumber(bankingAccountParameter.getBankDetailsParameter().getAccountNumber());
+            bankDetails.setIban(bankingAccountParameter.getBankDetailsParameter().getIban());
+            bankDetails.setBankName(bankingAccountParameter.getBankDetailsParameter().getBankName());
             bankingAccount.setBankDetails(bankDetails);
         }
 
         bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
-        final BankingAccountDTO bankingAccountDTO = new BankingAccountDTO(bankingAccount);
+        final BankingAccountDTO bankingAccountDTO = BANKING_ACCOUNT_DTO_BUILDER.transform(bankingAccount);
         bankingAccountDTO.setBalance(bankingAccount.getInitialBalance());
 
         return bankingAccountDTO;
@@ -123,11 +126,11 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public void deleteAccount(final DeleteBankingAccountParameter deleteBankingAccountParameter, final String userName)
+    public void deleteAccount(final Integer bankingAccountId, final String userName)
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException{
 
-        final  BankingAccount bankingAccount = this.bankingAccountRepository.findById(deleteBankingAccountParameter.getId())
-            .orElseThrow(() -> new BankingAccountNotExistException(deleteBankingAccountParameter.getId()));
+        final  BankingAccount bankingAccount = this.bankingAccountRepository.findById(bankingAccountId)
+            .orElseThrow(() -> new BankingAccountNotExistException(bankingAccountId));
 
         this.checkIsAdminAccount(bankingAccount, userName);
 
@@ -136,11 +139,11 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public BankingAccountDTO updateAccount(final UpdateBankingAccountParameter updateBankingAccountParameter, final String userName)
+    public BankingAccountDTO updateAccount(final Integer bankingAccountId, final UpdateBankingAccountParameter updateBankingAccountParameter, final String userName)
             throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException{
 
-        BankingAccount bankingAccount = this.bankingAccountRepository.findById(updateBankingAccountParameter.getAccountId())
-            .orElseThrow(() -> new BankingAccountNotExistException(updateBankingAccountParameter.getAccountId()));
+        BankingAccount bankingAccount = this.bankingAccountRepository.findById(bankingAccountId)
+            .orElseThrow(() -> new BankingAccountNotExistException(bankingAccountId));
 
         this.checkIsAdminAccount(bankingAccount, userName);
 
@@ -168,7 +171,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
         bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
-        final BankingAccountDTO bankingAccountDTO = new BankingAccountDTO(bankingAccount);
+        final BankingAccountDTO bankingAccountDTO = BANKING_ACCOUNT_DTO_BUILDER.transform(bankingAccount);
         bankingAccountDTO.setBalance(bankingAccount.getInitialBalance());
 
         return bankingAccountDTO;
@@ -177,45 +180,22 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     @Override
     public List<BankingAccountDTO> getUserBankingAccounts(final String userName){
-        final List<BankingAccountDTO> userAccountDTOList = new ArrayList<>();
-
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
-
         final List<BankingAccount> userAccounts = this.bankingAccountRepository.findByUser(user);
-
-        BankingAccountDTO bankingAccountDTO;
-
-        for(final BankingAccount bankingAccount : userAccounts){
-            bankingAccountDTO = new BankingAccountDTO(bankingAccount);
-            bankingAccountDTO.setBalance(bankingAccount.getInitialBalance());
-            userAccountDTOList.add(bankingAccountDTO);
-        }
-
-        return userAccountDTOList;
+        return BANKING_ACCOUNT_DTO_BUILDER.transformAll(userAccounts);
     }
 
     @Override
-    public List<BankingAccountDTO> getGroupBankingAccounts(final String groupName, final String userName) throws UserNotInGroupException, GroupNotExistException {
-        final List<BankingAccountDTO> groupAccountDTOList = new ArrayList<>();
-
+    public List<BankingAccountDTO> getGroupBankingAccounts(final Integer groupId, final String userName) throws UserNotInGroupException, GroupNotExistException {
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         
-        final Group group = this.groupRepository.findByGroupName(groupName)
-            .orElseThrow(() -> new GroupNotExistException(groupName));
+        final Group group = this.groupRepository.findById(groupId)
+            .orElseThrow(() -> new GroupNotExistException(groupId));
 
         group.checkAreInGroup(user);
 
         final List<BankingAccount> accounts = this.bankingAccountRepository.findByGroup(group);
-
-        BankingAccountDTO bankingAccountDTO;
-
-        for(final BankingAccount bankingAccount : accounts){
-            bankingAccountDTO = new BankingAccountDTO(bankingAccount);
-            bankingAccountDTO.setBalance(bankingAccount.getInitialBalance());
-            groupAccountDTOList.add(bankingAccountDTO);
-        }
-
-        return groupAccountDTOList;
+        return BANKING_ACCOUNT_DTO_BUILDER.transformAll(accounts);
     }
 
     @Override
@@ -229,12 +209,10 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
         this.checkIsUserAccount(bankingAccount, user);
 
-        final BankingAccountDTO bankingAccountDTO = new BankingAccountDTO(bankingAccount);
+        final BankingAccountDTO bankingAccountDTO = BANKING_ACCOUNT_DTO_BUILDER.transform(bankingAccount);
         bankingAccountDTO.setBalance(bankingAccount.getInitialBalance());
 
         return bankingAccountDTO;
     }
-
-
 
 }

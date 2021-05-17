@@ -2,10 +2,7 @@ package fr.finanting.server.dto;
 
 import java.util.Date;
 
-import fr.finanting.server.codegen.model.CategoryDTO;
-import fr.finanting.server.codegen.model.ClassificationDTO;
-import fr.finanting.server.codegen.model.CurrencyDTO;
-import fr.finanting.server.codegen.model.ThirdDTO;
+import fr.finanting.server.codegen.model.*;
 import fr.finanting.server.model.BankingTransaction;
 import lombok.Data;
 
@@ -31,12 +28,13 @@ public class BankingTransactionDTO {
     private static final ClassificationDTOBuilder CLASSIFICATION_DTO_BUILDER = new ClassificationDTOBuilder();
     private static final CurrencyDTOBuilder CURRENCY_DTO_BUILDER = new CurrencyDTOBuilder();
     private static final ThirdDTOBuilder THIRD_DTO_BUILDER = new ThirdDTOBuilder();
+    private static final BankingAccountDTOBuilder BANKING_ACCOUNT_DTO_BUILDER = new BankingAccountDTOBuilder();
 
     public BankingTransactionDTO(final BankingTransaction bankingTransaction){
 
         this.id = bankingTransaction.getId();
 
-        this.bankingAccountDTO = new BankingAccountDTO(bankingTransaction.getAccount());
+        this.bankingAccountDTO = BANKING_ACCOUNT_DTO_BUILDER.transform(bankingTransaction.getAccount());
 
         this.transactionDate = bankingTransaction.getTransactionDate();
         this.amountDate = bankingTransaction.getAmountDate();
@@ -49,7 +47,7 @@ public class BankingTransactionDTO {
         this.description = bankingTransaction.getDescription();
 
         if(bankingTransaction.getLinkedAccount() != null){
-            this.linkedBankingAccountDTO = new BankingAccountDTO(bankingTransaction.getLinkedAccount());
+            this.linkedBankingAccountDTO = BANKING_ACCOUNT_DTO_BUILDER.transform(bankingTransaction.getLinkedAccount());
         }
 
         if(bankingTransaction.getThird() != null){

@@ -557,7 +557,105 @@ paths:
                 items:
                   $ref: '#/components/schemas/ThirdDTO'
 
+  /bankingAccount:
+    put:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: createBankingAccount
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankingAccountParameter'
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingAccountDTO'
+    get:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: getUserBankingAccounts
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankingAccountDTO'
 
+  /bankingAccount/{bankingAccountId}:
+    delete:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: deleteBankingAccount
+      parameters:
+      - name: bankingAccountId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: updateBankingAccount
+      parameters:
+      - name: bankingAccountId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBankingAccountParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingAccountDTO'
+
+  /bankingAccount/{groupId}:
+    get:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: getGroupBankingAccounts
+      parameters:
+      - name: groupId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankingAccountDTO'
 
 components:
   securitySchemes:
@@ -718,6 +816,24 @@ components:
           $ref: '#/components/schemas/AddressDTO'
         contactDTO:
           $ref: '#/components/schemas/ContactDTO'
+          
+    BankingAccountDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        balance:
+          type: integer
+        bankDetailsDTO:
+          $ref: '#/components/schemas/BankDetailsDTO'
+        currencyDTO:
+          $ref: '#/components/schemas/CurrencyDTO'
+        addressDTO:
+          $ref: '#/components/schemas/AddressDTO'
 
     UserRegistrationParameter:
       type: object
@@ -816,6 +932,8 @@ components:
           type: string
         abbreviation:
           type: string
+          minLength: 3
+          maxLength: 6
         description:
           type: string
         groupName:
@@ -838,6 +956,8 @@ components:
           type: string
         abbreviation:
           type: string
+          minLength: 3
+          maxLength: 6
         description:
           type: string
         categoryType:
@@ -856,6 +976,8 @@ components:
           type: string
         abbreviation:
           type: string
+          minLength: 3
+          maxLength: 6
         description:
           type: string
         groupName:
@@ -871,6 +993,8 @@ components:
           type: string
         abbreviation:
           type: string
+          minLength: 3
+          maxLength: 6
         description:
           type: string
       required:
@@ -944,6 +1068,8 @@ components:
           type: string
         abbreviation:
           type: string
+          minLength: 3
+          maxLength: 6
         description:
           type: string
         defaultCategoryId:
@@ -967,6 +1093,8 @@ components:
           type: string
         abbreviation:
           type: string
+          minLength: 3
+          maxLength: 6
         description:
           type: string
         defaultCategoryId:
@@ -980,3 +1108,55 @@ components:
       required:
         - label
         - abbreviation
+  
+    BankingAccountParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        defaultCurrencyISOCode:
+          type: string
+          minLength: 3
+          maxLength: 3
+        initialBalance:
+          type: integer
+        groupName:
+          type: string
+        bankDetailsParameter:
+          $ref: '#/components/schemas/BankDetailsParameter'
+        addressParameter:
+          $ref: '#/components/schemas/AddressParameter'
+      required:
+        - label
+        - abbreviation
+        - defaultCurrencyISOCode
+        - initialBalance
+        
+    UpdateBankingAccountParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        defaultCurrencyISOCode:
+          type: string
+          minLength: 3
+          maxLength: 3
+        initialBalance:
+          type: integer
+        bankDetailsParameter:
+          $ref: '#/components/schemas/BankDetailsParameter'
+        addressParameter:
+          $ref: '#/components/schemas/AddressParameter'
+      required:
+        - label
+        - abbreviation
+        - defaultCurrencyISOCode
+        - initialBalance

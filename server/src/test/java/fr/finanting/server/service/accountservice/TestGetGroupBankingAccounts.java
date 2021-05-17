@@ -1,6 +1,6 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.dto.BankingAccountDTO;
+import fr.finanting.server.codegen.model.BankingAccountDTO;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.BankingAccount;
@@ -52,7 +52,8 @@ public class TestGetGroupBankingAccounts extends AbstractMotherIntegrationTest {
         final BankingAccount bankingAccount2 = this.testFactory.getBankingAccount(this.group);
         final BankingAccount bankingAccount3 = this.testFactory.getBankingAccount(this.group);
 
-        final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getGroupBankingAccounts(this.group.getGroupName(), this.user.getUserName());
+        final List<BankingAccountDTO> bankingAccountsDTO =
+                this.bankingAccountServiceImpl.getGroupBankingAccounts(this.group.getId(), this.user.getUserName());
 
         Assertions.assertEquals(3, bankingAccountsDTO.size());
 
@@ -78,14 +79,14 @@ public class TestGetGroupBankingAccounts extends AbstractMotherIntegrationTest {
         final User otherUser = this.testFactory.getUser();
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.bankingAccountServiceImpl.getGroupBankingAccounts(this.group.getGroupName(), otherUser.getUserName()));
+            () -> this.bankingAccountServiceImpl.getGroupBankingAccounts(this.group.getId(), otherUser.getUserName()));
 
     }
 
     @Test
     public void testGetGroupAccountNotExisted() {
         Assertions.assertThrows(GroupNotExistException.class,
-            () -> this.bankingAccountServiceImpl.getGroupBankingAccounts(this.testFactory.getRandomAlphanumericString(), this.user.getUserName()));
+            () -> this.bankingAccountServiceImpl.getGroupBankingAccounts(this.testFactory.getRandomInteger(), this.user.getUserName()));
     }
 
     private void checkAccount(final BankingAccountDTO bankingAccountDTO,
