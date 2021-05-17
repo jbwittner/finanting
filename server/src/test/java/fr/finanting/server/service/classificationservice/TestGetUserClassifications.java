@@ -3,11 +3,11 @@ package fr.finanting.server.service.classificationservice;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.ClassificationDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.finanting.server.dto.ClassificationDTO;
 import fr.finanting.server.model.Classification;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.ClassificationRepository;
@@ -64,7 +64,7 @@ public class TestGetUserClassifications extends AbstractMotherIntegrationTest {
                 if(classification.getId().equals(classificationDTO.getId())){
                     isPresent = true;
                     Assertions.assertEquals(classificationDTO.getAbbreviation(), classification.getAbbreviation());
-                    Assertions.assertEquals(classificationDTO.getDescritpion(), classification.getDescritpion());
+                    Assertions.assertEquals(classificationDTO.getDescription(), classification.getDescritpion());
                     Assertions.assertEquals(classificationDTO.getLabel(), classification.getLabel());
                 }
             }

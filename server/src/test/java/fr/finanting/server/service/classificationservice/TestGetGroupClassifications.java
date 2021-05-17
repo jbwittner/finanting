@@ -3,11 +3,11 @@ package fr.finanting.server.service.classificationservice;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.ClassificationDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.finanting.server.dto.ClassificationDTO;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Classification;
@@ -60,7 +60,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
             
         }
 
-        final List<ClassificationDTO> classificationDTOs = this.classificationServiceImpl.getGroupClassifications(this.group.getGroupName(), this.user.getUserName());
+        final List<ClassificationDTO> classificationDTOs = this.classificationServiceImpl.getGroupClassifications(this.group.getId(), this.user.getUserName());
 
         Assertions.assertEquals(NUMBER_CLASSIFICATIONS, classificationDTOs.size());
 
@@ -71,7 +71,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
                 if(classification.getId().equals(classificationDTO.getId())){
                     isPresent = true;
                     Assertions.assertEquals(classificationDTO.getAbbreviation(), classification.getAbbreviation());
-                    Assertions.assertEquals(classificationDTO.getDescritpion(), classification.getDescritpion());
+                    Assertions.assertEquals(classificationDTO.getDescription(), classification.getDescritpion());
                     Assertions.assertEquals(classificationDTO.getLabel(), classification.getLabel());
                 }
             }
@@ -85,7 +85,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
     public void testGetGroupClassificationsWithNonExistentGroup(){
 
         Assertions.assertThrows(GroupNotExistException.class,
-            () -> this.classificationServiceImpl.getGroupClassifications(this.faker.company().name(), this.user.getUserName()));
+            () -> this.classificationServiceImpl.getGroupClassifications(this.testFactory.getRandomInteger(), this.user.getUserName()));
 
     }
 
@@ -95,7 +95,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
         final User otherUser = this.testFactory.getUser();
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.classificationServiceImpl.getGroupClassifications(this.group.getGroupName(), otherUser.getUserName()));
+            () -> this.classificationServiceImpl.getGroupClassifications(this.group.getId(), otherUser.getUserName()));
 
     }
     

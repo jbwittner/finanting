@@ -1,6 +1,7 @@
 package fr.finanting.server.service.categoryservice;
 
 import fr.finanting.server.codegen.model.CategoryParameter;
+import fr.finanting.server.codegen.model.UpdateCategoryParameter;
 import fr.finanting.server.exception.BadAssociationCategoryTypeException;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroupException;
 import fr.finanting.server.exception.CategoryNoUserException;
@@ -53,20 +54,20 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
         final Integer categoryId = category.getId();
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
-        categoryParameter.setDescription(this.faker.superhero().descriptor());
-        categoryParameter.setLabel(this.faker.company().name());
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
+        updateCategoryParameter.setDescription(this.faker.superhero().descriptor());
+        updateCategoryParameter.setLabel(this.faker.company().name());
         
-        this.categoryServiceImpl.updateCategory(categoryId, categoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(categoryId, updateCategoryParameter, this.user.getUserName());
 
         category = this.categoryRepository.findById(categoryId).orElseThrow();
 
-        Assertions.assertEquals(categoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
-        Assertions.assertEquals(categoryParameter.getCategoryType().name(), category.getCategoryType().name());
-        Assertions.assertEquals(categoryParameter.getDescription(), category.getDescritpion());
-        Assertions.assertEquals(categoryParameter.getLabel(), category.getLabel());
+        Assertions.assertEquals(updateCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
+        Assertions.assertEquals(updateCategoryParameter.getCategoryType().name(), category.getCategoryType().name());
+        Assertions.assertEquals(updateCategoryParameter.getDescription(), category.getDescritpion());
+        Assertions.assertEquals(updateCategoryParameter.getLabel(), category.getLabel());
         Assertions.assertEquals(this.user.getUserName(), category.getUser().getUserName());
         Assertions.assertNull(category.getGroup());
         Assertions.assertNull(category.getParent());
@@ -80,20 +81,20 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
         final Integer categoryId = category.getId();
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
-        categoryParameter.setDescription(this.faker.superhero().descriptor());
-        categoryParameter.setLabel(this.faker.company().name());
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
+        updateCategoryParameter.setDescription(this.faker.superhero().descriptor());
+        updateCategoryParameter.setLabel(this.faker.company().name());
         
-        this.categoryServiceImpl.updateCategory(categoryId, categoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(categoryId, updateCategoryParameter, this.user.getUserName());
 
         category = this.categoryRepository.findById(categoryId).orElseThrow();
 
-        Assertions.assertEquals(categoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
-        Assertions.assertEquals(categoryParameter.getCategoryType().name(), category.getCategoryType().name());
-        Assertions.assertEquals(categoryParameter.getDescription(), category.getDescritpion());
-        Assertions.assertEquals(categoryParameter.getLabel(), category.getLabel());
+        Assertions.assertEquals(updateCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
+        Assertions.assertEquals(updateCategoryParameter.getCategoryType().name(), category.getCategoryType().name());
+        Assertions.assertEquals(updateCategoryParameter.getDescription(), category.getDescritpion());
+        Assertions.assertEquals(updateCategoryParameter.getLabel(), category.getLabel());
         Assertions.assertNull(category.getUser());
         Assertions.assertEquals(this.group.getGroupName(), category.getGroup().getGroupName());
         Assertions.assertNull(category.getParent());
@@ -109,13 +110,13 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
         final Integer categoryId = category.getId();
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
-        categoryParameter.setDescription(this.faker.superhero().descriptor());
-        categoryParameter.setLabel(this.faker.company().name());
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
+        updateCategoryParameter.setDescription(this.faker.superhero().descriptor());
+        updateCategoryParameter.setLabel(this.faker.company().name());
 
-        this.categoryServiceImpl.updateCategory(categoryId, categoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(categoryId, updateCategoryParameter, this.user.getUserName());
 
         category = this.categoryRepository.findById(categoryId).orElseThrow();
 
@@ -129,15 +130,15 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final Category parentCategory = this.testFactory.getCategory(this.user, true);
         Category category = this.testFactory.getCategory(this.user, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         final Integer categoryId = category.getId();
-        categoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
-        categoryParameter.setDescription(this.faker.superhero().descriptor());
-        categoryParameter.setLabel(this.faker.company().name());
-        categoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
+        updateCategoryParameter.setDescription(this.faker.superhero().descriptor());
+        updateCategoryParameter.setLabel(this.faker.company().name());
+        updateCategoryParameter.setParentId(parentCategory.getId());
 
-        this.categoryServiceImpl.updateCategory(categoryId, categoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(categoryId, updateCategoryParameter, this.user.getUserName());
 
         category = this.categoryRepository.findById(categoryId).orElseThrow();
 
@@ -152,15 +153,15 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final Category parentCategory = this.testFactory.getCategory(this.group, true);
         Category category = this.testFactory.getCategory(this.group, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
         final Integer categoryId = category.getId();
-        categoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
-        categoryParameter.setDescription(this.faker.superhero().descriptor());
-        categoryParameter.setLabel(this.faker.company().name());
-        categoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
+        updateCategoryParameter.setDescription(this.faker.superhero().descriptor());
+        updateCategoryParameter.setLabel(this.faker.company().name());
+        updateCategoryParameter.setParentId(parentCategory.getId());
 
-        this.categoryServiceImpl.updateCategory(categoryId, categoryParameter, this.user.getUserName());
+        this.categoryServiceImpl.updateCategory(categoryId, updateCategoryParameter, this.user.getUserName());
 
         category = this.categoryRepository.findById(categoryId).orElseThrow();
 
@@ -174,24 +175,24 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final Category parentCategory = this.testFactory.getCategory(otherUser, true);
         final Category category = this.testFactory.getCategory(this.user, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setParentId(parentCategory.getId());
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
 
         Assertions.assertThrows(CategoryNoUserException.class,
-            () -> this.categoryServiceImpl.updateCategory(category.getId(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(category.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
     public void testUpdateCategoryWithNoExistParentCategory() {
         final Category category = this.testFactory.getCategory(this.user, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setParentId(this.testFactory.getRandomInteger());
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setParentId(this.testFactory.getRandomInteger());
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
 
         Assertions.assertThrows(CategoryNotExistException.class,
-            () -> this.categoryServiceImpl.updateCategory(category.getId(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(category.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
@@ -199,20 +200,20 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final Category parentCategory = this.testFactory.getCategory(this.user, false);
         final Category category = this.testFactory.getCategory(this.user, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setParentId(parentCategory.getId());
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
 
         Assertions.assertThrows(BadAssociationCategoryTypeException.class,
-            () -> this.categoryServiceImpl.updateCategory(category.getId(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(category.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
     public void testUpdateCategoryWithNoExistCategory() {
-        final CategoryParameter categoryParameter = new CategoryParameter();
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
 
         Assertions.assertThrows(CategoryNotExistException.class,
-            () -> this.categoryServiceImpl.updateCategory(this.testFactory.getRandomInteger(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(this.testFactory.getRandomInteger(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
@@ -221,10 +222,10 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final Group otherGroup = this.testFactory.getGroup();
         final Category otherCathegory = this.testFactory.getCategory(otherGroup, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.categoryServiceImpl.updateCategory(otherCathegory.getId(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(otherCathegory.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
@@ -233,10 +234,10 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final User otherUser = this.testFactory.getUser();
         final Category otherCathegory = this.testFactory.getCategory(otherUser, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
 
         Assertions.assertThrows(CategoryNoUserException.class,
-            () -> this.categoryServiceImpl.updateCategory(otherCathegory.getId(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(otherCathegory.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
@@ -244,12 +245,12 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final Category parentCategory = this.testFactory.getCategory(this.group, true);
         final Category category = this.testFactory.getCategory(this.user, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setParentId(parentCategory.getId());
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
 
         Assertions.assertThrows(BadAssociationCategoryUserGroupException.class,
-            () -> this.categoryServiceImpl.updateCategory(category.getId(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(category.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
@@ -257,12 +258,12 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final Category parentCategory = this.testFactory.getCategory(this.user, true);
         final Category category = this.testFactory.getCategory(this.group, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setParentId(parentCategory.getId());
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
 
         Assertions.assertThrows(BadAssociationCategoryUserGroupException.class,
-            () -> this.categoryServiceImpl.updateCategory(category.getId(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(category.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
@@ -272,12 +273,12 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final Category parentCategory = this.testFactory.getCategory(otherGroup, true);
         final Category category = this.testFactory.getCategory(this.group, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setParentId(parentCategory.getId());
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.categoryServiceImpl.updateCategory(category.getId(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(category.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
@@ -287,12 +288,12 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
         final Category parentCategory = this.testFactory.getCategory(otherGroup, true);
         final Category category = this.testFactory.getCategory(this.group, true);
 
-        final CategoryParameter categoryParameter = new CategoryParameter();
-        categoryParameter.setParentId(parentCategory.getId());
-        categoryParameter.setCategoryType(CategoryParameter.CategoryTypeEnum.EXPENSE);
+        final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
+        updateCategoryParameter.setParentId(parentCategory.getId());
+        updateCategoryParameter.setCategoryType(UpdateCategoryParameter.CategoryTypeEnum.EXPENSE);
 
         Assertions.assertThrows(BadAssociationCategoryUserGroupException.class,
-            () -> this.categoryServiceImpl.updateCategory(category.getId(), categoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(category.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     

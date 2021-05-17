@@ -1,5 +1,6 @@
 package fr.finanting.server.service.classificationservice;
 
+import fr.finanting.server.codegen.model.UpdateClassificationParameter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Classification;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.UpdateClassificationParameter;
 import fr.finanting.server.repository.ClassificationRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
@@ -50,16 +50,15 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
 
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
         updateClassificationParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5).toLowerCase());
-        updateClassificationParameter.setDescritpion(this.faker.superhero().descriptor());
+        updateClassificationParameter.setDescription(this.faker.superhero().descriptor());
         updateClassificationParameter.setLabel(this.faker.company().name());
-        updateClassificationParameter.setId(classification.getId());
 
-        this.classificationServiceImpl.updateClassification(updateClassificationParameter, this.user.getUserName());
+        this.classificationServiceImpl.updateClassification(classification.getId(), updateClassificationParameter, this.user.getUserName());
 
         final Classification classificationSaved = this.classificationRepository.findAll().get(0);
 
         Assertions.assertEquals(updateClassificationParameter.getAbbreviation().toUpperCase(), classificationSaved.getAbbreviation());
-        Assertions.assertEquals(updateClassificationParameter.getDescritpion(), classificationSaved.getDescritpion());
+        Assertions.assertEquals(updateClassificationParameter.getDescription(), classificationSaved.getDescritpion());
         Assertions.assertEquals(updateClassificationParameter.getLabel(), classificationSaved.getLabel());
         Assertions.assertEquals(this.user.getUserName(), classificationSaved.getUser().getUserName());
         Assertions.assertNull(classificationSaved.getGroup());
@@ -72,16 +71,15 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
 
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
         updateClassificationParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5).toLowerCase());
-        updateClassificationParameter.setDescritpion(this.faker.superhero().descriptor());
+        updateClassificationParameter.setDescription(this.faker.superhero().descriptor());
         updateClassificationParameter.setLabel(this.faker.company().name());
-        updateClassificationParameter.setId(classification.getId());
 
-        this.classificationServiceImpl.updateClassification(updateClassificationParameter, this.user.getUserName());
+        this.classificationServiceImpl.updateClassification(classification.getId(), updateClassificationParameter, this.user.getUserName());
 
         final Classification classificationSaved = this.classificationRepository.findAll().get(0);
 
         Assertions.assertEquals(updateClassificationParameter.getAbbreviation().toUpperCase(), classificationSaved.getAbbreviation());
-        Assertions.assertEquals(updateClassificationParameter.getDescritpion(), classificationSaved.getDescritpion());
+        Assertions.assertEquals(updateClassificationParameter.getDescription(), classificationSaved.getDescritpion());
         Assertions.assertEquals(updateClassificationParameter.getLabel(), classificationSaved.getLabel());
         Assertions.assertEquals(this.group.getGroupName(), classificationSaved.getGroup().getGroupName());
         Assertions.assertNull(classificationSaved.getUser());
@@ -91,10 +89,9 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
     @Test
     public void testUpdateClassificationNotExist() {
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
-        updateClassificationParameter.setId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(ClassificationNotExistException.class,
-            () -> this.classificationServiceImpl.updateClassification(updateClassificationParameter, this.user.getUserName()));
+            () -> this.classificationServiceImpl.updateClassification(this.testFactory.getRandomInteger(), updateClassificationParameter, this.user.getUserName()));
     }
 
     @Test
@@ -104,10 +101,9 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
         final User otherUser = this.testFactory.getUser();
 
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
-        updateClassificationParameter.setId(classification.getId());
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.classificationServiceImpl.updateClassification(updateClassificationParameter, otherUser.getUserName()));
+            () -> this.classificationServiceImpl.updateClassification(classification.getId(), updateClassificationParameter, otherUser.getUserName()));
     }
 
     @Test
@@ -117,10 +113,9 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
         final User otherUser = this.testFactory.getUser();
 
         final UpdateClassificationParameter updateClassificationParameter = new UpdateClassificationParameter();
-        updateClassificationParameter.setId(classification.getId());
 
         Assertions.assertThrows(ClassificationNoUserException.class,
-            () -> this.classificationServiceImpl.updateClassification(updateClassificationParameter, otherUser.getUserName()));
+            () -> this.classificationServiceImpl.updateClassification(classification.getId(), updateClassificationParameter, otherUser.getUserName()));
     }
 
 

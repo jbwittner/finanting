@@ -277,7 +277,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CategoryParameter'
+              $ref: '#/components/schemas/UpdateCategoryParameter'
       responses:
         200:
           description: aaaaaaaaaaaaa
@@ -369,7 +369,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClassificationParameter'
+              $ref: '#/components/schemas/UpdateClassificationParameter'
       responses:
         200:
           description: aaaaaaaaaaaaa
@@ -594,6 +594,26 @@ components:
       required:
         - label
         - abbreviation
+        
+    UpdateCategoryParameter:
+      type: object
+      properties:
+        parentId:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        categoryType:
+          type: string
+          enum:
+            - EXPENSE
+            - REVENUE
+      required:
+        - label
+        - abbreviation
 
     ClassificationParameter:
       type: object
@@ -605,6 +625,19 @@ components:
         description:
           type: string
         groupName:
+          type: string
+      required:
+        - label
+        - abbreviation
+    
+    UpdateClassificationParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
           type: string
       required:
         - label

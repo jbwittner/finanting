@@ -3,11 +3,13 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.ClassificationDTO;
 import fr.finanting.server.codegen.model.ClassificationParameter;
+import fr.finanting.server.codegen.model.UpdateClassificationParameter;
+import fr.finanting.server.dto.ClassificationDTOBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.finanting.server.dto.ClassificationDTO;
 import fr.finanting.server.exception.ClassificationNoUserException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
@@ -15,8 +17,6 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Classification;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.DeleteClassificationParameter;
-import fr.finanting.server.parameter.UpdateClassificationParameter;
 import fr.finanting.server.repository.ClassificationRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
@@ -28,6 +28,8 @@ public class ClassificationServiceImpl implements ClassificationService {
     private ClassificationRepository classificationRepository;
     private GroupRepository groupRepository;
     private UserRepository userRepository;
+
+    private static final ClassificationDTOBuilder CLASSIFICATION_DTO_BUILDER = new ClassificationDTOBuilder();
 
     @Autowired
     public ClassificationServiceImpl(final ClassificationRepository classificationRepository,
@@ -66,13 +68,13 @@ public class ClassificationServiceImpl implements ClassificationService {
 	}
 
     @Override
-    public void updateClassification(final UpdateClassificationParameter updateClassificationParameter, final String userName)
+    public void updateClassification(Integer classificationId, final UpdateClassificationParameter updateClassificationParameter, final String userName)
         throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final Classification classification = this.classificationRepository.findById(updateClassificationParameter.getId())
-            .orElseThrow(() -> new ClassificationNotExistException(updateClassificationParameter.getId()));
+        final Classification classification = this.classificationRepository.findById(classificationId)
+            .orElseThrow(() -> new ClassificationNotExistException(classificationId));
         
         if(classification.getGroup() == null){
             if(!classification.getUser().getUserName().equals(userName)){
@@ -84,7 +86,7 @@ public class ClassificationServiceImpl implements ClassificationService {
         }
 
         classification.setAbbreviation(updateClassificationParameter.getAbbreviation().toUpperCase());
-        classification.setDescritpion(updateClassificationParameter.getDescritpion());
+        classification.setDescritpion(updateClassificationParameter.getDescription());
         classification.setLabel(updateClassificationParameter.getLabel());
 
         this.classificationRepository.save(classification);
@@ -112,35 +114,24 @@ public class ClassificationServiceImpl implements ClassificationService {
         
     }
 
-    private List<ClassificationDTO> getListClassificationDTO(final List<Classification> classifications){
-        final List<ClassificationDTO> classificationDTOs = new ArrayList<>();
-
-        for(final Classification classification : classifications){
-            final ClassificationDTO classificationDTO = new ClassificationDTO(classification);
-            classificationDTOs.add(classificationDTO);
-        }
-
-        return classificationDTOs;
-    }
-
     @Override
     public List<ClassificationDTO> getUserClassifications(final String userName) {
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final List<Classification> classifications = this.classificationRepository.findByUserAndGroupIsNull(user);
-        return this.getListClassificationDTO(classifications);
+        return CLASSIFICATION_DTO_BUILDER.transformAll(classifications);
     }
 
     @Override
-    public List<ClassificationDTO> getGroupClassifications(final String groupName, final String userName) throws GroupNotExistException, UserNotInGroupException {
+    public List<ClassificationDTO> getGroupClassifications(final Integer groupId, final String userName) throws GroupNotExistException, UserNotInGroupException {
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final Group group = this.groupRepository.findByGroupName(groupName)
-                .orElseThrow(() -> new GroupNotExistException(groupName));
+        final Group group = this.groupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupNotExistException(groupId));
 
         group.checkAreInGroup(user);
 
         final List<Classification> classifications = this.classificationRepository.findByGroupAndUserIsNull(group);
-        return this.getListClassificationDTO(classifications);
+        return CLASSIFICATION_DTO_BUILDER.transformAll(classifications);
     }
 
 }

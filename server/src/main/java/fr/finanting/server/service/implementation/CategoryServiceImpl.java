@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.finanting.server.codegen.model.CategoryParameter;
 import fr.finanting.server.codegen.model.TreeCategoryDTO;
+import fr.finanting.server.codegen.model.UpdateCategoryParameter;
 import fr.finanting.server.dto.TreeCategoryDTOBuilder;
 import fr.finanting.server.model.CategoryType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private boolean canNotAssociateCategory(CategoryType categoryType, CategoryParameter.CategoryTypeEnum categoryTypeEnum){
+        return !categoryType.name().equals(categoryTypeEnum.name());
+    }
+
+    private boolean canNotAssociateCategory(CategoryType categoryType, UpdateCategoryParameter.CategoryTypeEnum categoryTypeEnum){
         return !categoryType.name().equals(categoryTypeEnum.name());
     }
 
@@ -108,7 +113,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategory(final Integer categoryId, CategoryParameter categoryParameter, final String userName)
+    public void updateCategory(final Integer categoryId, UpdateCategoryParameter updateCategoryParameter, final String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException{
 
         final Category category = this.categoryRepository.findById(categoryId)
@@ -122,13 +127,13 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNoUserException(categoryId);
         }
 
-        if(categoryParameter.getParentId() == null){
+        if(updateCategoryParameter.getParentId() == null){
             category.setParent(null);
         } else {
-            final Integer id = categoryParameter.getParentId();
+            final Integer id = updateCategoryParameter.getParentId();
             final Category parentCategory = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotExistException(id));
 
-            if(this.canNotAssociateCategory(parentCategory.getCategoryType(), categoryParameter.getCategoryType())){
+            if(this.canNotAssociateCategory(parentCategory.getCategoryType(), updateCategoryParameter.getCategoryType())){
                 throw new BadAssociationCategoryTypeException();
             }
 
@@ -157,10 +162,10 @@ public class CategoryServiceImpl implements CategoryService {
 
         }
 
-        category.setLabel(categoryParameter.getLabel());
-        category.setAbbreviation(categoryParameter.getAbbreviation().toUpperCase());
-        category.setDescritpion(categoryParameter.getDescription());
-        category.setCategoryType(CategoryType.valueOf(categoryParameter.getCategoryType().name()));
+        category.setLabel(updateCategoryParameter.getLabel());
+        category.setAbbreviation(updateCategoryParameter.getAbbreviation().toUpperCase());
+        category.setDescritpion(updateCategoryParameter.getDescription());
+        category.setCategoryType(CategoryType.valueOf(updateCategoryParameter.getCategoryType().name()));
 
         this.categoryRepository.saveAndFlush(category);
 

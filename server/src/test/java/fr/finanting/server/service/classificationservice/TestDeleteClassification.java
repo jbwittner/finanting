@@ -12,7 +12,6 @@ import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Classification;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.DeleteClassificationParameter;
 import fr.finanting.server.repository.ClassificationRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;

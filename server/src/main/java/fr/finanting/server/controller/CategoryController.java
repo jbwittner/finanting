@@ -4,6 +4,7 @@ import fr.finanting.server.codegen.api.CategoryApi;
 import fr.finanting.server.codegen.model.CategoryDTO;
 import fr.finanting.server.codegen.model.CategoryParameter;
 import fr.finanting.server.codegen.model.TreeCategoryDTO;
+import fr.finanting.server.codegen.model.UpdateCategoryParameter;
 import fr.finanting.server.service.CategoryService;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class CategoryController extends MotherController implements CategoryApi 
     }
 
     @Override
-    public ResponseEntity<Void> updateCategory(Integer categoryId, CategoryParameter body) {
+    public ResponseEntity<Void> updateCategory(Integer categoryId, UpdateCategoryParameter body) {
         final String userName = this.getCurrentPrincipalName();
         this.categoryService.updateCategory(categoryId, body, userName);
         return new ResponseEntity<>(HttpStatus.OK);

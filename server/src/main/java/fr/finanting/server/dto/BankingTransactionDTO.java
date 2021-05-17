@@ -3,6 +3,7 @@ package fr.finanting.server.dto;
 import java.util.Date;
 
 import fr.finanting.server.codegen.model.CategoryDTO;
+import fr.finanting.server.codegen.model.ClassificationDTO;
 import fr.finanting.server.model.BankingTransaction;
 import lombok.Data;
 
@@ -25,6 +26,7 @@ public class BankingTransactionDTO {
     Date updateTimestamp;
 
     private static final CategoryDTOBuilder CATEGORY_DTO_BUILDER = new CategoryDTOBuilder();
+    private static final ClassificationDTOBuilder CLASSIFICATION_DTO_BUILDER = new ClassificationDTOBuilder();
 
     public BankingTransactionDTO(final BankingTransaction bankingTransaction){
 
@@ -55,7 +57,7 @@ public class BankingTransactionDTO {
         }
 
         if(bankingTransaction.getClassification()!= null){
-            this.classificationDTO = new ClassificationDTO(bankingTransaction.getClassification());
+            this.classificationDTO = CLASSIFICATION_DTO_BUILDER.transform(bankingTransaction.getClassification());
         }
 
         this.createTimestamp = bankingTransaction.getCreateTimestamp();
