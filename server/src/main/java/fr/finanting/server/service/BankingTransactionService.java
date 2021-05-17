@@ -1,8 +1,7 @@
 package fr.finanting.server.service;
 
-import java.util.List;
-
-import fr.finanting.server.dto.BankingTransactionDTO;
+import fr.finanting.server.codegen.model.BankingTransactionDTO;
+import fr.finanting.server.codegen.model.BankingTransactionParameter;
 import fr.finanting.server.exception.BadAssociationElementException;
 import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.BankingTransactionNotExistException;
@@ -12,26 +11,27 @@ import fr.finanting.server.exception.CurrencyNotExistException;
 import fr.finanting.server.exception.NotUserElementException;
 import fr.finanting.server.exception.ThirdNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
-import fr.finanting.server.parameter.CreateBankingTransactionParameter;
-import fr.finanting.server.parameter.UpdateBankingTransactionParameter;
+
+import java.util.List;
 
 public interface BankingTransactionService {
 
-    public BankingTransactionDTO createBankingTransaction(final CreateBankingTransactionParameter createBankingTransactionParameter, String userName)
+    BankingTransactionDTO createBankingTransaction(final BankingTransactionParameter bankingTransactionParameter, String userName)
         throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException,
         CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException;
 
-    public BankingTransactionDTO updateBankingTransaction(final UpdateBankingTransactionParameter updateBankingTransactionParameter, final String userName)
+    BankingTransactionDTO updateBankingTransaction(Integer bankingTransactionId,
+                                                          final BankingTransactionParameter bankingTransactionParameter, final String userName)
         throws BankingTransactionNotExistException, BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException,
         ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException;
 
-    public BankingTransactionDTO getBankingTransaction(final Integer id, final String userName) 
+    BankingTransactionDTO getBankingTransaction(final Integer bankingTransactionId, final String userName)
         throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException;
 
-    public List<BankingTransactionDTO> getAccountBankingTransaction(final Integer id, final String userName) 
+    List<BankingTransactionDTO> getBankingAccountTransaction(final Integer bankingAccountId, final String userName)
         throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException, BankingAccountNotExistException;
 
-    public void deleteAccountBankingTransaction(final Integer id, final String userName)
+    void deleteAccountBankingTransaction(final Integer bankingTransactionId, final String userName)
         throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException;
     
 }

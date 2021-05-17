@@ -657,6 +657,108 @@ paths:
                 items:
                   $ref: '#/components/schemas/BankingAccountDTO'
 
+  /bankingTransaction:
+    put:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: createBankingTransaction
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankingTransactionParameter'
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingTransactionDTO'
+  /bankingTransaction/{bankingTransactionId}:
+    delete:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: deleteBankingTransaction
+      parameters:
+      - name: bankingTransactionId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: updateBankingTransaction
+      parameters:
+      - name: bankingTransactionId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankingTransactionParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingTransactionDTO'
+    get:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: getBankingTransaction
+      parameters:
+      - name: bankingTransactionId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingTransactionDTO'
+  /bankingTransaction/{bankingAccountId}:
+    get:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: getBankingAccountTransaction
+      parameters:
+      - name: bankingAccountId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankingTransactionDTO'
+                
 components:
   securitySchemes:
     basicAuth:     # <-- arbitrary name for the security scheme
@@ -834,6 +936,45 @@ components:
           $ref: '#/components/schemas/CurrencyDTO'
         addressDTO:
           $ref: '#/components/schemas/AddressDTO'
+
+    BankingTransactionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        bankingAccountDTO:
+          $ref: '#/components/schemas/BankingAccountDTO'
+        linkedBankingAccountDTO:
+          $ref: '#/components/schemas/BankingAccountDTO'
+        thirdDTO:
+          $ref: '#/components/schemas/ThirdDTO'
+        categoryDTO:
+          $ref: '#/components/schemas/CategoryDTO'
+        classificationDTO:
+          $ref: '#/components/schemas/ClassificationDTO'
+        transactionDate:
+          type: string
+          format: date
+        amountDate:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: double
+        currencyAmount:
+          type: number
+          format: double
+        currencyDTO:
+          $ref: '#/components/schemas/CurrencyDTO'
+        description:
+          type: string
+        createTimestamp:
+          type: string
+          format: date
+        updateTimestamp:
+          type: string
+          format: date
+
 
     UserRegistrationParameter:
       type: object
@@ -1160,3 +1301,42 @@ components:
         - abbreviation
         - defaultCurrencyISOCode
         - initialBalance
+        
+    BankingTransactionParameter:
+      type: object
+      properties:
+        accountId:
+          type: integer
+        linkedAccountId:
+          type: integer
+        thirdId:
+          type: integer
+        initialBalance:
+          type: integer
+        classificationId:
+          type: integer
+        categoryId:
+          type: integer
+        transactionDate:
+          type: string
+          format: date
+        amountDate:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: double
+        currencyAmount:
+          type: number
+          format: double
+        currencyId:
+          type: integer
+        description:
+          type: string
+      required:
+        - accountId
+        - transactionDate
+        - amountDate
+        - amount
+        - currencyAmount
+        - currencyId

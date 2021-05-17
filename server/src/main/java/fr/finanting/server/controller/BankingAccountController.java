@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("bankingAccount")
 public class BankingAccountController extends MotherController implements BankingAccountApi {
 
     private final BankingAccountService bankingAccountService;
