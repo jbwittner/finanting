@@ -11,10 +11,7 @@ import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.repository.BankingAccountRepository;
-import fr.finanting.server.repository.CurrencyRepository;
-import fr.finanting.server.repository.GroupRepository;
-import fr.finanting.server.repository.UserRepository;
+import fr.finanting.server.repository.*;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import org.junit.jupiter.api.Assertions;
@@ -35,6 +32,9 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
     @Autowired
     private CurrencyRepository currencyRepository;
 
+    @Autowired
+    private BankingTransactionRepository bankingTransactionRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
 
     private User user;
@@ -43,7 +43,7 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository, bankingTransactionRepository);
         this.user = this.testFactory.getUser();
         this.group = this.testFactory.getGroup(this.user);
 
@@ -63,7 +63,7 @@ public class TestCreateBankingAccount extends AbstractMotherIntegrationTest {
         bankDetailsParameter.setIban(this.testFactory.getRandomAlphanumericString());
         this.bankingAccountParameter.setBankDetailsParameter(bankDetailsParameter);
 
-        this.bankingAccountParameter.setInitialBalance(this.testFactory.getRandomInteger());
+        this.bankingAccountParameter.setInitialBalance(this.testFactory.getRandomDouble());
         this.bankingAccountParameter.setLabel(this.faker.backToTheFuture().quote());
 
         final Currency currency = this.currencyRepository.save(this.testFactory.getCurrency());

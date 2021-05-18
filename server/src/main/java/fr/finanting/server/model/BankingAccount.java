@@ -33,7 +33,7 @@ public class BankingAccount extends MotherGroupUserElement {
     private String abbreviation;
 
     @Column(name = "INITIAL_BALANCE", nullable = false)
-    private Integer initialBalance = 0;
+    private Double initialBalance = 0.0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DEFAULT_CURRENCY_ID", nullable = false)
@@ -44,11 +44,6 @@ public class BankingAccount extends MotherGroupUserElement {
     
     @Embedded
     private Address address;
-
-    public Integer getBalance(){
-        //TODO
-        return 0;
-    }
 
     @Override
     public String toString() {

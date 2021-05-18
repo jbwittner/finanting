@@ -9,10 +9,7 @@ import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.repository.BankingAccountRepository;
-import fr.finanting.server.repository.CurrencyRepository;
-import fr.finanting.server.repository.GroupRepository;
-import fr.finanting.server.repository.UserRepository;
+import fr.finanting.server.repository.*;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import org.junit.jupiter.api.Assertions;
@@ -33,12 +30,15 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     @Autowired
     private CurrencyRepository currencyRepository;
 
+    @Autowired
+    private BankingTransactionRepository bankingTransactionRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
     private UpdateBankingAccountParameter updateBankingAccountParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository, bankingTransactionRepository);
 
         this.updateBankingAccountParameter = new UpdateBankingAccountParameter();
         final AddressParameter addressParameter = new AddressParameter();
@@ -53,7 +53,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         bankDetailsParameter.setIban(this.testFactory.getRandomAlphanumericString());
         this.updateBankingAccountParameter.setBankDetailsParameter(bankDetailsParameter);
 
-        this.updateBankingAccountParameter.setInitialBalance(this.testFactory.getRandomInteger());
+        this.updateBankingAccountParameter.setInitialBalance(this.testFactory.getRandomDouble());
         this.updateBankingAccountParameter.setLabel(this.faker.backToTheFuture().quote());
         this.updateBankingAccountParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString());
 

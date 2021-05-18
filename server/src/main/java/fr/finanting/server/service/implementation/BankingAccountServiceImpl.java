@@ -3,9 +3,9 @@ package fr.finanting.server.service.implementation;
 import fr.finanting.server.codegen.model.BankingAccountDTO;
 import fr.finanting.server.codegen.model.BankingAccountParameter;
 import fr.finanting.server.codegen.model.UpdateBankingAccountParameter;
-import fr.finanting.server.dto.BankDetailsDTOBuilder;
 import fr.finanting.server.dto.BankingAccountDTOBuilder;
 import fr.finanting.server.exception.*;
+import fr.finanting.server.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +15,11 @@ import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
-import fr.finanting.server.repository.BankingAccountRepository;
-import fr.finanting.server.repository.CurrencyRepository;
-import fr.finanting.server.repository.GroupRepository;
-import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.BankingAccountService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BankingAccountServiceImpl implements BankingAccountService {
@@ -31,16 +28,21 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final CurrencyRepository currencyRepository;
+    private final BankingTransactionRepository bankingTransactionRepository;
 
     private static final BankingAccountDTOBuilder BANKING_ACCOUNT_DTO_BUILDER = new BankingAccountDTOBuilder();
 
     @Autowired
     public BankingAccountServiceImpl(final BankingAccountRepository bankingAccountRepository,
-        final GroupRepository groupRepository, final UserRepository userRepository, final CurrencyRepository currencyRepository){
+                                     final GroupRepository groupRepository,
+                                     final UserRepository userRepository,
+                                     final CurrencyRepository currencyRepository,
+                                     final BankingTransactionRepository bankingTransactionRepository){
             this.bankingAccountRepository = bankingAccountRepository;
             this.groupRepository = groupRepository;
             this.userRepository = userRepository;
             this.currencyRepository = currencyRepository;
+            this.bankingTransactionRepository = bankingTransactionRepository;
         }
 
     @Override
@@ -178,11 +180,26 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     }
 
+    private List<BankingAccountDTO> getBankingAccountDTOList(List<BankingAccount> accounts){
+
+        List<BankingAccountDTO> bankingAccountDTOList = BANKING_ACCOUNT_DTO_BUILDER.transformAll(accounts);
+
+        bankingAccountDTOList = bankingAccountDTOList.stream().peek(bankingAccountDTO -> {
+            BankingAccount bankingAccount = accounts.stream().filter(o -> o.getId().equals(bankingAccountDTO.getId())).findAny().orElseThrow();
+            Double sum = bankingAccount.getInitialBalance();
+            Double sumAmount = this.bankingTransactionRepository.sumAmountByAccountId(bankingAccount.getId());
+            sumAmount = sumAmount != null ? sumAmount : 0.0;
+            bankingAccountDTO.setBalance(sum + sumAmount);
+        }).collect(Collectors.toList());
+
+        return bankingAccountDTOList;
+    }
+
     @Override
     public List<BankingAccountDTO> getUserBankingAccounts(final String userName){
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final List<BankingAccount> userAccounts = this.bankingAccountRepository.findByUser(user);
-        return BANKING_ACCOUNT_DTO_BUILDER.transformAll(userAccounts);
+        return this.getBankingAccountDTOList(userAccounts);
     }
 
     @Override
@@ -195,7 +212,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
         group.checkAreInGroup(user);
 
         final List<BankingAccount> accounts = this.bankingAccountRepository.findByGroup(group);
-        return BANKING_ACCOUNT_DTO_BUILDER.transformAll(accounts);
+        return this.getBankingAccountDTOList(accounts);
     }
 
     @Override
@@ -210,7 +227,10 @@ public class BankingAccountServiceImpl implements BankingAccountService {
         this.checkIsUserAccount(bankingAccount, user);
 
         final BankingAccountDTO bankingAccountDTO = BANKING_ACCOUNT_DTO_BUILDER.transform(bankingAccount);
-        bankingAccountDTO.setBalance(bankingAccount.getInitialBalance());
+        Double sum = this.bankingTransactionRepository.sumAmountByAccountId(bankingAccount.getId());
+        sum = sum != null ? sum : 0.0;
+        sum = sum + bankingAccount.getInitialBalance();
+        bankingAccountDTO.setBalance(sum);
 
         return bankingAccountDTO;
     }

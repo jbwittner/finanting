@@ -19,7 +19,6 @@ public class BankingAccountDTOBuilder extends Transformer<BankingAccount, Bankin
         bankDetailsDTO.setLabel(input.getLabel());
         bankDetailsDTO.setAbbreviation(input.getAbbreviation());
         bankDetailsDTO.setCurrencyDTO(CURRENCY_DTO_BUILDER.transform(input.getDefaultCurrency()));
-        bankDetailsDTO.setBalance(input.getBalance());
 
         if(input.getAddress() != null){
             bankDetailsDTO.setAddressDTO(ADDRESS_DTO_BUILDER.transform(input.getAddress()));

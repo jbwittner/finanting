@@ -90,17 +90,14 @@ public class GroupServiceImpl implements GroupService {
         final List<User> userList = new ArrayList<>();
         userList.add(user);
 
-        if(groupParameter.getUsersName() != null){
-            groupParameter.getUsersName().forEach((userNameToAdd) -> {
-                final User userToAdd = this.userRepository.findByUserName(userNameToAdd)
-                        .orElseThrow(() -> new UserNotExistException(userNameToAdd));
+        groupParameter.getUsersName().forEach((userNameToAdd) -> {
+            final User userToAdd = this.userRepository.findByUserName(userNameToAdd)
+                    .orElseThrow(() -> new UserNotExistException(userNameToAdd));
 
-                userList.add(userToAdd);
-            });
-        }
+            userList.add(userToAdd);
+        });
 
         group.setUsers(userList);
-
         this.groupRepository.save(group);
 
         return GROUP_DTO_BUILDER.transform(group);

@@ -334,7 +334,7 @@ public class TestFactory {
         bankingAccount.setBankDetails(this.getBankDetails());
 
         bankingAccount.setAbbreviation(this.getRandomAlphanumericString(6).toUpperCase());
-        bankingAccount.setInitialBalance(0);
+        bankingAccount.setInitialBalance(0.0);
         bankingAccount.setLabel(this.getRandomAlphanumericString());
 
         bankingAccount.setGroup(group);
@@ -424,6 +424,7 @@ public class TestFactory {
         third.setBankDetails(this.getBankDetails());
         third.setContact(this.getContact());
         third.setDefaultCategory(category);
+        third.setDefaultCurrency(this.getCurrency());
 
         third.setUser(user);
         third.setGroup(group);

@@ -929,7 +929,8 @@ components:
         abbreviation:
           type: string
         balance:
-          type: integer
+          type: number
+          format: double
         bankDetailsDTO:
           $ref: '#/components/schemas/BankDetailsDTO'
         currencyDTO:
@@ -974,7 +975,6 @@ components:
         updateTimestamp:
           type: string
           format: date
-
 
     UserRegistrationParameter:
       type: object
@@ -1033,6 +1033,7 @@ components:
           type: string
         usersName:
           type: array
+          nullable: false
           items:
             type: string
       required:
@@ -1264,7 +1265,8 @@ components:
           minLength: 3
           maxLength: 3
         initialBalance:
-          type: integer
+          type: number
+          format: double
         groupName:
           type: string
         bankDetailsParameter:
@@ -1291,7 +1293,8 @@ components:
           minLength: 3
           maxLength: 3
         initialBalance:
-          type: integer
+          type: number
+          format: double
         bankDetailsParameter:
           $ref: '#/components/schemas/BankDetailsParameter'
         addressParameter:
@@ -1310,8 +1313,6 @@ components:
         linkedAccountId:
           type: integer
         thirdId:
-          type: integer
-        initialBalance:
           type: integer
         classificationId:
           type: integer

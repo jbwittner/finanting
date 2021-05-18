@@ -127,13 +127,8 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void deleteCurrency(Integer currencyId) {
-        final Optional<Currency> optionalCurrency = this.currencyRepository.findById(currencyId);
-
-        if(optionalCurrency.isEmpty()){
-            throw new CurrencyNotExistException(currencyId);
-        }
-
-        final Currency currency = optionalCurrency.get();
+        final Currency currency = this.currencyRepository.findById(currencyId).
+                orElseThrow(() -> new CurrencyNotExistException(currencyId));
 
         if(this.bankingAccountRepository.existsByDefaultCurrency(currency) ||
             this.thirdRepository.existsByDefaultCurrency(currency) ||
