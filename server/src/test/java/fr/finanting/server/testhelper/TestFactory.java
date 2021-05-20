@@ -70,9 +70,6 @@ public class TestFactory {
     public static final Integer NUMBER_MAX = 20_000_000;
 
     public static final int LENGTH_STANDARD = 30;
-    public static final int LENGTH_URI = 15;
-    public static final int LENGTH_EMAIL_NAME = 10;
-    public static final int LENGTH_DOMAIN = 10;
 
     private List<String> listRandomString = new ArrayList<>();
     private List<String> listRandomCaseSensitiveString = new ArrayList<>();
@@ -87,11 +84,6 @@ public class TestFactory {
         this.listRandomNumber = new ArrayList<>();
         this.listRandomEmail = new ArrayList<>();
         this.listRandomName = new ArrayList<>();
-    }
-
-    public Boolean getRandomBoolean(){
-
-        return this.faker.random().nextBoolean();
     }
 
     public String getUniqueRandomAlphanumericString(final int length){
@@ -118,7 +110,7 @@ public class TestFactory {
             isNotUnique = listRandomCaseSensitiveString.contains(randomString);
         }
 
-        listRandomString.add(randomString);
+        listRandomCaseSensitiveString.add(randomString);
 
         return randomString;
     }
@@ -147,21 +139,6 @@ public class TestFactory {
     public String getRandomAlphanumericString(){
 
         return RandomStringUtils.randomAlphanumeric(LENGTH_STANDARD);
-    }
-
-    public String getUniqueRandomURI(){
-
-        boolean isNotUnique = true;
-        String randomUri = "";
-
-        while (isNotUnique){
-            randomUri = this.faker.internet().url();
-            isNotUnique = listRandomString.contains(randomUri);
-        }
-
-        listRandomString.add(randomUri);
-
-        return randomUri;
     }
 
     public Name getUniqueRandomName(){
@@ -194,20 +171,6 @@ public class TestFactory {
 
     }
 
-    public Integer getUniqueRandomInteger(final Integer min, final Integer max){
-        boolean isNotUnique = true;
-        Integer randomNumber = 0;
-
-        while (isNotUnique){
-            randomNumber = this.getRandomInteger(min, max);
-            isNotUnique = listRandomNumber.contains(randomNumber);
-        }
-
-        listRandomNumber.add(randomNumber);
-
-        return randomNumber;
-    }
-
     public Integer getUniqueRandomInteger(final Integer max){
         boolean isNotUnique = true;
         Integer randomNumber = 0;
@@ -220,10 +183,6 @@ public class TestFactory {
         listRandomNumber.add(randomNumber);
 
         return randomNumber;
-    }
-
-    public int getUniqueRandomInteger(){
-        return this.getUniqueRandomInteger(NUMBER_MAX);
     }
 
     public int getRandomInteger(final Integer max){
@@ -242,10 +201,6 @@ public class TestFactory {
 
     public int getRandomInteger(){
         return this.getRandomInteger(NUMBER_MAX);
-    }
-
-    public long getRandomLong(){
-        return this.getRandomLong(NUMBER_MAX);
     }
 
     public int getRandomInteger(final Integer min, final Integer max){
@@ -281,7 +236,7 @@ public class TestFactory {
 
     public Group getGroup(final User userToAdd){
         final Group group = new Group();
-        group.setGroupName(this.faker.company().name());
+        group.setGroupName(this.getUniqueRandomAlphanumericStringCaseSensitive(10));
         final User user = this.getUser();
         group.setUserAdmin(user);
         final List<User> users = new ArrayList<>();

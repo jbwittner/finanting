@@ -17,6 +17,8 @@ public abstract class AbstractMotherIntegrationTest {
 
     protected final Faker faker = new Faker();
 
+    protected final double epsilon = 0.000_01d;
+
     @Autowired
     protected TestFactory testFactory;
 
