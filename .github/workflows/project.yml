@@ -36,8 +36,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
             
-      - name: Check PMD report
-        run: mvn -B package -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      - name: OpenAPI generation
+        run: mvn -B install -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
         working-directory: openapi
 
       - name: Generation PMD report
