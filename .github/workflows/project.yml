@@ -37,22 +37,18 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Generation PMD report
-        run: mvn -B pmd:pmd -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-        working-directory: server
+        run: mvn -P ci-backend -B pmd:pmd -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
       - name: Check PMD report
-        run: mvn -B pmd:check -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-        working-directory: server
+        run: mvn -P ci-backend -B pmd:check -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
       - name: Build java part
-        run: mvn -B compile -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-        working-directory: server
+        run: mvn -P ci-backend -B compile -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
         env:
           CI: false
 
       - name: Test java part
-        run: mvn -B test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-        working-directory: server
+        run: mvn -P ci-backend -B test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
         env:
           CI: false
 
