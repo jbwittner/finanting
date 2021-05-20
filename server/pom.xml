@@ -260,6 +260,7 @@
                     <sourceEncoding>utf-8</sourceEncoding>
                     <minimumTokens>100</minimumTokens>
                     <targetJdk>${java.version}</targetJdk>
+                    <renderProcessingErrors>false</renderProcessingErrors>
                     <compileSourceRoots>
                         <compileSourceRoot>${basedir}/src</compileSourceRoot>
                     </compileSourceRoots>
