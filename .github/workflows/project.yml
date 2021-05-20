@@ -41,18 +41,22 @@ jobs:
         working-directory: openapi
 
       - name: Generation PMD report
-        run: mvn -P ci-backend -B pmd:pmd -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: mvn -B pmd:pmd -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        working-directory: server
 
       - name: Check PMD report
-        run: mvn -P ci-backend -B pmd:check -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: mvn -B pmd:check -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        working-directory: server
 
       - name: Build java part
-        run: mvn -P ci-backend -B compile -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: mvn -B compile -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        working-directory: server
         env:
           CI: false
 
       - name: Test java part
-        run: mvn -P ci-backend -B test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: mvn -B test -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        working-directory: server
         env:
           CI: false
 
