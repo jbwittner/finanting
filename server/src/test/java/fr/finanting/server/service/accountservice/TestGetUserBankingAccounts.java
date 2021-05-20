@@ -92,7 +92,7 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
         final Double balance = bankingAccount.getInitialBalance() + bankingTransactionList.stream().mapToDouble(BankingTransaction::getAmount).sum();
 
         Assertions.assertEquals(bankingAccount.getAbbreviation(), bankingAccountDTO.getAbbreviation());
-        Assertions.assertEquals(balance, bankingAccountDTO.getBalance());
+        Assertions.assertTrue(Math.abs(balance - bankingAccountDTO.getBalance()) < this.epsilon);
         Assertions.assertEquals(bankingAccount.getLabel(), bankingAccountDTO.getLabel());
         Assertions.assertEquals(bankingAccount.getAddress().getCity(),
                 bankingAccountDTO.getAddressDTO().getCity());
