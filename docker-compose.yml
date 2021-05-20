@@ -9,7 +9,7 @@ services:
   mysql:
     image: mysql:8.0.20
     ports:
-      - '3306:3306'
+      - '9000:3306'
     volumes:
       - finanting_db:/var/lib/mysql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -29,9 +29,16 @@ services:
     image: phpmyadmin/phpmyadmin:5.0.2
     restart: always
     ports:
-      - '8080:80'
+      - '9100:80'
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: FinantingRootPass2020
+    networks:
+      - default
+
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    ports :
+      - '9200:8080'
     networks:
       - default

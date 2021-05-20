@@ -1,66 +1,63 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.dto.TreeCategoriesDTO;
-import fr.finanting.server.exception.*;
-import fr.finanting.server.parameter.CreateCategoryParameter;
-import fr.finanting.server.parameter.DeleteCategoryParameter;
-import fr.finanting.server.parameter.UpdateCategoryParameter;
-import fr.finanting.server.security.UserDetailsImpl;
+import fr.finanting.server.codegen.api.CategoryApi;
+import fr.finanting.server.codegen.model.CategoryDTO;
+import fr.finanting.server.codegen.model.CategoryParameter;
+import fr.finanting.server.codegen.model.TreeCategoryDTO;
+import fr.finanting.server.codegen.model.UpdateCategoryParameter;
 import fr.finanting.server.service.CategoryService;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("category")
-public class CategoryController {
+public class CategoryController extends MotherController implements CategoryApi {
 
     protected final CategoryService categoryService;
 
     @Autowired
     public CategoryController(final CategoryService categoryService) {
+        super();
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/createCategory")
-    public void createCategory(final Authentication authentication,
-                                    @RequestBody final CreateCategoryParameter createCategoryParameter)
-            throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException  {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.categoryService.createCategory(createCategoryParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<Void> createCategory(final CategoryParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        this.categoryService.createCategory(body, userName);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/updateCategory")
-    public void updateCategory(final Authentication authentication,
-                                    @RequestBody final UpdateCategoryParameter updateCategoryParameter)
-            throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException  {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.categoryService.updateCategory(updateCategoryParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<Void> deleteCategory(final Integer categoryId) {
+        final String userName = this.getCurrentPrincipalName();
+        this.categoryService.deleteCategory(categoryId, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteCategory")
-    public void deleteCategory(final Authentication authentication,
-                                @RequestBody final DeleteCategoryParameter deleteCategoryParameter)
-            throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.categoryService.deleteCategory(deleteCategoryParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<List<TreeCategoryDTO>> getGroupCategories(final Integer groupId) {
+        final String userName = this.getCurrentPrincipalName();
+        final List<TreeCategoryDTO> treeCategoryDTOList = this.categoryService.getGroupCategory(groupId, userName);
+        return new ResponseEntity<>(treeCategoryDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("/getGroupCategory/{groupName}")
-    public List<TreeCategoriesDTO> getGroupCategory(final Authentication authentication, 
-                                            @PathVariable final String groupName)
-            throws GroupNotExistException, UserNotInGroupException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.categoryService.getGroupCategory(groupName, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<List<TreeCategoryDTO>> getUserCategories() {
+        final String userName = this.getCurrentPrincipalName();
+        final List<TreeCategoryDTO> treeCategoryDTOList = this.categoryService.getUserCategory(userName);
+        return new ResponseEntity<>(treeCategoryDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("/getUserCategory")
-    public List<TreeCategoriesDTO> getUserCategory(final Authentication authentication) {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.categoryService.getUserCategory(userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<Void> updateCategory(final Integer categoryId, final UpdateCategoryParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        this.categoryService.updateCategory(categoryId, body, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
 }

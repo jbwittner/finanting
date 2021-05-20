@@ -1,16 +1,14 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.dto.BankingAccountDTO;
+import fr.finanting.server.codegen.model.BankingAccountDTO;
 import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.NotUserBankingAccountException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.BankingAccount;
+import fr.finanting.server.model.BankingTransaction;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.repository.BankingAccountRepository;
-import fr.finanting.server.repository.CurrencyRepository;
-import fr.finanting.server.repository.GroupRepository;
-import fr.finanting.server.repository.UserRepository;
+import fr.finanting.server.repository.*;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import org.junit.jupiter.api.Assertions;
@@ -34,11 +32,14 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
     @Autowired
     private CurrencyRepository currencyRepository;
 
+    @Autowired
+    private BankingTransactionRepository bankingTransactionRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository, bankingTransactionRepository);
     }
 
     @Test
@@ -47,6 +48,19 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
         final User user = this.testFactory.getUser();
 
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+
+        final BankingAccountDTO bankingAccountDTO = this.bankingAccountServiceImpl.getBankingAccount(bankingAccount.getId(), user.getUserName());
+
+        this.checkAccount(bankingAccountDTO, bankingAccount);
+    }
+
+    @Test
+    public void testGetUserAccountWithTransaction()
+            throws BankingAccountNotExistException, NotUserBankingAccountException, UserNotInGroupException {
+        final User user = this.testFactory.getUser();
+
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
+        this.testFactory.getBankingTransaction(user, bankingAccount, false);
 
         final BankingAccountDTO bankingAccountDTO = this.bankingAccountServiceImpl.getBankingAccount(bankingAccount.getId(), user.getUserName());
 
@@ -118,8 +132,11 @@ public class TestGetBankingAccount extends AbstractMotherIntegrationTest {
     private void checkAccount(final BankingAccountDTO bankingAccountDTO,
                               final BankingAccount bankingAccount){
 
+        final List<BankingTransaction> bankingTransactionList = this.bankingTransactionRepository.findByAccount(bankingAccount);
+        final Double balance = bankingAccount.getInitialBalance() + bankingTransactionList.stream().mapToDouble(BankingTransaction::getAmount).sum();
+
         Assertions.assertEquals(bankingAccount.getAbbreviation(), bankingAccountDTO.getAbbreviation());
-        Assertions.assertEquals(bankingAccount.getInitialBalance(), bankingAccountDTO.getBalance());
+        Assertions.assertEquals(balance, bankingAccountDTO.getBalance());
         Assertions.assertEquals(bankingAccount.getLabel(), bankingAccountDTO.getLabel());
         Assertions.assertEquals(bankingAccount.getAddress().getCity(),
                 bankingAccountDTO.getAddressDTO().getCity());

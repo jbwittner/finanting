@@ -6,4 +6,8 @@ public class GroupNotExistException extends FunctionalException {
         super("The group " + groupName + " not exist");
     }
 
+    public GroupNotExistException(final Integer groupId) {
+        super("The group with the id " + groupId + " not exist");
+    }
+
 }

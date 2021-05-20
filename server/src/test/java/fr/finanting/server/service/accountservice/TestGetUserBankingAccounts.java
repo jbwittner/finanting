@@ -1,12 +1,10 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.dto.BankingAccountDTO;
+import fr.finanting.server.codegen.model.BankingAccountDTO;
 import fr.finanting.server.model.BankingAccount;
+import fr.finanting.server.model.BankingTransaction;
 import fr.finanting.server.model.User;
-import fr.finanting.server.repository.BankingAccountRepository;
-import fr.finanting.server.repository.CurrencyRepository;
-import fr.finanting.server.repository.GroupRepository;
-import fr.finanting.server.repository.UserRepository;
+import fr.finanting.server.repository.*;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import org.junit.jupiter.api.Assertions;
@@ -29,11 +27,14 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
     @Autowired
     private CurrencyRepository currencyRepository;
 
+    @Autowired
+    private BankingTransactionRepository bankingTransactionRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository, bankingTransactionRepository);
     }
 
     @Test
@@ -41,12 +42,19 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
         final User user = this.testFactory.getUser();
 
         final BankingAccount bankingAccount1 = this.testFactory.getBankingAccount(user);
+        this.testFactory.getBankingTransaction(user, bankingAccount1, false);
         final BankingAccount bankingAccount2 = this.testFactory.getBankingAccount(user);
+        this.testFactory.getBankingTransaction(user, bankingAccount2, false);
+        this.testFactory.getBankingTransaction(user, bankingAccount2, false);
         final BankingAccount bankingAccount3 = this.testFactory.getBankingAccount(user);
+        this.testFactory.getBankingTransaction(user, bankingAccount3, false);
+        this.testFactory.getBankingTransaction(user, bankingAccount3, false);
+        this.testFactory.getBankingTransaction(user, bankingAccount3, false);
+        final BankingAccount bankingAccount4 = this.testFactory.getBankingAccount(user);
 
         final List<BankingAccountDTO> bankingAccountsDTO = this.bankingAccountServiceImpl.getUserBankingAccounts(user.getUserName());
 
-        Assertions.assertEquals(3, bankingAccountsDTO.size());
+        Assertions.assertEquals(4, bankingAccountsDTO.size());
 
         for(final BankingAccountDTO bankingAccountDTO : bankingAccountsDTO){
             boolean isPresent = true;
@@ -56,6 +64,8 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
                 this.checkAccount(bankingAccountDTO, bankingAccount2);
             } else if(bankingAccountDTO.getId().equals(bankingAccount3.getId())){
                 this.checkAccount(bankingAccountDTO, bankingAccount3);
+            } else if(bankingAccountDTO.getId().equals(bankingAccount4.getId())){
+                this.checkAccount(bankingAccountDTO, bankingAccount4);
             } else {
                 isPresent = false;
             }
@@ -78,8 +88,11 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
     private void checkAccount(final BankingAccountDTO bankingAccountDTO,
                               final BankingAccount bankingAccount){
 
+        final List<BankingTransaction> bankingTransactionList = this.bankingTransactionRepository.findByAccount(bankingAccount);
+        final Double balance = bankingAccount.getInitialBalance() + bankingTransactionList.stream().mapToDouble(BankingTransaction::getAmount).sum();
+
         Assertions.assertEquals(bankingAccount.getAbbreviation(), bankingAccountDTO.getAbbreviation());
-        Assertions.assertEquals(bankingAccount.getInitialBalance(), bankingAccountDTO.getBalance());
+        Assertions.assertEquals(balance, bankingAccountDTO.getBalance());
         Assertions.assertEquals(bankingAccount.getLabel(), bankingAccountDTO.getLabel());
         Assertions.assertEquals(bankingAccount.getAddress().getCity(),
                 bankingAccountDTO.getAddressDTO().getCity());
@@ -94,7 +107,7 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(bankingAccount.getBankDetails().getIban(),
                 bankingAccountDTO.getBankDetailsDTO().getIban());
         Assertions.assertEquals(bankingAccount.getDefaultCurrency().getIsoCode(),
-                bankingAccountDTO.getDefaultCurrencyDTO().getIsoCode());      
+                bankingAccountDTO.getCurrencyDTO().getIsoCode());
 
     }
 }

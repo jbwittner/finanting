@@ -2,12 +2,12 @@ package fr.finanting.server.service.bankingtransactionservice;
 
 import java.util.List;
 
+import fr.finanting.server.codegen.model.BankingTransactionDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
-import fr.finanting.server.dto.BankingTransactionDTO;
 import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.NotUserElementException;
 import fr.finanting.server.exception.UserNotInGroupException;
@@ -90,7 +90,7 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
         final BankingTransaction bankingTransaction3 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
         final BankingTransaction bankingTransaction4 = this.testFactory.getBankingTransaction(user, bankingAccount, true);
 
-        final List<BankingTransactionDTO> bankingTransactionDTOs = this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), user.getUserName());
+        final List<BankingTransactionDTO> bankingTransactionDTOs = this.bankingTransactionServiceImpl.getBankingAccountTransaction(bankingAccount.getId(), user.getUserName());
 
         Assertions.assertEquals(4, bankingTransactionDTOs.size());
 
@@ -127,7 +127,7 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
         final BankingTransaction bankingTransaction3 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
         final BankingTransaction bankingTransaction4 = this.testFactory.getBankingTransaction(group, bankingAccount, true);
 
-        final List<BankingTransactionDTO> bankingTransactionDTOs = this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), user.getUserName());
+        final List<BankingTransactionDTO> bankingTransactionDTOs = this.bankingTransactionServiceImpl.getBankingAccountTransaction(bankingAccount.getId(), user.getUserName());
 
         Assertions.assertEquals(4, bankingTransactionDTOs.size());
 
@@ -160,7 +160,7 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
         Assertions.assertThrows(NotUserElementException.class,
-            () -> this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), otherUser.getUserName()));
+            () -> this.bankingTransactionServiceImpl.getBankingAccountTransaction(bankingAccount.getId(), otherUser.getUserName()));
 
     }
 
@@ -173,7 +173,7 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.bankingTransactionServiceImpl.getAccountBankingTransaction(bankingAccount.getId(), user.getUserName()));
+            () -> this.bankingTransactionServiceImpl.getBankingAccountTransaction(bankingAccount.getId(), user.getUserName()));
     }
 
     @Test
@@ -182,7 +182,7 @@ public class TestGetAccountBankingTransaction extends AbstractMotherIntegrationT
         final User user = this.testFactory.getUser();
 
         Assertions.assertThrows(BankingAccountNotExistException.class,
-            () -> this.bankingTransactionServiceImpl.getAccountBankingTransaction(this.testFactory.getRandomInteger(), user.getUserName()));
+            () -> this.bankingTransactionServiceImpl.getBankingAccountTransaction(this.testFactory.getRandomInteger(), user.getUserName()));
     }
     
 }

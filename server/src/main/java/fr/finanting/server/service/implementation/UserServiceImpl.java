@@ -4,21 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.finanting.server.codegen.model.PasswordUpdateParameter;
+import fr.finanting.server.codegen.model.UserDTO;
+import fr.finanting.server.codegen.model.UserRegistrationParameter;
+import fr.finanting.server.codegen.model.UserUpdateParameter;
+import fr.finanting.server.dto.UserDTOBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.finanting.server.dto.UserDTO;
 import fr.finanting.server.exception.BadPasswordException;
 import fr.finanting.server.exception.UserEmailAlreadyExistException;
 import fr.finanting.server.exception.UserNameAlreadyExistException;
 import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.PasswordUpdateParameter;
-import fr.finanting.server.parameter.UserRegisterParameter;
-import fr.finanting.server.parameter.UserUpdateParameter;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.UserService;
 
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final UserDTOBuilder USER_DTO_BUILDER = new UserDTOBuilder();
 
     @Autowired
     public UserServiceImpl(final UserRepository userRepository, final PasswordEncoder passwordEncoder) {
@@ -36,25 +38,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO registerNewAccount(final UserRegisterParameter userRegisterParameter)
-            throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
+    public UserDTO registerNewAccount(final UserRegistrationParameter userRegistrationParameter)  {
 
-        if (this.userRepository.existsByEmail(userRegisterParameter.getEmail())) {
-            throw new UserEmailAlreadyExistException(userRegisterParameter.getEmail());
-        } else if (this.userRepository.existsByUserName(userRegisterParameter.getUserName())) {
-            throw new UserNameAlreadyExistException(userRegisterParameter.getUserName());
+        if (this.userRepository.existsByEmail(userRegistrationParameter.getEmail())) {
+            throw new UserEmailAlreadyExistException(userRegistrationParameter.getEmail());
+        } else if (this.userRepository.existsByUserName(userRegistrationParameter.getUserName())) {
+            throw new UserNameAlreadyExistException(userRegistrationParameter.getUserName());
         }
 
         final User user = new User();
-        user.setEmail(userRegisterParameter.getEmail());
+        user.setEmail(userRegistrationParameter.getEmail());
 
-        final String firstName = StringUtils.capitalize(userRegisterParameter.getFirstName().toLowerCase());
+        final String firstName = StringUtils.capitalize(userRegistrationParameter.getFirstName().toLowerCase());
         user.setFirstName(firstName);
 
-        user.setLastName(userRegisterParameter.getLastName().toUpperCase());
-        user.setUserName(userRegisterParameter.getUserName().toLowerCase());
+        user.setLastName(userRegistrationParameter.getLastName().toUpperCase());
+        user.setUserName(userRegistrationParameter.getUserName().toLowerCase());
 
-        user.setPassword(this.passwordEncoder.encode(userRegisterParameter.getPassword()));
+        user.setPassword(this.passwordEncoder.encode(userRegistrationParameter.getPassword()));
 
         final List<Role> roles = new ArrayList<>();
         final List<User> users = this.userRepository.findAll();
@@ -69,25 +70,21 @@ public class UserServiceImpl implements UserService {
 
         this.userRepository.save(user);
 
-        final UserDTO userDTO = new UserDTO(user);
-
-        return userDTO;
+        return USER_DTO_BUILDER.transform(user);
     }
 
     @Override
     public UserDTO getAccountInformations(final String userName) {
 
-        final User user = this.userRepository.findByUserName(userName).get();
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final UserDTO userDTO = new UserDTO(user);
-
-        return userDTO;
+        return USER_DTO_BUILDER.transform(user);
     }
 
     @Override
-    public UserDTO updateAccountInformations(final UserUpdateParameter userUpdateParameter, final String userName) throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
+    public UserDTO updateAccountInformations(final UserUpdateParameter userUpdateParameter, final String userName) {
         
-        final User user = this.userRepository.findByUserName(userName).get();
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
         Optional<User> optionalUserFind;
 
         if(!user.getEmail().equals(userUpdateParameter.getEmail())){
@@ -116,15 +113,13 @@ public class UserServiceImpl implements UserService {
 
         this.userRepository.save(user);
 
-        final UserDTO userDTO = new UserDTO(user);
-
-        return userDTO;
+        return USER_DTO_BUILDER.transform(user);
     }
 
     @Override
-    public void updatePassword(final PasswordUpdateParameter passwordUpdateParameter, final String userName) throws BadPasswordException {
+    public void updatePassword(final PasswordUpdateParameter passwordUpdateParameter, final String userName) {
         
-        final User user = this.userRepository.findByUserName(userName).get();
+        final User user = this.userRepository.findByUserName(userName).orElseThrow();
         
         if(!this.passwordEncoder.matches(passwordUpdateParameter.getPreviousPassword(), user.getPassword())){
             throw new BadPasswordException();            

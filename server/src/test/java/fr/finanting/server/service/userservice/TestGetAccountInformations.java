@@ -1,11 +1,11 @@
 package fr.finanting.server.service.userservice;
 
+import fr.finanting.server.codegen.model.UserDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import fr.finanting.server.dto.UserDTO;
 import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.UserRepository;
@@ -40,8 +40,8 @@ public class TestGetAccountInformations extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(this.user.getFirstName(), userDTO.getFirstName());
         Assertions.assertEquals(this.user.getLastName(), userDTO.getLastName());
 
-        for(final String role : userDTO.getRoles()){
-            Assertions.assertEquals(Role.USER.toString(), role);
+        for(final UserDTO.RolesEnum role : userDTO.getRoles()){
+            Assertions.assertEquals(Role.USER.toString(), role.toString());
         }
     }
     

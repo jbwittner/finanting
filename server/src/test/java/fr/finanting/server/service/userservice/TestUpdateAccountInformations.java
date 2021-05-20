@@ -2,17 +2,17 @@ package fr.finanting.server.service.userservice;
 
 import com.github.javafaker.Name;
 
+import fr.finanting.server.codegen.model.UserDTO;
+import fr.finanting.server.codegen.model.UserUpdateParameter;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import fr.finanting.server.dto.UserDTO;
 import fr.finanting.server.exception.UserEmailAlreadyExistException;
 import fr.finanting.server.exception.UserNameAlreadyExistException;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.UserUpdateParameter;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;

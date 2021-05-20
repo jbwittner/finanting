@@ -75,13 +75,15 @@ public class TestFactory {
     public static final int LENGTH_DOMAIN = 10;
 
     private List<String> listRandomString = new ArrayList<>();
+    private List<String> listRandomCaseSensitiveString = new ArrayList<>();
     private List<String> listRandomEmail = new ArrayList<>();
     private List<Integer> listRandomNumber = new ArrayList<>();
     private List<String> listRandomName = new ArrayList<>();
 
     public void resetAllList(){
-        
+
         this.listRandomString = new ArrayList<>();
+        this.listRandomCaseSensitiveString = new ArrayList<>();
         this.listRandomNumber = new ArrayList<>();
         this.listRandomEmail = new ArrayList<>();
         this.listRandomName = new ArrayList<>();
@@ -106,6 +108,21 @@ public class TestFactory {
 
         return randomString;
     }
+
+    public String getUniqueRandomAlphanumericStringCaseSensitive(final int length){
+        boolean isNotUnique = true;
+        String randomString = "";
+
+        while (isNotUnique){
+            randomString = RandomStringUtils.randomAlphanumeric(length).toLowerCase();
+            isNotUnique = listRandomCaseSensitiveString.contains(randomString);
+        }
+
+        listRandomString.add(randomString);
+
+        return randomString;
+    }
+
 
     public String getUniqueRandomAlphanumericString(){
 
@@ -215,8 +232,7 @@ public class TestFactory {
     }
 
     public double getRandomDouble(){
-        final double random = this.faker.random().nextDouble();
-        return random;
+        return this.faker.random().nextDouble();
     }
 
     public long getRandomLong(final Integer max){
@@ -292,11 +308,11 @@ public class TestFactory {
         return bankDetails;
     }
 
-    public Currency getCurrency(){
+    public Currency getCurrency(final boolean isDefault){
         final Currency currency = new Currency();
         currency.setDecimalPlaces(this.getRandomInteger());
-        currency.setDefaultCurrency(false);
-        currency.setIsoCode(this.getUniqueRandomAlphanumericString(3).toUpperCase());
+        currency.setDefaultCurrency(isDefault);
+        currency.setIsoCode(this.getUniqueRandomAlphanumericStringCaseSensitive(3).toUpperCase());
         currency.setSymbol(this.getUniqueRandomAlphanumericString(3).toUpperCase());
 
         final String label = StringUtils.capitalize(this.getUniqueRandomAlphanumericString().toLowerCase());
@@ -307,6 +323,10 @@ public class TestFactory {
         return this.currencyRepository.save(currency);
     }
 
+    public Currency getCurrency(){
+        return this.getCurrency(false);
+    }
+
     private BankingAccount getBankingAccount(final User user, final Group group){
         final BankingAccount bankingAccount = new BankingAccount();
 
@@ -314,7 +334,7 @@ public class TestFactory {
         bankingAccount.setBankDetails(this.getBankDetails());
 
         bankingAccount.setAbbreviation(this.getRandomAlphanumericString(6).toUpperCase());
-        bankingAccount.setInitialBalance(0);
+        bankingAccount.setInitialBalance(0.0);
         bankingAccount.setLabel(this.getRandomAlphanumericString());
 
         bankingAccount.setGroup(group);
@@ -404,6 +424,7 @@ public class TestFactory {
         third.setBankDetails(this.getBankDetails());
         third.setContact(this.getContact());
         third.setDefaultCategory(category);
+        third.setDefaultCurrency(this.getCurrency());
 
         third.setUser(user);
         third.setGroup(group);
@@ -437,7 +458,7 @@ public class TestFactory {
         bankingTransaction.setCategory(this.getCategory(user, group, true));
         bankingTransaction.setClassification(this.getClassification(user, group));
         bankingTransaction.setCreateTimestamp(new Date());
-        Currency currency = this.getCurrency();
+        final Currency currency = this.getCurrency();
         bankingTransaction.setCurrency(this.getCurrency());
         final Double amountCurrency = amount * currency.getRate();
         bankingTransaction.setCurrencyAmount(amountCurrency);
@@ -458,7 +479,6 @@ public class TestFactory {
             mirrorTransaction.setClassification(bankingTransaction.getClassification());
             mirrorTransaction.setCreateTimestamp(bankingTransaction.getCreateTimestamp());
 
-            currency = this.getCurrency();
             mirrorTransaction.setCurrency(this.getCurrency());
             mirrorTransaction.setCurrencyAmount(amountCurrency);
 

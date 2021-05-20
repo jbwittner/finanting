@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.javafaker.Name;
 
+import fr.finanting.server.codegen.model.PasswordUpdateParameter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import fr.finanting.server.exception.BadPasswordException;
 import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.PasswordUpdateParameter;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;

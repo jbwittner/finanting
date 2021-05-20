@@ -4,10 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>fr.finanting</groupId>
     <artifactId>finanting-server</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>${application.name} - ${application.service}</name>
@@ -199,6 +196,12 @@
         
         <!--Tests-->
 
+        <dependency>
+            <groupId>fr.finanting</groupId>
+            <artifactId>finanting-openapi</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -257,6 +260,7 @@
                     <sourceEncoding>utf-8</sourceEncoding>
                     <minimumTokens>100</minimumTokens>
                     <targetJdk>${java.version}</targetJdk>
+                    <renderProcessingErrors>false</renderProcessingErrors>
                     <compileSourceRoots>
                         <compileSourceRoot>${basedir}/src</compileSourceRoot>
                     </compileSourceRoots>

@@ -1,6 +1,6 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.server.dto.TreeCategoriesDTO;
+import fr.finanting.server.codegen.model.TreeCategoryDTO;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.CategoryRepository;
@@ -63,40 +63,40 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
 
         }
 
-        final List<TreeCategoriesDTO> treeCategoriesDTOs = this.categoryServiceImpl.getUserCategory(user.getUserName());
+        final List<TreeCategoryDTO> treeCategoryDTOList = this.categoryServiceImpl.getUserCategory(user.getUserName());
 
-        Assertions.assertEquals(NUMBER_MOTHER_CATEGORY, treeCategoriesDTOs.size());
+        Assertions.assertEquals(NUMBER_MOTHER_CATEGORY, treeCategoryDTOList.size());
 
-        for(final TreeCategoriesDTO treeCategoriesDTO : treeCategoriesDTOs){
+        for(final TreeCategoryDTO treeCategoryDTO : treeCategoryDTOList){
 
             boolean isPresent = false;
 
             Category childCategory = new Category();
 
             for(final Category category : categories){
-                if(category.getId().equals(treeCategoriesDTO.getId())){
+                if(category.getId().equals(treeCategoryDTO.getId())){
                     isPresent = true;
                     childCategory = category;
-                    Assertions.assertEquals(category.getChild().size(), treeCategoriesDTO.getChildTreeCategoriesDTOs().size());
-                    Assertions.assertEquals(category.getAbbreviation(), treeCategoriesDTO.getAbbreviation());
-                    Assertions.assertEquals(category.getDescritpion(), treeCategoriesDTO.getDescritpion());
-                    Assertions.assertEquals(category.getLabel(), treeCategoriesDTO.getLabel());
-                    Assertions.assertEquals(category.getCategoryType(), treeCategoriesDTO.getCategoryType());
+                    Assertions.assertEquals(category.getChild().size(), treeCategoryDTO.getChildTreeCategoriesDTOs().size());
+                    Assertions.assertEquals(category.getAbbreviation(), treeCategoryDTO.getAbbreviation());
+                    Assertions.assertEquals(category.getDescritpion(), treeCategoryDTO.getDescription());
+                    Assertions.assertEquals(category.getLabel(), treeCategoryDTO.getLabel());
+                    Assertions.assertEquals(category.getCategoryType().name(), treeCategoryDTO.getCategoryType().name());
                 }
             }
 
             Assertions.assertTrue(isPresent);
 
-            for(final TreeCategoriesDTO childTreeCategoriesDTO : treeCategoriesDTO.getChildTreeCategoriesDTOs()){
+            for(final TreeCategoryDTO childTreeCategoryDTO : treeCategoryDTO.getChildTreeCategoriesDTOs()){
                 boolean childIsPresent = false;
 
                 for(final Category category : childCategory.getChild()){
-                    if(category.getId().equals(childTreeCategoriesDTO.getId())){
+                    if(category.getId().equals(childTreeCategoryDTO.getId())){
                         childIsPresent = true;
-                        Assertions.assertEquals(category.getAbbreviation(), childTreeCategoriesDTO.getAbbreviation());
-                        Assertions.assertEquals(category.getDescritpion(), childTreeCategoriesDTO.getDescritpion());
-                        Assertions.assertEquals(category.getLabel(), childTreeCategoriesDTO.getLabel());
-                        Assertions.assertEquals(category.getCategoryType(), childTreeCategoriesDTO.getCategoryType());
+                        Assertions.assertEquals(category.getAbbreviation(), childTreeCategoryDTO.getAbbreviation());
+                        Assertions.assertEquals(category.getDescritpion(), childTreeCategoryDTO.getDescription());
+                        Assertions.assertEquals(category.getLabel(), childTreeCategoryDTO.getLabel());
+                        Assertions.assertEquals(category.getCategoryType().name(), childTreeCategoryDTO.getCategoryType().name());
                     }
                 }
 

@@ -1,5 +1,9 @@
 package fr.finanting.server.service.thirdservice;
 
+import fr.finanting.server.codegen.model.AddressParameter;
+import fr.finanting.server.codegen.model.BankDetailsParameter;
+import fr.finanting.server.codegen.model.ContactParameter;
+import fr.finanting.server.codegen.model.ThirdParameter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +19,6 @@ import fr.finanting.server.model.User;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.model.embeddable.Contact;
-import fr.finanting.server.parameter.CreateThirdParameter;
-import fr.finanting.server.parameter.subpart.AddressParameter;
-import fr.finanting.server.parameter.subpart.BankDetailsParameter;
-import fr.finanting.server.parameter.subpart.ContactParameter;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.ThirdRepository;
@@ -45,7 +45,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     private User user;
     private Group group;
 
-    private CreateThirdParameter createThirdParameter;
+    private ThirdParameter thirdParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
@@ -58,63 +58,63 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
         this.group = this.testFactory.getGroup(user);
 
 
-        this.createThirdParameter = new CreateThirdParameter();
-        this.createThirdParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5).toLowerCase());
-        this.createThirdParameter.setDescritpion(this.faker.superhero().descriptor());
-        this.createThirdParameter.setLabel(this.faker.company().name());
+        this.thirdParameter = new ThirdParameter();
+        this.thirdParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5).toLowerCase());
+        this.thirdParameter.setDescription(this.faker.superhero().descriptor());
+        this.thirdParameter.setLabel(this.faker.company().name());
 
         final ContactParameter contactParameter = new ContactParameter();
         contactParameter.setEmail(this.faker.internet().emailAddress());
         contactParameter.setHomePhone(this.faker.phoneNumber().phoneNumber());
         contactParameter.setPortablePhone(this.faker.phoneNumber().cellPhone());
         contactParameter.setWebsite(this.faker.internet().url());
-        this.createThirdParameter.setContactParameter(contactParameter);
+        this.thirdParameter.setContactParameter(contactParameter);
 
         final BankDetailsParameter bankDetailsParameter = new BankDetailsParameter();
         bankDetailsParameter.setBankName(this.faker.dragonBall().character());
         bankDetailsParameter.setAccountNumber(this.testFactory.getRandomAlphanumericString());
         bankDetailsParameter.setIban(this.testFactory.getRandomAlphanumericString());
-        this.createThirdParameter.setBankDetailsParameter(bankDetailsParameter);
+        this.thirdParameter.setBankDetailsParameter(bankDetailsParameter);
 
         final AddressParameter addressParameter = new AddressParameter();
         addressParameter.setAddress(this.faker.address().fullAddress());
         addressParameter.setCity(this.faker.address().city());
         addressParameter.setStreet(this.faker.address().streetAddress());
         addressParameter.setZipCode(this.faker.address().zipCode());
-        this.createThirdParameter.setAddressParameter(addressParameter);
+        this.thirdParameter.setAddressParameter(addressParameter);
 
     }
 
     private void checkData(final Third third){
 
-        Assertions.assertEquals(this.createThirdParameter.getAbbreviation().toUpperCase(), third.getAbbreviation());
-        Assertions.assertEquals(this.createThirdParameter.getDescritpion(), third.getDescritpion());
-        Assertions.assertEquals(this.createThirdParameter.getLabel(), third.getLabel());
+        Assertions.assertEquals(this.thirdParameter.getAbbreviation().toUpperCase(), third.getAbbreviation());
+        Assertions.assertEquals(this.thirdParameter.getDescription(), third.getDescritpion());
+        Assertions.assertEquals(this.thirdParameter.getLabel(), third.getLabel());
         
-        if(this.createThirdParameter.getBankDetailsParameter() != null){
+        if(this.thirdParameter.getBankDetailsParameter() != null){
             final BankDetails bankDetails = third.getBankDetails();
             Assertions.assertNotNull(bankDetails);
-            final BankDetailsParameter bankDetailsParameter = this.createThirdParameter.getBankDetailsParameter();
+            final BankDetailsParameter bankDetailsParameter = this.thirdParameter.getBankDetailsParameter();
             Assertions.assertEquals(bankDetailsParameter.getIban(), bankDetails.getIban());
             Assertions.assertEquals(bankDetailsParameter.getAccountNumber(), bankDetails.getAccountNumber());
             Assertions.assertEquals(bankDetailsParameter.getBankName(), bankDetails.getBankName());
         }
         
 
-        if(this.createThirdParameter.getAddressParameter() != null){
+        if(this.thirdParameter.getAddressParameter() != null){
             final Address address = third.getAddress();
             Assertions.assertNotNull(address);
-            final AddressParameter addressParameter = this.createThirdParameter.getAddressParameter();
+            final AddressParameter addressParameter = this.thirdParameter.getAddressParameter();
             Assertions.assertEquals(addressParameter.getAddress(), address.getAddress());
             Assertions.assertEquals(addressParameter.getStreet(), address.getStreet());
             Assertions.assertEquals(addressParameter.getCity(), address.getCity());
             Assertions.assertEquals(addressParameter.getZipCode(), address.getZipCode());
         }
 
-        if(this.createThirdParameter.getContactParameter() != null){
+        if(this.thirdParameter.getContactParameter() != null){
             final Contact contact = third.getContact();
             Assertions.assertNotNull(contact);
-            final ContactParameter contactParameter = this.createThirdParameter.getContactParameter();
+            final ContactParameter contactParameter = this.thirdParameter.getContactParameter();
             Assertions.assertEquals(contactParameter.getHomePhone(), contact.getHomePhone());
             Assertions.assertEquals(contactParameter.getPortablePhone(), contact.getPortablePhone());
             Assertions.assertEquals(contactParameter.getEmail(), contact.getEmail());
@@ -125,7 +125,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateUserThird() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
-        this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
+        this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName());
 
         final Third third = this.thirdRepository.findAll().get(0);
 
@@ -139,8 +139,8 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateUserThirdWithoutAddressParameter() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
-        this.createThirdParameter.setAddressParameter(null);
-        this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
+        this.thirdParameter.setAddressParameter(null);
+        this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName());
 
         final Third third = this.thirdRepository.findAll().get(0);
 
@@ -154,8 +154,8 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     
     @Test
     public void testCreateUserThirdWithoutBankDetailsParameter() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
-        this.createThirdParameter.setBankDetailsParameter(null);
-        this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
+        this.thirdParameter.setBankDetailsParameter(null);
+        this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName());
 
         final Third third = this.thirdRepository.findAll().get(0);
 
@@ -169,8 +169,8 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateUserThirdWithoutContactParameter() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
-        this.createThirdParameter.setContactParameter(null);
-        this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
+        this.thirdParameter.setContactParameter(null);
+        this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName());
 
         final Third third = this.thirdRepository.findAll().get(0);
 
@@ -184,8 +184,8 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
 
     @Test
     public void testCreateGroupThird() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
-        this.createThirdParameter.setGroupName(this.group.getGroupName());
-        this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
+        this.thirdParameter.setGroupName(this.group.getGroupName());
+        this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName());
 
         final Third third = this.thirdRepository.findAll().get(0);
 
@@ -201,8 +201,8 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     public void testCreateUserThirdWithDefaultUserCategory() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
         final Category category = this.testFactory.getCategory(this.user, true);
 
-        this.createThirdParameter.setDefaultCategoryId(category.getId());
-        this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
+        this.thirdParameter.setDefaultCategoryId(category.getId());
+        this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName());
 
         final Third third = this.thirdRepository.findAll().get(0);
 
@@ -212,7 +212,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
         Assertions.assertNull(third.getGroup());
         Assertions.assertNotNull(third.getDefaultCategory());
 
-        Assertions.assertEquals(this.createThirdParameter.getDefaultCategoryId(), third.getDefaultCategory().getId());
+        Assertions.assertEquals(this.thirdParameter.getDefaultCategoryId(), third.getDefaultCategory().getId());
         
     }
 
@@ -220,9 +220,9 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     public void testCreateGroupThirdWithDefaultGroupCategory() throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
         final Category category = this.testFactory.getCategory(this.group, true);
 
-        this.createThirdParameter.setDefaultCategoryId(category.getId());
-        this.createThirdParameter.setGroupName(this.group.getGroupName());
-        this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName());
+        this.thirdParameter.setDefaultCategoryId(category.getId());
+        this.thirdParameter.setGroupName(this.group.getGroupName());
+        this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName());
 
         final Third third = this.thirdRepository.findAll().get(0);
 
@@ -232,7 +232,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
         Assertions.assertNull(third.getUser());
         Assertions.assertNotNull(third.getDefaultCategory());
 
-        Assertions.assertEquals(this.createThirdParameter.getDefaultCategoryId(), third.getDefaultCategory().getId());
+        Assertions.assertEquals(this.thirdParameter.getDefaultCategoryId(), third.getDefaultCategory().getId());
         
     }
 
@@ -240,10 +240,10 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     public void testCreateUserThirdWithGroupCategory() {
         final Category category = this.testFactory.getCategory(this.group, true);
 
-        this.createThirdParameter.setDefaultCategoryId(category.getId());
+        this.thirdParameter.setDefaultCategoryId(category.getId());
 
         Assertions.assertThrows(BadAssociationThirdException.class,
-            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+            () -> this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName()));       
     }
 
     @Test
@@ -251,10 +251,10 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
         final User otherUser = this.testFactory.getUser();
         final Category category = this.testFactory.getCategory(otherUser, true);
 
-        this.createThirdParameter.setDefaultCategoryId(category.getId());
+        this.thirdParameter.setDefaultCategoryId(category.getId());
 
         Assertions.assertThrows(BadAssociationThirdException.class,
-            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+            () -> this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName()));       
     }
 
     @Test
@@ -262,47 +262,47 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
         final Group otherGroup = this.testFactory.getGroup();
         final Category category = this.testFactory.getCategory(otherGroup, true);
 
-        this.createThirdParameter.setDefaultCategoryId(category.getId());
-        this.createThirdParameter.setGroupName(this.group.getGroupName());
+        this.thirdParameter.setDefaultCategoryId(category.getId());
+        this.thirdParameter.setGroupName(this.group.getGroupName());
 
         Assertions.assertThrows(BadAssociationThirdException.class,
-            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+            () -> this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName()));       
     }
 
     @Test
     public void testCreateGroupThirdWithUserCategory() {
         final Category category = this.testFactory.getCategory(this.user, true);
 
-        this.createThirdParameter.setDefaultCategoryId(category.getId());
-        this.createThirdParameter.setGroupName(this.group.getGroupName());
+        this.thirdParameter.setDefaultCategoryId(category.getId());
+        this.thirdParameter.setGroupName(this.group.getGroupName());
 
         Assertions.assertThrows(BadAssociationThirdException.class,
-            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+            () -> this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName()));       
     }
 
     @Test
     public void testCreateGroupThirdWithNonExistentGroup() {
-        this.createThirdParameter.setGroupName(this.testFactory.getRandomAlphanumericString());
+        this.thirdParameter.setGroupName(this.testFactory.getRandomAlphanumericString());
 
         Assertions.assertThrows(GroupNotExistException.class,
-            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+            () -> this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName()));       
     }
 
     @Test
     public void testCreateGroupThirdWithUserNotInGroup() {
         final User otherUser = this.testFactory.getUser();
-        this.createThirdParameter.setGroupName(this.group.getGroupName());
+        this.thirdParameter.setGroupName(this.group.getGroupName());
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, otherUser.getUserName()));       
+            () -> this.thirdServiceImpl.createThird(this.thirdParameter, otherUser.getUserName()));       
     }
 
     @Test
     public void testCreateUserThirdWithNonExistentCategory() {
-        this.createThirdParameter.setDefaultCategoryId(this.testFactory.getRandomInteger());
+        this.thirdParameter.setDefaultCategoryId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(CategoryNotExistException.class,
-            () -> this.thirdServiceImpl.createThird(this.createThirdParameter, this.user.getUserName()));       
+            () -> this.thirdServiceImpl.createThird(this.thirdParameter, this.user.getUserName()));       
     }
     
 }

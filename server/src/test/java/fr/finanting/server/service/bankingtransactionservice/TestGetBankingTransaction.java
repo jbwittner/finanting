@@ -1,11 +1,11 @@
 package fr.finanting.server.service.bankingtransactionservice;
 
+import fr.finanting.server.codegen.model.BankingTransactionDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
-import fr.finanting.server.dto.BankingTransactionDTO;
 import fr.finanting.server.exception.BankingTransactionNotExistException;
 import fr.finanting.server.exception.NotUserElementException;
 import fr.finanting.server.exception.UserNotInGroupException;

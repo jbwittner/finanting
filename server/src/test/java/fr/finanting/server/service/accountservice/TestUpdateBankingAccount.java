@@ -1,18 +1,15 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.dto.BankingAccountDTO;
+import fr.finanting.server.codegen.model.AddressParameter;
+import fr.finanting.server.codegen.model.BankDetailsParameter;
+import fr.finanting.server.codegen.model.BankingAccountDTO;
+import fr.finanting.server.codegen.model.UpdateBankingAccountParameter;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.UpdateBankingAccountParameter;
-import fr.finanting.server.parameter.subpart.AddressParameter;
-import fr.finanting.server.parameter.subpart.BankDetailsParameter;
-import fr.finanting.server.repository.BankingAccountRepository;
-import fr.finanting.server.repository.CurrencyRepository;
-import fr.finanting.server.repository.GroupRepository;
-import fr.finanting.server.repository.UserRepository;
+import fr.finanting.server.repository.*;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import org.junit.jupiter.api.Assertions;
@@ -33,12 +30,15 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     @Autowired
     private CurrencyRepository currencyRepository;
 
+    @Autowired
+    private BankingTransactionRepository bankingTransactionRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
     private UpdateBankingAccountParameter updateBankingAccountParameter;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository, bankingTransactionRepository);
 
         this.updateBankingAccountParameter = new UpdateBankingAccountParameter();
         final AddressParameter addressParameter = new AddressParameter();
@@ -53,7 +53,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         bankDetailsParameter.setIban(this.testFactory.getRandomAlphanumericString());
         this.updateBankingAccountParameter.setBankDetailsParameter(bankDetailsParameter);
 
-        this.updateBankingAccountParameter.setInitialBalance(this.testFactory.getRandomInteger());
+        this.updateBankingAccountParameter.setInitialBalance(this.testFactory.getRandomDouble());
         this.updateBankingAccountParameter.setLabel(this.faker.backToTheFuture().quote());
         this.updateBankingAccountParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString());
 
@@ -73,10 +73,8 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         this.currencyRepository.save(bankingAccount.getDefaultCurrency());
         bankingAccount = this.bankingAccountRepository.save(bankingAccount);
 
-        this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
-
         final BankingAccountDTO bankingAccountDTO =
-                this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user.getUserName());
+                this.bankingAccountServiceImpl.updateAccount(bankingAccount.getId(), this.updateBankingAccountParameter, user.getUserName());
 
         bankingAccount = this.bankingAccountRepository.findById(bankingAccountDTO.getId()).orElseThrow();
 
@@ -90,10 +88,9 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         final User user = this.testFactory.getUser();
         BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
-        this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
-
         final BankingAccountDTO bankingAccountDTO =
-                this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user.getUserName());
+                this.bankingAccountServiceImpl.updateAccount(bankingAccount.getId(),
+                        this.updateBankingAccountParameter, user.getUserName());
 
         bankingAccount = this.bankingAccountRepository.findById(bankingAccountDTO.getId()).orElseThrow();
 
@@ -105,10 +102,10 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     public void testUpdateAccountNotExist() {
         final User user = this.testFactory.getUser();
 
-        this.updateBankingAccountParameter.setAccountId(this.testFactory.getRandomInteger());
 
         Assertions.assertThrows(BankingAccountNotExistException.class,
-                () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user.getUserName()));
+                () -> this.bankingAccountServiceImpl.updateAccount(this.testFactory.getRandomInteger(),
+                        this.updateBankingAccountParameter, user.getUserName()));
 
     }
 
@@ -117,21 +114,21 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         final Group group = this.testFactory.getGroup();
         final User user2 = this.testFactory.getUser();
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
-        this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
 
         Assertions.assertThrows(NotAdminGroupException.class,
-                () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user2.getUserName()));
+                () -> this.bankingAccountServiceImpl.updateAccount(bankingAccount.getId(),
+                        this.updateBankingAccountParameter, user2.getUserName()));
     }
 
     @Test
     public void testUpdateUserAccountNotUserAccount() {
         final User user = this.testFactory.getUser();
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
-        this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
         final User user2 = this.testFactory.getUser();
 
         Assertions.assertThrows(NotUserBankingAccountException.class,
-                () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user2.getUserName()));
+                () -> this.bankingAccountServiceImpl.updateAccount(bankingAccount.getId(),
+                        this.updateBankingAccountParameter, user2.getUserName()));
 
     }
 
@@ -140,11 +137,11 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
         final User user = this.testFactory.getUser();
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
-        this.updateBankingAccountParameter.setAccountId(bankingAccount.getId());
         this.updateBankingAccountParameter.setDefaultCurrencyISOCode(this.testFactory.getRandomAlphanumericString());
 
         Assertions.assertThrows(CurrencyNotExistException.class,
-                () -> this.bankingAccountServiceImpl.updateAccount(this.updateBankingAccountParameter, user.getUserName()));
+                () -> this.bankingAccountServiceImpl.updateAccount(bankingAccount.getId(),
+                        this.updateBankingAccountParameter, user.getUserName()));
 
     }
 
@@ -169,7 +166,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
                 bankingAccountDTO.getBankDetailsDTO().getIban());
 
         Assertions.assertEquals(updateBankingAccountParameter.getDefaultCurrencyISOCode(),
-                bankingAccountDTO.getDefaultCurrencyDTO().getIsoCode());
+                bankingAccountDTO.getCurrencyDTO().getIsoCode());
 
         Assertions.assertEquals(updateBankingAccountParameter.getAbbreviation().toUpperCase(), bankingAccount.getAbbreviation());
         Assertions.assertEquals(updateBankingAccountParameter.getInitialBalance(), bankingAccount.getInitialBalance());

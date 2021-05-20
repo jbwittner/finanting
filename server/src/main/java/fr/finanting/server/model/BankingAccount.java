@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 
+import com.sun.xml.bind.v2.TODO;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.model.mother.MotherGroupUserElement;
@@ -32,7 +33,7 @@ public class BankingAccount extends MotherGroupUserElement {
     private String abbreviation;
 
     @Column(name = "INITIAL_BALANCE", nullable = false)
-    private Integer initialBalance = 0;
+    private Double initialBalance = 0.0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DEFAULT_CURRENCY_ID", nullable = false)

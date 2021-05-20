@@ -3,18 +3,18 @@ package fr.finanting.server.service.groupservice;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.GroupDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fr.finanting.server.dto.GroupDTO;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.NotAdminGroupException;
 import fr.finanting.server.exception.UserNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.RemoveUsersGroupParameter;
+import fr.finanting.server.codegen.model.RemoveUsersGroupParameter;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.GroupServiceImpl;
@@ -31,7 +31,7 @@ public class TestRemoveUsersGroup extends AbstractMotherIntegrationTest {
     private GroupServiceImpl groupServiceImpl;
     private Group group;
 
-    private Integer NUMBER_USERS = 10;
+    private static final Integer NUMBER_USERS = 10;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
@@ -39,7 +39,7 @@ public class TestRemoveUsersGroup extends AbstractMotherIntegrationTest {
         this.group = this.testFactory.getGroup();
         this.userRepository.save(this.group.getUserAdmin());
         final List<User> users = this.group.getUsers();
-        for(Integer index = 0; index < NUMBER_USERS; index ++){
+        for(int index = 0; index < NUMBER_USERS; index ++){
             final User user = this.testFactory.getUser();
             users.add(user);
         }
@@ -60,7 +60,7 @@ public class TestRemoveUsersGroup extends AbstractMotherIntegrationTest {
 
         final GroupDTO groupDTO = this.groupServiceImpl.removeUsersGroup(removeUsersGroupParameter, this.group.getUserAdmin().getUserName());
 
-        final Group group = this.groupRepository.findByGroupName(removeUsersGroupParameter.getGroupName()).get();
+        final Group group = this.groupRepository.findByGroupName(removeUsersGroupParameter.getGroupName()).orElseThrow();
 
         Assertions.assertEquals(NUMBER_USERS, group.getUsers().size());
 
@@ -86,7 +86,7 @@ public class TestRemoveUsersGroup extends AbstractMotherIntegrationTest {
 
         final GroupDTO groupDTO = this.groupServiceImpl.removeUsersGroup(removeUsersGroupParameter, this.group.getUserAdmin().getUserName());
 
-        final Group group = this.groupRepository.findByGroupName(removeUsersGroupParameter.getGroupName()).get();
+        final Group group = this.groupRepository.findByGroupName(removeUsersGroupParameter.getGroupName()).orElseThrow();
 
         Assertions.assertEquals(NUMBER_USERS - 1, group.getUsers().size());
 

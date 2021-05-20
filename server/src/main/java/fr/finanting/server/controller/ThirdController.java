@@ -1,58 +1,62 @@
 package fr.finanting.server.controller;
 
+import fr.finanting.server.codegen.api.ThirdApi;
+import fr.finanting.server.codegen.model.ThirdDTO;
+import fr.finanting.server.codegen.model.ThirdParameter;
+import fr.finanting.server.codegen.model.UpdateThirdParameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.finanting.server.exception.BadAssociationThirdException;
-import fr.finanting.server.exception.CategoryNotExistException;
-import fr.finanting.server.exception.GroupNotExistException;
-import fr.finanting.server.exception.ThirdNoUserException;
-import fr.finanting.server.exception.ThirdNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
-import fr.finanting.server.parameter.CreateThirdParameter;
-import fr.finanting.server.parameter.DeleteThirdParameter;
-import fr.finanting.server.parameter.UpdateThirdParameter;
-import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.ThirdService;
 
-@RestController
-@RequestMapping("third")
-public class ThirdController {
+import java.util.List;
 
-    private ThirdService thirdService;
+@RestController
+public class ThirdController extends MotherController implements ThirdApi {
+
+    private final ThirdService thirdService;
 
     @Autowired
     public ThirdController(final ThirdService thirdService){
+        super();
         this.thirdService = thirdService;
     }
 
-    @PostMapping("/createThird")
-    public void createThird(final Authentication authentication,
-                                    @RequestBody final CreateThirdParameter createThirdParameter)
-            throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.thirdService.createThird(createThirdParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<Void> createThird(final ThirdParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        this.thirdService.createThird(body, userName);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/updateThrid")
-    public void updateThrid(final Authentication authentication,
-                                    @RequestBody final UpdateThirdParameter updateThirdParameter)
-            throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.thirdService.updateThrid(updateThirdParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<Void> deleteThird(final Integer thirdId) {
+        final String userName = this.getCurrentPrincipalName();
+        this.thirdService.deleteThird(thirdId, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteThird")
-    public void deleteThird(final Authentication authentication,
-                                    @RequestBody final DeleteThirdParameter deleteThirdParameter)
-            throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.thirdService.deleteThird(deleteThirdParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<List<ThirdDTO>> getGroupThird(final Integer groupId) {
+        final String userName = this.getCurrentPrincipalName();
+        final List<ThirdDTO> thirdDTOList = this.thirdService.getGroupThird(groupId, userName);
+        return new ResponseEntity<>(thirdDTOList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<ThirdDTO>> getUserThird() {
+        final String userName = this.getCurrentPrincipalName();
+        final List<ThirdDTO> thirdDTOList = this.thirdService.getUserThird(userName);
+        return new ResponseEntity<>(thirdDTOList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> updateThird(final Integer thirdId, final UpdateThirdParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        this.thirdService.updateThird(thirdId, body, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

@@ -3,10 +3,11 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.finanting.server.codegen.model.*;
+import fr.finanting.server.dto.ThirdDTOBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.finanting.server.dto.ThirdDTO;
 import fr.finanting.server.exception.BadAssociationThirdException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
@@ -20,12 +21,6 @@ import fr.finanting.server.model.User;
 import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.model.embeddable.Contact;
-import fr.finanting.server.parameter.CreateThirdParameter;
-import fr.finanting.server.parameter.DeleteThirdParameter;
-import fr.finanting.server.parameter.UpdateThirdParameter;
-import fr.finanting.server.parameter.subpart.AddressParameter;
-import fr.finanting.server.parameter.subpart.BankDetailsParameter;
-import fr.finanting.server.parameter.subpart.ContactParameter;
 import fr.finanting.server.repository.CategoryRepository;
 import fr.finanting.server.repository.GroupRepository;
 import fr.finanting.server.repository.ThirdRepository;
@@ -35,10 +30,12 @@ import fr.finanting.server.service.ThirdService;
 @Service
 public class ThirdServiceImpl implements ThirdService{
 
-    private ThirdRepository thirdRepository;
-    private UserRepository userRepository;
-    private GroupRepository groupRepository;
-    private CategoryRepository categoryRepository;
+    private final ThirdRepository thirdRepository;
+    private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final CategoryRepository categoryRepository;
+
+    private static final ThirdDTOBuilder THIRD_DTO_BUILDER = new ThirdDTOBuilder();
 
     @Autowired
     public ThirdServiceImpl(final ThirdRepository thirdRepository,
@@ -53,26 +50,25 @@ public class ThirdServiceImpl implements ThirdService{
         }
     
     @Override
-    public void createThird(final CreateThirdParameter createThirdParameter, final String userName)
-        throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
+    public void createThird(final ThirdParameter thirdParameter, final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         final Third third = new Third();
 
-        if(createThirdParameter.getGroupName() == null){
+        if(thirdParameter.getGroupName() == null){
             third.setUser(user);
         } else {
-            final Group group = this.groupRepository.findByGroupName(createThirdParameter.getGroupName())
-                .orElseThrow(() -> new GroupNotExistException(createThirdParameter.getGroupName()));
+            final Group group = this.groupRepository.findByGroupName(thirdParameter.getGroupName())
+                .orElseThrow(() -> new GroupNotExistException(thirdParameter.getGroupName()));
 
             group.checkAreInGroup(user);
 
             third.setGroup(group);
         }
 
-        if(createThirdParameter.getAddressParameter() != null){
-            final AddressParameter addressParameter = createThirdParameter.getAddressParameter();
+        if(thirdParameter.getAddressParameter() != null){
+            final AddressParameter addressParameter = thirdParameter.getAddressParameter();
 
             final Address address = new Address();
             address.setAddress(addressParameter.getAddress());
@@ -83,8 +79,8 @@ public class ThirdServiceImpl implements ThirdService{
             third.setAddress(address);
         }
 
-        if(createThirdParameter.getBankDetailsParameter() != null){
-            final BankDetailsParameter bankDetailsParameter = createThirdParameter.getBankDetailsParameter();
+        if(thirdParameter.getBankDetailsParameter() != null){
+            final BankDetailsParameter bankDetailsParameter = thirdParameter.getBankDetailsParameter();
             
             final BankDetails bankDetails = new BankDetails();
             bankDetails.setBankName(bankDetailsParameter.getBankName());
@@ -94,8 +90,8 @@ public class ThirdServiceImpl implements ThirdService{
             third.setBankDetails(bankDetails);
         }
 
-        if(createThirdParameter.getContactParameter() != null){
-            final ContactParameter contactParameter = createThirdParameter.getContactParameter();
+        if(thirdParameter.getContactParameter() != null){
+            final ContactParameter contactParameter = thirdParameter.getContactParameter();
 
             final Contact contact = new Contact();
             contact.setHomePhone(contactParameter.getHomePhone());
@@ -106,15 +102,15 @@ public class ThirdServiceImpl implements ThirdService{
             third.setContact(contact);
         }
 
-        third.setAbbreviation(createThirdParameter.getAbbreviation().toUpperCase());
-        third.setLabel(createThirdParameter.getLabel());
-        third.setDescritpion(createThirdParameter.getDescritpion());
+        third.setAbbreviation(thirdParameter.getAbbreviation().toUpperCase());
+        third.setLabel(thirdParameter.getLabel());
+        third.setDescritpion(thirdParameter.getDescription());
 
-        if(createThirdParameter.getDefaultCategoryId() != null){
-            final Category defaultCategory = this.categoryRepository.findById(createThirdParameter.getDefaultCategoryId())
-                .orElseThrow(() -> new CategoryNotExistException(createThirdParameter.getDefaultCategoryId()));
+        if(thirdParameter.getDefaultCategoryId() != null){
+            final Category defaultCategory = this.categoryRepository.findById(thirdParameter.getDefaultCategoryId())
+                .orElseThrow(() -> new CategoryNotExistException(thirdParameter.getDefaultCategoryId()));
 
-            if(createThirdParameter.getGroupName() == null){
+            if(thirdParameter.getGroupName() == null){
                 if(defaultCategory.getUser() == null){
                     throw new BadAssociationThirdException();
                 } else if(!defaultCategory.getUser().getUserName().equals(userName)){
@@ -123,7 +119,7 @@ public class ThirdServiceImpl implements ThirdService{
             } else {
                 if(defaultCategory.getGroup() == null){
                     throw new BadAssociationThirdException();
-                } else if(!defaultCategory.getGroup().getGroupName().equals(createThirdParameter.getGroupName())){
+                } else if(!defaultCategory.getGroup().getGroupName().equals(thirdParameter.getGroupName())){
                     throw new BadAssociationThirdException();
                 }
             }
@@ -136,17 +132,18 @@ public class ThirdServiceImpl implements ThirdService{
     }
 
     @Override
-    public void updateThrid(final UpdateThirdParameter updateThirdParameter, final String userName)
-        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException{
+    public void updateThird(final Integer thirdId,
+                            final UpdateThirdParameter updateThirdParameter,
+                            final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final Third third = this.thirdRepository.findById(updateThirdParameter.getId())
-            .orElseThrow(() -> new ThirdNotExistException(updateThirdParameter.getId()));
+        final Third third = this.thirdRepository.findById(thirdId)
+            .orElseThrow(() -> new ThirdNotExistException(thirdId));
 
         if(third.getGroup() == null){
             if(!third.getUser().getUserName().equals(userName)){
-                throw new ThirdNoUserException(updateThirdParameter.getId());
+                throw new ThirdNoUserException(thirdId);
             }
         } else {
             third.getGroup().checkAreInGroup(user);
@@ -195,7 +192,7 @@ public class ThirdServiceImpl implements ThirdService{
 
         third.setAbbreviation(updateThirdParameter.getAbbreviation().toUpperCase());
         third.setLabel(updateThirdParameter.getLabel());
-        third.setDescritpion(updateThirdParameter.getDescritpion());
+        third.setDescritpion(updateThirdParameter.getDescription());
 
         if(updateThirdParameter.getDefaultCategoryId() != null){
             final Category defaultCategory = this.categoryRepository.findById(updateThirdParameter.getDefaultCategoryId())
@@ -223,17 +220,16 @@ public class ThirdServiceImpl implements ThirdService{
     }
 
     @Override
-    public void deleteThird(final DeleteThirdParameter deleteThirdParameter, final String userName)
-        throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
+    public void deleteThird(final Integer thirdId, final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
-        final Third third = this.thirdRepository.findById(deleteThirdParameter.getId())
-            .orElseThrow(() -> new ThirdNotExistException(deleteThirdParameter.getId()));
+        final Third third = this.thirdRepository.findById(thirdId)
+            .orElseThrow(() -> new ThirdNotExistException(thirdId));
 
         if(third.getGroup() == null){
             if(!third.getUser().getUserName().equals(userName)){
-                throw new ThirdNoUserException(deleteThirdParameter.getId());
+                throw new ThirdNoUserException(thirdId);
             }
         } else {
             third.getGroup().checkAreInGroup(user);
@@ -245,40 +241,22 @@ public class ThirdServiceImpl implements ThirdService{
 
     @Override
     public List<ThirdDTO> getUserThird(final String userName) {
-
-        final List<ThirdDTO> thirdDTOs = new ArrayList<>();
-
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
-        
         final List<Third> thirds = this.thirdRepository.findByUser(user);
-
-        for(final Third third : thirds){
-            final ThirdDTO thirdDTO = new ThirdDTO(third);
-            thirdDTOs.add(thirdDTO);
-        }
-
-        return thirdDTOs;
+        return THIRD_DTO_BUILDER.transformAll(thirds);
     }
 
     @Override
-    public List<ThirdDTO> getGroupThird(final String groupName, final String userName) throws UserNotInGroupException, GroupNotExistException {
-
-        final List<ThirdDTO> thirdDTOs = new ArrayList<>();
+    public List<ThirdDTO> getGroupThird(final Integer groupId, final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
-        final Group group = this.groupRepository.findByGroupName(groupName)
-            .orElseThrow(() -> new GroupNotExistException(groupName));
+        final Group group = this.groupRepository.findById(groupId)
+            .orElseThrow(() -> new GroupNotExistException(groupId));
 
         group.checkAreInGroup(user);
         
         final List<Third> thirds = this.thirdRepository.findByGroup(group);
-
-        for(final Third third : thirds){
-            final ThirdDTO thirdDTO = new ThirdDTO(third);
-            thirdDTOs.add(thirdDTO);
-        }
-
-        return thirdDTOs;
+        return THIRD_DTO_BUILDER.transformAll(thirds);
     }
     
 }

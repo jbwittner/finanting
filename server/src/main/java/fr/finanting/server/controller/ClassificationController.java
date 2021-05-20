@@ -2,73 +2,61 @@ package fr.finanting.server.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import fr.finanting.server.codegen.api.ClassificationApi;
 
-import fr.finanting.server.dto.ClassificationDTO;
-import fr.finanting.server.exception.ClassificationNoUserException;
-import fr.finanting.server.exception.ClassificationNotExistException;
-import fr.finanting.server.exception.GroupNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
-import fr.finanting.server.parameter.CreateClassificationParameter;
-import fr.finanting.server.parameter.DeleteClassificationParameter;
-import fr.finanting.server.parameter.UpdateClassificationParameter;
-import fr.finanting.server.security.UserDetailsImpl;
+import fr.finanting.server.codegen.model.ClassificationDTO;
+import fr.finanting.server.codegen.model.ClassificationParameter;
+import fr.finanting.server.codegen.model.UpdateClassificationParameter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import fr.finanting.server.service.ClassificationService;
 
 @RestController
-@RequestMapping("classification")
-public class ClassificationController {
+public class ClassificationController extends MotherController implements ClassificationApi {
 
-    private ClassificationService classificationService;
+    private final ClassificationService classificationService;
 
     @Autowired
     public ClassificationController(final ClassificationService classificationService){
+        super();
         this.classificationService = classificationService;
     }
-    
-    @PostMapping("/createClassification")
-    public void createClassification(final Authentication authentication,
-                                    @RequestBody final CreateClassificationParameter createClassificationParameter) 
-            throws GroupNotExistException, UserNotInGroupException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.classificationService.createClassification(createClassificationParameter, userDetailsImpl.getUsername());
+
+    @Override
+    public ResponseEntity<Void> createClassification(final ClassificationParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        this.classificationService.createClassification(body, userName);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/updateClassification")
-    public void updateClassification(final Authentication authentication,
-                                    @RequestBody final UpdateClassificationParameter updateClassificationParameter) 
-            throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.classificationService.updateClassification(updateClassificationParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<Void> deleteClassification(final Integer classificationId) {
+        final String userName = this.getCurrentPrincipalName();
+        this.classificationService.deleteClassification(classificationId, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteClassification")
-    public void deleteClassification(final Authentication authentication,
-                                    @RequestBody final DeleteClassificationParameter deleteClassificationParameter) 
-            throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.classificationService.deleteClassification(deleteClassificationParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<List<ClassificationDTO>> getGroupClassifications(final Integer groupId) {
+        final String userName = this.getCurrentPrincipalName();
+        final List<ClassificationDTO> classificationDTOList = this.classificationService.getGroupClassifications(groupId, userName);
+        return new ResponseEntity<>(classificationDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("/getGroupClassifications/{groupName}")
-    public List<ClassificationDTO> getGroupCategory(final Authentication authentication, 
-                                            @PathVariable final String groupName)
-            throws GroupNotExistException, UserNotInGroupException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.classificationService.getGroupClassifications(groupName, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<List<ClassificationDTO>> getUserClassification() {
+        final String userName = this.getCurrentPrincipalName();
+        final List<ClassificationDTO> classificationDTOList = this.classificationService.getUserClassifications(userName);
+        return new ResponseEntity<>(classificationDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("/getUserClassifications")
-    public List<ClassificationDTO> getUserCategory(final Authentication authentication) {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.classificationService.getUserClassifications(userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<Void> updateClassification(final Integer classificationId, final UpdateClassificationParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        this.classificationService.updateClassification(classificationId, body, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

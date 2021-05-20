@@ -2,7 +2,9 @@ package fr.finanting.server.service;
 
 import java.util.List;
 
-import fr.finanting.server.dto.TreeCategoriesDTO;
+import fr.finanting.server.codegen.model.CategoryParameter;
+import fr.finanting.server.codegen.model.TreeCategoryDTO;
+import fr.finanting.server.codegen.model.UpdateCategoryParameter;
 import fr.finanting.server.exception.BadAssociationCategoryTypeException;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroupException;
 import fr.finanting.server.exception.CategoryNoUserException;
@@ -10,24 +12,21 @@ import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.DeleteCategoryWithChildException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
-import fr.finanting.server.parameter.CreateCategoryParameter;
-import fr.finanting.server.parameter.DeleteCategoryParameter;
-import fr.finanting.server.parameter.UpdateCategoryParameter;
 
 public interface CategoryService {
 
-    public void createCategory(CreateCategoryParameter createCategoryParameter, String userName)
+    void createCategory(CategoryParameter categoryParameter, String userName)
         throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException;
 
-    public void updateCategory(UpdateCategoryParameter updateCategoryParameter, String userName)
+    void updateCategory(Integer categoryId, UpdateCategoryParameter updateCategoryParameter, String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException;
 
-    public void deleteCategory(DeleteCategoryParameter deleteCategoryParameter, String userName)
+    void deleteCategory(Integer categoryId, String userName)
         throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException;
 
-    public List<TreeCategoriesDTO> getUserCategory(String userName);
+    List<TreeCategoryDTO> getUserCategory(String userName);
 
-    public List<TreeCategoriesDTO> getGroupCategory(String groupName, String userName)
+    List<TreeCategoryDTO> getGroupCategory(Integer groupId, String userName)
         throws GroupNotExistException, UserNotInGroupException;
     
 }

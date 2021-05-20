@@ -1,67 +1,62 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.dto.BankingAccountDTO;
-import fr.finanting.server.exception.*;
-import fr.finanting.server.parameter.CreateBankingAccountParameter;
-import fr.finanting.server.parameter.DeleteBankingAccountParameter;
-import fr.finanting.server.parameter.UpdateBankingAccountParameter;
-import fr.finanting.server.security.UserDetailsImpl;
+import fr.finanting.server.codegen.api.BankingAccountApi;
+import fr.finanting.server.codegen.model.BankingAccountDTO;
+import fr.finanting.server.codegen.model.BankingAccountParameter;
+import fr.finanting.server.codegen.model.UpdateBankingAccountParameter;
 import fr.finanting.server.service.BankingAccountService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
 @RestController
-@RequestMapping("bankingAccount")
-public class BankingAccountController {
+public class BankingAccountController extends MotherController implements BankingAccountApi {
 
     private final BankingAccountService bankingAccountService;
 
     @Autowired
     public BankingAccountController(final BankingAccountService bankingAccountService){
+        super();
         this.bankingAccountService = bankingAccountService;
     }
 
-    @PostMapping("/updateAccount")
-    public BankingAccountDTO updateAccount(final Authentication authentication,
-                                    @RequestBody final UpdateBankingAccountParameter updateBankingAccountParameter)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.bankingAccountService.updateAccount(updateBankingAccountParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<BankingAccountDTO> createBankingAccount(final BankingAccountParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final BankingAccountDTO bankingAccountDTO = this.bankingAccountService.createAccount(body, userName);
+        return new ResponseEntity<>(bankingAccountDTO, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/deleteAccount")
-    public void deleteAccount(final Authentication authentication,
-                                    @RequestBody final DeleteBankingAccountParameter deleteBankingAccountParameter)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.bankingAccountService.deleteAccount(deleteBankingAccountParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<Void> deleteBankingAccount(final Integer bankingAccountId) {
+        final String userName = this.getCurrentPrincipalName();
+        this.bankingAccountService.deleteAccount(bankingAccountId, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/createAccount")
-    public BankingAccountDTO createAccount(final Authentication authentication,
-                                    @RequestBody final CreateBankingAccountParameter createBankingAccountParameter)
-            throws UserNotExistException, GroupNotExistException, CurrencyNotExistException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.bankingAccountService.createAccount(createBankingAccountParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<List<BankingAccountDTO>> getGroupBankingAccounts(final Integer groupId) {
+        final String userName = this.getCurrentPrincipalName();
+        final List<BankingAccountDTO> bankingAccountDTOList = this.bankingAccountService.getGroupBankingAccounts(groupId, userName);
+        return new ResponseEntity<>(bankingAccountDTOList, HttpStatus.CREATED);
     }
 
-    @GetMapping("/getUserBankingAccounts")
-    public List<BankingAccountDTO> getUserBankingAccounts(final Authentication authentication)
-            throws UserNotExistException, GroupNotExistException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.bankingAccountService.getUserBankingAccounts(userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<List<BankingAccountDTO>> getUserBankingAccounts() {
+        final String userName = this.getCurrentPrincipalName();
+        final List<BankingAccountDTO> bankingAccountDTOList = this.bankingAccountService.getUserBankingAccounts(userName);
+        return new ResponseEntity<>(bankingAccountDTOList, HttpStatus.CREATED);
     }
 
-    @GetMapping("/getBankingAccount/{id}")
-    public BankingAccountDTO getBankingAccount(final Authentication authentication,
-                                 @PathVariable final Integer id)
-            throws BankingAccountNotExistException, UserNotInGroupException, NotUserBankingAccountException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.bankingAccountService.getBankingAccount(id, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<BankingAccountDTO> updateBankingAccount(final Integer bankingAccountId, final UpdateBankingAccountParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final BankingAccountDTO bankingAccountDTO = this.bankingAccountService.updateAccount(bankingAccountId, body, userName);
+        return new ResponseEntity<>(bankingAccountDTO, HttpStatus.CREATED);
     }
 
 

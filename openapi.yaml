@@ -1,0 +1,1343 @@
+openapi: 3.0.1
+info:
+  title: Swagger Finanting
+  description: This is a sample server Finanting server.
+  contact:
+    email: jeanbaptiste.wittner@outlook.com
+  license:
+    name: GPL-3.0 License
+    url: https://www.gnu.org/licenses/gpl-3.0.html
+  version: 1.0.5
+externalDocs:
+  description: Find out more about Swagger
+  url: https://swagger.io
+servers:
+  - url: http://localhost:9080
+tags:
+  - name: admin
+    description: Administration of the application
+  - name: bankingAccount
+    description: Management of banking accounts
+  - name: bankingTransaction
+    description: Management of banking transactions
+  - name: category
+    description: Management of categories
+  - name: classification
+    description: Management of classifications
+  - name: currency
+    description: Management of currencies
+  - name: group
+    description: Management of groups
+  - name: third
+    description: Management of thirds
+  - name: user
+    description: Management of users
+
+paths:
+  /user/registration:
+    put:
+      tags:
+        - user
+      summary: Register a new user account
+      operationId: userRegistration
+      requestBody:
+        description: Object that needs to be send to register a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationParameter'
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+      security:
+        - basicAuth: []
+  /user:
+    post:
+      tags:
+        - user
+      summary: Update account informations
+      operationId: userUpdate
+      requestBody:
+        description: Object that needs to be send to update a user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+    get:
+      tags:
+        - user
+      summary: Get account informations
+      operationId: userGet
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+
+  /user/updatePassword:
+    post:
+      tags:
+        - user
+      summary: Update the password of the user
+      operationId: userPasswordUpdate
+      requestBody:
+        description: Object that needs to be send to update a user password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordUpdateParameter'
+      responses:
+        200:
+          description: successful operation
+      security:
+        - basicAuth: []
+  /group:
+    put:
+      tags:
+        - group
+      summary : Create a new group
+      operationId: createGroup
+      requestBody:
+        description: Object that needs to be send to create a group
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupParameter'
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDTO'
+    get:
+      tags:
+        - group
+      summary : Get groups of user
+      operationId: getGroups
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupDTO'
+                  
+  /group/{groupId}:
+    delete:
+      tags:
+        - group
+      summary : Delete a group
+      operationId: deleteGroup
+      parameters:
+      - name: groupId
+        in: path
+        description: Group id to delete
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+    get:
+      tags:
+        - group
+      summary : Get a group
+      operationId: getGroup
+      parameters:
+      - name: groupId
+        in: path
+        description: Group id to delete
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDTO'
+                
+  /group/removeUsersGroup:
+    post:
+      tags:
+        - group
+      summary : Remove user to a group
+      operationId: removeUserGroup
+      requestBody:
+        description: Object that needs to be send to remove a user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveUsersGroupParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDTO'
+  /group/addUserGroup:
+    post:
+      tags:
+        - group
+      summary : Add user to a group
+      operationId: addUserGroup
+      requestBody:
+        description: Object that needs to be send to add a user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUsersGroupParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupDTO'
+  
+  /category:
+    put:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: createCategory
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryParameter'
+      responses:
+        201:
+          description: aaaaaaaaaaaaa
+    get:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: getUserCategories
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TreeCategoryDTO'
+                
+  /category/{categoryId}:
+    delete:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: deleteCategory
+      parameters:
+      - name: categoryId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: updateCategory
+      parameters:
+      - name: categoryId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryParameter'
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+  
+  /category/{groupId}:
+    get:
+      tags:
+        - category
+      summary: aaaaaaaaaaaaa
+      operationId: getGroupCategories
+      parameters:
+      - name: groupId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TreeCategoryDTO'
+  
+  /classification:
+    put:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: createClassification
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassificationParameter'
+      responses:
+        201:
+          description: aaaaaaaaaaaaa
+    get:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: getUserClassification
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassificationDTO'
+
+  /classification/{classificationId}:
+    delete:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: deleteClassification
+      parameters:
+      - name: classificationId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: updateClassification
+      parameters:
+      - name: classificationId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateClassificationParameter'
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+  
+  /classification/{groupId}:
+    get:
+      tags:
+        - classification
+      summary: aaaaaaaaaaaaa
+      operationId: getGroupClassifications
+      parameters:
+      - name: groupId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassificationDTO'
+
+  /currency:
+    put:
+      tags:
+        - currency
+      summary: aaaaaaaaaaaaa
+      operationId: createCurrency
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyParameter'
+      responses:
+        201:
+          description: aaaaaaaaaaaaa
+    get:
+      tags:
+        - currency
+      summary: aaaaaaaaaaaaa
+      operationId: getAllCurrencies
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CurrencyDTO'
+
+  /currency/{currencyId}:
+    delete:
+      tags:
+        - currency
+      summary: aaaaaaaaaaaaa
+      operationId: deleteCurrency
+      parameters:
+      - name: currencyId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - currency
+      summary: aaaaaaaaaaaaa
+      operationId: updateCurrency
+      parameters:
+      - name: currencyId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyParameter'
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+
+  /third:
+    put:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: createThird
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThirdParameter'
+      responses:
+        201:
+          description: aaaaaaaaaaaaa
+    get:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: getUserThird
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ThirdDTO'
+
+  /third/{thirdId}:
+    delete:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: deleteThird
+      parameters:
+      - name: thirdId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: updateThird
+      parameters:
+      - name: thirdId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateThirdParameter'
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+  
+  /third/{groupId}:
+    get:
+      tags:
+        - third
+      summary: aaaaaaaaaaaaa
+      operationId: getGroupThird
+      parameters:
+      - name: groupId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ThirdDTO'
+
+  /bankingAccount:
+    put:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: createBankingAccount
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankingAccountParameter'
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingAccountDTO'
+    get:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: getUserBankingAccounts
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankingAccountDTO'
+
+  /bankingAccount/{bankingAccountId}:
+    delete:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: deleteBankingAccount
+      parameters:
+      - name: bankingAccountId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: updateBankingAccount
+      parameters:
+      - name: bankingAccountId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBankingAccountParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingAccountDTO'
+
+  /bankingAccount/{groupId}:
+    get:
+      tags:
+        - bankingAccount
+      summary: aaaaaaaaaaaaa
+      operationId: getGroupBankingAccounts
+      parameters:
+      - name: groupId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankingAccountDTO'
+
+  /bankingTransaction:
+    put:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: createBankingTransaction
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankingTransactionParameter'
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingTransactionDTO'
+  /bankingTransaction/{bankingTransactionId}:
+    delete:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: deleteBankingTransaction
+      parameters:
+      - name: bankingTransactionId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: aaaaaaaaaaaaa
+    post:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: updateBankingTransaction
+      parameters:
+      - name: bankingTransactionId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        description: aaaaaaaaaaaaa
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankingTransactionParameter'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingTransactionDTO'
+    get:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: getBankingTransaction
+      parameters:
+      - name: bankingTransactionId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingTransactionDTO'
+  /bankingTransaction/{bankingAccountId}:
+    get:
+      tags:
+        - bankingTransaction
+      summary: aaaaaaaaaaaaa
+      operationId: getBankingAccountTransaction
+      parameters:
+      - name: bankingAccountId
+        in: path
+        description: aaaaaaaaaaaaa
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankingTransactionDTO'
+                
+components:
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+  schemas:
+    UserDTO:
+      type: object
+      properties:
+        userName:
+          type: string
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+            enum:
+              - ADMIN
+              - USER
+
+    GroupDTO:
+      type: object
+      properties:
+        groupName:
+          type: string
+        userAdmin:
+          $ref: '#/components/schemas/UserDTO'
+        groupUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDTO'
+            
+    CategoryDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        categoryType:
+          type: string
+          enum:
+            - EXPENSE
+            - REVENUE
+
+    TreeCategoryDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        categoryType:
+          type: string
+          enum:
+            - EXPENSE
+            - REVENUE
+        childTreeCategoriesDTOs:
+          type: array
+          items:
+            $ref: '#/components/schemas/TreeCategoryDTO'
+            
+    ClassificationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+
+    CurrencyDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        defaultCurrency:
+          type: boolean
+        label:
+          type: string
+        symbol:
+          type: string
+        isoCode:
+          type: string
+        rate:
+          type: integer
+        decimalPlaces:
+          type: integer
+    
+    BankDetailsDTO:
+      type: object
+      properties:
+        iban:
+          type: string
+        accountNumber:
+          type: string
+        bankName:
+          type: string
+  
+    AddressDTO:
+      type: object
+      properties:
+        address:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+          
+    ContactDTO:
+      type: object
+      properties:
+        homePhone:
+          type: string
+        portablePhone:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+          
+    ThirdDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        description:
+          type: string
+        categoryDTO:
+          $ref: '#/components/schemas/CategoryDTO'
+        bankDetailsDTO:
+          $ref: '#/components/schemas/BankDetailsDTO'
+        addressDTO:
+          $ref: '#/components/schemas/AddressDTO'
+        contactDTO:
+          $ref: '#/components/schemas/ContactDTO'
+          
+    BankingAccountDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+        balance:
+          type: number
+          format: double
+        bankDetailsDTO:
+          $ref: '#/components/schemas/BankDetailsDTO'
+        currencyDTO:
+          $ref: '#/components/schemas/CurrencyDTO'
+        addressDTO:
+          $ref: '#/components/schemas/AddressDTO'
+
+    BankingTransactionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        bankingAccountDTO:
+          $ref: '#/components/schemas/BankingAccountDTO'
+        linkedBankingAccountDTO:
+          $ref: '#/components/schemas/BankingAccountDTO'
+        thirdDTO:
+          $ref: '#/components/schemas/ThirdDTO'
+        categoryDTO:
+          $ref: '#/components/schemas/CategoryDTO'
+        classificationDTO:
+          $ref: '#/components/schemas/ClassificationDTO'
+        transactionDate:
+          type: string
+          format: date
+        amountDate:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: double
+        currencyAmount:
+          type: number
+          format: double
+        currencyDTO:
+          $ref: '#/components/schemas/CurrencyDTO'
+        description:
+          type: string
+        createTimestamp:
+          type: string
+          format: date
+        updateTimestamp:
+          type: string
+          format: date
+
+    UserRegistrationParameter:
+      type: object
+      properties:
+        userName:
+          type: string
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+      required:
+        - userName
+        - email
+        - firstName
+        - lastName
+        - password
+
+    UserUpdateParameter:
+      type: object
+      properties:
+        userName:
+          type: string
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - userName
+        - email
+        - firstName
+        - lastName
+
+    PasswordUpdateParameter:
+      type: object
+      properties:
+        previousPassword:
+          type: string
+        newPassword:
+          type: string
+      required:
+        - previousPassword
+        - newPassword
+    
+    GroupParameter:
+      type: object
+      properties:
+        groupName:
+          type: string
+        usersName:
+          type: array
+          nullable: false
+          items:
+            type: string
+      required:
+        - groupName
+        
+    RemoveUsersGroupParameter:
+      type: object
+      properties:
+        groupName:
+          type: string
+        usersName:
+          type: array
+          items:
+            type: string
+      required:
+        - groupName
+        - usersName
+        
+    AddUsersGroupParameter:
+      type: object
+      properties:
+        groupName:
+          type: string
+        usersName:
+          type: array
+          items:
+            type: string
+      required:
+        - groupName
+        - usersName
+    
+    CategoryParameter:
+      type: object
+      properties:
+        parentId:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        description:
+          type: string
+        groupName:
+          type: string
+        categoryType:
+          type: string
+          enum:
+            - EXPENSE
+            - REVENUE
+      required:
+        - label
+        - abbreviation
+        
+    UpdateCategoryParameter:
+      type: object
+      properties:
+        parentId:
+          type: integer
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        description:
+          type: string
+        categoryType:
+          type: string
+          enum:
+            - EXPENSE
+            - REVENUE
+      required:
+        - label
+        - abbreviation
+
+    ClassificationParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        description:
+          type: string
+        groupName:
+          type: string
+      required:
+        - label
+        - abbreviation
+    
+    UpdateClassificationParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        description:
+          type: string
+      required:
+        - label
+        - abbreviation
+    
+    CurrencyParameter:
+      type: object
+      properties:
+        defaultCurrency:
+          type: boolean
+        label:
+          type: string
+        symbol:
+          type: string
+          maxLength: 3
+        isoCode:
+          type: string
+          minLength: 3
+          maxLength: 3
+        rate:
+          type: integer
+        decimalPlaces:
+          type: integer
+      required:
+        - defaultCurrency
+        - label
+        - symbol
+        - isoCode
+        - rate
+        - decimalPlaces
+
+    ContactParameter:
+      type: object
+      properties:
+        homePhone:
+          type: string
+        portablePhone:
+          type: string
+        email:
+          type: string
+        website:
+          type: string
+        
+    BankDetailsParameter:
+      type: object
+      properties:
+        bankName:
+          type: string
+        iban:
+          type: string
+        accountNumber:
+          type: string
+        
+    AddressParameter:
+      type: object
+      properties:
+        address:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+        
+    ThirdParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        description:
+          type: string
+        defaultCategoryId:
+          type: integer
+        groupName:
+          type: string
+        contactParameter:
+          $ref: '#/components/schemas/ContactParameter'
+        bankDetailsParameter:
+          $ref: '#/components/schemas/BankDetailsParameter'
+        addressParameter:
+          $ref: '#/components/schemas/AddressParameter'
+      required:
+        - label
+        - abbreviation
+    
+    UpdateThirdParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        description:
+          type: string
+        defaultCategoryId:
+          type: integer
+        contactParameter:
+          $ref: '#/components/schemas/ContactParameter'
+        bankDetailsParameter:
+          $ref: '#/components/schemas/BankDetailsParameter'
+        addressParameter:
+          $ref: '#/components/schemas/AddressParameter'
+      required:
+        - label
+        - abbreviation
+  
+    BankingAccountParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        defaultCurrencyISOCode:
+          type: string
+          minLength: 3
+          maxLength: 3
+        initialBalance:
+          type: number
+          format: double
+        groupName:
+          type: string
+        bankDetailsParameter:
+          $ref: '#/components/schemas/BankDetailsParameter'
+        addressParameter:
+          $ref: '#/components/schemas/AddressParameter'
+      required:
+        - label
+        - abbreviation
+        - defaultCurrencyISOCode
+        - initialBalance
+        
+    UpdateBankingAccountParameter:
+      type: object
+      properties:
+        label:
+          type: string
+        abbreviation:
+          type: string
+          minLength: 3
+          maxLength: 6
+        defaultCurrencyISOCode:
+          type: string
+          minLength: 3
+          maxLength: 3
+        initialBalance:
+          type: number
+          format: double
+        bankDetailsParameter:
+          $ref: '#/components/schemas/BankDetailsParameter'
+        addressParameter:
+          $ref: '#/components/schemas/AddressParameter'
+      required:
+        - label
+        - abbreviation
+        - defaultCurrencyISOCode
+        - initialBalance
+        
+    BankingTransactionParameter:
+      type: object
+      properties:
+        accountId:
+          type: integer
+        linkedAccountId:
+          type: integer
+        thirdId:
+          type: integer
+        classificationId:
+          type: integer
+        categoryId:
+          type: integer
+        transactionDate:
+          type: string
+          format: date
+        amountDate:
+          type: string
+          format: date
+        amount:
+          type: number
+          format: double
+        currencyAmount:
+          type: number
+          format: double
+        currencyId:
+          type: integer
+        description:
+          type: string
+      required:
+        - accountId
+        - transactionDate
+        - amountDate
+        - amount
+        - currencyAmount
+        - currencyId

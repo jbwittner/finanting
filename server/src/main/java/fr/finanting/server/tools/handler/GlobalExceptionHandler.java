@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
             throw ex;
         }
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, HttpStatus.FAILED_DEPENDENCY);
         
     }
 }

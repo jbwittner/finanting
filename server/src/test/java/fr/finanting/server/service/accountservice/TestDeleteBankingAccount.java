@@ -4,11 +4,7 @@ import fr.finanting.server.exception.*;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
-import fr.finanting.server.parameter.DeleteBankingAccountParameter;
-import fr.finanting.server.repository.BankingAccountRepository;
-import fr.finanting.server.repository.CurrencyRepository;
-import fr.finanting.server.repository.GroupRepository;
-import fr.finanting.server.repository.UserRepository;
+import fr.finanting.server.repository.*;
 import fr.finanting.server.service.implementation.BankingAccountServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import org.junit.jupiter.api.Assertions;
@@ -31,11 +27,14 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     @Autowired
     private CurrencyRepository currencyRepository;
 
+    @Autowired
+    private BankingTransactionRepository bankingTransactionRepository;
+
     private BankingAccountServiceImpl bankingAccountServiceImpl;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
-        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository);
+        this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository, bankingTransactionRepository);
     }
 
     @Test
@@ -45,10 +44,7 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
 
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
-        final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
-        deleteBankingAccountParameter.setId(bankingAccount.getId());
-
-        this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user.getUserName());
+        this.bankingAccountServiceImpl.deleteAccount(bankingAccount.getId(), user.getUserName());
 
         final Optional<BankingAccount> accountOptional = this.bankingAccountRepository.findById(bankingAccount.getId());
 
@@ -62,10 +58,7 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
         final Group group = this.testFactory.getGroup();
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
-        final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
-        deleteBankingAccountParameter.setId(bankingAccount.getId());
-
-        this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, group.getUserAdmin().getUserName());
+        this.bankingAccountServiceImpl.deleteAccount(bankingAccount.getId(), group.getUserAdmin().getUserName());
 
         final Optional<BankingAccount> accountOptional = this.bankingAccountRepository.findById(bankingAccount.getId());
 
@@ -79,11 +72,8 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
         final Group group = this.testFactory.getGroup(user);
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(group);
 
-        final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
-        deleteBankingAccountParameter.setId(bankingAccount.getId());
-
         Assertions.assertThrows(NotAdminGroupException.class,
-                () -> this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user.getUserName()));
+                () -> this.bankingAccountServiceImpl.deleteAccount(bankingAccount.getId(), user.getUserName()));
     }
 
     @Test
@@ -93,11 +83,8 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
 
         final User user2 = this.testFactory.getUser();
 
-        final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
-        deleteBankingAccountParameter.setId(bankingAccount.getId());
-
         Assertions.assertThrows(NotUserBankingAccountException.class,
-                () -> this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user2.getUserName()));
+                () -> this.bankingAccountServiceImpl.deleteAccount(bankingAccount.getId(), user2.getUserName()));
     }
 
     @Test
@@ -108,10 +95,7 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
 
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 
-        final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
-        deleteBankingAccountParameter.setId(bankingAccount.getId());
-
-        this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user.getUserName());
+        this.bankingAccountServiceImpl.deleteAccount(bankingAccount.getId(), user.getUserName());
 
         final Optional<BankingAccount> accountOptional = this.bankingAccountRepository.findById(bankingAccount.getId());
 
@@ -122,10 +106,7 @@ public class TestDeleteBankingAccount extends AbstractMotherIntegrationTest {
     public void testDeleteAccountNotExist() {
         final User user = this.testFactory.getUser();
 
-        final DeleteBankingAccountParameter deleteBankingAccountParameter = new DeleteBankingAccountParameter();
-        deleteBankingAccountParameter.setId(this.testFactory.getRandomInteger());
-
         Assertions.assertThrows(BankingAccountNotExistException.class,
-                () -> this.bankingAccountServiceImpl.deleteAccount(deleteBankingAccountParameter, user.getUserName()));
+                () -> this.bankingAccountServiceImpl.deleteAccount(this.testFactory.getRandomInteger(), user.getUserName()));
     }
 }

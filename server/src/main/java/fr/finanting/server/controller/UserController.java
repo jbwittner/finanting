@@ -1,55 +1,51 @@
 package fr.finanting.server.controller;
 
+import fr.finanting.server.codegen.api.UserApi;
+import fr.finanting.server.codegen.model.PasswordUpdateParameter;
+import fr.finanting.server.codegen.model.UserDTO;
+import fr.finanting.server.codegen.model.UserRegistrationParameter;
+import fr.finanting.server.codegen.model.UserUpdateParameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import fr.finanting.server.dto.UserDTO;
-import fr.finanting.server.exception.BadPasswordException;
-import fr.finanting.server.exception.UserEmailAlreadyExistException;
-import fr.finanting.server.exception.UserNameAlreadyExistException;
-import fr.finanting.server.parameter.PasswordUpdateParameter;
-import fr.finanting.server.parameter.UserRegisterParameter;
-import fr.finanting.server.parameter.UserUpdateParameter;
-import fr.finanting.server.security.UserDetailsImpl;
 import fr.finanting.server.service.UserService;
 
 @RestController
-@RequestMapping("user")
-public class UserController {
+public class UserController extends MotherController implements UserApi {
 
     protected final UserService userService;
 
     @Autowired
     public UserController(final UserService userService) {
+        super();
         this.userService = userService;
     }
 
-    @PostMapping("/registerNewAccount")
-    public UserDTO registerNewAccount(@RequestBody final UserRegisterParameter userRegisterParameter)
-            throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
-        return this.userService.registerNewAccount(userRegisterParameter);
+    @Override
+    public ResponseEntity<UserDTO> userGet() {
+        final String userName = this.getCurrentPrincipalName();
+        final UserDTO userDTO = this.userService.getAccountInformations(userName);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/updateAccountInformations")
-    public UserDTO updateAccountInformations(final Authentication authentication, @RequestBody final UserUpdateParameter userUpdateParameter) throws UserEmailAlreadyExistException, UserNameAlreadyExistException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.userService.updateAccountInformations(userUpdateParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<Void> userPasswordUpdate(final PasswordUpdateParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        this.userService.updatePassword(body, userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/getAccountInformations")
-    public UserDTO getAccountInformations(final Authentication authentication){
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.userService.getAccountInformations(userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<UserDTO> userRegistration(final UserRegistrationParameter body) {
+        final UserDTO userDTO = this.userService.registerNewAccount(body);
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/updatePassword")
-    public void updatePassword(final Authentication authentication, @RequestBody final PasswordUpdateParameter passwordUpdateParameter) throws BadPasswordException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.userService.updatePassword(passwordUpdateParameter, userDetailsImpl.getUsername());
+    @Override
+    public ResponseEntity<UserDTO> userUpdate(final UserUpdateParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final UserDTO userDTO = this.userService.updateAccountInformations(body, userName);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 }
