@@ -89,7 +89,6 @@ public class TestGetUserBankingAccounts extends AbstractMotherIntegrationTest {
                               final BankingAccount bankingAccount){
 
         final List<BankingTransaction> bankingTransactionList = this.bankingTransactionRepository.findByAccount(bankingAccount);
-
         final Double balance = bankingAccount.getInitialBalance() + bankingTransactionList.stream().mapToDouble(BankingTransaction::getAmount).sum();
 
         Assertions.assertEquals(bankingAccount.getAbbreviation(), bankingAccountDTO.getAbbreviation());
