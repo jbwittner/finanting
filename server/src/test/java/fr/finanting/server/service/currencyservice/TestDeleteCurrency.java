@@ -42,43 +42,40 @@ public class TestDeleteCurrency extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteUnusedCurrency(){
-        Currency currency = this.testFactory.getCurrency();
-        int currencyId = currency.getId();
+        final Currency currency = this.testFactory.getCurrency();
+        final int currencyId = currency.getId();
         this.currencyServiceImpl.deleteCurrency(currencyId);
-        boolean result = this.currencyRepository.existsById(currencyId);
+        final boolean result = this.currencyRepository.existsById(currencyId);
         Assertions.assertFalse(result);
     }
     @Test
     public void testDeleteNonExistCurrency(){
-        int currencyId = this.testFactory.getRandomInteger();
+        final int currencyId = this.testFactory.getRandomInteger();
         Assertions.assertThrows(CurrencyNotExistException.class, () -> this.currencyServiceImpl.deleteCurrency(currencyId));
     }
 
     @Test
     public void testDeleteCurrencyUsedByThird(){
-        Third third = this.testFactory.getThird(this.testFactory.getUser());
-        Currency currency = third.getDefaultCurrency();
-        int currencyId = currency.getId();
+        final Third third = this.testFactory.getThird(this.testFactory.getUser());
+        final Currency currency = third.getDefaultCurrency();
+        final int currencyId = currency.getId();
         Assertions.assertThrows(CurrencyUsedException.class, () -> this.currencyServiceImpl.deleteCurrency(currencyId));
     }
 
     @Test
     public void testDeleteCurrencyUsedByBankingAccount(){
-        BankingAccount bankingAccount = this.testFactory.getBankingAccount(this.testFactory.getUser());
-        Currency currency = bankingAccount.getDefaultCurrency();
-        int currencyId = currency.getId();
+        final BankingAccount bankingAccount = this.testFactory.getBankingAccount(this.testFactory.getUser());
+        final Currency currency = bankingAccount.getDefaultCurrency();
+        final int currencyId = currency.getId();
         Assertions.assertThrows(CurrencyUsedException.class, () -> this.currencyServiceImpl.deleteCurrency(currencyId));
     }
 
     @Test
     public void testDeleteCurrencyUsedByBankingTransaction(){
-        BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.testFactory.getUser(), false);
-        Currency currency = bankingTransaction.getCurrency();
-        int currencyId = currency.getId();
+        final BankingTransaction bankingTransaction = this.testFactory.getBankingTransaction(this.testFactory.getUser(), false);
+        final Currency currency = bankingTransaction.getCurrency();
+        final int currencyId = currency.getId();
         Assertions.assertThrows(CurrencyUsedException.class, () -> this.currencyServiceImpl.deleteCurrency(currencyId));
     }
-
-
-
 
 }

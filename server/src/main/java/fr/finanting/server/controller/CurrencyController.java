@@ -15,33 +15,34 @@ import fr.finanting.server.service.CurrencyService;
 @RestController
 public class CurrencyController extends MotherController implements CurrencyApi {
 
-    private CurrencyService currencyService;
+    private final CurrencyService currencyService;
 
     @Autowired
     public CurrencyController(final CurrencyService currencyService){
+        super();
         this.currencyService = currencyService;
     }
 
     @Override
-    public ResponseEntity<Void> createCurrency(CurrencyParameter body) {
+    public ResponseEntity<Void> createCurrency(final CurrencyParameter body) {
         this.currencyService.createCurrency(body);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> deleteCurrency(Integer currencyId) {
+    public ResponseEntity<Void> deleteCurrency(final Integer currencyId) {
         this.currencyService.deleteCurrency(currencyId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<CurrencyDTO>> getAllCurrencies() {
-        List<CurrencyDTO> currencyDTOList = this.currencyService.getAllCurrencies();
+        final List<CurrencyDTO> currencyDTOList = this.currencyService.getAllCurrencies();
         return new ResponseEntity<>(currencyDTOList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> updateCurrency(Integer currencyId, CurrencyParameter body) {
+    public ResponseEntity<Void> updateCurrency(final Integer currencyId, final CurrencyParameter body) {
         this.currencyService.updateCurrency(currencyId, body);
         return new ResponseEntity<>(HttpStatus.OK);
     }

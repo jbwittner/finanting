@@ -16,91 +16,47 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BankingTransactionController extends MotherController implements BankingTransactionApi {
 
-    private BankingTransactionService bankingTransactionService;
+    private final BankingTransactionService bankingTransactionService;
 
     @Autowired
     public BankingTransactionController(final BankingTransactionService bankingTransactionService){
+        super();
         this.bankingTransactionService = bankingTransactionService;
     }
 
     @Override
-    public ResponseEntity<BankingTransactionDTO> createBankingTransaction(BankingTransactionParameter body) {
-        String userName = this.getCurrentPrincipalName();
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionService.createBankingTransaction(body, userName);
+    public ResponseEntity<BankingTransactionDTO> createBankingTransaction(final BankingTransactionParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionService.createBankingTransaction(body, userName);
         return new ResponseEntity<>(bankingTransactionDTO, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> deleteBankingTransaction(Integer bankingTransactionId) {
-        String userName = this.getCurrentPrincipalName();
+    public ResponseEntity<Void> deleteBankingTransaction(final Integer bankingTransactionId) {
+        final String userName = this.getCurrentPrincipalName();
         this.bankingTransactionService.deleteAccountBankingTransaction(bankingTransactionId, userName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<BankingTransactionDTO>> getBankingAccountTransaction(Integer bankingAccountId) {
-        String userName = this.getCurrentPrincipalName();
-        List<BankingTransactionDTO> bankingTransactionDTOList = this.bankingTransactionService.getBankingAccountTransaction(bankingAccountId, userName);
+    public ResponseEntity<List<BankingTransactionDTO>> getBankingAccountTransaction(final Integer bankingAccountId) {
+        final String userName = this.getCurrentPrincipalName();
+        final List<BankingTransactionDTO> bankingTransactionDTOList = this.bankingTransactionService.getBankingAccountTransaction(bankingAccountId, userName);
         return new ResponseEntity<>(bankingTransactionDTOList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<BankingTransactionDTO> getBankingTransaction(Integer bankingTransactionId) {
-        String userName = this.getCurrentPrincipalName();
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionService.getBankingTransaction(bankingTransactionId, userName);
+    public ResponseEntity<BankingTransactionDTO> getBankingTransaction(final Integer bankingTransactionId) {
+        final String userName = this.getCurrentPrincipalName();
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionService.getBankingTransaction(bankingTransactionId, userName);
         return new ResponseEntity<>(bankingTransactionDTO, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<BankingTransactionDTO> updateBankingTransaction(Integer bankingTransactionId, BankingTransactionParameter body) {
-        String userName = this.getCurrentPrincipalName();
-        BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionService.updateBankingTransaction(bankingTransactionId, body, userName);
+    public ResponseEntity<BankingTransactionDTO> updateBankingTransaction(final Integer bankingTransactionId, final BankingTransactionParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final BankingTransactionDTO bankingTransactionDTO = this.bankingTransactionService.updateBankingTransaction(bankingTransactionId, body, userName);
         return new ResponseEntity<>(bankingTransactionDTO, HttpStatus.OK);
     }
 
-    /*
-    @PostMapping("/createBankingTransaction")
-    public BankingTransactionDTO createBankingTransaction(final Authentication authentication,
-                                    @RequestBody final CreateBankingTransactionParameter createBankingTransactionParameter)
-            throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException,
-                CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.bankingTransactionService.createBankingTransaction(createBankingTransactionParameter, userDetailsImpl.getUsername());
-    }
-
-    @PostMapping("/updateBankingTransaction")
-    public void updateBankingTransaction(final Authentication authentication,
-                                    @RequestBody final UpdateBankingTransactionParameter updateBankingTransactionParameter)
-            throws BankingTransactionNotExistException, BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException,
-                ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.bankingTransactionService.updateBankingTransaction(updateBankingTransactionParameter, userDetailsImpl.getUsername());
-    }
-
-    @GetMapping("/getBankingTransaction/{id}")
-    public BankingTransactionDTO getBankingTransaction(final Authentication authentication,
-                                                        @PathVariable final Integer id)
-            throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.bankingTransactionService.getBankingTransaction(id, userDetailsImpl.getUsername());
-    }
-
-    @GetMapping("/getAccountBankingTransaction/{id}")
-    public List<BankingTransactionDTO> getAccountBankingTransaction(final Authentication authentication,
-                                                        @PathVariable final Integer id)
-            throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException, BankingAccountNotExistException{
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        return this.bankingTransactionService.getAccountBankingTransaction(id, userDetailsImpl.getUsername());
-    }
-
-    @DeleteMapping("/deleteAccountBankingTransaction/{id}")
-    public void deleteAccountBankingTransaction(final Authentication authentication,
-                                                        @PathVariable final Integer id)
-            throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException {
-        final UserDetailsImpl userDetailsImpl = (UserDetailsImpl) authentication.getPrincipal();
-        this.bankingTransactionService.deleteAccountBankingTransaction(id, userDetailsImpl.getUsername());
-    }
-
-     */
-    
 }

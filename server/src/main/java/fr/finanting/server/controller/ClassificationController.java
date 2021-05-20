@@ -16,43 +16,44 @@ import fr.finanting.server.service.ClassificationService;
 @RestController
 public class ClassificationController extends MotherController implements ClassificationApi {
 
-    private ClassificationService classificationService;
+    private final ClassificationService classificationService;
 
     @Autowired
     public ClassificationController(final ClassificationService classificationService){
+        super();
         this.classificationService = classificationService;
     }
 
     @Override
-    public ResponseEntity<Void> createClassification(ClassificationParameter body) {
+    public ResponseEntity<Void> createClassification(final ClassificationParameter body) {
         final String userName = this.getCurrentPrincipalName();
         this.classificationService.createClassification(body, userName);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> deleteClassification(Integer classificationId) {
+    public ResponseEntity<Void> deleteClassification(final Integer classificationId) {
         final String userName = this.getCurrentPrincipalName();
         this.classificationService.deleteClassification(classificationId, userName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<ClassificationDTO>> getGroupClassifications(Integer groupId) {
+    public ResponseEntity<List<ClassificationDTO>> getGroupClassifications(final Integer groupId) {
         final String userName = this.getCurrentPrincipalName();
-        List<ClassificationDTO> classificationDTOList = this.classificationService.getGroupClassifications(groupId, userName);
+        final List<ClassificationDTO> classificationDTOList = this.classificationService.getGroupClassifications(groupId, userName);
         return new ResponseEntity<>(classificationDTOList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<ClassificationDTO>> getUserClassification() {
         final String userName = this.getCurrentPrincipalName();
-        List<ClassificationDTO> classificationDTOList = this.classificationService.getUserClassifications(userName);
+        final List<ClassificationDTO> classificationDTOList = this.classificationService.getUserClassifications(userName);
         return new ResponseEntity<>(classificationDTOList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> updateClassification(Integer classificationId, UpdateClassificationParameter body) {
+    public ResponseEntity<Void> updateClassification(final Integer classificationId, final UpdateClassificationParameter body) {
         final String userName = this.getCurrentPrincipalName();
         this.classificationService.updateClassification(classificationId, body, userName);
         return new ResponseEntity<>(HttpStatus.OK);

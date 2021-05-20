@@ -20,41 +20,42 @@ public class BankingAccountController extends MotherController implements Bankin
 
     @Autowired
     public BankingAccountController(final BankingAccountService bankingAccountService){
+        super();
         this.bankingAccountService = bankingAccountService;
     }
 
     @Override
-    public ResponseEntity<BankingAccountDTO> createBankingAccount(BankingAccountParameter body) {
-        String userName = this.getCurrentPrincipalName();
-        BankingAccountDTO bankingAccountDTO = this.bankingAccountService.createAccount(body, userName);
+    public ResponseEntity<BankingAccountDTO> createBankingAccount(final BankingAccountParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final BankingAccountDTO bankingAccountDTO = this.bankingAccountService.createAccount(body, userName);
         return new ResponseEntity<>(bankingAccountDTO, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> deleteBankingAccount(Integer bankingAccountId) {
-        String userName = this.getCurrentPrincipalName();
+    public ResponseEntity<Void> deleteBankingAccount(final Integer bankingAccountId) {
+        final String userName = this.getCurrentPrincipalName();
         this.bankingAccountService.deleteAccount(bankingAccountId, userName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<BankingAccountDTO>> getGroupBankingAccounts(Integer groupId) {
-        String userName = this.getCurrentPrincipalName();
-        List<BankingAccountDTO> bankingAccountDTOList = this.bankingAccountService.getGroupBankingAccounts(groupId, userName);
+    public ResponseEntity<List<BankingAccountDTO>> getGroupBankingAccounts(final Integer groupId) {
+        final String userName = this.getCurrentPrincipalName();
+        final List<BankingAccountDTO> bankingAccountDTOList = this.bankingAccountService.getGroupBankingAccounts(groupId, userName);
         return new ResponseEntity<>(bankingAccountDTOList, HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<List<BankingAccountDTO>> getUserBankingAccounts() {
-        String userName = this.getCurrentPrincipalName();
-        List<BankingAccountDTO> bankingAccountDTOList = this.bankingAccountService.getUserBankingAccounts(userName);
+        final String userName = this.getCurrentPrincipalName();
+        final List<BankingAccountDTO> bankingAccountDTOList = this.bankingAccountService.getUserBankingAccounts(userName);
         return new ResponseEntity<>(bankingAccountDTOList, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<BankingAccountDTO> updateBankingAccount(Integer bankingAccountId, UpdateBankingAccountParameter body) {
-        String userName = this.getCurrentPrincipalName();
-        BankingAccountDTO bankingAccountDTO = this.bankingAccountService.updateAccount(bankingAccountId, body, userName);
+    public ResponseEntity<BankingAccountDTO> updateBankingAccount(final Integer bankingAccountId, final UpdateBankingAccountParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final BankingAccountDTO bankingAccountDTO = this.bankingAccountService.updateAccount(bankingAccountId, body, userName);
         return new ResponseEntity<>(bankingAccountDTO, HttpStatus.CREATED);
     }
 

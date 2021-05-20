@@ -18,33 +18,34 @@ public class UserController extends MotherController implements UserApi {
 
     @Autowired
     public UserController(final UserService userService) {
+        super();
         this.userService = userService;
     }
 
     @Override
     public ResponseEntity<UserDTO> userGet() {
-        String userName = this.getCurrentPrincipalName();
-        UserDTO userDTO = this.userService.getAccountInformations(userName);
+        final String userName = this.getCurrentPrincipalName();
+        final UserDTO userDTO = this.userService.getAccountInformations(userName);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> userPasswordUpdate(PasswordUpdateParameter body) {
-        String userName = this.getCurrentPrincipalName();
+    public ResponseEntity<Void> userPasswordUpdate(final PasswordUpdateParameter body) {
+        final String userName = this.getCurrentPrincipalName();
         this.userService.updatePassword(body, userName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<UserDTO> userRegistration(UserRegistrationParameter body) {
-        UserDTO userDTO = this.userService.registerNewAccount(body);
+    public ResponseEntity<UserDTO> userRegistration(final UserRegistrationParameter body) {
+        final UserDTO userDTO = this.userService.registerNewAccount(body);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<UserDTO> userUpdate(UserUpdateParameter body) {
-        String userName = this.getCurrentPrincipalName();
-        UserDTO userDTO = this.userService.updateAccountInformations(body, userName);
+    public ResponseEntity<UserDTO> userUpdate(final UserUpdateParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final UserDTO userDTO = this.userService.updateAccountInformations(body, userName);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 }

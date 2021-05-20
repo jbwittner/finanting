@@ -308,7 +308,7 @@ public class TestFactory {
         return bankDetails;
     }
 
-    public Currency getCurrency(boolean isDefault){
+    public Currency getCurrency(final boolean isDefault){
         final Currency currency = new Currency();
         currency.setDecimalPlaces(this.getRandomInteger());
         currency.setDefaultCurrency(isDefault);
@@ -458,7 +458,7 @@ public class TestFactory {
         bankingTransaction.setCategory(this.getCategory(user, group, true));
         bankingTransaction.setClassification(this.getClassification(user, group));
         bankingTransaction.setCreateTimestamp(new Date());
-        Currency currency = this.getCurrency();
+        final Currency currency = this.getCurrency();
         bankingTransaction.setCurrency(this.getCurrency());
         final Double amountCurrency = amount * currency.getRate();
         bankingTransaction.setCurrencyAmount(amountCurrency);

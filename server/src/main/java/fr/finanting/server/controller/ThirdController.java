@@ -16,44 +16,45 @@ import java.util.List;
 @RestController
 public class ThirdController extends MotherController implements ThirdApi {
 
-    private ThirdService thirdService;
+    private final ThirdService thirdService;
 
     @Autowired
     public ThirdController(final ThirdService thirdService){
+        super();
         this.thirdService = thirdService;
     }
 
     @Override
-    public ResponseEntity<Void> createThird(ThirdParameter body) {
-        String userName = this.getCurrentPrincipalName();
+    public ResponseEntity<Void> createThird(final ThirdParameter body) {
+        final String userName = this.getCurrentPrincipalName();
         this.thirdService.createThird(body, userName);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> deleteThird(Integer thirdId) {
-        String userName = this.getCurrentPrincipalName();
+    public ResponseEntity<Void> deleteThird(final Integer thirdId) {
+        final String userName = this.getCurrentPrincipalName();
         this.thirdService.deleteThird(thirdId, userName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<ThirdDTO>> getGroupThird(Integer groupId) {
-        String userName = this.getCurrentPrincipalName();
-        List<ThirdDTO> thirdDTOList = this.thirdService.getGroupThird(groupId, userName);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<List<ThirdDTO>> getUserThird() {
-        String userName = this.getCurrentPrincipalName();
-        List<ThirdDTO> thirdDTOList = this.thirdService.getUserThird(userName);
+    public ResponseEntity<List<ThirdDTO>> getGroupThird(final Integer groupId) {
+        final String userName = this.getCurrentPrincipalName();
+        final List<ThirdDTO> thirdDTOList = this.thirdService.getGroupThird(groupId, userName);
         return new ResponseEntity<>(thirdDTOList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> updateThird(Integer thirdId, UpdateThirdParameter body) {
-        String userName = this.getCurrentPrincipalName();
+    public ResponseEntity<List<ThirdDTO>> getUserThird() {
+        final String userName = this.getCurrentPrincipalName();
+        final List<ThirdDTO> thirdDTOList = this.thirdService.getUserThird(userName);
+        return new ResponseEntity<>(thirdDTOList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> updateThird(final Integer thirdId, final UpdateThirdParameter body) {
+        final String userName = this.getCurrentPrincipalName();
         this.thirdService.updateThird(thirdId, body, userName);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -34,7 +34,7 @@ public class TestDeleteGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteGroupOk() throws GroupNotExistException, NotAdminGroupException {
-        Integer groupId = this.group.getId();
+        final Integer groupId = this.group.getId();
         final String userName = this.group.getUserAdmin().getUserName();
         this.groupServiceImpl.deleteGroup(groupId, userName);
 
@@ -44,7 +44,7 @@ public class TestDeleteGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteNonExistentGroup() throws GroupNotExistException, NotAdminGroupException {
-        Integer groupId = this.group.getId() + 1;
+        final Integer groupId = this.group.getId() + 1;
         final String userName = this.group.getUserAdmin().getUserName();
 
         Assertions.assertThrows(GroupNotExistException.class,
@@ -54,7 +54,7 @@ public class TestDeleteGroup extends AbstractMotherIntegrationTest {
 
     @Test
     public void testDeleteNonAdminGroup() throws GroupNotExistException, NotAdminGroupException {
-        Integer groupId = this.group.getId();
+        final Integer groupId = this.group.getId();
         final User user = this.testFactory.getUser();
         final String userName = user.getUserName();
 

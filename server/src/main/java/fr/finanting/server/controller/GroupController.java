@@ -20,48 +20,49 @@ public class GroupController extends MotherController implements GroupApi {
 
     @Autowired
     public GroupController(final GroupService groupService) {
+        super();
         this.groupService = groupService;
     }
 
     @Override
-    public ResponseEntity<GroupDTO> addUserGroup(AddUsersGroupParameter body) {
-        String userName = this.getCurrentPrincipalName();
-        GroupDTO groupDTO = this.groupService.addUsersGroup(body, userName);
+    public ResponseEntity<GroupDTO> addUserGroup(final AddUsersGroupParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final GroupDTO groupDTO = this.groupService.addUsersGroup(body, userName);
         return new ResponseEntity<>(groupDTO, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<GroupDTO> createGroup(GroupParameter body) {
-        String userName = this.getCurrentPrincipalName();
-        GroupDTO groupDTO = this.groupService.createGroup(body, userName);
+    public ResponseEntity<GroupDTO> createGroup(final GroupParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final GroupDTO groupDTO = this.groupService.createGroup(body, userName);
         return new ResponseEntity<>(groupDTO, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> deleteGroup(Integer groupId) {
-        String userName = this.getCurrentPrincipalName();
+    public ResponseEntity<Void> deleteGroup(final Integer groupId) {
+        final String userName = this.getCurrentPrincipalName();
         this.groupService.deleteGroup(groupId, userName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<GroupDTO> getGroup(Integer groupId) {
-        String userName = this.getCurrentPrincipalName();
-        GroupDTO groupDTO = this.groupService.getGroup(groupId, userName);
+    public ResponseEntity<GroupDTO> getGroup(final Integer groupId) {
+        final String userName = this.getCurrentPrincipalName();
+        final GroupDTO groupDTO = this.groupService.getGroup(groupId, userName);
         return new ResponseEntity<>(groupDTO, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<GroupDTO>> getGroups() {
-        String userName = this.getCurrentPrincipalName();
-        List<GroupDTO> groupDTOList = this.groupService.getUserGroups(userName);
+        final String userName = this.getCurrentPrincipalName();
+        final List<GroupDTO> groupDTOList = this.groupService.getUserGroups(userName);
         return new ResponseEntity<>(groupDTOList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<GroupDTO> removeUserGroup(RemoveUsersGroupParameter body) {
-        String userName = this.getCurrentPrincipalName();
-        GroupDTO groupDTO = this.groupService.removeUsersGroup(body, userName);
+    public ResponseEntity<GroupDTO> removeUserGroup(final RemoveUsersGroupParameter body) {
+        final String userName = this.getCurrentPrincipalName();
+        final GroupDTO groupDTO = this.groupService.removeUsersGroup(body, userName);
         return new ResponseEntity<>(groupDTO, HttpStatus.OK);
     }
 }

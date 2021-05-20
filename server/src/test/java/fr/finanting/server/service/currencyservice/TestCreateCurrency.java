@@ -101,7 +101,7 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
 
     @Test
     public void testCreateAnotherNoDefaultCurrencyOk() throws CurrencyIsoCodeAlreadyExist, NoDefaultCurrencyException{
-        Currency otherCurrency = this.testFactory.getCurrency(true);
+        final Currency otherCurrency = this.testFactory.getCurrency(true);
 
         this.currencyServiceImpl.createCurrency(this.currencyParameter);
 

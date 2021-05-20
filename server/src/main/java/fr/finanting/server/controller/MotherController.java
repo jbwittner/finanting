@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class MotherController {
 
     protected String getCurrentPrincipalName(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }
 

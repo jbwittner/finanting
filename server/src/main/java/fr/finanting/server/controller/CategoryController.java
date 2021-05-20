@@ -21,39 +21,40 @@ public class CategoryController extends MotherController implements CategoryApi 
 
     @Autowired
     public CategoryController(final CategoryService categoryService) {
+        super();
         this.categoryService = categoryService;
     }
 
     @Override
-    public ResponseEntity<Void> createCategory(CategoryParameter body) {
+    public ResponseEntity<Void> createCategory(final CategoryParameter body) {
         final String userName = this.getCurrentPrincipalName();
         this.categoryService.createCategory(body, userName);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Void> deleteCategory(Integer categoryId) {
+    public ResponseEntity<Void> deleteCategory(final Integer categoryId) {
         final String userName = this.getCurrentPrincipalName();
         this.categoryService.deleteCategory(categoryId, userName);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<TreeCategoryDTO>> getGroupCategories(Integer groupId) {
+    public ResponseEntity<List<TreeCategoryDTO>> getGroupCategories(final Integer groupId) {
         final String userName = this.getCurrentPrincipalName();
-        List<TreeCategoryDTO> treeCategoryDTOList = this.categoryService.getGroupCategory(groupId, userName);
+        final List<TreeCategoryDTO> treeCategoryDTOList = this.categoryService.getGroupCategory(groupId, userName);
         return new ResponseEntity<>(treeCategoryDTOList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<TreeCategoryDTO>> getUserCategories() {
         final String userName = this.getCurrentPrincipalName();
-        List<TreeCategoryDTO> treeCategoryDTOList = this.categoryService.getUserCategory(userName);
+        final List<TreeCategoryDTO> treeCategoryDTOList = this.categoryService.getUserCategory(userName);
         return new ResponseEntity<>(treeCategoryDTOList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> updateCategory(Integer categoryId, UpdateCategoryParameter body) {
+    public ResponseEntity<Void> updateCategory(final Integer categoryId, final UpdateCategoryParameter body) {
         final String userName = this.getCurrentPrincipalName();
         this.categoryService.updateCategory(categoryId, body, userName);
         return new ResponseEntity<>(HttpStatus.OK);
