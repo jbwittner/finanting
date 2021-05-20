@@ -9,8 +9,8 @@ import java.util.List;
 public class BankDetailsDTOBuilder extends Transformer<BankDetails, BankDetailsDTO> {
 
     @Override
-    public BankDetailsDTO transform(BankDetails input) {
-        BankDetailsDTO bankDetailsDTO = new BankDetailsDTO();
+    public BankDetailsDTO transform(final BankDetails input) {
+        final BankDetailsDTO bankDetailsDTO = new BankDetailsDTO();
         bankDetailsDTO.setBankName(input.getBankName());
         bankDetailsDTO.setAccountNumber(input.getAccountNumber());
         bankDetailsDTO.setIban(input.getIban());
@@ -18,8 +18,8 @@ public class BankDetailsDTOBuilder extends Transformer<BankDetails, BankDetailsD
     }
 
     @Override
-    public List<BankDetailsDTO> transformAll(List<BankDetails> input) {
-        List<BankDetailsDTO> bankDetailsDTOList = new ArrayList<>();
+    public List<BankDetailsDTO> transformAll(final List<BankDetails> input) {
+        final List<BankDetailsDTO> bankDetailsDTOList = new ArrayList<>();
         input.forEach(bankDetails -> bankDetailsDTOList.add(this.transform(bankDetails)));
         return bankDetailsDTOList;
     }

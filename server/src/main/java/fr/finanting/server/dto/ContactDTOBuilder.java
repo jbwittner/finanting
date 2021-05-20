@@ -9,8 +9,8 @@ import java.util.List;
 
 public class ContactDTOBuilder extends Transformer<Contact, ContactDTO> {
     @Override
-    public ContactDTO transform(Contact input) {
-        ContactDTO contactDTO = new ContactDTO();
+    public ContactDTO transform(final Contact input) {
+        final ContactDTO contactDTO = new ContactDTO();
         contactDTO.setEmail(input.getEmail());
         contactDTO.setHomePhone(input.getHomePhone());
         contactDTO.setPortablePhone(input.getPortablePhone());
@@ -19,8 +19,8 @@ public class ContactDTOBuilder extends Transformer<Contact, ContactDTO> {
     }
 
     @Override
-    public List<ContactDTO> transformAll(List<Contact> input) {
-        List<ContactDTO> contactDTOList = new ArrayList<>();
+    public List<ContactDTO> transformAll(final List<Contact> input) {
+        final List<ContactDTO> contactDTOList = new ArrayList<>();
         input.forEach(contact -> contactDTOList.add(this.transform(contact)));
         return contactDTOList;
     }

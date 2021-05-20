@@ -13,8 +13,8 @@ public class BankingAccountDTOBuilder extends Transformer<BankingAccount, Bankin
     private static final AddressDTOBuilder ADDRESS_DTO_BUILDER = new AddressDTOBuilder();
 
     @Override
-    public BankingAccountDTO transform(BankingAccount input) {
-        BankingAccountDTO bankDetailsDTO = new BankingAccountDTO();
+    public BankingAccountDTO transform(final BankingAccount input) {
+        final BankingAccountDTO bankDetailsDTO = new BankingAccountDTO();
         bankDetailsDTO.setId(input.getId());
         bankDetailsDTO.setLabel(input.getLabel());
         bankDetailsDTO.setAbbreviation(input.getAbbreviation());
@@ -32,8 +32,8 @@ public class BankingAccountDTOBuilder extends Transformer<BankingAccount, Bankin
     }
 
     @Override
-    public List<BankingAccountDTO> transformAll(List<BankingAccount> input) {
-        List<BankingAccountDTO> bankingAccountDTOList = new ArrayList<>();
+    public List<BankingAccountDTO> transformAll(final List<BankingAccount> input) {
+        final List<BankingAccountDTO> bankingAccountDTOList = new ArrayList<>();
         input.forEach(bankingAccount -> bankingAccountDTOList.add(this.transform(bankingAccount)));
         return bankingAccountDTOList;
     }

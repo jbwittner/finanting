@@ -15,8 +15,8 @@ public class BankingTransactionDTOBuilder extends Transformer<BankingTransaction
     private static final BankingAccountDTOBuilder BANKING_ACCOUNT_DTO_BUILDER = new BankingAccountDTOBuilder();
 
     @Override
-    public BankingTransactionDTO transform(BankingTransaction input) {
-        BankingTransactionDTO bankingTransactionDTO = new BankingTransactionDTO();
+    public BankingTransactionDTO transform(final BankingTransaction input) {
+        final BankingTransactionDTO bankingTransactionDTO = new BankingTransactionDTO();
         bankingTransactionDTO.setId(input.getId());
         bankingTransactionDTO.setBankingAccountDTO(BANKING_ACCOUNT_DTO_BUILDER.transform(input.getAccount()));
 
@@ -51,8 +51,8 @@ public class BankingTransactionDTOBuilder extends Transformer<BankingTransaction
     }
 
     @Override
-    public List<BankingTransactionDTO> transformAll(List<BankingTransaction> input) {
-        List<BankingTransactionDTO> bankingTransactionDTOList = new ArrayList<>();
+    public List<BankingTransactionDTO> transformAll(final List<BankingTransaction> input) {
+        final List<BankingTransactionDTO> bankingTransactionDTOList = new ArrayList<>();
         input.forEach(bankingTransaction -> bankingTransactionDTOList.add(this.transform(bankingTransaction)));
         return bankingTransactionDTOList;
     }

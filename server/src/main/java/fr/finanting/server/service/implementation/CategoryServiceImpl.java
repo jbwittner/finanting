@@ -29,30 +29,33 @@ import fr.finanting.server.service.CategoryService;
 @Service
 public class CategoryServiceImpl implements CategoryService {
     
-    private UserRepository userRepository;
-    private GroupRepository groupRepository;
-    private CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final CategoryRepository categoryRepository;
 
     private static final TreeCategoryDTOBuilder TREE_CATEGORY_DTO_BUILDER = new TreeCategoryDTOBuilder();
 
     @Autowired
-    public CategoryServiceImpl(final UserRepository userRepository, final GroupRepository groupRepository, final CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(final UserRepository userRepository,
+                               final GroupRepository groupRepository,
+                               final CategoryRepository categoryRepository) {
         this.userRepository = userRepository;
         this.groupRepository = groupRepository;
         this.categoryRepository = categoryRepository;
     }
 
-    private boolean canNotAssociateCategory(CategoryType categoryType, CategoryParameter.CategoryTypeEnum categoryTypeEnum){
+    private boolean canNotAssociateCategory(final CategoryType categoryType,
+                                            final CategoryParameter.CategoryTypeEnum categoryTypeEnum){
         return !categoryType.name().equals(categoryTypeEnum.name());
     }
 
-    private boolean canNotAssociateCategory(CategoryType categoryType, UpdateCategoryParameter.CategoryTypeEnum categoryTypeEnum){
+    private boolean canNotAssociateCategory(final CategoryType categoryType,
+                                            final UpdateCategoryParameter.CategoryTypeEnum categoryTypeEnum){
         return !categoryType.name().equals(categoryTypeEnum.name());
     }
 
     @Override
-    public void createCategory(final CategoryParameter categoryParameter, final String userName)
-        throws CategoryNotExistException, BadAssociationCategoryUserGroupException, GroupNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryTypeException{
+    public void createCategory(final CategoryParameter categoryParameter, final String userName) {
 
         final Category category = new Category();
 
@@ -96,7 +99,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.setAbbreviation(categoryParameter.getAbbreviation().toUpperCase());
         category.setDescritpion(categoryParameter.getDescription());
 
-        CategoryType categoryType = CategoryType.valueOf(categoryParameter.getCategoryType().toString());
+        final CategoryType categoryType = CategoryType.valueOf(categoryParameter.getCategoryType().toString());
         category.setCategoryType(categoryType);
 
         if(categoryParameter.getGroupName() == null){
@@ -113,8 +116,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void updateCategory(final Integer categoryId, UpdateCategoryParameter updateCategoryParameter, final String userName)
-        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, BadAssociationCategoryUserGroupException, BadAssociationCategoryTypeException{
+    public void updateCategory(final Integer categoryId,
+                               final UpdateCategoryParameter updateCategoryParameter,
+                               final String userName) {
 
         final Category category = this.categoryRepository.findById(categoryId)
             .orElseThrow(() -> new CategoryNotExistException(categoryId));
@@ -179,8 +183,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<TreeCategoryDTO> getGroupCategory(final Integer groupId, final String userName)
-        throws GroupNotExistException, UserNotInGroupException{
+    public List<TreeCategoryDTO> getGroupCategory(final Integer groupId, final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -206,8 +209,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(final Integer categoryId, final String userName)
-        throws CategoryNotExistException, CategoryNoUserException, UserNotInGroupException, DeleteCategoryWithChildException {
+    public void deleteCategory(final Integer categoryId, final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 

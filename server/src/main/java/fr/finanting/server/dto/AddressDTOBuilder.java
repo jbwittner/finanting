@@ -9,8 +9,8 @@ import java.util.List;
 public class AddressDTOBuilder extends Transformer<Address, AddressDTO> {
 
     @Override
-    public AddressDTO transform(Address input) {
-        AddressDTO addressDTO = new AddressDTO();
+    public AddressDTO transform(final Address input) {
+        final AddressDTO addressDTO = new AddressDTO();
         addressDTO.setAddress(input.getAddress());
         addressDTO.setCity(input.getCity());
         addressDTO.setStreet(input.getStreet());
@@ -19,8 +19,8 @@ public class AddressDTOBuilder extends Transformer<Address, AddressDTO> {
     }
 
     @Override
-    public List<AddressDTO> transformAll(List<Address> input) {
-        List<AddressDTO> addressDTOList = new ArrayList<>();
+    public List<AddressDTO> transformAll(final List<Address> input) {
+        final List<AddressDTO> addressDTOList = new ArrayList<>();
         input.forEach(address -> addressDTOList.add(this.transform(address)));
         return addressDTOList;
     }

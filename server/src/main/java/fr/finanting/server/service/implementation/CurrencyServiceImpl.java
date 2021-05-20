@@ -82,7 +82,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public void updateCurrency(Integer currencyId, CurrencyParameter currencyParameter) throws CurrencyIsoCodeAlreadyExist, CurrencyNotExistException, NoDefaultCurrencyException{
+    public void updateCurrency(final Integer currencyId, final CurrencyParameter currencyParameter){
         final String isoCode = currencyParameter.getIsoCode().toUpperCase();
 
         final Optional<Currency> optionalCurrency = this.currencyRepository.findById(currencyId);
@@ -126,7 +126,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public void deleteCurrency(Integer currencyId) {
+    public void deleteCurrency(final Integer currencyId) {
         final Currency currency = this.currencyRepository.findById(currencyId).
                 orElseThrow(() -> new CurrencyNotExistException(currencyId));
 

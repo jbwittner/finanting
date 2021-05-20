@@ -36,13 +36,13 @@ import fr.finanting.server.service.BankingTransactionService;
 @Service
 public class BankingTransactionServiceImpl implements BankingTransactionService {
 
-    private BankingTransactionRepository bankingTransactionRepository;
-    private BankingAccountRepository bankingAccountRepository;
-    private ThirdRepository thirdRepository;
-    private CategoryRepository categoryRepository;
-    private ClassificationRepository classificationRepository;
-    private CurrencyRepository currencyRepository;
-    private UserRepository userRepository;
+    private final BankingTransactionRepository bankingTransactionRepository;
+    private final BankingAccountRepository bankingAccountRepository;
+    private final ThirdRepository thirdRepository;
+    private final CategoryRepository categoryRepository;
+    private final ClassificationRepository classificationRepository;
+    private final CurrencyRepository currencyRepository;
+    private final UserRepository userRepository;
 
     private static final BankingTransactionDTOBuilder BANKING_TRANSACTION_DTO_BUILDER = new BankingTransactionDTOBuilder();
 
@@ -62,7 +62,8 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         this.userRepository = userRepository;
     }
 
-    private void setMirrorTransactionData(final BankingTransaction mirrorBankingTransaction, final BankingTransaction bankingTransaction){
+    private void setMirrorTransactionData(final BankingTransaction mirrorBankingTransaction,
+                                          final BankingTransaction bankingTransaction){
         mirrorBankingTransaction.setAccount(bankingTransaction.getLinkedAccount());
         mirrorBankingTransaction.setLinkedAccount(bankingTransaction.getAccount());
 
@@ -96,8 +97,9 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
         mirrorBankingTransaction.setCurrencyAmount(currencyAmount);
     }
 
-    private void setBankingTransactionData(final BankingTransaction bankingTransaction, final BankingTransactionParameter bankingTransactionParameter, final User user)
-        throws ThirdNotExistException, BadAssociationElementException, UserNotInGroupException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException {
+    private void setBankingTransactionData(final BankingTransaction bankingTransaction,
+                                           final BankingTransactionParameter bankingTransactionParameter,
+                                           final User user) {
 
         final Integer thirdId = bankingTransactionParameter.getThirdId();
 
@@ -155,9 +157,8 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
     }
 
     @Override
-    public BankingTransactionDTO createBankingTransaction(final BankingTransactionParameter bankingTransactionParameter, final String userName)
-        throws BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException, ThirdNotExistException, CategoryNotExistException,
-        ClassificationNotExistException, CurrencyNotExistException, NotUserElementException {
+    public BankingTransactionDTO createBankingTransaction(final BankingTransactionParameter bankingTransactionParameter,
+                                                          final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -197,9 +198,9 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
     }
 
     @Override
-    public BankingTransactionDTO updateBankingTransaction(Integer bankingTransactionId, final BankingTransactionParameter bankingTransactionParameter, final String userName)
-        throws BankingTransactionNotExistException, BankingAccountNotExistException, BadAssociationElementException, UserNotInGroupException,
-        ThirdNotExistException, CategoryNotExistException, ClassificationNotExistException, CurrencyNotExistException, NotUserElementException{
+    public BankingTransactionDTO updateBankingTransaction(final Integer bankingTransactionId,
+                                                          final BankingTransactionParameter bankingTransactionParameter,
+                                                          final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -254,7 +255,8 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
     }
 
     @Override
-    public BankingTransactionDTO getBankingTransaction(final Integer bankingTransactionId, final String userName) throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException {
+    public BankingTransactionDTO getBankingTransaction(final Integer bankingTransactionId,
+                                                       final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -267,8 +269,8 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
     }
 
     @Override
-    public List<BankingTransactionDTO> getBankingAccountTransaction(final Integer bankingAccountId, final String userName)
-            throws NotUserElementException, UserNotInGroupException, BankingAccountNotExistException {
+    public List<BankingTransactionDTO> getBankingAccountTransaction(final Integer bankingAccountId,
+                                                                    final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -282,8 +284,8 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
     }
 
     @Override
-    public void deleteAccountBankingTransaction(final Integer bankingTransactionId, final String userName)
-        throws BankingTransactionNotExistException, NotUserElementException, UserNotInGroupException {
+    public void deleteAccountBankingTransaction(final Integer bankingTransactionId,
+                                                final String userName) {
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         final BankingTransaction bankingTransaction = this.bankingTransactionRepository.findById(bankingTransactionId)

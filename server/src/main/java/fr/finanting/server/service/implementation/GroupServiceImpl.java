@@ -72,8 +72,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTO createGroup(final GroupParameter groupParameter, final String userName)
-        throws GroupNameAlreadyExistException, UserNotExistException {
+    public GroupDTO createGroup(final GroupParameter groupParameter, final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -104,8 +103,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTO addUsersGroup(final AddUsersGroupParameter addUsersGroupParameter, final String userName)
-            throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
+    public GroupDTO addUsersGroup(final AddUsersGroupParameter addUsersGroupParameter, final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final Group group = this.groupRepository.findByGroupName(addUsersGroupParameter.getGroupName())
@@ -140,8 +138,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTO removeUsersGroup(final RemoveUsersGroupParameter removeUsersGroupParameter, final String userName)
-        throws GroupNotExistException, NotAdminGroupException, UserNotInGroupException, UserNotExistException {
+    public GroupDTO removeUsersGroup(final RemoveUsersGroupParameter removeUsersGroupParameter, final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final Group group = this.groupRepository.findByGroupName(removeUsersGroupParameter.getGroupName())
@@ -170,8 +167,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void deleteGroup(final Integer groupId, final String userName)
-            throws GroupNotExistException, NotAdminGroupException {
+    public void deleteGroup(final Integer groupId, final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final Group group = this.groupRepository.findById(groupId)

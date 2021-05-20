@@ -46,8 +46,8 @@ public class BankingAccountServiceImpl implements BankingAccountService {
         }
 
     @Override
-    public BankingAccountDTO createAccount(final BankingAccountParameter bankingAccountParameter, final String userName)
-            throws GroupNotExistException, CurrencyNotExistException{
+    public BankingAccountDTO createAccount(final BankingAccountParameter bankingAccountParameter,
+                                           final String userName) {
 
         BankingAccount bankingAccount = new BankingAccount();
 
@@ -95,8 +95,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
         return bankingAccountDTO;
     }
 
-    private void checkIsAdminAccount(final BankingAccount bankingAccount, final String userName)
-            throws NotAdminGroupException, NotUserBankingAccountException{
+    private void checkIsAdminAccount(final BankingAccount bankingAccount, final String userName) {
 
         final Group group = bankingAccount.getGroup();
 
@@ -112,8 +111,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     }
 
-    private void checkIsUserAccount(final BankingAccount bankingAccount, final User user)
-            throws NotUserBankingAccountException, UserNotInGroupException {
+    private void checkIsUserAccount(final BankingAccount bankingAccount, final User user) {
 
         final Group group = bankingAccount.getGroup();
 
@@ -128,8 +126,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public void deleteAccount(final Integer bankingAccountId, final String userName)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException{
+    public void deleteAccount(final Integer bankingAccountId, final String userName) {
 
         final  BankingAccount bankingAccount = this.bankingAccountRepository.findById(bankingAccountId)
             .orElseThrow(() -> new BankingAccountNotExistException(bankingAccountId));
@@ -141,8 +138,9 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public BankingAccountDTO updateAccount(final Integer bankingAccountId, final UpdateBankingAccountParameter updateBankingAccountParameter, final String userName)
-            throws BankingAccountNotExistException, NotAdminGroupException, NotUserBankingAccountException, CurrencyNotExistException{
+    public BankingAccountDTO updateAccount(final Integer bankingAccountId,
+                                           final UpdateBankingAccountParameter updateBankingAccountParameter,
+                                           final String userName) {
 
         BankingAccount bankingAccount = this.bankingAccountRepository.findById(bankingAccountId)
             .orElseThrow(() -> new BankingAccountNotExistException(bankingAccountId));
@@ -180,15 +178,15 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
     }
 
-    private List<BankingAccountDTO> getBankingAccountDTOList(List<BankingAccount> accounts){
+    private List<BankingAccountDTO> getBankingAccountDTOList(final List<BankingAccount> accounts){
 
         List<BankingAccountDTO> bankingAccountDTOList = BANKING_ACCOUNT_DTO_BUILDER.transformAll(accounts);
 
         bankingAccountDTOList = bankingAccountDTOList.stream().peek(bankingAccountDTO -> {
-            BankingAccount bankingAccount = accounts.stream().filter(o -> o.getId().equals(bankingAccountDTO.getId())).findAny().orElseThrow();
-            Double sum = bankingAccount.getInitialBalance();
+            final BankingAccount bankingAccount = accounts.stream().filter(o -> o.getId().equals(bankingAccountDTO.getId())).findAny().orElseThrow();
+            final Double sum = bankingAccount.getInitialBalance();
             Double sumAmount = this.bankingTransactionRepository.sumAmountByAccountId(bankingAccount.getId());
-            sumAmount = sumAmount != null ? sumAmount : 0.0;
+            sumAmount = sumAmount == null ? 0.0 : sumAmount;
             bankingAccountDTO.setBalance(sum + sumAmount);
         }).collect(Collectors.toList());
 
@@ -203,7 +201,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public List<BankingAccountDTO> getGroupBankingAccounts(final Integer groupId, final String userName) throws UserNotInGroupException, GroupNotExistException {
+    public List<BankingAccountDTO> getGroupBankingAccounts(final Integer groupId, final String userName) {
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         
         final Group group = this.groupRepository.findById(groupId)
@@ -216,8 +214,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
     }
 
     @Override
-    public BankingAccountDTO getBankingAccount(final Integer accountId, final String userName)
-            throws BankingAccountNotExistException, NotUserBankingAccountException, UserNotInGroupException {
+    public BankingAccountDTO getBankingAccount(final Integer accountId, final String userName) {
 
         final BankingAccount bankingAccount = this.bankingAccountRepository.findById(accountId)
                 .orElseThrow(() -> new BankingAccountNotExistException(accountId));
@@ -228,7 +225,7 @@ public class BankingAccountServiceImpl implements BankingAccountService {
 
         final BankingAccountDTO bankingAccountDTO = BANKING_ACCOUNT_DTO_BUILDER.transform(bankingAccount);
         Double sum = this.bankingTransactionRepository.sumAmountByAccountId(bankingAccount.getId());
-        sum = sum != null ? sum : 0.0;
+        sum = sum == null ? 0.0 : sum;
         sum = sum + bankingAccount.getInitialBalance();
         bankingAccountDTO.setBalance(sum);
 

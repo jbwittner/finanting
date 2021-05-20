@@ -9,8 +9,8 @@ import java.util.List;
 public class CurrencyDTOBuilder extends Transformer<Currency, CurrencyDTO>{
 
     @Override
-    public CurrencyDTO transform(Currency input) {
-        CurrencyDTO currencyDTO = new CurrencyDTO();
+    public CurrencyDTO transform(final Currency input) {
+        final CurrencyDTO currencyDTO = new CurrencyDTO();
         currencyDTO.setDefaultCurrency(input.getDefaultCurrency());
         currencyDTO.setId(input.getId());
         currencyDTO.setIsoCode(input.getIsoCode());
@@ -22,8 +22,8 @@ public class CurrencyDTOBuilder extends Transformer<Currency, CurrencyDTO>{
     }
 
     @Override
-    public List<CurrencyDTO> transformAll(List<Currency> input) {
-        List<CurrencyDTO> currencyDTOList = new ArrayList<>();
+    public List<CurrencyDTO> transformAll(final List<Currency> input) {
+        final List<CurrencyDTO> currencyDTOList = new ArrayList<>();
         input.forEach(currency -> currencyDTOList.add(this.transform(currency)));
         return currencyDTOList;
     }

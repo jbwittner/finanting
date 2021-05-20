@@ -10,18 +10,18 @@ import java.util.List;
 public class UserDTOBuilder extends Transformer<User, UserDTO> {
 
     @Override
-    public UserDTO transform(User input){
-        UserDTO userDTO = new UserDTO();
+    public UserDTO transform(final User input){
+        final UserDTO userDTO = new UserDTO();
 
         userDTO.setUserName(input.getUserName());
         userDTO.setEmail(input.getEmail());
         userDTO.setFirstName(input.getFirstName());
         userDTO.setLastName(input.getLastName());
 
-        List<UserDTO.RolesEnum> rolesEnumList = new ArrayList<>();
+        final List<UserDTO.RolesEnum> rolesEnumList = new ArrayList<>();
 
         input.getRoles().forEach((role) -> {
-            UserDTO.RolesEnum rolesEnum = UserDTO.RolesEnum.fromValue(role.toString());
+            final UserDTO.RolesEnum rolesEnum = UserDTO.RolesEnum.fromValue(role.toString());
             rolesEnumList.add(rolesEnum);
         });
 
@@ -29,8 +29,9 @@ public class UserDTOBuilder extends Transformer<User, UserDTO> {
         return userDTO;
     }
 
-    public List<UserDTO> transformAll(List<User> user){
-        List<UserDTO> userDTOList = new ArrayList<>();
+    @Override
+    public List<UserDTO> transformAll(final List<User> user){
+        final List<UserDTO> userDTOList = new ArrayList<>();
         user.forEach((userLoop) -> userDTOList.add(this.transform(userLoop)));
         return  userDTOList;
     }

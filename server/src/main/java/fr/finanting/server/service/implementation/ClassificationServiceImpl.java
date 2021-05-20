@@ -25,9 +25,9 @@ import fr.finanting.server.service.ClassificationService;
 @Service
 public class ClassificationServiceImpl implements ClassificationService {
 
-    private ClassificationRepository classificationRepository;
-    private GroupRepository groupRepository;
-    private UserRepository userRepository;
+    private final ClassificationRepository classificationRepository;
+    private final GroupRepository groupRepository;
+    private final UserRepository userRepository;
 
     private static final ClassificationDTOBuilder CLASSIFICATION_DTO_BUILDER = new ClassificationDTOBuilder();
 
@@ -41,8 +41,7 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
 	@Override
-	public void createClassification(final ClassificationParameter classificationParameter, final String userName)
-        throws GroupNotExistException, UserNotInGroupException {
+	public void createClassification(final ClassificationParameter classificationParameter, final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -68,8 +67,9 @@ public class ClassificationServiceImpl implements ClassificationService {
 	}
 
     @Override
-    public void updateClassification(Integer classificationId, final UpdateClassificationParameter updateClassificationParameter, final String userName)
-        throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
+    public void updateClassification(final Integer classificationId,
+                                     final UpdateClassificationParameter updateClassificationParameter,
+                                     final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -94,7 +94,7 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     @Override
-    public void deleteClassification(final Integer classificationId, final String userName) throws ClassificationNotExistException, UserNotInGroupException, ClassificationNoUserException {
+    public void deleteClassification(final Integer classificationId, final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -122,7 +122,7 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     @Override
-    public List<ClassificationDTO> getGroupClassifications(final Integer groupId, final String userName) throws GroupNotExistException, UserNotInGroupException {
+    public List<ClassificationDTO> getGroupClassifications(final Integer groupId, final String userName) {
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
         final Group group = this.groupRepository.findById(groupId)

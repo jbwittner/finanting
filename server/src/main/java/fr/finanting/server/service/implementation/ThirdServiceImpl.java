@@ -30,10 +30,10 @@ import fr.finanting.server.service.ThirdService;
 @Service
 public class ThirdServiceImpl implements ThirdService{
 
-    private ThirdRepository thirdRepository;
-    private UserRepository userRepository;
-    private GroupRepository groupRepository;
-    private CategoryRepository categoryRepository;
+    private final ThirdRepository thirdRepository;
+    private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final CategoryRepository categoryRepository;
 
     private static final ThirdDTOBuilder THIRD_DTO_BUILDER = new ThirdDTOBuilder();
 
@@ -50,8 +50,7 @@ public class ThirdServiceImpl implements ThirdService{
         }
     
     @Override
-    public void createThird(final ThirdParameter thirdParameter, final String userName)
-        throws GroupNotExistException, UserNotInGroupException, CategoryNotExistException, BadAssociationThirdException{
+    public void createThird(final ThirdParameter thirdParameter, final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -133,8 +132,9 @@ public class ThirdServiceImpl implements ThirdService{
     }
 
     @Override
-    public void updateThird(final Integer thirdId, final UpdateThirdParameter updateThirdParameter, final String userName)
-        throws CategoryNotExistException, ThirdNotExistException, UserNotInGroupException, BadAssociationThirdException, ThirdNoUserException{
+    public void updateThird(final Integer thirdId,
+                            final UpdateThirdParameter updateThirdParameter,
+                            final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -220,8 +220,7 @@ public class ThirdServiceImpl implements ThirdService{
     }
 
     @Override
-    public void deleteThird(final Integer thirdId, final String userName)
-        throws ThirdNotExistException, UserNotInGroupException, ThirdNoUserException{
+    public void deleteThird(final Integer thirdId, final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -248,7 +247,7 @@ public class ThirdServiceImpl implements ThirdService{
     }
 
     @Override
-    public List<ThirdDTO> getGroupThird(final Integer groupId, final String userName) throws UserNotInGroupException, GroupNotExistException {
+    public List<ThirdDTO> getGroupThird(final Integer groupId, final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         final Group group = this.groupRepository.findById(groupId)

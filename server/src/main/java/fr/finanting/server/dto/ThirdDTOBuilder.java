@@ -15,8 +15,8 @@ public class ThirdDTOBuilder extends Transformer<Third, ThirdDTO> {
     private static final CategoryDTOBuilder CATEGORY_DTO_BUILDER = new CategoryDTOBuilder();
 
     @Override
-    public ThirdDTO transform(Third input) {
-        ThirdDTO thirdDTO = new ThirdDTO();
+    public ThirdDTO transform(final Third input) {
+        final ThirdDTO thirdDTO = new ThirdDTO();
         thirdDTO.setAbbreviation(input.getAbbreviation());
         thirdDTO.setDescription(input.getDescritpion());
         thirdDTO.setId(input.getId());
@@ -42,8 +42,8 @@ public class ThirdDTOBuilder extends Transformer<Third, ThirdDTO> {
     }
 
     @Override
-    public List<ThirdDTO> transformAll(List<Third> input) {
-        List<ThirdDTO> thirdDTOList = new ArrayList<>();
+    public List<ThirdDTO> transformAll(final List<Third> input) {
+        final List<ThirdDTO> thirdDTOList = new ArrayList<>();
         input.forEach(third -> thirdDTOList.add(this.transform(third)));
         return thirdDTOList;
     }

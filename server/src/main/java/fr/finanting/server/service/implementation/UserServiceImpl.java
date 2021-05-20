@@ -38,8 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO registerNewAccount(final UserRegistrationParameter userRegistrationParameter)
-            throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
+    public UserDTO registerNewAccount(final UserRegistrationParameter userRegistrationParameter)  {
 
         if (this.userRepository.existsByEmail(userRegistrationParameter.getEmail())) {
             throw new UserEmailAlreadyExistException(userRegistrationParameter.getEmail());
@@ -83,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateAccountInformations(final UserUpdateParameter userUpdateParameter, final String userName) throws UserEmailAlreadyExistException, UserNameAlreadyExistException {
+    public UserDTO updateAccountInformations(final UserUpdateParameter userUpdateParameter, final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         Optional<User> optionalUserFind;
@@ -118,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(final PasswordUpdateParameter passwordUpdateParameter, final String userName) throws BadPasswordException {
+    public void updatePassword(final PasswordUpdateParameter passwordUpdateParameter, final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         
