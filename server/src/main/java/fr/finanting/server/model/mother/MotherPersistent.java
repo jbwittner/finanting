@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-public class MotherPersistant {
+public class MotherPersistent {
 
     @Id
     @Column(name = "ID", nullable = false, updatable = false, insertable = false)

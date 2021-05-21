@@ -74,14 +74,12 @@ public class TestFactory {
     private List<String> listRandomString = new ArrayList<>();
     private List<String> listRandomCaseSensitiveString = new ArrayList<>();
     private List<String> listRandomEmail = new ArrayList<>();
-    private List<Integer> listRandomNumber = new ArrayList<>();
     private List<String> listRandomName = new ArrayList<>();
 
     public void resetAllList(){
 
         this.listRandomString = new ArrayList<>();
         this.listRandomCaseSensitiveString = new ArrayList<>();
-        this.listRandomNumber = new ArrayList<>();
         this.listRandomEmail = new ArrayList<>();
         this.listRandomName = new ArrayList<>();
     }
@@ -171,20 +169,6 @@ public class TestFactory {
 
     }
 
-    public Integer getUniqueRandomInteger(final Integer max){
-        boolean isNotUnique = true;
-        Integer randomNumber = 0;
-
-        while (isNotUnique){
-            randomNumber = this.getRandomInteger(max);
-            isNotUnique = listRandomNumber.contains(randomNumber);
-        }
-
-        listRandomNumber.add(randomNumber);
-
-        return randomNumber;
-    }
-
     public int getRandomInteger(final Integer max){
         final double random = Math.random() * max;
         return (int) random;
@@ -194,17 +178,8 @@ public class TestFactory {
         return this.faker.random().nextDouble();
     }
 
-    public long getRandomLong(final Integer max){
-        final double random = Math.random() * max;
-        return (long) random;
-    }
-
     public int getRandomInteger(){
         return this.getRandomInteger(NUMBER_MAX);
-    }
-
-    public int getRandomInteger(final Integer min, final Integer max){
-        return (int) (min + (Math.random() * (max - min)));
     }
 
     public User getUser(){

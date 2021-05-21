@@ -6,7 +6,7 @@ import fr.finanting.server.model.BankingTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BankingTransactionDTOBuilder extends Transformer<BankingTransaction, BankingTransactionDTO> {
+public class BankingTransactionDTOBuilder implements Transformer<BankingTransaction, BankingTransactionDTO> {
 
     private static final CategoryDTOBuilder CATEGORY_DTO_BUILDER = new CategoryDTOBuilder();
     private static final ClassificationDTOBuilder CLASSIFICATION_DTO_BUILDER = new ClassificationDTOBuilder();

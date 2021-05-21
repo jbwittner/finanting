@@ -88,7 +88,7 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testNotAdminExeptionOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
+    public void testNotAdminExceptionOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
         final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
         addUsersGroupParameter.setGroupName(this.group.getGroupName());
 

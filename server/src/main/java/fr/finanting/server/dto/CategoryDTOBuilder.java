@@ -6,7 +6,7 @@ import fr.finanting.server.model.Category;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryDTOBuilder extends Transformer<Category, CategoryDTO> {
+public class CategoryDTOBuilder implements Transformer<Category, CategoryDTO> {
 
     @Override
     public CategoryDTO transform(final Category input) {

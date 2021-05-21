@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getAccountInformations(final String userName) {
+    public UserDTO getAccountInformation(final String userName) {
 
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
 
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateAccountInformations(final UserUpdateParameter userUpdateParameter, final String userName) {
+    public UserDTO updateAccountInformation(final UserUpdateParameter userUpdateParameter, final String userName) {
         
         final User user = this.userRepository.findByUserName(userName).orElseThrow();
         Optional<User> optionalUserFind;

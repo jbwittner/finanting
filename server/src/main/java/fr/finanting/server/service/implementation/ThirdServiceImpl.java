@@ -1,6 +1,5 @@
 package fr.finanting.server.service.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.finanting.server.codegen.model.*;
@@ -13,7 +12,6 @@ import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.ThirdNoUserException;
 import fr.finanting.server.exception.ThirdNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.Third;

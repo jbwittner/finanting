@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import fr.finanting.server.model.mother.MotherPersistant;
+import fr.finanting.server.model.mother.MotherPersistent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "CURRENCIES")
 @Data
-public class Currency extends MotherPersistant {
+public class Currency extends MotherPersistent {
 
     @Column(name = "DEFAULT_CURRENCY", nullable = false)
     private Boolean defaultCurrency = false;

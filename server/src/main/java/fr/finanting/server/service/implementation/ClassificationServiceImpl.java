@@ -1,6 +1,5 @@
 package fr.finanting.server.service.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.finanting.server.codegen.model.ClassificationDTO;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import fr.finanting.server.exception.ClassificationNoUserException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Classification;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;

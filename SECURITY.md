@@ -8,4 +8,5 @@
 
 ## Reporting a Vulnerability
 
-If you seen a vulnerability, thanks to open a Issues.
+If you have seen a vulnerability, please open an Issue
+

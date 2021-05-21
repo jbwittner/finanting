@@ -17,7 +17,6 @@ import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.DeleteCategoryWithChildException;
 import fr.finanting.server.exception.GroupNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
@@ -222,9 +221,9 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNoUserException(categoryId);
         }
 
-        final List<Category> childs = category.getChild();
+        final List<Category> child = category.getChild();
 
-        if(!childs.isEmpty()){
+        if(!child.isEmpty()){
             throw new DeleteCategoryWithChildException();
         }
 

@@ -1,13 +1,12 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.codegen.model.BankDetailsDTO;
 import fr.finanting.server.codegen.model.ContactDTO;
 import fr.finanting.server.model.embeddable.Contact;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactDTOBuilder extends Transformer<Contact, ContactDTO> {
+public class ContactDTOBuilder implements Transformer<Contact, ContactDTO> {
     @Override
     public ContactDTO transform(final Contact input) {
         final ContactDTO contactDTO = new ContactDTO();

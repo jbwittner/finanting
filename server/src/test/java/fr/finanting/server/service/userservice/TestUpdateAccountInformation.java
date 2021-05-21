@@ -18,9 +18,9 @@ import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
 /**
- * Test class to test updateAccountInformations method
+ * Test class to test updateAccountInformation method
  */
-public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest{
+public class TestUpdateAccountInformation extends AbstractMotherIntegrationTest{
 
     @Autowired
     private UserRepository userRepository;
@@ -56,7 +56,7 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
         userUpdateParameter.setLastName(name.lastName());
         userUpdateParameter.setUserName(name.username());
 
-        final UserDTO userDTO = this.userService.updateAccountInformations(userUpdateParameter, this.userOne.getUserName());
+        final UserDTO userDTO = this.userService.updateAccountInformation(userUpdateParameter, this.userOne.getUserName());
 
         final String userNameToCheck = userDTO.getUserName().toLowerCase();
         final String firstNameToCheck = StringUtils.capitalize(userDTO.getFirstName().toLowerCase());
@@ -78,7 +78,7 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
         userUpdateParameter.setLastName(this.userOne.getLastName());
         userUpdateParameter.setUserName(this.userOne.getUserName());
 
-        final UserDTO userDTO = this.userService.updateAccountInformations(userUpdateParameter, this.userOne.getUserName());
+        final UserDTO userDTO = this.userService.updateAccountInformation(userUpdateParameter, this.userOne.getUserName());
 
         final String userNameToCheck = userDTO.getUserName().toLowerCase();
         final String firstNameToCheck = StringUtils.capitalize(userDTO.getFirstName().toLowerCase());
@@ -103,7 +103,7 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
         userUpdateParameter.setUserName(name.username());
 
         Assertions.assertThrows(UserEmailAlreadyExistException.class,
-            () -> this.userService.updateAccountInformations(userUpdateParameter, this.userOne.getUserName()));
+            () -> this.userService.updateAccountInformation(userUpdateParameter, this.userOne.getUserName()));
     }
 
     /**
@@ -120,7 +120,7 @@ public class TestUpdateAccountInformations extends AbstractMotherIntegrationTest
         userUpdateParameter.setUserName(this.userTwo.getUserName());
 
         Assertions.assertThrows(UserNameAlreadyExistException.class,
-            () -> this.userService.updateAccountInformations(userUpdateParameter, this.userOne.getUserName()));
+            () -> this.userService.updateAccountInformation(userUpdateParameter, this.userOne.getUserName()));
     }
     
 }

@@ -1,6 +1,5 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.server.codegen.model.CategoryParameter;
 import fr.finanting.server.codegen.model.UpdateCategoryParameter;
 import fr.finanting.server.exception.BadAssociationCategoryTypeException;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroupException;
@@ -220,24 +219,24 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
     public void testUpdateCategoryNoUserGroupCategory() {
 
         final Group otherGroup = this.testFactory.getGroup();
-        final Category otherCathegory = this.testFactory.getCategory(otherGroup, true);
+        final Category otherCategory = this.testFactory.getCategory(otherGroup, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
 
         Assertions.assertThrows(UserNotInGroupException.class,
-            () -> this.categoryServiceImpl.updateCategory(otherCathegory.getId(), updateCategoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(otherCategory.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test
     public void testUpdateCategoryNoUserCategory() {
 
         final User otherUser = this.testFactory.getUser();
-        final Category otherCathegory = this.testFactory.getCategory(otherUser, true);
+        final Category otherCategory = this.testFactory.getCategory(otherUser, true);
 
         final UpdateCategoryParameter updateCategoryParameter = new UpdateCategoryParameter();
 
         Assertions.assertThrows(CategoryNoUserException.class,
-            () -> this.categoryServiceImpl.updateCategory(otherCathegory.getId(), updateCategoryParameter, this.user.getUserName()));
+            () -> this.categoryServiceImpl.updateCategory(otherCategory.getId(), updateCategoryParameter, this.user.getUserName()));
     }
 
     @Test

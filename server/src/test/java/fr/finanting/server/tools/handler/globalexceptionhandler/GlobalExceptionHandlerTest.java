@@ -32,7 +32,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         final Exception exception = new Exception();
 
         Assertions.assertThrows(Exception.class,
-            () -> globalExceptionHandler.globleExcpetionHandler(exception, fakeWebRequest));
+            () -> globalExceptionHandler.globuleExceptionHandler(exception, fakeWebRequest));
         
     }
 
@@ -46,7 +46,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
         final UndeclaredThrowableException undeclaredThrowableException = new UndeclaredThrowableException(exception);
 
         Assertions.assertThrows(Exception.class,
-            () -> globalExceptionHandler.globleExcpetionHandler(undeclaredThrowableException, fakeWebRequest));
+            () -> globalExceptionHandler.globuleExceptionHandler(undeclaredThrowableException, fakeWebRequest));
         
     }
 
@@ -63,7 +63,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         Thread.sleep(1000);
 
-        final ResponseEntity<?> test = globalExceptionHandler.globleExcpetionHandler(undeclaredThrowableException, fakeWebRequest);
+        final ResponseEntity<?> test = globalExceptionHandler.globuleExceptionHandler(undeclaredThrowableException, fakeWebRequest);
 
         Thread.sleep(1000);
 
@@ -94,7 +94,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         Thread.sleep(1000);
 
-        final ResponseEntity<?> test = globalExceptionHandler.globleExcpetionHandler(exception, fakeWebRequest);
+        final ResponseEntity<?> test = globalExceptionHandler.globuleExceptionHandler(exception, fakeWebRequest);
 
         Thread.sleep(1000);
 
@@ -256,7 +256,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
     
         @Override
         public String getDescription(final boolean includeClientInfo) {
-            return "CustomDescritpion";
+            return "CustomDescription";
         }
         
     }

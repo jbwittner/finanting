@@ -54,7 +54,7 @@ public class TestUpdatePassword extends AbstractMotherIntegrationTest {
     }
     
     @Test
-    public void testUpdatePasword() throws BadPasswordException {
+    public void testUpdatePassword() throws BadPasswordException {
         final String newPassword = this.testFactory.getUniqueRandomAlphanumericString();
 
         final PasswordUpdateParameter passwordUpdateParameter = new PasswordUpdateParameter();
@@ -71,7 +71,7 @@ public class TestUpdatePassword extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testBadOldPasword() throws BadPasswordException {
+    public void testBadOldPassword() throws BadPasswordException {
         final String newPassword = this.testFactory.getUniqueRandomAlphanumericString();
 
         final PasswordUpdateParameter passwordUpdateParameter = new PasswordUpdateParameter();

@@ -28,7 +28,7 @@ To build used the command : `mvn package`
 ## Pull requests
 
 When you create a pull request, a series of actions will launch.
-To merge the pull request all actions need to passe.
+To merge the pull request, all actions must be succeeded.
 
 One of the action is a static check of the code. We used PMD (https://pmd.github.io/), ESlint and Prettier.
 

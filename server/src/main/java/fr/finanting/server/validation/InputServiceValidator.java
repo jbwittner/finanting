@@ -31,7 +31,6 @@ public class InputServiceValidator<T> {
      * Validation method
      *
      * @param object object to validate
-     * @throws ValidationDataException
      */
     public void validate(final T object) throws ValidationDataException {
         final Set<ConstraintViolation<T>> constraintViolations = validator.validate(object);

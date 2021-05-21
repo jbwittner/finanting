@@ -6,7 +6,7 @@ import fr.finanting.server.model.BankingAccount;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BankingAccountDTOBuilder extends Transformer<BankingAccount, BankingAccountDTO> {
+public class BankingAccountDTOBuilder implements Transformer<BankingAccount, BankingAccountDTO> {
 
     private static final CurrencyDTOBuilder CURRENCY_DTO_BUILDER = new CurrencyDTOBuilder();
     private static final BankDetailsDTOBuilder BANK_DETAILS_DTO_BUILDER = new BankDetailsDTOBuilder();

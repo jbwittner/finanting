@@ -2,7 +2,6 @@ package fr.finanting.server.repository;
 
 import java.util.List;
 
-import com.github.javafaker.Bool;
 import fr.finanting.server.model.Currency;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.Third;

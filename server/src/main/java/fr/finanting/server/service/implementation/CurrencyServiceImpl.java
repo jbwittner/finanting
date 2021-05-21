@@ -1,6 +1,5 @@
 package fr.finanting.server.service.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +7,6 @@ import fr.finanting.server.codegen.model.CurrencyDTO;
 import fr.finanting.server.codegen.model.CurrencyParameter;
 import fr.finanting.server.dto.CurrencyDTOBuilder;
 import fr.finanting.server.exception.CurrencyUsedException;
-import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.BankingTransactionRepository;
 import fr.finanting.server.repository.ThirdRepository;

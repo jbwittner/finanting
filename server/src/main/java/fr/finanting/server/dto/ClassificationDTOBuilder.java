@@ -6,7 +6,7 @@ import fr.finanting.server.model.Classification;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassificationDTOBuilder extends Transformer<Classification, ClassificationDTO> {
+public class ClassificationDTOBuilder implements Transformer<Classification, ClassificationDTO> {
 
     @Override
     public ClassificationDTO transform(final Classification input) {

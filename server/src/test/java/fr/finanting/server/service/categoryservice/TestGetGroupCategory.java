@@ -121,7 +121,7 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testGetUserCategorytNoUserGroup() throws GroupNotExistException, UserNotInGroupException{
+    public void testGetUserCategoryNoUserGroup() throws GroupNotExistException, UserNotInGroupException{
 
         final Group group = this.testFactory.getGroup();
 

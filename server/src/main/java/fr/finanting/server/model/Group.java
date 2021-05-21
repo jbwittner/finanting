@@ -9,7 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Table;
 
 import fr.finanting.server.exception.UserNotInGroupException;
-import fr.finanting.server.model.mother.MotherPersistant;
+import fr.finanting.server.model.mother.MotherPersistent;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "USER_GROUPS")
 @Data
-public class Group extends MotherPersistant {
+public class Group extends MotherPersistent {
 
 	@Column(name = "GROUP_NAME", nullable = false, unique = true)
     private String groupName;

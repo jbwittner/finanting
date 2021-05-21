@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @MappedSuperclass
 @EqualsAndHashCode(callSuper=true)
-public class MotherGroupUserElement extends MotherPersistant {
+public class MotherGroupUserElement extends MotherPersistent {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "GROUP_ID")

@@ -1,13 +1,12 @@
 package fr.finanting.server.dto;
 
 import fr.finanting.server.codegen.model.UserDTO;
-import fr.finanting.server.model.Role;
 import fr.finanting.server.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDTOBuilder extends Transformer<User, UserDTO> {
+public class UserDTOBuilder implements Transformer<User, UserDTO> {
 
     @Override
     public UserDTO transform(final User input){

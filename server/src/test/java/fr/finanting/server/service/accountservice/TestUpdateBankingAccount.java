@@ -133,7 +133,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateUserAccountISOCodeNotExiste() {
+    public void testUpdateUserAccountISOCodeNotExist() {
         final User user = this.testFactory.getUser();
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 

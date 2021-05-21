@@ -22,21 +22,21 @@ public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
 
     
 
-    private UserDetailsServiceImpl userdetDetailsServiceImpl;
+    private UserDetailsServiceImpl usedDetailsServiceImpl;
 
     private User user;
 
     @Override
     protected void initDataBeforeEach() {
-        this.userdetDetailsServiceImpl = new UserDetailsServiceImpl(this.userRepository);
+        this.usedDetailsServiceImpl = new UserDetailsServiceImpl(this.userRepository);
 
         this.user = this.testFactory.getUser();
         
     }
 
     @Test
-    public void testLoadSucessful() throws UsernameNotFoundException {
-        final UserDetails userDetails = this.userdetDetailsServiceImpl.loadUserByUsername(this.user.getUserName());
+    public void testLoadSuccessful() throws UsernameNotFoundException {
+        final UserDetails userDetails = this.usedDetailsServiceImpl.loadUserByUsername(this.user.getUserName());
         
         Assertions.assertTrue(userDetails.isAccountNonExpired());
         Assertions.assertTrue(userDetails.isAccountNonLocked());
@@ -57,7 +57,7 @@ public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
         final String randomUserName = this.testFactory.getUniqueRandomAlphanumericString();
 
         Assertions.assertThrows(UsernameNotFoundException.class,
-            () -> this.userdetDetailsServiceImpl.loadUserByUsername(randomUserName));
+            () -> this.usedDetailsServiceImpl.loadUserByUsername(randomUserName));
         
     }
     

@@ -2,9 +2,9 @@ package fr.finanting.server.dto;
 
 import java.util.List;
 
-public abstract class Transformer<I,O> {
+public interface Transformer<I,O> {
 
-    public abstract O transform(I input);
-    public abstract List<O> transformAll(List<I> input);
+    O transform(I input);
+    List<O> transformAll(List<I> input);
 
 }
