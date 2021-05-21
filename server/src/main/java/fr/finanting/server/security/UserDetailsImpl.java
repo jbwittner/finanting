@@ -13,7 +13,7 @@ import fr.finanting.server.model.User;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private User user;
+    private final User user;
      
     public UserDetailsImpl(final User user) {
         this.user = user;

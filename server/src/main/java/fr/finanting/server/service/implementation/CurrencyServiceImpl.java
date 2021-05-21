@@ -26,10 +26,10 @@ import fr.finanting.server.service.CurrencyService;
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
 
-    private CurrencyRepository currencyRepository;
-    private ThirdRepository thirdRepository;
-    private BankingAccountRepository bankingAccountRepository;
-    private BankingTransactionRepository bankingTransactionRepository;
+    private final CurrencyRepository currencyRepository;
+    private final ThirdRepository thirdRepository;
+    private final BankingAccountRepository bankingAccountRepository;
+    private final BankingTransactionRepository bankingTransactionRepository;
 
     private static final CurrencyDTOBuilder CURRENCY_DTO_BUILDER = new CurrencyDTOBuilder();
 

@@ -35,7 +35,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
     private User user;
     private Group group;
 
-    private int NUMBER_CLASSIFICATIONS = 4;
+    private final int NUMBER_CLASSIFICATIONS = 4;
 
 
     @Override

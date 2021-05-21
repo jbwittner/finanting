@@ -29,8 +29,8 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
 
     private CategoryServiceImpl categoryServiceImpl;
 
-    private int NUMBER_MOTHER_CATEGORY = 4;
-    private int NUMBER_CHILD_CATEGORY = 15;
+    private final int NUMBER_MOTHER_CATEGORY = 4;
+    private final int NUMBER_CHILD_CATEGORY = 15;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
@@ -99,7 +99,6 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
                         Assertions.assertEquals(category.getCategoryType().name(), childTreeCategoryDTO.getCategoryType().name());
                     }
                 }
-
 
                 Assertions.assertTrue(childIsPresent);
 

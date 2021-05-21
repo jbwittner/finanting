@@ -29,7 +29,7 @@ public class TestGetUserClassifications extends AbstractMotherIntegrationTest {
 
     private ClassificationServiceImpl classificationServiceImpl;
 
-    private int NUMBER_CLASSIFICATIONS = 4;
+    private final int NUMBER_CLASSIFICATIONS = 4;
 
 
     @Override

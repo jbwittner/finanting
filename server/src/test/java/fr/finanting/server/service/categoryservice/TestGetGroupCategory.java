@@ -32,8 +32,8 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
 
     private CategoryServiceImpl categoryServiceImpl;
 
-    private int NUMBER_MOTHER_CATEGORY = 4;
-    private int NUMBER_CHILD_CATEGORY = 15;
+    private final int NUMBER_MOTHER_CATEGORY = 4;
+    private final int NUMBER_CHILD_CATEGORY = 15;
 
     @Override
     protected void initDataBeforeEach() throws Exception {
