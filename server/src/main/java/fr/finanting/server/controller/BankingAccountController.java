@@ -39,6 +39,13 @@ public class BankingAccountController extends MotherController implements Bankin
     }
 
     @Override
+    public ResponseEntity<BankingAccountDTO> getBankingAccount(Integer bankingAccountId) {
+        final String userName = this.getCurrentPrincipalName();
+        BankingAccountDTO bankingAccountDTO = this.bankingAccountService.getBankingAccount(bankingAccountId, userName);
+        return new ResponseEntity<>(bankingAccountDTO, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<List<BankingAccountDTO>> getGroupBankingAccounts(final Integer groupId) {
         final String userName = this.getCurrentPrincipalName();
         final List<BankingAccountDTO> bankingAccountDTOList = this.bankingAccountService.getGroupBankingAccounts(groupId, userName);
