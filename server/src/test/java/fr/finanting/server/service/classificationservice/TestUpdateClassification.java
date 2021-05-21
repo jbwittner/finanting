@@ -58,7 +58,7 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
         final Classification classificationSaved = this.classificationRepository.findAll().get(0);
 
         Assertions.assertEquals(updateClassificationParameter.getAbbreviation().toUpperCase(), classificationSaved.getAbbreviation());
-        Assertions.assertEquals(updateClassificationParameter.getDescription(), classificationSaved.getDescritpion());
+        Assertions.assertEquals(updateClassificationParameter.getDescription(), classificationSaved.getDescription());
         Assertions.assertEquals(updateClassificationParameter.getLabel(), classificationSaved.getLabel());
         Assertions.assertEquals(this.user.getUserName(), classificationSaved.getUser().getUserName());
         Assertions.assertNull(classificationSaved.getGroup());
@@ -79,7 +79,7 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
         final Classification classificationSaved = this.classificationRepository.findAll().get(0);
 
         Assertions.assertEquals(updateClassificationParameter.getAbbreviation().toUpperCase(), classificationSaved.getAbbreviation());
-        Assertions.assertEquals(updateClassificationParameter.getDescription(), classificationSaved.getDescritpion());
+        Assertions.assertEquals(updateClassificationParameter.getDescription(), classificationSaved.getDescription());
         Assertions.assertEquals(updateClassificationParameter.getLabel(), classificationSaved.getLabel());
         Assertions.assertEquals(this.group.getGroupName(), classificationSaved.getGroup().getGroupName());
         Assertions.assertNull(classificationSaved.getUser());

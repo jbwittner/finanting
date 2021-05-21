@@ -22,6 +22,6 @@ public class Classification extends MotherGroupUserElement {
     private String abbreviation;
 
     @Column(name = "DESCRIPTION")
-    private String descritpion;
+    private String description;
     
 }

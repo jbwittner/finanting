@@ -12,7 +12,7 @@ public class ClassificationDTOBuilder implements Transformer<Classification, Cla
     public ClassificationDTO transform(final Classification input) {
         final ClassificationDTO classificationDTO = new ClassificationDTO();
         classificationDTO.setAbbreviation(input.getAbbreviation());
-        classificationDTO.setDescription(input.getDescritpion());
+        classificationDTO.setDescription(input.getDescription());
         classificationDTO.setLabel(input.getLabel());
         classificationDTO.setId(input.getId());
         return classificationDTO;

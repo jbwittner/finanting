@@ -318,7 +318,7 @@ public class TestFactory {
         final Classification classification = new Classification();
 
         classification.setAbbreviation(this.getRandomAlphanumericString(6).toUpperCase());
-        classification.setDescritpion(this.faker.superhero().descriptor());
+        classification.setDescription(this.faker.superhero().descriptor());
         classification.setLabel(this.faker.company().catchPhrase());
         classification.setUser(user);
         classification.setGroup(group);

@@ -69,7 +69,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
                 if(classification.getId().equals(classificationDTO.getId())){
                     isPresent = true;
                     Assertions.assertEquals(classificationDTO.getAbbreviation(), classification.getAbbreviation());
-                    Assertions.assertEquals(classificationDTO.getDescription(), classification.getDescritpion());
+                    Assertions.assertEquals(classificationDTO.getDescription(), classification.getDescription());
                     Assertions.assertEquals(classificationDTO.getLabel(), classification.getLabel());
                 }
             }

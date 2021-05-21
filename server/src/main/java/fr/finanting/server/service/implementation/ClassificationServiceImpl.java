@@ -57,7 +57,7 @@ public class ClassificationServiceImpl implements ClassificationService {
         }
 
         classification.setAbbreviation(classificationParameter.getAbbreviation().toUpperCase());
-        classification.setDescritpion(classificationParameter.getDescription());
+        classification.setDescription(classificationParameter.getDescription());
         classification.setLabel(classificationParameter.getLabel());
 
         this.classificationRepository.save(classification);
@@ -84,7 +84,7 @@ public class ClassificationServiceImpl implements ClassificationService {
         }
 
         classification.setAbbreviation(updateClassificationParameter.getAbbreviation().toUpperCase());
-        classification.setDescritpion(updateClassificationParameter.getDescription());
+        classification.setDescription(updateClassificationParameter.getDescription());
         classification.setLabel(updateClassificationParameter.getLabel());
 
         this.classificationRepository.save(classification);
