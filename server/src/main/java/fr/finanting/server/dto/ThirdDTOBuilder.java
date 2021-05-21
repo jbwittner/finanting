@@ -1,13 +1,12 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.codegen.model.ContactDTO;
 import fr.finanting.server.codegen.model.ThirdDTO;
 import fr.finanting.server.model.Third;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThirdDTOBuilder extends Transformer<Third, ThirdDTO> {
+public class ThirdDTOBuilder implements Transformer<Third, ThirdDTO> {
 
     private static final AddressDTOBuilder ADDRESS_DTO_BUILDER = new AddressDTOBuilder();
     private static final BankDetailsDTOBuilder BANK_DETAILS_DTO_BUILDER = new BankDetailsDTOBuilder();
@@ -18,7 +17,7 @@ public class ThirdDTOBuilder extends Transformer<Third, ThirdDTO> {
     public ThirdDTO transform(final Third input) {
         final ThirdDTO thirdDTO = new ThirdDTO();
         thirdDTO.setAbbreviation(input.getAbbreviation());
-        thirdDTO.setDescription(input.getDescritpion());
+        thirdDTO.setDescription(input.getDescription());
         thirdDTO.setId(input.getId());
         thirdDTO.setLabel(input.getLabel());
 

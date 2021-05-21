@@ -1,6 +1,5 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.server.codegen.model.CategoryDTO;
 import fr.finanting.server.codegen.model.CategoryParameter;
 import fr.finanting.server.exception.BadAssociationCategoryTypeException;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroupException;
@@ -9,7 +8,6 @@ import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
-import fr.finanting.server.model.CategoryType;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.CategoryRepository;
@@ -40,7 +38,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
     private User user;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.categoryServiceImpl = new CategoryServiceImpl(this.userRepository, this.groupRepository, this.categoryRepository);
         this.categoryParameter = new CategoryParameter();
         this.categoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));
@@ -61,7 +59,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
         Assertions.assertEquals(this.categoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(this.categoryParameter.getCategoryType().name(), category.getCategoryType().name());
-        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescritpion());
+        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescription());
         Assertions.assertEquals(this.categoryParameter.getLabel(), category.getLabel());
         Assertions.assertEquals(this.user.getUserName(), category.getUser().getUserName());
         Assertions.assertNull(category.getGroup());
@@ -79,7 +77,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
         Assertions.assertEquals(this.categoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(this.categoryParameter.getCategoryType().name(), category.getCategoryType().name());
-        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescritpion());
+        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescription());
         Assertions.assertEquals(this.categoryParameter.getLabel(), category.getLabel());
         Assertions.assertNull(category.getUser());
         Assertions.assertEquals(this.group.getGroupName(), category.getGroup().getGroupName());
@@ -100,7 +98,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
         Assertions.assertEquals(this.categoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(this.categoryParameter.getCategoryType().name(), category.getCategoryType().name());
-        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescritpion());
+        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescription());
         Assertions.assertEquals(this.categoryParameter.getLabel(), category.getLabel());
         Assertions.assertEquals(this.user.getUserName(), category.getUser().getUserName());
         Assertions.assertNull(category.getGroup());
@@ -121,8 +119,8 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
         Assertions.assertEquals(this.categoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(this.categoryParameter.getCategoryType().name(), category.getCategoryType().name());
-        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescritpion());
-        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescritpion());
+        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescription());
+        Assertions.assertEquals(this.categoryParameter.getDescription(), category.getDescription());
         Assertions.assertEquals(this.categoryParameter.getLabel(), category.getLabel());
         Assertions.assertNull(category.getUser());
         Assertions.assertEquals(this.group.getGroupName(), category.getGroup().getGroupName());
@@ -146,7 +144,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateCategoryWithBadAssociationtCategoryType() {
+    public void testCreateCategoryWithBadAssociationCategoryType() {
         final Category category = this.testFactory.getCategory(this.user, false);
 
         this.categoryParameter.setParentId(category.getId());
@@ -156,7 +154,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateCategoryWithBadAssociationtUserParentCategory() {
+    public void testCreateCategoryWithBadAssociationUserParentCategory() {
         final Category category = this.testFactory.getCategory(this.group, true);
 
         this.categoryParameter.setParentId(category.getId());
@@ -166,7 +164,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testCreateCategoryWithBadAssociationtNonExistGroupParentCategory() {
+    public void testCreateCategoryWithBadAssociationNonExistGroupParentCategory() {
         final Category category = this.testFactory.getCategory(this.group, true);
 
         this.categoryParameter.setParentId(category.getId());
@@ -178,7 +176,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
 
     
     @Test
-    public void testCreateCategoryWithBadAssociationtGroupParentCategory() {
+    public void testCreateCategoryWithBadAssociationGroupParentCategory() {
         final Category category = this.testFactory.getCategory(this.user, true);
 
         this.categoryParameter.setGroupName(this.group.getGroupName());

@@ -32,11 +32,8 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
 
     private CategoryServiceImpl categoryServiceImpl;
 
-    private int NUMBER_MOTHER_CATEGORY = 4;
-    private int NUMBER_CHILD_CATEGORY = 15;
-
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.categoryServiceImpl = new CategoryServiceImpl(this.userRepository, this.groupRepository, this.categoryRepository);
     }
 
@@ -48,12 +45,14 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
 
         final List<Category> categories = new ArrayList<>();
 
+        final int NUMBER_MOTHER_CATEGORY = 4;
         for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
 
             final Category motherCategory = this.testFactory.getCategory(group, true);
 
             final List<Category> childCategories = new ArrayList<>();
 
+            final int NUMBER_CHILD_CATEGORY = 15;
             for(int childIndex = 0; childIndex < NUMBER_CHILD_CATEGORY; childIndex++){
 
                 final Category childCategory = this.testFactory.getCategory(group, true);
@@ -82,7 +81,7 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
                     childCategory = category;
                     Assertions.assertEquals(category.getChild().size(), treeCategoryDTO.getChildTreeCategoriesDTOs().size());
                     Assertions.assertEquals(category.getAbbreviation(), treeCategoryDTO.getAbbreviation());
-                    Assertions.assertEquals(category.getDescritpion(), treeCategoryDTO.getDescription());
+                    Assertions.assertEquals(category.getDescription(), treeCategoryDTO.getDescription());
                     Assertions.assertEquals(category.getLabel(), treeCategoryDTO.getLabel());
                     Assertions.assertEquals(category.getCategoryType().name(), treeCategoryDTO.getCategoryType().name());
                 }
@@ -97,7 +96,7 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
                     if(category.getId().equals(childTreeCategoriesDTO.getId())){
                         childIsPresent = true;
                         Assertions.assertEquals(category.getAbbreviation(), childTreeCategoriesDTO.getAbbreviation());
-                        Assertions.assertEquals(category.getDescritpion(), childTreeCategoriesDTO.getDescription());
+                        Assertions.assertEquals(category.getDescription(), childTreeCategoriesDTO.getDescription());
                         Assertions.assertEquals(category.getLabel(), childTreeCategoriesDTO.getLabel());
                         Assertions.assertEquals(category.getCategoryType().name(), childTreeCategoriesDTO.getCategoryType().name());
                     }
@@ -122,7 +121,7 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testGetUserCategorytNoUserGroup() throws GroupNotExistException, UserNotInGroupException{
+    public void testGetUserCategoryNoUserGroup() throws GroupNotExistException, UserNotInGroupException{
 
         final Group group = this.testFactory.getGroup();
 

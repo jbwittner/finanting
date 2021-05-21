@@ -26,7 +26,7 @@ public abstract class AbstractMotherIntegrationTest {
      * Method launch before each test
      */
     @BeforeEach
-    public void beforeEach() throws Exception {
+    public void beforeEach() {
         this.testFactory.resetAllList();
         this.initDataBeforeEach();
     }
@@ -42,6 +42,6 @@ public abstract class AbstractMotherIntegrationTest {
     /**
      * Method used to prepare the data of tests
      */
-    abstract protected void initDataBeforeEach() throws Exception;
+    abstract protected void initDataBeforeEach();
 
 }

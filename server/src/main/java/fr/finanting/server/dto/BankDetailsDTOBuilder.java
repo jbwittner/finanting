@@ -6,7 +6,7 @@ import fr.finanting.server.model.embeddable.BankDetails;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BankDetailsDTOBuilder extends Transformer<BankDetails, BankDetailsDTO> {
+public class BankDetailsDTOBuilder implements Transformer<BankDetails, BankDetailsDTO> {
 
     @Override
     public BankDetailsDTO transform(final BankDetails input) {

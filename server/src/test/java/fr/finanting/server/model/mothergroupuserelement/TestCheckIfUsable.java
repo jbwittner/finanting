@@ -15,19 +15,19 @@ public class TestCheckIfUsable extends AbstractMotherIntegrationTest {
     private User userOne;
     private User userTwo;
 
-    private Group groupeOne;
+    private Group groupOne;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.userOne = this.testFactory.getUser();
         this.userTwo = this.testFactory.getUser();
-        this.groupeOne = this.testFactory.getGroup(userOne);
+        this.groupOne = this.testFactory.getGroup(userOne);
     }
 
     @Test
     public void testGroupOk() throws NotUserElementException, UserNotInGroupException{
         final MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
-        motherGroupElement.setGroup(this.groupeOne);
+        motherGroupElement.setGroup(this.groupOne);
         motherGroupElement.checkIfUsable(this.userOne);
     }
 
@@ -41,7 +41,7 @@ public class TestCheckIfUsable extends AbstractMotherIntegrationTest {
     @Test
     public void testGroupWithOtherUser(){
         final MotherGroupUserElement motherGroupElement = new MotherGroupUserElement();
-        motherGroupElement.setGroup(this.groupeOne);
+        motherGroupElement.setGroup(this.groupOne);
         Assertions.assertThrows(UserNotInGroupException.class, () -> motherGroupElement.checkIfUsable(this.userTwo));
     }
 

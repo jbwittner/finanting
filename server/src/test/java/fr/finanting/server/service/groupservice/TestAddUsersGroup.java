@@ -31,7 +31,7 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
     private Group group;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
         this.group = this.testFactory.getGroup();
     }
@@ -88,7 +88,7 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testNotAdminExeptionOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
+    public void testNotAdminExceptionOk() throws UserNotExistException, GroupNotExistException, NotAdminGroupException {
         final AddUsersGroupParameter addUsersGroupParameter = new AddUsersGroupParameter();
         addUsersGroupParameter.setGroupName(this.group.getGroupName());
 

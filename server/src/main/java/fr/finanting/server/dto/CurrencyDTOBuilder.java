@@ -6,7 +6,7 @@ import fr.finanting.server.model.Currency;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurrencyDTOBuilder extends Transformer<Currency, CurrencyDTO>{
+public class CurrencyDTOBuilder implements Transformer<Currency, CurrencyDTO>{
 
     @Override
     public CurrencyDTO transform(final Currency input) {

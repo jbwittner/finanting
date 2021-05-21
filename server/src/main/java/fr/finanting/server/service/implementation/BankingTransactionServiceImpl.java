@@ -1,6 +1,5 @@
 package fr.finanting.server.service.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.finanting.server.codegen.model.BankingTransactionDTO;
@@ -8,15 +7,12 @@ import fr.finanting.server.codegen.model.BankingTransactionParameter;
 import fr.finanting.server.dto.BankingTransactionDTOBuilder;
 import org.springframework.stereotype.Service;
 
-import fr.finanting.server.exception.BadAssociationElementException;
 import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.BankingTransactionNotExistException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.CurrencyNotExistException;
-import fr.finanting.server.exception.NotUserElementException;
 import fr.finanting.server.exception.ThirdNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.BankingTransaction;
 import fr.finanting.server.model.Category;
@@ -86,7 +82,7 @@ public class BankingTransactionServiceImpl implements BankingTransactionService 
             amount = bankingTransaction.getAmount() * -1;
         } else {
             //All currency have a rate to convert to the default currency of the application
-            //we used the curencyAmount because this is the value that the user paid
+            //we used the currencyAmount because this is the value that the user paid
             amount = currencyAmount
                 * Double.valueOf(bankingTransaction.getAccount().getDefaultCurrency().getRate())
                 / Double.valueOf(bankingTransaction.getLinkedAccount().getDefaultCurrency().getRate());

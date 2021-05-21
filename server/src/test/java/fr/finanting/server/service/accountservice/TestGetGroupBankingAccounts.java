@@ -39,7 +39,7 @@ public class TestGetGroupBankingAccounts extends AbstractMotherIntegrationTest {
     private Group group;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository, bankingTransactionRepository);
 
         this.user = this.testFactory.getUser();

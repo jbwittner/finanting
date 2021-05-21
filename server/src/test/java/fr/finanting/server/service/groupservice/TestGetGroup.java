@@ -24,7 +24,7 @@ public class TestGetGroup extends AbstractMotherIntegrationTest {
     private GroupServiceImpl groupServiceImpl;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
     }
 

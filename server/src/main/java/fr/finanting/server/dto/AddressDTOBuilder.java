@@ -6,7 +6,7 @@ import fr.finanting.server.model.embeddable.Address;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddressDTOBuilder extends Transformer<Address, AddressDTO> {
+public class AddressDTOBuilder implements Transformer<Address, AddressDTO> {
 
     @Override
     public AddressDTO transform(final Address input) {

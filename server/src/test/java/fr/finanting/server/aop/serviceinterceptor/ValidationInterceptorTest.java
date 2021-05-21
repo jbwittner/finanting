@@ -21,7 +21,7 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
     protected JoinPoint joinPoint;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {}
+    protected void initDataBeforeEach() {}
 
     @Test
     public void validationOk() throws ValidationDataException {
@@ -61,7 +61,7 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
             () -> serviceInterceptor.validationInterceptor(joinPoint));
     }
 
-    private class SignatureImpl implements Signature{
+    private static class SignatureImpl implements Signature{
 
         @Override
         public String toShortString() {
@@ -96,7 +96,7 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
     }
     
     @Data
-    private class ObjectToValidate {
+    private static class ObjectToValidate {
     
         @NotNull
         private String email;

@@ -13,9 +13,9 @@ public interface UserService {
     UserDTO registerNewAccount(UserRegistrationParameter userRegistrationParameter)
             throws UserEmailAlreadyExistException, UserNameAlreadyExistException;
 
-    UserDTO getAccountInformations(String userName);
+    UserDTO getAccountInformation(String userName);
 
-    UserDTO updateAccountInformations(UserUpdateParameter userUpdateParameter, String userName)
+    UserDTO updateAccountInformation(UserUpdateParameter userUpdateParameter, String userName)
             throws UserEmailAlreadyExistException, UserNameAlreadyExistException;
 
     void updatePassword(PasswordUpdateParameter passwordUpdateParameter, String userName)

@@ -37,7 +37,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     private UpdateBankingAccountParameter updateBankingAccountParameter;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.bankingAccountServiceImpl = new BankingAccountServiceImpl(bankingAccountRepository, groupRepository, userRepository, currencyRepository, bankingTransactionRepository);
 
         this.updateBankingAccountParameter = new UpdateBankingAccountParameter();
@@ -133,7 +133,7 @@ public class TestUpdateBankingAccount extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUpdateUserAccountISOCodeNotExiste() {
+    public void testUpdateUserAccountISOCodeNotExist() {
         final User user = this.testFactory.getUser();
         final BankingAccount bankingAccount = this.testFactory.getBankingAccount(user);
 

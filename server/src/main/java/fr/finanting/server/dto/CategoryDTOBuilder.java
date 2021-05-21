@@ -6,7 +6,7 @@ import fr.finanting.server.model.Category;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryDTOBuilder extends Transformer<Category, CategoryDTO> {
+public class CategoryDTOBuilder implements Transformer<Category, CategoryDTO> {
 
     @Override
     public CategoryDTO transform(final Category input) {
@@ -14,7 +14,7 @@ public class CategoryDTOBuilder extends Transformer<Category, CategoryDTO> {
         categoryDTO.setId(input.getId());
         categoryDTO.setAbbreviation(input.getAbbreviation());
         categoryDTO.setLabel(input.getLabel());
-        categoryDTO.setDescription(input.getDescritpion());
+        categoryDTO.setDescription(input.getDescription());
         final CategoryDTO.CategoryTypeEnum categoryTypeEnum = CategoryDTO.CategoryTypeEnum.fromValue(input.getCategoryType().name());
         categoryDTO.setCategoryType(categoryTypeEnum);
         return categoryDTO;

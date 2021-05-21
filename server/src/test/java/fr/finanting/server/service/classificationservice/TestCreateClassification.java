@@ -34,7 +34,7 @@ public class TestCreateClassification extends AbstractMotherIntegrationTest {
     private ClassificationParameter classificationParameter;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.classificationServiceImpl = new ClassificationServiceImpl(this.classificationRepository,
                                                                         this.groupRepository,
                                                                         this.userRepository);
@@ -56,7 +56,7 @@ public class TestCreateClassification extends AbstractMotherIntegrationTest {
         final Classification classification = this.classificationRepository.findAll().get(0);
 
         Assertions.assertEquals(this.classificationParameter.getAbbreviation().toUpperCase(), classification.getAbbreviation());
-        Assertions.assertEquals(this.classificationParameter.getDescription(), classification.getDescritpion());
+        Assertions.assertEquals(this.classificationParameter.getDescription(), classification.getDescription());
         Assertions.assertEquals(this.classificationParameter.getLabel(), classification.getLabel());
         Assertions.assertEquals(this.user.getUserName(), classification.getUser().getUserName());
         Assertions.assertNull(classification.getGroup());
@@ -73,7 +73,7 @@ public class TestCreateClassification extends AbstractMotherIntegrationTest {
         final Classification classification = this.classificationRepository.findAll().get(0);
 
         Assertions.assertEquals(this.classificationParameter.getAbbreviation().toUpperCase(), classification.getAbbreviation());
-        Assertions.assertEquals(this.classificationParameter.getDescription(), classification.getDescritpion());
+        Assertions.assertEquals(this.classificationParameter.getDescription(), classification.getDescription());
         Assertions.assertEquals(this.classificationParameter.getLabel(), classification.getLabel());
         Assertions.assertEquals(this.group.getGroupName(), classification.getGroup().getGroupName());
         Assertions.assertNull(classification.getUser());

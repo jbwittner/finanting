@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import fr.finanting.server.model.mother.MotherPersistant;
+import fr.finanting.server.model.mother.MotherPersistent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "BANKING_TRANSACTIONS")
 @Data
-public class BankingTransaction extends MotherPersistant {
+public class BankingTransaction extends MotherPersistent {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID")

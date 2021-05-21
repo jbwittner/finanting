@@ -6,7 +6,7 @@ import fr.finanting.server.model.Category;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TreeCategoryDTOBuilder extends Transformer<Category, TreeCategoryDTO> {
+public class TreeCategoryDTOBuilder implements Transformer<Category, TreeCategoryDTO> {
 
     @Override
     public TreeCategoryDTO transform(final Category input) {
@@ -15,7 +15,7 @@ public class TreeCategoryDTOBuilder extends Transformer<Category, TreeCategoryDT
         treeCategoryDTO.setAbbreviation(input.getAbbreviation());
         treeCategoryDTO.setId(input.getId());
         treeCategoryDTO.setLabel(input.getLabel());
-        treeCategoryDTO.setDescription(input.getDescritpion());
+        treeCategoryDTO.setDescription(input.getDescription());
         treeCategoryDTO.setChildTreeCategoriesDTOs(this.transformAll(input.getChild()));
         return treeCategoryDTO;
     }

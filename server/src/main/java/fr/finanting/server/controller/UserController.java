@@ -25,7 +25,7 @@ public class UserController extends MotherController implements UserApi {
     @Override
     public ResponseEntity<UserDTO> userGet() {
         final String userName = this.getCurrentPrincipalName();
-        final UserDTO userDTO = this.userService.getAccountInformations(userName);
+        final UserDTO userDTO = this.userService.getAccountInformation(userName);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
@@ -45,7 +45,7 @@ public class UserController extends MotherController implements UserApi {
     @Override
     public ResponseEntity<UserDTO> userUpdate(final UserUpdateParameter body) {
         final String userName = this.getCurrentPrincipalName();
-        final UserDTO userDTO = this.userService.updateAccountInformations(body, userName);
+        final UserDTO userDTO = this.userService.updateAccountInformation(body, userName);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 }

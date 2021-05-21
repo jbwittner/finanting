@@ -29,11 +29,8 @@ public class TestGetUserClassifications extends AbstractMotherIntegrationTest {
 
     private ClassificationServiceImpl classificationServiceImpl;
 
-    private int NUMBER_CLASSIFICATIONS = 4;
-
-
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.classificationServiceImpl = new ClassificationServiceImpl(this.classificationRepository,
                                                                                 this.groupRepository,
                                                                                 this.userRepository);
@@ -46,6 +43,7 @@ public class TestGetUserClassifications extends AbstractMotherIntegrationTest {
 
         final List<Classification> classifications = new ArrayList<>();
 
+        final int NUMBER_CLASSIFICATIONS = 4;
         for(int index = 0; index < NUMBER_CLASSIFICATIONS; index ++){
 
             final Classification classification = this.testFactory.getClassification(user);
@@ -64,7 +62,7 @@ public class TestGetUserClassifications extends AbstractMotherIntegrationTest {
                 if(classification.getId().equals(classificationDTO.getId())){
                     isPresent = true;
                     Assertions.assertEquals(classificationDTO.getAbbreviation(), classification.getAbbreviation());
-                    Assertions.assertEquals(classificationDTO.getDescription(), classification.getDescritpion());
+                    Assertions.assertEquals(classificationDTO.getDescription(), classification.getDescription());
                     Assertions.assertEquals(classificationDTO.getLabel(), classification.getLabel());
                 }
             }

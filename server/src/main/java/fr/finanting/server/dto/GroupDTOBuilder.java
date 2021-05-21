@@ -7,7 +7,7 @@ import fr.finanting.server.model.Group;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupDTOBuilder extends Transformer<Group, GroupDTO>{
+public class GroupDTOBuilder implements Transformer<Group, GroupDTO>{
 
     private static final UserDTOBuilder USER_DTO_BUILDER = new UserDTOBuilder();
 

@@ -17,7 +17,6 @@ import fr.finanting.server.exception.CategoryNoUserException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.DeleteCategoryWithChildException;
 import fr.finanting.server.exception.GroupNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
@@ -97,7 +96,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         category.setLabel(categoryParameter.getLabel());
         category.setAbbreviation(categoryParameter.getAbbreviation().toUpperCase());
-        category.setDescritpion(categoryParameter.getDescription());
+        category.setDescription(categoryParameter.getDescription());
 
         final CategoryType categoryType = CategoryType.valueOf(categoryParameter.getCategoryType().toString());
         category.setCategoryType(categoryType);
@@ -168,7 +167,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         category.setLabel(updateCategoryParameter.getLabel());
         category.setAbbreviation(updateCategoryParameter.getAbbreviation().toUpperCase());
-        category.setDescritpion(updateCategoryParameter.getDescription());
+        category.setDescription(updateCategoryParameter.getDescription());
         category.setCategoryType(CategoryType.valueOf(updateCategoryParameter.getCategoryType().name()));
 
         this.categoryRepository.saveAndFlush(category);
@@ -222,9 +221,9 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNoUserException(categoryId);
         }
 
-        final List<Category> childs = category.getChild();
+        final List<Category> child = category.getChild();
 
-        if(!childs.isEmpty()){
+        if(!child.isEmpty()){
             throw new DeleteCategoryWithChildException();
         }
 

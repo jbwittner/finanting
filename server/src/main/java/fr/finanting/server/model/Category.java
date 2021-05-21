@@ -39,7 +39,7 @@ public class Category extends MotherGroupUserElement {
     private String abbreviation;
 
     @Column(name = "DESCRIPTION")
-    private String descritpion;
+    private String description;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLES")

@@ -48,7 +48,7 @@ public class TestGetBankingTransaction extends AbstractMotherIntegrationTest {
     private BankingTransactionServiceImpl bankingTransactionServiceImpl;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.bankingTransactionServiceImpl = new BankingTransactionServiceImpl(this.bankingTransactionRepository,
                                                                                 this.bankingAccountRepository,
                                                                                 this.thirdRepository,

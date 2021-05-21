@@ -12,7 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 
-import fr.finanting.server.model.mother.MotherPersistant;
+import fr.finanting.server.model.mother.MotherPersistent;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "USERS")
 @Data
-public class User extends MotherPersistant {
+public class User extends MotherPersistent {
 
 	@Column(name = "USER_NAME", nullable = false, unique = true)
     private String userName;

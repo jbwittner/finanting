@@ -1,6 +1,5 @@
 package fr.finanting.server.service.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.finanting.server.codegen.model.*;
@@ -13,7 +12,6 @@ import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.ThirdNoUserException;
 import fr.finanting.server.exception.ThirdNotExistException;
-import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.Third;
@@ -104,7 +102,7 @@ public class ThirdServiceImpl implements ThirdService{
 
         third.setAbbreviation(thirdParameter.getAbbreviation().toUpperCase());
         third.setLabel(thirdParameter.getLabel());
-        third.setDescritpion(thirdParameter.getDescription());
+        third.setDescription(thirdParameter.getDescription());
 
         if(thirdParameter.getDefaultCategoryId() != null){
             final Category defaultCategory = this.categoryRepository.findById(thirdParameter.getDefaultCategoryId())
@@ -192,7 +190,7 @@ public class ThirdServiceImpl implements ThirdService{
 
         third.setAbbreviation(updateThirdParameter.getAbbreviation().toUpperCase());
         third.setLabel(updateThirdParameter.getLabel());
-        third.setDescritpion(updateThirdParameter.getDescription());
+        third.setDescription(updateThirdParameter.getDescription());
 
         if(updateThirdParameter.getDefaultCategoryId() != null){
             final Category defaultCategory = this.categoryRepository.findById(updateThirdParameter.getDefaultCategoryId())

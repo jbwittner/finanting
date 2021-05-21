@@ -12,7 +12,7 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.implementation.UserServiceImpl;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 
-public class TestGetAccountInformations extends AbstractMotherIntegrationTest {
+public class TestGetAccountInformation extends AbstractMotherIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -25,15 +25,15 @@ public class TestGetAccountInformations extends AbstractMotherIntegrationTest {
     private User user;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
         this.user = this.testFactory.getUser();
     }
 
     @Test
-    public void testGetAccountInformations() {
+    public void testGetAccountInformation() {
 
-        final UserDTO userDTO = this.userService.getAccountInformations(this.user.getUserName());
+        final UserDTO userDTO = this.userService.getAccountInformation(this.user.getUserName());
 
         Assertions.assertEquals(this.user.getUserName(), userDTO.getUserName());
         Assertions.assertEquals(this.user.getEmail(), userDTO.getEmail());

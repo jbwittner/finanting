@@ -43,7 +43,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     private Group group;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.thirdServiceImpl = new ThirdServiceImpl(this.thirdRepository,
                                                     this.userRepository,
                                                     this.groupRepository,
@@ -56,7 +56,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     private void checkData(final Third expected, final ThirdDTO actual){
         Assertions.assertEquals(expected.getId(), actual.getId());
         Assertions.assertEquals(expected.getAbbreviation(), actual.getAbbreviation());
-        Assertions.assertEquals(expected.getDescritpion(), actual.getDescription());
+        Assertions.assertEquals(expected.getDescription(), actual.getDescription());
 
         final Address address = expected.getAddress();
         final AddressDTO addressDTO = actual.getAddressDTO();
@@ -83,7 +83,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(category.getId(), categoryDTO.getId());
         Assertions.assertEquals(category.getAbbreviation(), categoryDTO.getAbbreviation());
         Assertions.assertEquals(category.getCategoryType().name(), categoryDTO.getCategoryType().name());
-        Assertions.assertEquals(category.getDescritpion(), categoryDTO.getDescription());
+        Assertions.assertEquals(category.getDescription(), categoryDTO.getDescription());
         Assertions.assertEquals(category.getLabel(), categoryDTO.getLabel());
 
     }

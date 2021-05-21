@@ -14,7 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import fr.finanting.server.exception.FunctionalException;
 
 /**
- * Class used to manage the exception and transfert the informations with the answer of the REST request
+ * Class used to manage the exception and transfer the information with the answer of the REST request
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -22,10 +22,10 @@ public class GlobalExceptionHandler {
     protected final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
-     * Method used to manage the exception and transfert the informations with the answer of the REST request
+     * Method used to manage the exception and transfer the information with the answer of the REST request
      */
     @ExceptionHandler(FunctionalException.class)
-    public ResponseEntity<?> globleExcpetionHandler(final Exception ex, final WebRequest request) throws Exception {
+    public ResponseEntity<?> globuleExceptionHandler(final Exception ex, final WebRequest request) throws Exception {
 
         ErrorDetails errorDetails;
 

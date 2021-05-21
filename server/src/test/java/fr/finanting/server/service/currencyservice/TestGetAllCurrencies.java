@@ -32,7 +32,7 @@ public class TestGetAllCurrencies extends AbstractMotherIntegrationTest {
     private CurrencyServiceImpl currencyServiceImpl;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.currencyServiceImpl = new CurrencyServiceImpl(this.currencyRepository,
                 this.thirdRepository,
                 this.bankingAccountRepository,

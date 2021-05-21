@@ -18,13 +18,13 @@ import fr.finanting.server.tools.handler.ErrorDetails;
 import fr.finanting.server.tools.handler.GlobalExceptionHandler;
 
 
-public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
+public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
     @Override
-    protected void initDataBeforeEach() throws Exception {}
+    protected void initDataBeforeEach() {}
 
     @Test
-    public void testExceptionFail() throws Exception {
+    public void testExceptionFail() {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();
@@ -32,12 +32,12 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
         final Exception exception = new Exception();
 
         Assertions.assertThrows(Exception.class,
-            () -> globalExceptionHandler.globleExcpetionHandler(exception, fakeWebRequest));
+            () -> globalExceptionHandler.globuleExceptionHandler(exception, fakeWebRequest));
         
     }
 
     @Test
-    public void testUndeclaredThrowableExceptionWithExceptionFail() throws Exception {
+    public void testUndeclaredThrowableExceptionWithExceptionFail() {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();
@@ -46,7 +46,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
         final UndeclaredThrowableException undeclaredThrowableException = new UndeclaredThrowableException(exception);
 
         Assertions.assertThrows(Exception.class,
-            () -> globalExceptionHandler.globleExcpetionHandler(undeclaredThrowableException, fakeWebRequest));
+            () -> globalExceptionHandler.globuleExceptionHandler(undeclaredThrowableException, fakeWebRequest));
         
     }
 
@@ -63,7 +63,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         Thread.sleep(1000);
 
-        final ResponseEntity<?> test = globalExceptionHandler.globleExcpetionHandler(undeclaredThrowableException, fakeWebRequest);
+        final ResponseEntity<?> test = globalExceptionHandler.globuleExceptionHandler(undeclaredThrowableException, fakeWebRequest);
 
         Thread.sleep(1000);
 
@@ -71,6 +71,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         final ErrorDetails errorDetails = (ErrorDetails) test.getBody();
 
+        Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();
 
         Assertions.assertEquals(MockFunctionalException.class.getSimpleName(), errorDetails.getException());
@@ -93,7 +94,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         Thread.sleep(1000);
 
-        final ResponseEntity<?> test = globalExceptionHandler.globleExcpetionHandler(exception, fakeWebRequest);
+        final ResponseEntity<?> test = globalExceptionHandler.globuleExceptionHandler(exception, fakeWebRequest);
 
         Thread.sleep(1000);
 
@@ -101,6 +102,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         final ErrorDetails errorDetails = (ErrorDetails) test.getBody();
 
+        Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();
 
         Assertions.assertEquals(MockFunctionalException.class.getSimpleName(), errorDetails.getException());
@@ -114,7 +116,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
     /**
      * Custom FunctionalException
      */
-    class MockFunctionalException extends FunctionalException {
+    static class MockFunctionalException extends FunctionalException {
 
         private static final long serialVersionUID = 1L;
 
@@ -130,7 +132,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
     /**
      * Fake WebRequest
      */
-    class FakeWebRequest implements WebRequest {
+    static class FakeWebRequest implements WebRequest {
 
         @Override
         public Object getAttribute(final String name, final int scope) {
@@ -254,7 +256,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
     
         @Override
         public String getDescription(final boolean includeClientInfo) {
-            return "CustomDescritpion";
+            return "CustomDescription";
         }
         
     }

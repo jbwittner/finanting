@@ -17,7 +17,6 @@ import fr.finanting.server.model.embeddable.Address;
 import fr.finanting.server.model.embeddable.BankDetails;
 import fr.finanting.server.service.BankingAccountService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

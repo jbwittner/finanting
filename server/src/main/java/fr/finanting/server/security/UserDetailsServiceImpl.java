@@ -14,7 +14,7 @@ import fr.finanting.server.repository.UserRepository;
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
     
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserDetailsServiceImpl(final UserRepository userRepository){
