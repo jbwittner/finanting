@@ -34,7 +34,7 @@ public class TestUpdateClassification extends AbstractMotherIntegrationTest {
     private Group group;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.classificationServiceImpl = new ClassificationServiceImpl(this.classificationRepository,
                                                                                 this.groupRepository,
                                                                                 this.userRepository);

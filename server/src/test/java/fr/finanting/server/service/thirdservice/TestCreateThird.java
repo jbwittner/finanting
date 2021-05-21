@@ -48,7 +48,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     private ThirdParameter thirdParameter;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.thirdServiceImpl = new ThirdServiceImpl(this.thirdRepository,
                                                     this.userRepository,
                                                     this.groupRepository,

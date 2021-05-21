@@ -31,7 +31,7 @@ public class TestAddUsersGroup extends AbstractMotherIntegrationTest {
     private Group group;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
         this.group = this.testFactory.getGroup();
     }

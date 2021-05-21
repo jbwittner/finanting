@@ -21,7 +21,7 @@ public class ValidationInterceptorTest extends AbstractMotherIntegrationTest {
     protected JoinPoint joinPoint;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {}
+    protected void initDataBeforeEach() {}
 
     @Test
     public void validationOk() throws ValidationDataException {

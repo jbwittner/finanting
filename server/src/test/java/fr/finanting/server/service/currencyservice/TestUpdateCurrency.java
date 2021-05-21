@@ -38,7 +38,7 @@ public class TestUpdateCurrency extends AbstractMotherIntegrationTest {
     private CurrencyParameter currencyParameter;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.currencyServiceImpl = new CurrencyServiceImpl(this.currencyRepository,
                 this.thirdRepository,
                 this.bankingAccountRepository,

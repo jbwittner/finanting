@@ -34,7 +34,7 @@ public class TestRemoveUsersGroup extends AbstractMotherIntegrationTest {
     private static final Integer NUMBER_USERS = 10;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
         this.group = this.testFactory.getGroup();
         this.userRepository.save(this.group.getUserAdmin());

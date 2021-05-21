@@ -27,7 +27,7 @@ public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
     private User user;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.userdetDetailsServiceImpl = new UserDetailsServiceImpl(this.userRepository);
 
         this.user = this.testFactory.getUser();
@@ -46,12 +46,10 @@ public class TestLoadUserByUsername extends AbstractMotherIntegrationTest {
         final Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
         for(final GrantedAuthority grantedAuthority : authorities){
-            Assertions.assertTrue(grantedAuthority.getAuthority().equals(Role.USER.toString()));
+            Assertions.assertEquals(grantedAuthority.getAuthority(), Role.USER.toString());
         }
-
         Assertions.assertEquals(this.user.getUserName(), userDetails.getUsername());
         Assertions.assertEquals(this.user.getPassword(), userDetails.getPassword());
-        
     }
 
     @Test

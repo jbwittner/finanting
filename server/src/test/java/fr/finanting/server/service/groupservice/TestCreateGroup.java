@@ -32,7 +32,7 @@ public class TestCreateGroup extends AbstractMotherIntegrationTest {
     private static final Integer NUMBER_ACCOUNT = 10;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.groupServiceImpl = new GroupServiceImpl(this.userRepository, this.groupRepository);
         this.userPrincipal = this.testFactory.getUser();
     }

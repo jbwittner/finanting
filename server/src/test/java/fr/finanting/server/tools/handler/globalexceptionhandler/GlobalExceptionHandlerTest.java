@@ -18,13 +18,13 @@ import fr.finanting.server.tools.handler.ErrorDetails;
 import fr.finanting.server.tools.handler.GlobalExceptionHandler;
 
 
-public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
+public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
     @Override
-    protected void initDataBeforeEach() throws Exception {}
+    protected void initDataBeforeEach() {}
 
     @Test
-    public void testExceptionFail() throws Exception {
+    public void testExceptionFail() {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();
@@ -37,7 +37,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
     }
 
     @Test
-    public void testUndeclaredThrowableExceptionWithExceptionFail() throws Exception {
+    public void testUndeclaredThrowableExceptionWithExceptionFail() {
         final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
         final FakeWebRequest fakeWebRequest = new FakeWebRequest();
@@ -71,6 +71,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         final ErrorDetails errorDetails = (ErrorDetails) test.getBody();
 
+        Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();
 
         Assertions.assertEquals(MockFunctionalException.class.getSimpleName(), errorDetails.getException());
@@ -101,6 +102,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         final ErrorDetails errorDetails = (ErrorDetails) test.getBody();
 
+        Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();
 
         Assertions.assertEquals(MockFunctionalException.class.getSimpleName(), errorDetails.getException());
@@ -114,7 +116,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
     /**
      * Custom FunctionalException
      */
-    class MockFunctionalException extends FunctionalException {
+    static class MockFunctionalException extends FunctionalException {
 
         private static final long serialVersionUID = 1L;
 
@@ -130,7 +132,7 @@ public class GlobleExceptionHandlerTest extends AbstractMotherIntegrationTest {
     /**
      * Fake WebRequest
      */
-    class FakeWebRequest implements WebRequest {
+    static class FakeWebRequest implements WebRequest {
 
         @Override
         public Object getAttribute(final String name, final int scope) {

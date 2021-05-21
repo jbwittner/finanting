@@ -49,7 +49,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
     private UpdateThirdParameter updateThirdParameter;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.thirdServiceImpl = new ThirdServiceImpl(this.thirdRepository,
                                                     this.userRepository,
                                                     this.groupRepository,

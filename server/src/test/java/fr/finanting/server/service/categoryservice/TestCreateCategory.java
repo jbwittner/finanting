@@ -40,7 +40,7 @@ public class TestCreateCategory extends AbstractMotherIntegrationTest {
     private User user;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.categoryServiceImpl = new CategoryServiceImpl(this.userRepository, this.groupRepository, this.categoryRepository);
         this.categoryParameter = new CategoryParameter();
         this.categoryParameter.setAbbreviation(this.testFactory.getRandomAlphanumericString(5));

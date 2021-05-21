@@ -25,7 +25,7 @@ public class TestGetAccountInformations extends AbstractMotherIntegrationTest {
     private User user;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
         this.user = this.testFactory.getUser();
     }

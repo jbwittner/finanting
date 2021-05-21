@@ -32,11 +32,8 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
 
     private CategoryServiceImpl categoryServiceImpl;
 
-    private final int NUMBER_MOTHER_CATEGORY = 4;
-    private final int NUMBER_CHILD_CATEGORY = 15;
-
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.categoryServiceImpl = new CategoryServiceImpl(this.userRepository, this.groupRepository, this.categoryRepository);
     }
 
@@ -48,12 +45,14 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
 
         final List<Category> categories = new ArrayList<>();
 
+        int NUMBER_MOTHER_CATEGORY = 4;
         for(int motherIndex = 0; motherIndex < NUMBER_MOTHER_CATEGORY; motherIndex++){
 
             final Category motherCategory = this.testFactory.getCategory(group, true);
 
             final List<Category> childCategories = new ArrayList<>();
 
+            int NUMBER_CHILD_CATEGORY = 15;
             for(int childIndex = 0; childIndex < NUMBER_CHILD_CATEGORY; childIndex++){
 
                 final Category childCategory = this.testFactory.getCategory(group, true);

@@ -43,7 +43,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     private Group group;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.thirdServiceImpl = new ThirdServiceImpl(this.thirdRepository,
                                                     this.userRepository,
                                                     this.groupRepository,

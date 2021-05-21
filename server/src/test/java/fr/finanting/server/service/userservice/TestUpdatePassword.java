@@ -33,7 +33,7 @@ public class TestUpdatePassword extends AbstractMotherIntegrationTest {
 
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.userService = new UserServiceImpl(this.userRepository, this.passwordEncoder);
 
         this.user = new User();
@@ -63,7 +63,7 @@ public class TestUpdatePassword extends AbstractMotherIntegrationTest {
 
         this.userService.updatePassword(passwordUpdateParameter, this.user.getUserName());
 
-        final User userUpdated = this.userRepository.findByUserName(this.user.getUserName()).get();
+        final User userUpdated = this.userRepository.findByUserName(this.user.getUserName()).orElseThrow();
 
         Assertions.assertTrue(this.passwordEncoder.matches(newPassword, userUpdated.getPassword()));
         Assertions.assertFalse(this.passwordEncoder.matches(this.previousPassword, userUpdated.getPassword()));

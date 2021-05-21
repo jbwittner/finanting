@@ -51,7 +51,7 @@ public class TestDeleteAccountBankingTransaction extends AbstractMotherIntegrati
     private User user;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
 
         this.bankingTransactionServiceImpl = new BankingTransactionServiceImpl(this.bankingTransactionRepository,
                                                                                 this.bankingAccountRepository,

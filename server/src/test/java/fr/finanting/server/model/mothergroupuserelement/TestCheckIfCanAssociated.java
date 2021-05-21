@@ -14,15 +14,15 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
     private User userOne;
     private User userTwo;
 
-    private Group groupeOne;
-    private Group groupeTwo;
+    private Group groupOne;
+    private Group groupTwo;
 
     @Override
-    protected void initDataBeforeEach() throws Exception {
+    protected void initDataBeforeEach() {
         this.userOne = this.testFactory.getUser();
         this.userTwo = this.testFactory.getUser();
-        this.groupeOne = this.testFactory.getGroup(userOne);
-        this.groupeTwo = this.testFactory.getGroup(userTwo);
+        this.groupOne = this.testFactory.getGroup(userOne);
+        this.groupTwo = this.testFactory.getGroup(userTwo);
     }
 
     @Test
@@ -39,8 +39,8 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
     public void testGroupCheckIfCanAssociatedOk() throws BadAssociationElementException{
         final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
         final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
-        motherGroupUserElementOne.setGroup(this.groupeOne);
-        motherGroupUserElementTwo.setGroup(this.groupeOne);
+        motherGroupUserElementOne.setGroup(this.groupOne);
+        motherGroupUserElementTwo.setGroup(this.groupOne);
         
         motherGroupUserElementOne.checkIfCanAssociated(motherGroupUserElementTwo);
     }
@@ -50,7 +50,7 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
         final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
         final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
         motherGroupUserElementOne.setUser(this.userOne);
-        motherGroupUserElementTwo.setGroup(this.groupeOne);
+        motherGroupUserElementTwo.setGroup(this.groupOne);
         
         Assertions.assertThrows(BadAssociationElementException.class,
             () -> motherGroupUserElementOne.checkIfCanAssociated(motherGroupUserElementTwo));
@@ -61,7 +61,7 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
     public void testGroupCheckIfCanAssociatedWithUser() throws BadAssociationElementException{
         final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
         final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
-        motherGroupUserElementOne.setGroup(this.groupeOne);
+        motherGroupUserElementOne.setGroup(this.groupOne);
         motherGroupUserElementTwo.setUser(this.userOne);
         
         Assertions.assertThrows(BadAssociationElementException.class,
@@ -85,8 +85,8 @@ public class TestCheckIfCanAssociated extends AbstractMotherIntegrationTest {
     public void testGroupCheckIfCanAssociatedWithAnotherGroup() throws BadAssociationElementException{
         final MotherGroupUserElement motherGroupUserElementOne = new MotherGroupUserElement();
         final MotherGroupUserElement motherGroupUserElementTwo = new MotherGroupUserElement();
-        motherGroupUserElementOne.setGroup(this.groupeOne);
-        motherGroupUserElementTwo.setGroup(this.groupeTwo);
+        motherGroupUserElementOne.setGroup(this.groupOne);
+        motherGroupUserElementTwo.setGroup(this.groupTwo);
         
         Assertions.assertThrows(BadAssociationElementException.class,
             () -> motherGroupUserElementOne.checkIfCanAssociated(motherGroupUserElementTwo));
