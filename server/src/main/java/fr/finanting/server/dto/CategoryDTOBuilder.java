@@ -14,7 +14,7 @@ public class CategoryDTOBuilder implements Transformer<Category, CategoryDTO> {
         categoryDTO.setId(input.getId());
         categoryDTO.setAbbreviation(input.getAbbreviation());
         categoryDTO.setLabel(input.getLabel());
-        categoryDTO.setDescription(input.getDescritpion());
+        categoryDTO.setDescription(input.getDescription());
         final CategoryDTO.CategoryTypeEnum categoryTypeEnum = CategoryDTO.CategoryTypeEnum.fromValue(input.getCategoryType().name());
         categoryDTO.setCategoryType(categoryTypeEnum);
         return categoryDTO;

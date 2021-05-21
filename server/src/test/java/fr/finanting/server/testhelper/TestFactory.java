@@ -297,7 +297,7 @@ public class TestFactory {
         }
 
         category.setCategoryType(categoryType);
-        category.setDescritpion(this.faker.superhero().descriptor());
+        category.setDescription(this.faker.superhero().descriptor());
         category.setLabel(this.faker.company().catchPhrase());
         category.setGroup(group);
         category.setUser(user);

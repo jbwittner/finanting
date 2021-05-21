@@ -15,7 +15,7 @@ public class TreeCategoryDTOBuilder implements Transformer<Category, TreeCategor
         treeCategoryDTO.setAbbreviation(input.getAbbreviation());
         treeCategoryDTO.setId(input.getId());
         treeCategoryDTO.setLabel(input.getLabel());
-        treeCategoryDTO.setDescription(input.getDescritpion());
+        treeCategoryDTO.setDescription(input.getDescription());
         treeCategoryDTO.setChildTreeCategoriesDTOs(this.transformAll(input.getChild()));
         return treeCategoryDTO;
     }

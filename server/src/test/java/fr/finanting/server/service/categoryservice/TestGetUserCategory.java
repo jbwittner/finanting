@@ -77,7 +77,7 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
                     childCategory = category;
                     Assertions.assertEquals(category.getChild().size(), treeCategoryDTO.getChildTreeCategoriesDTOs().size());
                     Assertions.assertEquals(category.getAbbreviation(), treeCategoryDTO.getAbbreviation());
-                    Assertions.assertEquals(category.getDescritpion(), treeCategoryDTO.getDescription());
+                    Assertions.assertEquals(category.getDescription(), treeCategoryDTO.getDescription());
                     Assertions.assertEquals(category.getLabel(), treeCategoryDTO.getLabel());
                     Assertions.assertEquals(category.getCategoryType().name(), treeCategoryDTO.getCategoryType().name());
                 }
@@ -92,7 +92,7 @@ public class TestGetUserCategory extends AbstractMotherIntegrationTest {
                     if(category.getId().equals(childTreeCategoryDTO.getId())){
                         childIsPresent = true;
                         Assertions.assertEquals(category.getAbbreviation(), childTreeCategoryDTO.getAbbreviation());
-                        Assertions.assertEquals(category.getDescritpion(), childTreeCategoryDTO.getDescription());
+                        Assertions.assertEquals(category.getDescription(), childTreeCategoryDTO.getDescription());
                         Assertions.assertEquals(category.getLabel(), childTreeCategoryDTO.getLabel());
                         Assertions.assertEquals(category.getCategoryType().name(), childTreeCategoryDTO.getCategoryType().name());
                     }

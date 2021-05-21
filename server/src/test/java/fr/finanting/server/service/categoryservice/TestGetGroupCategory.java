@@ -81,7 +81,7 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
                     childCategory = category;
                     Assertions.assertEquals(category.getChild().size(), treeCategoryDTO.getChildTreeCategoriesDTOs().size());
                     Assertions.assertEquals(category.getAbbreviation(), treeCategoryDTO.getAbbreviation());
-                    Assertions.assertEquals(category.getDescritpion(), treeCategoryDTO.getDescription());
+                    Assertions.assertEquals(category.getDescription(), treeCategoryDTO.getDescription());
                     Assertions.assertEquals(category.getLabel(), treeCategoryDTO.getLabel());
                     Assertions.assertEquals(category.getCategoryType().name(), treeCategoryDTO.getCategoryType().name());
                 }
@@ -96,7 +96,7 @@ public class TestGetGroupCategory extends AbstractMotherIntegrationTest {
                     if(category.getId().equals(childTreeCategoriesDTO.getId())){
                         childIsPresent = true;
                         Assertions.assertEquals(category.getAbbreviation(), childTreeCategoriesDTO.getAbbreviation());
-                        Assertions.assertEquals(category.getDescritpion(), childTreeCategoriesDTO.getDescription());
+                        Assertions.assertEquals(category.getDescription(), childTreeCategoriesDTO.getDescription());
                         Assertions.assertEquals(category.getLabel(), childTreeCategoriesDTO.getLabel());
                         Assertions.assertEquals(category.getCategoryType().name(), childTreeCategoriesDTO.getCategoryType().name());
                     }

@@ -65,7 +65,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
         Assertions.assertEquals(updateCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(updateCategoryParameter.getCategoryType().name(), category.getCategoryType().name());
-        Assertions.assertEquals(updateCategoryParameter.getDescription(), category.getDescritpion());
+        Assertions.assertEquals(updateCategoryParameter.getDescription(), category.getDescription());
         Assertions.assertEquals(updateCategoryParameter.getLabel(), category.getLabel());
         Assertions.assertEquals(this.user.getUserName(), category.getUser().getUserName());
         Assertions.assertNull(category.getGroup());
@@ -92,7 +92,7 @@ public class TestUpdateCategory extends AbstractMotherIntegrationTest {
 
         Assertions.assertEquals(updateCategoryParameter.getAbbreviation().toUpperCase(), category.getAbbreviation());
         Assertions.assertEquals(updateCategoryParameter.getCategoryType().name(), category.getCategoryType().name());
-        Assertions.assertEquals(updateCategoryParameter.getDescription(), category.getDescritpion());
+        Assertions.assertEquals(updateCategoryParameter.getDescription(), category.getDescription());
         Assertions.assertEquals(updateCategoryParameter.getLabel(), category.getLabel());
         Assertions.assertNull(category.getUser());
         Assertions.assertEquals(this.group.getGroupName(), category.getGroup().getGroupName());

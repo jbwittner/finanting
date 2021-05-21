@@ -83,7 +83,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(category.getId(), categoryDTO.getId());
         Assertions.assertEquals(category.getAbbreviation(), categoryDTO.getAbbreviation());
         Assertions.assertEquals(category.getCategoryType().name(), categoryDTO.getCategoryType().name());
-        Assertions.assertEquals(category.getDescritpion(), categoryDTO.getDescription());
+        Assertions.assertEquals(category.getDescription(), categoryDTO.getDescription());
         Assertions.assertEquals(category.getLabel(), categoryDTO.getLabel());
 
     }
