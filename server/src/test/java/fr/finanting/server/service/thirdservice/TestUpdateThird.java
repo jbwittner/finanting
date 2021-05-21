@@ -89,7 +89,7 @@ public class TestUpdateThird extends AbstractMotherIntegrationTest {
     private void checkData(final Third third){
 
         Assertions.assertEquals(this.updateThirdParameter.getAbbreviation().toUpperCase(), third.getAbbreviation());
-        Assertions.assertEquals(this.updateThirdParameter.getDescription(), third.getDescritpion());
+        Assertions.assertEquals(this.updateThirdParameter.getDescription(), third.getDescription());
         Assertions.assertEquals(this.updateThirdParameter.getLabel(), third.getLabel());
 
         final BankDetails bankDetails = third.getBankDetails();

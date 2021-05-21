@@ -56,7 +56,7 @@ public class TestGetGroupThird extends AbstractMotherIntegrationTest {
     private void checkData(final Third expected, final ThirdDTO actual){
         Assertions.assertEquals(expected.getId(), actual.getId());
         Assertions.assertEquals(expected.getAbbreviation(), actual.getAbbreviation());
-        Assertions.assertEquals(expected.getDescritpion(), actual.getDescription());
+        Assertions.assertEquals(expected.getDescription(), actual.getDescription());
 
         final Address address = expected.getAddress();
         final AddressDTO addressDTO = actual.getAddressDTO();

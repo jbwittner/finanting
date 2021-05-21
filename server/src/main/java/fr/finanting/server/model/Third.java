@@ -30,7 +30,7 @@ public class Third extends MotherGroupUserElement {
     private String abbreviation;
 
     @Column(name = "DESCRIPTION")
-    private String descritpion;
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")

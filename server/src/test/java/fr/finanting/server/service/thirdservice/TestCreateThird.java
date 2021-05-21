@@ -88,7 +88,7 @@ public class TestCreateThird extends AbstractMotherIntegrationTest {
     private void checkData(final Third third){
 
         Assertions.assertEquals(this.thirdParameter.getAbbreviation().toUpperCase(), third.getAbbreviation());
-        Assertions.assertEquals(this.thirdParameter.getDescription(), third.getDescritpion());
+        Assertions.assertEquals(this.thirdParameter.getDescription(), third.getDescription());
         Assertions.assertEquals(this.thirdParameter.getLabel(), third.getLabel());
         
         if(this.thirdParameter.getBankDetailsParameter() != null){

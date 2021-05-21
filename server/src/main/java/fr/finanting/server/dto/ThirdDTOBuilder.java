@@ -17,7 +17,7 @@ public class ThirdDTOBuilder implements Transformer<Third, ThirdDTO> {
     public ThirdDTO transform(final Third input) {
         final ThirdDTO thirdDTO = new ThirdDTO();
         thirdDTO.setAbbreviation(input.getAbbreviation());
-        thirdDTO.setDescription(input.getDescritpion());
+        thirdDTO.setDescription(input.getDescription());
         thirdDTO.setId(input.getId());
         thirdDTO.setLabel(input.getLabel());
 

@@ -102,7 +102,7 @@ public class ThirdServiceImpl implements ThirdService{
 
         third.setAbbreviation(thirdParameter.getAbbreviation().toUpperCase());
         third.setLabel(thirdParameter.getLabel());
-        third.setDescritpion(thirdParameter.getDescription());
+        third.setDescription(thirdParameter.getDescription());
 
         if(thirdParameter.getDefaultCategoryId() != null){
             final Category defaultCategory = this.categoryRepository.findById(thirdParameter.getDefaultCategoryId())
@@ -190,7 +190,7 @@ public class ThirdServiceImpl implements ThirdService{
 
         third.setAbbreviation(updateThirdParameter.getAbbreviation().toUpperCase());
         third.setLabel(updateThirdParameter.getLabel());
-        third.setDescritpion(updateThirdParameter.getDescription());
+        third.setDescription(updateThirdParameter.getDescription());
 
         if(updateThirdParameter.getDefaultCategoryId() != null){
             final Category defaultCategory = this.categoryRepository.findById(updateThirdParameter.getDefaultCategoryId())

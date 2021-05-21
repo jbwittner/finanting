@@ -348,7 +348,7 @@ public class TestFactory {
         final Third third = new Third();
 
         third.setAbbreviation(this.getRandomAlphanumericString(5).toUpperCase());
-        third.setDescritpion(this.faker.superhero().descriptor());
+        third.setDescription(this.faker.superhero().descriptor());
         third.setLabel(this.faker.company().name());
         third.setAddress(this.getAddress());
         third.setBankDetails(this.getBankDetails());
