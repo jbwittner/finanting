@@ -50,7 +50,7 @@ public class TestGetGroupClassifications extends AbstractMotherIntegrationTest {
 
         final List<Classification> classifications = new ArrayList<>();
 
-        int NUMBER_CLASSIFICATIONS = 4;
+        final int NUMBER_CLASSIFICATIONS = 4;
         for(int index = 0; index < NUMBER_CLASSIFICATIONS; index ++){
 
             final Classification classification = this.testFactory.getClassification(this.group);
