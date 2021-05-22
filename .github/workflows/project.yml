@@ -67,7 +67,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.2
         with:
-          node-version: v14.15.4 # optional
+          node-version: v14.17.0 # optional
 
       - name: Install
         run: npm ci
