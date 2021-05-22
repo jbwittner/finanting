@@ -52,9 +52,6 @@ jobs:
         env:
           CI: false
 
-      - name: Coverage java part
-        uses: codecov/codecov-action@v1
-
   check-build-test-frontend:
     runs-on: ubuntu-18.04
 
@@ -79,11 +76,8 @@ jobs:
         working-directory: frontend
 
       - name: Test
-        run: npm test -- --coverage
+        run: CI=true npm test
         working-directory: frontend
-        
-      - name: Coverage frontend part
-        uses: codecov/codecov-action@v1
 
   package-application:
     needs: [check-build-test-backend, check-build-test-frontend]
@@ -117,6 +111,13 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Package application
-        run: mvn -B -DskipTests package --file pom.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: mvn -B package --file pom.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
         env:
           CI: false
+          
+      - name: Test
+        run: npm test -- --coverage
+        working-directory: frontend
+        
+      - name: Coverage
+        uses: codecov/codecov-action@v1
