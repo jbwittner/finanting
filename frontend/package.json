@@ -43,5 +43,6 @@
   },
   "devDependencies": {
     "check-node-version": "^4.1.0"
-  }
+  },
+  "proxy": "http://localhost:9080"
 }
