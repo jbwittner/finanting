@@ -117,6 +117,6 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Package application
-        run: mvn -B package --file pom.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: mvn -B package -DskipTests --file pom.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
         env:
           CI: false
