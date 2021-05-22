@@ -42,6 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
             .antMatcher("/**").authorizeRequests()
+            .antMatchers("/", "index.html", "/favicon.ico", "/*manifest.json", "workbox-*/*.js", "/*.js", "/*.png", "/static/**", "/*.svg", "/*.jpg").permitAll()
             .antMatchers("/admin/*").hasAnyRole(Role.ADMIN.toString())
             .antMatchers("/", "/user/registration").permitAll()
             .anyRequest().authenticated()
