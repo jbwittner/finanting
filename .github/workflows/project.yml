@@ -84,6 +84,9 @@ jobs:
       - name: Test
         run: CI=true npm test
         working-directory: frontend
+        
+      - name: Coverage React part
+        uses: codecov/codecov-action@v1
 
   package-application:
     needs: [check-build-test-backend, check-build-test-frontend]
