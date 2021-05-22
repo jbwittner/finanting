@@ -82,10 +82,10 @@ jobs:
         working-directory: frontend
 
       - name: Test
-        run: CI=true npm test
+        run: npm test -- --coverage
         working-directory: frontend
         
-      - name: Coverage React part
+      - name: Coverage java part
         uses: codecov/codecov-action@v1
 
   package-application:
