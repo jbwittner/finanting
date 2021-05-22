@@ -6,3 +6,9 @@ updates:
     interval: monthly
     timezone: Europe/Paris
   open-pull-requests-limit: 100
+- package-ecosystem: npm
+  directory: "/frontend"
+  schedule:
+    interval: monthly
+    timezone: Europe/Paris
+  open-pull-requests-limit: 100

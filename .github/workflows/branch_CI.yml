@@ -1,0 +1,51 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Branch CI
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      
+jobs:
+  package-application:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup-Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11 # The JDK version to make available on the path.
+          java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+          architecture: x64 # (x64 or x86) - defaults to x64
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: v14.17.0 # optional
+
+      - name: Cache
+        uses: actions/cache@v2.0.0
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: ~/.m2/repository
+          # An explicit key for restoring and saving the cache
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Package application
+        run: mvn -B package --file pom.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        env:
+          CI: false
+          
+      - name: Test
+        run: npm test -- --coverage
+        working-directory: frontend
+        
+      - name: Coverage
+        uses: codecov/codecov-action@v1
