@@ -82,8 +82,11 @@ jobs:
         working-directory: frontend
 
       - name: Test
-        run: CI=true npm test
+        run: npm test -- --coverage
         working-directory: frontend
+        
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
 
   package-application:
     needs: [check-build-test-backend, check-build-test-frontend]
