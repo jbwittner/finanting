@@ -73,6 +73,10 @@ jobs:
       - name: Check version
         run: npm run check-version
         working-directory: frontend
+        
+      - name: Generate
+        run: npm run generate
+        working-directory: frontend
 
       - name: Build
         run: npm run build
