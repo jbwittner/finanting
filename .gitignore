@@ -316,5 +316,6 @@ logs
 .factorypath
 
 frontend/build
+frontend/coverage
 frontend/node_modules
 frontend/src/generated
