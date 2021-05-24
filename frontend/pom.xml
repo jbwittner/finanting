@@ -39,6 +39,9 @@
                         <fileset>
                             <directory>build</directory>
                         </fileset>
+                        <fileset>
+                            <directory>src/generated</directory>
+                        </fileset>
                     </filesets>
                 </configuration>
             </plugin>
@@ -76,6 +79,22 @@
                             <arguments>
                                 <argument>run</argument>
                                 <argument>check-version</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+					<execution>
+                        <id>openapi generation</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>
+                            process-resources
+                        </phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>generate</argument>
                             </arguments>
                         </configuration>
                     </execution>
