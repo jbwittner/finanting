@@ -73,7 +73,15 @@ jobs:
       - name: Check version
         run: npm run check-version
         working-directory: frontend
-        
+
+      - name: Check linter
+        run: npm run lint
+        working-directory: frontend
+
+      - name: Check prettier
+        run: npm run prettier:check
+        working-directory: frontend
+
       - name: Generate
         run: npm run generate
         working-directory: frontend
