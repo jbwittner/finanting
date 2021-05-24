@@ -17,7 +17,9 @@
     "eject": "react-scripts eject",
     "check-version": "check-node-version --node 14.17 --npm 6.14",
     "clean": "rimraf build && rimraf src/generated",
-    "generate": "openapi-generator-cli generate -i ../openapi.yaml -g typescript-axios -o src/generated"
+    "generate": "openapi-generator-cli generate -i ../openapi.yaml -g typescript-axios -o src/generated",
+    "lint": "eslint --fix .",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "eslintConfig": {
     "extends": [
@@ -39,15 +41,22 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^15.6.0",
-    "@types/react": "^17.0.6",
-    "@types/react-dom": "^17.0.5",
+    "@openapitools/openapi-generator-cli": "^2.3.2",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.1.9",
     "@types/jest": "^26.0.23",
-    "@openapitools/openapi-generator-cli": "^2.3.2",
+    "@types/node": "^15.6.0",
+    "@types/react": "^17.0.6",
+    "@types/react-dom": "^17.0.5",
     "check-node-version": "^4.1.0",
+    "eslint": "^7.27.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.3.0",
     "rimraf": "^3.0.2",
     "typescript": "^4.2.4"
   },
