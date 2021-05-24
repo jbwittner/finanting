@@ -18,8 +18,10 @@
     "check-version": "check-node-version --node 14.17 --npm 6.14",
     "clean": "rimraf build && rimraf src/generated",
     "generate": "openapi-generator-cli generate -i ../openapi.yaml -g typescript-axios -o src/generated",
-    "lint": "eslint --fix .",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint:fix": "eslint --fix src/**/*.{ts,tsx}",
+    "prettier:write": "prettier --write src/**/*.{ts,tsx}",
+    "prettier:check": "prettier --check src/**/*.{ts,tsx}"
   },
   "eslintConfig": {
     "extends": [
