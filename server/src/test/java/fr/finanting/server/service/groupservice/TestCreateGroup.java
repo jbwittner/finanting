@@ -3,8 +3,8 @@ package fr.finanting.server.service.groupservice;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.finanting.server.codegen.model.GroupDTO;
-import fr.finanting.server.codegen.model.GroupParameter;
+import fr.finanting.codegen.model.GroupDTO;
+import fr.finanting.codegen.model.GroupParameter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

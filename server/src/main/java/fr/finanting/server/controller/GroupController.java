@@ -2,11 +2,11 @@ package fr.finanting.server.controller;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.api.GroupApi;
-import fr.finanting.server.codegen.model.AddUsersGroupParameter;
-import fr.finanting.server.codegen.model.GroupDTO;
-import fr.finanting.server.codegen.model.GroupParameter;
-import fr.finanting.server.codegen.model.RemoveUsersGroupParameter;
+import fr.finanting.codegen.api.GroupApi;
+import fr.finanting.codegen.model.AddUsersGroupParameter;
+import fr.finanting.codegen.model.GroupDTO;
+import fr.finanting.codegen.model.GroupParameter;
+import fr.finanting.codegen.model.RemoveUsersGroupParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

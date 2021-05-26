@@ -1,10 +1,10 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.codegen.api.UserApi;
-import fr.finanting.server.codegen.model.PasswordUpdateParameter;
-import fr.finanting.server.codegen.model.UserDTO;
-import fr.finanting.server.codegen.model.UserRegistrationParameter;
-import fr.finanting.server.codegen.model.UserUpdateParameter;
+import fr.finanting.codegen.api.UserApi;
+import fr.finanting.codegen.model.PasswordUpdateParameter;
+import fr.finanting.codegen.model.UserDTO;
+import fr.finanting.codegen.model.UserRegistrationParameter;
+import fr.finanting.codegen.model.UserUpdateParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

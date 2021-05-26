@@ -1,9 +1,9 @@
 package fr.finanting.server.service;
 
-import fr.finanting.server.codegen.model.PasswordUpdateParameter;
-import fr.finanting.server.codegen.model.UserDTO;
-import fr.finanting.server.codegen.model.UserRegistrationParameter;
-import fr.finanting.server.codegen.model.UserUpdateParameter;
+import fr.finanting.codegen.model.PasswordUpdateParameter;
+import fr.finanting.codegen.model.UserDTO;
+import fr.finanting.codegen.model.UserRegistrationParameter;
+import fr.finanting.codegen.model.UserUpdateParameter;
 import fr.finanting.server.exception.BadPasswordException;
 import fr.finanting.server.exception.UserEmailAlreadyExistException;
 import fr.finanting.server.exception.UserNameAlreadyExistException;

@@ -1,6 +1,6 @@
 package fr.finanting.server.service.userservice;
 
-import fr.finanting.server.codegen.model.UserDTO;
+import fr.finanting.codegen.model.UserDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.codegen.model.AddressDTO;
 import fr.finanting.server.model.embeddable.Address;
 
 import java.util.ArrayList;

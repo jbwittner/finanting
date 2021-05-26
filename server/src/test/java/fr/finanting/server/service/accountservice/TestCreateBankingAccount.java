@@ -1,9 +1,9 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.codegen.model.AddressParameter;
-import fr.finanting.server.codegen.model.BankDetailsParameter;
-import fr.finanting.server.codegen.model.BankingAccountDTO;
-import fr.finanting.server.codegen.model.BankingAccountParameter;
+import fr.finanting.codegen.model.AddressParameter;
+import fr.finanting.codegen.model.BankDetailsParameter;
+import fr.finanting.codegen.model.BankingAccountDTO;
+import fr.finanting.codegen.model.BankingAccountParameter;
 import fr.finanting.server.exception.CurrencyNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotExistException;

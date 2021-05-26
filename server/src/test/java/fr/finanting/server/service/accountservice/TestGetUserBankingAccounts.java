@@ -1,6 +1,6 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.codegen.model.BankingAccountDTO;
+import fr.finanting.codegen.model.BankingAccountDTO;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.BankingTransaction;
 import fr.finanting.server.model.User;

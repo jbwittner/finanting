@@ -115,8 +115,8 @@
                             <inputSpec>${project.parent.basedir}/openapi.yaml</inputSpec>
                             <language>spring</language>
                             <library>spring-boot</library>
-                            <apiPackage>fr.finanting.server.codegen.api</apiPackage>
-                            <modelPackage>fr.finanting.server.codegen.model</modelPackage>
+                            <apiPackage>fr.finanting.codegen.api</apiPackage>
+                            <modelPackage>fr.finanting.codegen.model</modelPackage>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
                                 <dateLibrary>java11</dateLibrary>

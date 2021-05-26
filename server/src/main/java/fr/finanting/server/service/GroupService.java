@@ -2,10 +2,10 @@ package fr.finanting.server.service;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.model.AddUsersGroupParameter;
-import fr.finanting.server.codegen.model.GroupDTO;
-import fr.finanting.server.codegen.model.GroupParameter;
-import fr.finanting.server.codegen.model.RemoveUsersGroupParameter;
+import fr.finanting.codegen.model.AddUsersGroupParameter;
+import fr.finanting.codegen.model.GroupDTO;
+import fr.finanting.codegen.model.GroupParameter;
+import fr.finanting.codegen.model.RemoveUsersGroupParameter;
 import fr.finanting.server.exception.GroupNameAlreadyExistException;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.NotAdminGroupException;

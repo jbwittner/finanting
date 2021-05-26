@@ -2,9 +2,9 @@ package fr.finanting.server.service;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.model.BankingAccountDTO;
-import fr.finanting.server.codegen.model.BankingAccountParameter;
-import fr.finanting.server.codegen.model.UpdateBankingAccountParameter;
+import fr.finanting.codegen.model.BankingAccountDTO;
+import fr.finanting.codegen.model.BankingAccountParameter;
+import fr.finanting.codegen.model.UpdateBankingAccountParameter;
 import fr.finanting.server.exception.*;
 
 public interface BankingAccountService {

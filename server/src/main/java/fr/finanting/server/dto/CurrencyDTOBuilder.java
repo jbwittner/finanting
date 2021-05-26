@@ -1,6 +1,6 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.codegen.model.CurrencyDTO;
+import fr.finanting.codegen.model.CurrencyDTO;
 import fr.finanting.server.model.Currency;
 
 import java.util.ArrayList;

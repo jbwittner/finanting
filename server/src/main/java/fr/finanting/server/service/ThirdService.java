@@ -2,9 +2,9 @@ package fr.finanting.server.service;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.model.ThirdDTO;
-import fr.finanting.server.codegen.model.ThirdParameter;
-import fr.finanting.server.codegen.model.UpdateThirdParameter;
+import fr.finanting.codegen.model.ThirdDTO;
+import fr.finanting.codegen.model.ThirdParameter;
+import fr.finanting.codegen.model.UpdateThirdParameter;
 import fr.finanting.server.exception.BadAssociationThirdException;
 import fr.finanting.server.exception.CategoryNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;

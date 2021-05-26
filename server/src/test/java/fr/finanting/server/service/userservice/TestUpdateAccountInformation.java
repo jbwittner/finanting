@@ -2,8 +2,8 @@ package fr.finanting.server.service.userservice;
 
 import com.github.javafaker.Name;
 
-import fr.finanting.server.codegen.model.UserDTO;
-import fr.finanting.server.codegen.model.UserUpdateParameter;
+import fr.finanting.codegen.model.UserDTO;
+import fr.finanting.codegen.model.UserUpdateParameter;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

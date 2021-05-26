@@ -1,6 +1,6 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.server.codegen.model.UpdateCategoryParameter;
+import fr.finanting.codegen.model.UpdateCategoryParameter;
 import fr.finanting.server.exception.BadAssociationCategoryTypeException;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroupException;
 import fr.finanting.server.exception.CategoryNoUserException;
