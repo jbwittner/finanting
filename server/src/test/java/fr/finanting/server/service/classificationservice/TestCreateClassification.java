@@ -1,6 +1,6 @@
 package fr.finanting.server.service.classificationservice;
 
-import fr.finanting.server.codegen.model.ClassificationParameter;
+import fr.finanting.codegen.model.ClassificationParameter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

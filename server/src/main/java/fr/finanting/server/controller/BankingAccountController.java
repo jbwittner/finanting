@@ -1,9 +1,9 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.codegen.api.BankingAccountApi;
-import fr.finanting.server.codegen.model.BankingAccountDTO;
-import fr.finanting.server.codegen.model.BankingAccountParameter;
-import fr.finanting.server.codegen.model.UpdateBankingAccountParameter;
+import fr.finanting.codegen.api.BankingAccountApi;
+import fr.finanting.codegen.model.BankingAccountDTO;
+import fr.finanting.codegen.model.BankingAccountParameter;
+import fr.finanting.codegen.model.UpdateBankingAccountParameter;
 import fr.finanting.server.service.BankingAccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;

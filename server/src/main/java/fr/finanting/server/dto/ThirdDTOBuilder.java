@@ -1,6 +1,6 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.codegen.model.ThirdDTO;
+import fr.finanting.codegen.model.ThirdDTO;
 import fr.finanting.server.model.Third;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package fr.finanting.server.service.groupservice;
 
-import fr.finanting.server.codegen.model.GroupDTO;
+import fr.finanting.codegen.model.GroupDTO;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Group;

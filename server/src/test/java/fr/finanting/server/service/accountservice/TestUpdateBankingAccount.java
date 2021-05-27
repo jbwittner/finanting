@@ -1,9 +1,9 @@
 package fr.finanting.server.service.accountservice;
 
-import fr.finanting.server.codegen.model.AddressParameter;
-import fr.finanting.server.codegen.model.BankDetailsParameter;
-import fr.finanting.server.codegen.model.BankingAccountDTO;
-import fr.finanting.server.codegen.model.UpdateBankingAccountParameter;
+import fr.finanting.codegen.model.AddressParameter;
+import fr.finanting.codegen.model.BankDetailsParameter;
+import fr.finanting.codegen.model.BankingAccountDTO;
+import fr.finanting.codegen.model.UpdateBankingAccountParameter;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.model.BankingAccount;
 import fr.finanting.server.model.Currency;

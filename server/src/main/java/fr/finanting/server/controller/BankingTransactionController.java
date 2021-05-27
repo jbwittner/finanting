@@ -1,8 +1,8 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.server.codegen.api.BankingTransactionApi;
-import fr.finanting.server.codegen.model.BankingTransactionDTO;
-import fr.finanting.server.codegen.model.BankingTransactionParameter;
+import fr.finanting.codegen.api.BankingTransactionApi;
+import fr.finanting.codegen.model.BankingTransactionDTO;
+import fr.finanting.codegen.model.BankingTransactionParameter;
 import fr.finanting.server.service.BankingTransactionService;
 
 import java.util.List;

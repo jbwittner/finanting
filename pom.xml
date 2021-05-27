@@ -24,7 +24,6 @@
     </properties>
 
     <modules>
-        <module>openapi</module>
         <module>frontend</module>
         <module>server</module>
     </modules>

@@ -1,6 +1,6 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.codegen.model.ContactDTO;
+import fr.finanting.codegen.model.ContactDTO;
 import fr.finanting.server.model.embeddable.Contact;
 
 import java.util.ArrayList;

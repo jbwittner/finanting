@@ -2,8 +2,8 @@ package fr.finanting.server.service;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.model.CurrencyDTO;
-import fr.finanting.server.codegen.model.CurrencyParameter;
+import fr.finanting.codegen.model.CurrencyDTO;
+import fr.finanting.codegen.model.CurrencyParameter;
 import fr.finanting.server.exception.CurrencyIsoCodeAlreadyExist;
 import fr.finanting.server.exception.CurrencyNotExistException;
 import fr.finanting.server.exception.NoDefaultCurrencyException;

@@ -1,6 +1,6 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.codegen.model.TreeCategoryDTO;
+import fr.finanting.codegen.model.TreeCategoryDTO;
 import fr.finanting.server.model.Category;
 
 import java.util.ArrayList;

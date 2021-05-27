@@ -1,6 +1,6 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.codegen.model.ClassificationDTO;
+import fr.finanting.codegen.model.ClassificationDTO;
 import fr.finanting.server.model.Classification;
 
 import java.util.ArrayList;

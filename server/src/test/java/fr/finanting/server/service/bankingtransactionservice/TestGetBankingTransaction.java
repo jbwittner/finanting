@@ -1,6 +1,6 @@
 package fr.finanting.server.service.bankingtransactionservice;
 
-import fr.finanting.server.codegen.model.BankingTransactionDTO;
+import fr.finanting.codegen.model.BankingTransactionDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

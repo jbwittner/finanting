@@ -1,6 +1,6 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.server.codegen.model.UserDTO;
+import fr.finanting.codegen.model.UserDTO;
 import fr.finanting.server.model.User;
 
 import java.util.ArrayList;

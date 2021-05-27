@@ -2,7 +2,7 @@ package fr.finanting.server.service.thirdservice;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.model.*;
+import fr.finanting.codegen.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

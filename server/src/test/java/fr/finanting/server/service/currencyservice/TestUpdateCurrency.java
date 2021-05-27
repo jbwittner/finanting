@@ -2,7 +2,7 @@ package fr.finanting.server.service.currencyservice;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.model.CurrencyParameter;
+import fr.finanting.codegen.model.CurrencyParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.BankingTransactionRepository;
 import fr.finanting.server.repository.ThirdRepository;

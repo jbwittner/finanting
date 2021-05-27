@@ -2,8 +2,8 @@ package fr.finanting.server.service.implementation;
 
 import java.util.List;
 
-import fr.finanting.server.codegen.model.BankingTransactionDTO;
-import fr.finanting.server.codegen.model.BankingTransactionParameter;
+import fr.finanting.codegen.model.BankingTransactionDTO;
+import fr.finanting.codegen.model.BankingTransactionParameter;
 import fr.finanting.server.dto.BankingTransactionDTOBuilder;
 import org.springframework.stereotype.Service;
 
