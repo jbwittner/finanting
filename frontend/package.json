@@ -43,7 +43,10 @@
     ]
   },
   "jest": {
-    "coveragePathIgnorePatterns": ["/node_modules/", "/generated/"]
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/generated/"
+    ]
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.3.2",
@@ -54,6 +57,7 @@
     "@types/node": "^15.6.0",
     "@types/react": "^17.0.6",
     "@types/react-dom": "^17.0.5",
+    "@types/react-router-dom": "^5.1.7",
     "check-node-version": "^4.1.0",
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
