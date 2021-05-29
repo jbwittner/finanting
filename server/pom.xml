@@ -213,7 +213,7 @@
         <dependency>
             <groupId>io.swagger.codegen.v3</groupId>
             <artifactId>swagger-codegen-maven-plugin</artifactId>
-            <version>3.0.25</version>
+            <version>3.0.26</version>
 			<exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -382,8 +382,7 @@
                         <phase>process-resources</phase>
                         <configuration>
                             <tasks>
-                                <taskdef resource="net/sf/antcontrib/antcontrib.properties"
-                                         classpathref="maven.plugin.classpath" />
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
                                 <if>
                                     <available file="../frontend/build"/>
                                     <then>
