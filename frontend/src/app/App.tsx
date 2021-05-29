@@ -17,6 +17,7 @@ function App() {
                     rel="noopener noreferrer">
                     Learn React
                 </a>
+                <div>ceci est un test : {String(true)}</div>
             </header>
         </div>
     );
