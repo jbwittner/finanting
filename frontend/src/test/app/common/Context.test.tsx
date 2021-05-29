@@ -3,7 +3,7 @@ import { LoginContext } from '../../../app/common/Context';
 import { render, screen } from '@testing-library/react';
 
 const LoginContextConsumer = () => {
-    const { isAuthenticated, setIsAuthenticated } = React.useContext(LoginContext)
+    const { isAuthenticated, setIsAuthenticated } = React.useContext(LoginContext);
 
     return (
         <div>
@@ -12,8 +12,8 @@ const LoginContextConsumer = () => {
             </button>
             <div id={'test'}>{String(isAuthenticated)}</div>
         </div>
-    )
-}
+    );
+};
 
 const LoginContextProvider = () => {
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -24,11 +24,7 @@ const LoginContextProvider = () => {
                 isAuthenticated,
                 setIsAuthenticated
             }}>
-            <LoginContext.Consumer>
-                {() => (
-                    <LoginContextConsumer />
-                )}
-            </LoginContext.Consumer>
+            <LoginContext.Consumer>{() => <LoginContextConsumer />}</LoginContext.Consumer>
         </LoginContext.Provider>
     );
 };
