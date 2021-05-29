@@ -1,18 +1,18 @@
 import React from 'react';
-import { Route, Redirect, RouteProps, Switch, HashRouter } from 'react-router-dom'
-import {LoginContext} from "./Context";
+import { Route, Redirect, RouteProps, Switch, HashRouter } from 'react-router-dom';
+import { LoginContext } from './Context';
 
-export const INDEX_PATH = '/'
-export const HOME_PATH  = '/home'
+export const INDEX_PATH = '/';
+export const HOME_PATH = '/home';
 
 interface PrivateRouteProps extends RouteProps {
-    component: any // eslint-disable-line @typescript-eslint/no-explicit-any
+    component: any;
 }
 
-const PrivateRoute = (props: PrivateRouteProps): JSX.Element => {
-    const { component: Component, ...rest } = props
+const PrivateRoute = (props: PrivateRouteProps) => {
+    const { component: Component, ...rest } = props;
 
-    const { isAuthenticated } = React.useContext(LoginContext)
+    const { isAuthenticated } = React.useContext(LoginContext);
 
     return (
         // Show the component only when the user is logged in
@@ -27,14 +27,16 @@ const PrivateRoute = (props: PrivateRouteProps): JSX.Element => {
                 )
             }
         />
-    )
-}
+    );
+};
 
 export function MainRouter() {
-    return <HashRouter hashType={'noslash'}>
-        <Switch>
-            <Route exact path={INDEX_PATH} component={React.Fragment} />
-            <PrivateRoute exact path={HOME_PATH} component={React.Fragment} />
-        </Switch>
-    </HashRouter>;
+    return (
+        <HashRouter hashType={'noslash'}>
+            <Switch>
+                <Route exact path={INDEX_PATH} component={React.Fragment} />
+                <PrivateRoute exact path={HOME_PATH} component={React.Fragment} />
+            </Switch>
+        </HashRouter>
+    );
 }
