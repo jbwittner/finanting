@@ -3,22 +3,30 @@ import { LoginContext } from '../../../app/common/Context';
 import { render, screen } from '@testing-library/react';
 
 const LoginContextConsumer = () => {
-    const [authenticated, setIsAuthenticated] = React.useState(false);
+    const { isAuthenticated, setIsAuthenticated } = React.useContext(LoginContext)
+
+    return (
+        <div>
+            <button id={'button'} onClick={() => setIsAuthenticated(!isAuthenticated)}>
+                click
+            </button>
+            <div id={'test'}>{String(isAuthenticated)}</div>
+        </div>
+    )
+}
+
+const LoginContextProvider = () => {
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
     return (
         <LoginContext.Provider
             value={{
-                authenticated,
+                isAuthenticated,
                 setIsAuthenticated
             }}>
             <LoginContext.Consumer>
-                {(value) => (
-                    <div>
-                        <button id={'button'} onClick={() => setIsAuthenticated(!authenticated)}>
-                            click
-                        </button>
-                        <div id={'test'}>{String(value.authenticated)}</div>
-                    </div>
+                {() => (
+                    <LoginContextConsumer />
                 )}
             </LoginContext.Consumer>
         </LoginContext.Provider>
@@ -26,13 +34,13 @@ const LoginContextConsumer = () => {
 };
 
 test('Test default value of LoginContext', () => {
-    const result = render(<LoginContextConsumer />);
+    const result = render(<LoginContextProvider />);
     const linkElement = result.container.querySelector('#test');
     expect(linkElement).toHaveTextContent('false');
 });
 
-test('Other Test default value of LoginContext', () => {
-    const result = render(<LoginContextConsumer />);
+test('Test change value of context', () => {
+    const result = render(<LoginContextProvider />);
     const linkElement = result.container.querySelector('#test');
     const buttonElement = screen.getByText(/click/);
 
@@ -40,5 +48,5 @@ test('Other Test default value of LoginContext', () => {
     buttonElement.click();
     expect(linkElement).toHaveTextContent('true');
     buttonElement.click();
-    expect(linkElement).toHaveTextContent('true');
+    expect(linkElement).toHaveTextContent('false');
 });

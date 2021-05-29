@@ -1,11 +1,11 @@
 import React from 'react';
 
 type LoginContextType = {
-    authenticated: boolean;
+    isAuthenticated: boolean;
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const LoginContext = React.createContext<LoginContextType>({
-    authenticated: false,
+    isAuthenticated: false,
     setIsAuthenticated: () => {}
 });
