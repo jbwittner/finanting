@@ -318,4 +318,7 @@ logs
 frontend/build
 frontend/coverage
 frontend/node_modules
-frontend/src/generated
+
+openapi/node_modules
+openapi/output_server
+openapi/output_frontend
