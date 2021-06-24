@@ -336,6 +336,7 @@
                         </goals>
                         <configuration>
                             <excludes>
+                                <exclude>fr/finanting/server/generated/**/*.class</exclude>
                                 <exclude>fr/finanting/server/model/*.class</exclude>
                                 <exclude>fr/finanting/server/model/*/*.class</exclude>
                                 <exclude>fr/finanting/server/parameter/*.class</exclude>
