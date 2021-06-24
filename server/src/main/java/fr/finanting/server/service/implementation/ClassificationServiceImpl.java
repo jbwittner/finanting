@@ -2,9 +2,9 @@ package fr.finanting.server.service.implementation;
 
 import java.util.List;
 
-import fr.finanting.codegen.model.ClassificationDTO;
-import fr.finanting.codegen.model.ClassificationParameter;
-import fr.finanting.codegen.model.UpdateClassificationParameter;
+import fr.finanting.server.generated.model.ClassificationDTO;
+import fr.finanting.server.generated.model.ClassificationParameter;
+import fr.finanting.server.generated.model.UpdateClassificationParameter;
 import fr.finanting.server.dto.ClassificationDTOBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -3,9 +3,9 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.finanting.codegen.model.CategoryParameter;
-import fr.finanting.codegen.model.TreeCategoryDTO;
-import fr.finanting.codegen.model.UpdateCategoryParameter;
+import fr.finanting.server.generated.model.CategoryParameter;
+import fr.finanting.server.generated.model.TreeCategoryDTO;
+import fr.finanting.server.generated.model.UpdateCategoryParameter;
 import fr.finanting.server.dto.TreeCategoryDTOBuilder;
 import fr.finanting.server.model.CategoryType;
 import org.springframework.beans.factory.annotation.Autowired;

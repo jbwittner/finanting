@@ -1,8 +1,8 @@
 package fr.finanting.server.service.implementation;
 
-import fr.finanting.codegen.model.BankingAccountDTO;
-import fr.finanting.codegen.model.BankingAccountParameter;
-import fr.finanting.codegen.model.UpdateBankingAccountParameter;
+import fr.finanting.server.generated.model.BankingAccountDTO;
+import fr.finanting.server.generated.model.BankingAccountParameter;
+import fr.finanting.server.generated.model.UpdateBankingAccountParameter;
 import fr.finanting.server.dto.BankingAccountDTOBuilder;
 import fr.finanting.server.exception.*;
 import fr.finanting.server.repository.*;

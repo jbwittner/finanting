@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import fr.finanting.codegen.model.PasswordUpdateParameter;
-import fr.finanting.codegen.model.UserDTO;
-import fr.finanting.codegen.model.UserRegistrationParameter;
-import fr.finanting.codegen.model.UserUpdateParameter;
+import fr.finanting.server.generated.model.PasswordUpdateParameter;
+import fr.finanting.server.generated.model.UserDTO;
+import fr.finanting.server.generated.model.UserRegistrationParameter;
+import fr.finanting.server.generated.model.UserUpdateParameter;
 import fr.finanting.server.dto.UserDTOBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.github.javafaker.Name;
 
-import fr.finanting.codegen.model.PasswordUpdateParameter;
+import fr.finanting.server.generated.model.PasswordUpdateParameter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

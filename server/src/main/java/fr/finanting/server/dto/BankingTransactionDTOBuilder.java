@@ -1,6 +1,6 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.codegen.model.BankingTransactionDTO;
+import fr.finanting.server.generated.model.BankingTransactionDTO;
 import fr.finanting.server.model.BankingTransaction;
 
 import java.util.ArrayList;

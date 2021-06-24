@@ -9,6 +9,8 @@
         My custom rules
     </description>
 
+    <exclude-pattern>.*/generated/.*</exclude-pattern>
+
     <!-- bestpractices -->
     <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod" />
     <rule ref="category/java/bestpractices.xml/ArrayIsStoredDirectly" />

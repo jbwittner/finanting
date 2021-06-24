@@ -2,7 +2,7 @@ package fr.finanting.server.service.currencyservice;
 
 import java.util.List;
 
-import fr.finanting.codegen.model.CurrencyDTO;
+import fr.finanting.server.generated.model.CurrencyDTO;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.BankingTransactionRepository;
 import fr.finanting.server.repository.ThirdRepository;
@@ -43,7 +43,7 @@ public class TestGetAllCurrencies extends AbstractMotherIntegrationTest {
         Assertions.assertEquals(expectedData.getDecimalPlaces(), currentData.getDecimalPlaces());
         Assertions.assertEquals(expectedData.getId(), currentData.getId());
         Assertions.assertEquals(expectedData.getRate(), currentData.getRate());
-        Assertions.assertEquals(expectedData.getDefaultCurrency(), currentData.isDefaultCurrency());
+        Assertions.assertEquals(expectedData.getDefaultCurrency(), currentData.getDefaultCurrency());
         Assertions.assertEquals(expectedData.getIsoCode(), currentData.getIsoCode());
         Assertions.assertEquals(expectedData.getLabel(), currentData.getLabel());
         Assertions.assertEquals(expectedData.getSymbol(), currentData.getSymbol());

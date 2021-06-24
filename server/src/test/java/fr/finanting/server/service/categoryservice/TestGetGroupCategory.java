@@ -1,6 +1,6 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.codegen.model.TreeCategoryDTO;
+import fr.finanting.server.generated.model.TreeCategoryDTO;
 import fr.finanting.server.exception.GroupNotExistException;
 import fr.finanting.server.exception.UserNotInGroupException;
 import fr.finanting.server.model.Category;

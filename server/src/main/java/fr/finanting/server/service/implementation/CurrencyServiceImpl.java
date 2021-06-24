@@ -3,8 +3,8 @@ package fr.finanting.server.service.implementation;
 import java.util.List;
 import java.util.Optional;
 
-import fr.finanting.codegen.model.CurrencyDTO;
-import fr.finanting.codegen.model.CurrencyParameter;
+import fr.finanting.server.generated.model.CurrencyDTO;
+import fr.finanting.server.generated.model.CurrencyParameter;
 import fr.finanting.server.dto.CurrencyDTOBuilder;
 import fr.finanting.server.exception.CurrencyUsedException;
 import fr.finanting.server.repository.BankingAccountRepository;
@@ -52,11 +52,11 @@ public class CurrencyServiceImpl implements CurrencyService {
         }
 
         if(!this.currencyRepository.existsByDefaultCurrency(true)&&
-                currencyParameter.isDefaultCurrency().equals(false)){
+                currencyParameter.getDefaultCurrency().equals(false)){
             throw new NoDefaultCurrencyException();
         }
 
-        if(currencyParameter.isDefaultCurrency().equals(true)){
+        if(currencyParameter.getDefaultCurrency().equals(true)){
             final Optional<Currency> optionalDefaultApplicationCurrency = this.currencyRepository.findByDefaultCurrency(true);
             if(optionalDefaultApplicationCurrency.isPresent()){
                 final Currency defaultApplicationCurrency = optionalDefaultApplicationCurrency.get();
@@ -67,7 +67,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
         final Currency currency = new Currency();
 
-        currency.setDefaultCurrency(currencyParameter.isDefaultCurrency());
+        currency.setDefaultCurrency(currencyParameter.getDefaultCurrency());
         final String label = StringUtils.capitalize(currencyParameter.getLabel().toLowerCase());
         currency.setLabel(label);
         currency.setSymbol(currencyParameter.getSymbol().toUpperCase());
@@ -100,12 +100,12 @@ public class CurrencyServiceImpl implements CurrencyService {
             }
         }
 
-        if(currencyParameter.isDefaultCurrency().equals(false) &&
+        if(currencyParameter.getDefaultCurrency().equals(false) &&
             currentCurrency.getDefaultCurrency().equals(true)){
             throw new NoDefaultCurrencyException();
         }
 
-        currentCurrency.setDefaultCurrency(currencyParameter.isDefaultCurrency());
+        currentCurrency.setDefaultCurrency(currencyParameter.getDefaultCurrency());
         final String label = StringUtils.capitalize(currencyParameter.getLabel().toLowerCase());
         currentCurrency.setLabel(label);
         currentCurrency.setSymbol(currencyParameter.getSymbol().toUpperCase());

@@ -40,6 +40,14 @@ To check the code :
 
 Finally, a manual validation of the pull request is necessary.
 
+# OPENAPI
+
+To generate the code with the OpenApi CLI go to `openapi` folder.
+Launch :
+- `npm run delete` to delete old generation
+- `npm run generate` to generate the code
+- `npm run copy` to copy the code on the frontend and server folder
+
 # FRONTEND 
 
 # Getting Started with Create React App

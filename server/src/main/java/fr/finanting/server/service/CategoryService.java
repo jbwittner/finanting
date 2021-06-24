@@ -2,9 +2,9 @@ package fr.finanting.server.service;
 
 import java.util.List;
 
-import fr.finanting.codegen.model.CategoryParameter;
-import fr.finanting.codegen.model.TreeCategoryDTO;
-import fr.finanting.codegen.model.UpdateCategoryParameter;
+import fr.finanting.server.generated.model.CategoryParameter;
+import fr.finanting.server.generated.model.TreeCategoryDTO;
+import fr.finanting.server.generated.model.UpdateCategoryParameter;
 import fr.finanting.server.exception.BadAssociationCategoryTypeException;
 import fr.finanting.server.exception.BadAssociationCategoryUserGroupException;
 import fr.finanting.server.exception.CategoryNoUserException;

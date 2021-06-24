@@ -2,7 +2,7 @@ package fr.finanting.server.service.currencyservice;
 
 import java.util.List;
 
-import fr.finanting.codegen.model.CurrencyParameter;
+import fr.finanting.server.generated.model.CurrencyParameter;
 import fr.finanting.server.repository.BankingAccountRepository;
 import fr.finanting.server.repository.BankingTransactionRepository;
 import fr.finanting.server.repository.ThirdRepository;
@@ -63,7 +63,7 @@ public class TestCreateCurrency extends AbstractMotherIntegrationTest{
         final Currency currency = currencies.get(0);
 
         Assertions.assertEquals(this.currencyParameter.getDecimalPlaces(), currency.getDecimalPlaces());
-        Assertions.assertEquals(this.currencyParameter.isDefaultCurrency(), currency.getDefaultCurrency());
+        Assertions.assertEquals(this.currencyParameter.getDefaultCurrency(), currency.getDefaultCurrency());
         Assertions.assertEquals(this.currencyParameter.getIsoCode().toUpperCase(), currency.getIsoCode());
         final String label = StringUtils.capitalize(this.currencyParameter.getLabel().toLowerCase());
         Assertions.assertEquals(label, currency.getLabel());

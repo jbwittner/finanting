@@ -1,0 +1,19 @@
+{
+  "name": "openapi",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "generate:frontend": "openapi-generator-cli generate -i openapi.yaml -g typescript-axios -o output_frontend",
+    "generate:backend": "openapi-generator-cli generate -i openapi.yaml -g spring --library=spring-boot --api-package=fr.finanting.server.generated.api --model-package=fr.finanting.server.generated.model -o output_server --additional-properties=interfaceOnly=true --additional-properties=dateLibrary=java11",
+    "copy:backend": "cpx \"output_server/src/**/*\" \"../server/src\"",
+    "copy:frontend": "cpx \"output_frontend/*.ts\" \"../frontend/src/generated\"",
+    "generate": "npm run generate:frontend & npm run generate:backend",
+    "copy": "npm run copy:frontend & npm run copy:backend",
+    "delete": "rimraf output_frontend & rimraf output_server"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.3.2",
+    "cpx": "^1.5.0",
+    "rimraf": "^3.0.2"
+  }
+}

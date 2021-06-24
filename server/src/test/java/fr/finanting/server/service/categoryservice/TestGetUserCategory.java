@@ -1,6 +1,6 @@
 package fr.finanting.server.service.categoryservice;
 
-import fr.finanting.codegen.model.TreeCategoryDTO;
+import fr.finanting.server.generated.model.TreeCategoryDTO;
 import fr.finanting.server.model.Category;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.CategoryRepository;

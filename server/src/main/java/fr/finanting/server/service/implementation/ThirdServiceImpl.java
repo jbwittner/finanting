@@ -2,7 +2,7 @@ package fr.finanting.server.service.implementation;
 
 import java.util.List;
 
-import fr.finanting.codegen.model.*;
+import fr.finanting.server.generated.model.*;
 import fr.finanting.server.dto.ThirdDTOBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
