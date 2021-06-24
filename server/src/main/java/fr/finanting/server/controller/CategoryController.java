@@ -1,9 +1,9 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.codegen.api.CategoryApi;
-import fr.finanting.codegen.model.CategoryParameter;
-import fr.finanting.codegen.model.TreeCategoryDTO;
-import fr.finanting.codegen.model.UpdateCategoryParameter;
+import fr.finanting.server.generated.api.CategoryApi;
+import fr.finanting.server.generated.model.CategoryParameter;
+import fr.finanting.server.generated.model.TreeCategoryDTO;
+import fr.finanting.server.generated.model.UpdateCategoryParameter;
 import fr.finanting.server.service.CategoryService;
 
 import java.util.List;

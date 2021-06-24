@@ -2,8 +2,8 @@ package fr.finanting.server.service.bankingtransactionservice;
 
 import java.util.Date;
 
-import fr.finanting.codegen.model.BankingTransactionDTO;
-import fr.finanting.codegen.model.BankingTransactionParameter;
+import fr.finanting.server.generated.model.BankingTransactionDTO;
+import fr.finanting.server.generated.model.BankingTransactionParameter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

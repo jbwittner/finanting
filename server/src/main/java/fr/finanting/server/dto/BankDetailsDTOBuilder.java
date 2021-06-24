@@ -1,6 +1,6 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.codegen.model.BankDetailsDTO;
+import fr.finanting.server.generated.model.BankDetailsDTO;
 import fr.finanting.server.model.embeddable.BankDetails;
 
 import java.util.ArrayList;

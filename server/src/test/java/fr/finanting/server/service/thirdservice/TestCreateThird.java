@@ -1,9 +1,9 @@
 package fr.finanting.server.service.thirdservice;
 
-import fr.finanting.codegen.model.AddressParameter;
-import fr.finanting.codegen.model.BankDetailsParameter;
-import fr.finanting.codegen.model.ContactParameter;
-import fr.finanting.codegen.model.ThirdParameter;
+import fr.finanting.server.generated.model.AddressParameter;
+import fr.finanting.server.generated.model.BankDetailsParameter;
+import fr.finanting.server.generated.model.ContactParameter;
+import fr.finanting.server.generated.model.ThirdParameter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,9 +2,9 @@ package fr.finanting.server.service;
 
 import java.util.List;
 
-import fr.finanting.codegen.model.ClassificationDTO;
-import fr.finanting.codegen.model.ClassificationParameter;
-import fr.finanting.codegen.model.UpdateClassificationParameter;
+import fr.finanting.server.generated.model.ClassificationDTO;
+import fr.finanting.server.generated.model.ClassificationParameter;
+import fr.finanting.server.generated.model.UpdateClassificationParameter;
 import fr.finanting.server.exception.ClassificationNoUserException;
 import fr.finanting.server.exception.ClassificationNotExistException;
 import fr.finanting.server.exception.GroupNotExistException;

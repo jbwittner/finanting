@@ -1,9 +1,9 @@
 package fr.finanting.server.controller;
 
-import fr.finanting.codegen.api.ThirdApi;
-import fr.finanting.codegen.model.ThirdDTO;
-import fr.finanting.codegen.model.ThirdParameter;
-import fr.finanting.codegen.model.UpdateThirdParameter;
+import fr.finanting.server.generated.api.ThirdApi;
+import fr.finanting.server.generated.model.ThirdDTO;
+import fr.finanting.server.generated.model.ThirdParameter;
+import fr.finanting.server.generated.model.UpdateThirdParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

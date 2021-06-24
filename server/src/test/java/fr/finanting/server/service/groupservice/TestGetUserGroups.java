@@ -1,6 +1,6 @@
 package fr.finanting.server.service.groupservice;
 
-import fr.finanting.codegen.model.GroupDTO;
+import fr.finanting.server.generated.model.GroupDTO;
 import fr.finanting.server.model.Group;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.GroupRepository;

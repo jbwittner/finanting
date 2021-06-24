@@ -1,7 +1,7 @@
 package fr.finanting.server.service;
 
-import fr.finanting.codegen.model.BankingTransactionDTO;
-import fr.finanting.codegen.model.BankingTransactionParameter;
+import fr.finanting.server.generated.model.BankingTransactionDTO;
+import fr.finanting.server.generated.model.BankingTransactionParameter;
 import fr.finanting.server.exception.BadAssociationElementException;
 import fr.finanting.server.exception.BankingAccountNotExistException;
 import fr.finanting.server.exception.BankingTransactionNotExistException;

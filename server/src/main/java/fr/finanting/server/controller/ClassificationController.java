@@ -2,11 +2,11 @@ package fr.finanting.server.controller;
 
 import java.util.List;
 
-import fr.finanting.codegen.api.ClassificationApi;
+import fr.finanting.server.generated.api.ClassificationApi;
 
-import fr.finanting.codegen.model.ClassificationDTO;
-import fr.finanting.codegen.model.ClassificationParameter;
-import fr.finanting.codegen.model.UpdateClassificationParameter;
+import fr.finanting.server.generated.model.ClassificationDTO;
+import fr.finanting.server.generated.model.ClassificationParameter;
+import fr.finanting.server.generated.model.UpdateClassificationParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package fr.finanting.server.dto;
 
-import fr.finanting.codegen.model.GroupDTO;
-import fr.finanting.codegen.model.UserDTO;
+import fr.finanting.server.generated.model.GroupDTO;
+import fr.finanting.server.generated.model.UserDTO;
 import fr.finanting.server.model.Group;
 
 import java.util.ArrayList;
