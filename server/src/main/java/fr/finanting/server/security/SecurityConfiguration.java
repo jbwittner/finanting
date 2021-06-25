@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import fr.finanting.server.model.Role;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -25,6 +26,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+	private AuthTokenFilter jwtRequestFilter;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -54,12 +58,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
+            //.addFilterBefore(this.jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
             .antMatcher("/**").authorizeRequests()
             .antMatchers("/", "index.html", "/favicon.ico", "/*manifest.json", "workbox-*/*.js", "/*.js", "/*.png", "/static/**", "/*.svg", "/*.jpg").permitAll()
             .antMatchers("/admin/*").hasAnyRole(Role.ADMIN.toString())
             .antMatchers("/api/v1/auth/token").permitAll()
             .antMatchers("/", "/user/registration").permitAll()
             .anyRequest().authenticated();
+
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
