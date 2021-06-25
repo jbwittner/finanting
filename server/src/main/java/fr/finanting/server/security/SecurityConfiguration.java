@@ -46,8 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/admin/*").hasAnyRole(Role.ADMIN.toString())
             .antMatchers("/", "/user/registration").permitAll()
             .anyRequest().authenticated()
-            .and().formLogin().permitAll()
-            .and().logout().permitAll();     
+            .and().formLogin();   
     }
 
     @Bean
