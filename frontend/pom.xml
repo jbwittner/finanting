@@ -39,9 +39,6 @@
                         <fileset>
                             <directory>build</directory>
                         </fileset>
-                        <fileset>
-                            <directory>src/generated</directory>
-                        </fileset>
                     </filesets>
                 </configuration>
             </plugin>
