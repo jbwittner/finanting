@@ -3,7 +3,6 @@ package fr.finanting.server.security;
 import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
@@ -18,7 +17,6 @@ import fr.finanting.server.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 import org.slf4j.Logger;
@@ -28,8 +26,6 @@ import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
-
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
     @Value("${application.jwt.issuer}")
     private String issuer;
@@ -70,10 +66,18 @@ public class JwtTokenUtil {
         
         Date issuedAt = Date.from(Instant.now());
         Date expiration = Date.from(Instant.now().plus(Duration.ofSeconds(this.timeToLiveInSeconds)));
+
+        String randomUUID = UUID.randomUUID().toString();
+
+        this.logger.info("Generation of new JWT [username : " + userName +
+            " / randomUUID : " + randomUUID +
+            " / issuedAt : " + issuedAt.toString() +
+            " / expiration : " + expiration.toString()
+            + "]");
  
         String jwt =
             Jwts.builder()
-                .setId(UUID.randomUUID().toString())
+                .setId(randomUUID)
                 .setSubject(user.getUserName())
                 .setIssuer(this.issuer)
                 .setAudience(this.audience)

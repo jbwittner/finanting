@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
-	private AuthTokenFilter jwtRequestFilter;
+    private JwtTokenUtil jwtTokenUtil;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager getAuthenticationManager() throws Exception {
         return authenticationManager();
     }
- 
+
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors()
@@ -58,7 +58,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            //.addFilterBefore(this.jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
             .antMatcher("/**").authorizeRequests()
             .antMatchers("/", "index.html", "/favicon.ico", "/*manifest.json", "workbox-*/*.js", "/*.js", "/*.png", "/static/**", "/*.svg", "/*.jpg").permitAll()
             .antMatchers("/admin/*").hasAnyRole(Role.ADMIN.toString())
@@ -66,7 +65,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/", "/user/registration").permitAll()
             .anyRequest().authenticated();
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        AuthTokenFilter authTokenFilter = new AuthTokenFilter(this.userDetailsService, this.jwtTokenUtil);
+        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
