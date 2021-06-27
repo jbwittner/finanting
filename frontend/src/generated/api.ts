@@ -777,6 +777,25 @@ export interface GroupParameter {
 /**
  * 
  * @export
+ * @interface LoginParameter
+ */
+export interface LoginParameter {
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginParameter
+     */
+    userName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginParameter
+     */
+    password?: string;
+}
+/**
+ * 
+ * @export
  * @interface PasswordUpdateParameter
  */
 export interface PasswordUpdateParameter {
@@ -1254,6 +1273,171 @@ export interface UserUpdateParameter {
      */
     lastName: string;
 }
+
+/**
+ * AuthenticationApi - axios parameter creator
+ * @export
+ */
+export const AuthenticationApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Login
+         * @param {LoginParameter} [loginParameter] Object that need to be authenticated
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        login: async (loginParameter?: LoginParameter, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/authentication/login`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(loginParameter, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/authentication/logout`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AuthenticationApi - functional programming interface
+ * @export
+ */
+export const AuthenticationApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AuthenticationApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Login
+         * @param {LoginParameter} [loginParameter] Object that need to be authenticated
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async login(loginParameter?: LoginParameter, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.login(loginParameter, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async logout(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.logout(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * AuthenticationApi - factory interface
+ * @export
+ */
+export const AuthenticationApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AuthenticationApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Login
+         * @param {LoginParameter} [loginParameter] Object that need to be authenticated
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        login(loginParameter?: LoginParameter, options?: any): AxiosPromise<void> {
+            return localVarFp.login(loginParameter, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Logout
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logout(options?: any): AxiosPromise<void> {
+            return localVarFp.logout(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * AuthenticationApi - object-oriented interface
+ * @export
+ * @class AuthenticationApi
+ * @extends {BaseAPI}
+ */
+export class AuthenticationApi extends BaseAPI {
+    /**
+     * 
+     * @summary Login
+     * @param {LoginParameter} [loginParameter] Object that need to be authenticated
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthenticationApi
+     */
+    public login(loginParameter?: LoginParameter, options?: any) {
+        return AuthenticationApiFp(this.configuration).login(loginParameter, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Logout
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthenticationApi
+     */
+    public logout(options?: any) {
+        return AuthenticationApiFp(this.configuration).logout(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
 
 /**
  * BankingAccountApi - axios parameter creator
@@ -3989,10 +4173,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication basicAuth required
-            // http basic authentication required
-            setBasicAuthToObject(localVarRequestOptions, configuration)
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -4026,10 +4206,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication basicAuth required
-            // http basic authentication required
-            setBasicAuthToObject(localVarRequestOptions, configuration)
 
 
     

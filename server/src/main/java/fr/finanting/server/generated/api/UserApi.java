@@ -24,7 +24,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-25T17:50:48.110612+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-27T23:54:16.397484+02:00[Europe/Paris]")
 @Validated
 @Api(value = "user", description = "the user API")
 public interface UserApi {
@@ -66,10 +66,7 @@ public interface UserApi {
      * @param passwordUpdateParameter Object that needs to be send to update a user password (optional)
      * @return successful operation (status code 200)
      */
-    @ApiOperation(value = "Update the password of the user", nickname = "userPasswordUpdate", notes = "", authorizations = {
-        
-        @Authorization(value = "basicAuth")
-         }, tags={ "user", })
+    @ApiOperation(value = "Update the password of the user", nickname = "userPasswordUpdate", notes = "", tags={ "user", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation") })
     @PostMapping(
@@ -88,10 +85,7 @@ public interface UserApi {
      * @param userRegistrationParameter Object that needs to be send to register a new user (optional)
      * @return successful operation (status code 201)
      */
-    @ApiOperation(value = "Register a new user account", nickname = "userRegistration", notes = "", response = UserDTO.class, authorizations = {
-        
-        @Authorization(value = "basicAuth")
-         }, tags={ "user", })
+    @ApiOperation(value = "Register a new user account", nickname = "userRegistration", notes = "", response = UserDTO.class, tags={ "user", })
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "successful operation", response = UserDTO.class) })
     @PutMapping(

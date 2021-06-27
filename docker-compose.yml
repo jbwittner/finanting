@@ -38,6 +38,7 @@ services:
 
   swagger-editor:
     image: swaggerapi/swagger-editor
+    restart: always
     ports :
       - '9200:8080'
     networks:
