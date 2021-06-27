@@ -61,8 +61,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatcher("/**").authorizeRequests()
             .antMatchers("/", "index.html", "/favicon.ico", "/*manifest.json", "workbox-*/*.js", "/*.js", "/*.png", "/static/**", "/*.svg", "/*.jpg").permitAll()
             .antMatchers("/admin/*").hasAnyRole(Role.ADMIN.toString())
-            .antMatchers("/api/v1/auth/token").permitAll()
-            .antMatchers("/", "/user/registration").permitAll()
+            .antMatchers("/").permitAll()
+            .antMatchers("/user/registration").permitAll()
+            .antMatchers("/authentication/login").permitAll()
             .anyRequest().authenticated();
 
         AuthTokenFilter authTokenFilter = new AuthTokenFilter(this.userDetailsService, this.jwtTokenUtil);
@@ -76,6 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             @Override
             public void addCorsMappings(@NonNull final CorsRegistry registry) {
                 registry.addMapping("/**").allowedOrigins("http://localhost:9200");
+                registry.addMapping("/**").allowedOrigins("http://localhost:3000");
             }
         };
     }
