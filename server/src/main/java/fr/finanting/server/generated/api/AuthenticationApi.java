@@ -5,6 +5,7 @@
  */
 package fr.finanting.server.generated.api;
 
+import fr.finanting.server.generated.model.LoginDTO;
 import fr.finanting.server.generated.model.LoginParameter;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-27T23:54:16.397484+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-28T23:19:28.730960+02:00[Europe/Paris]")
 @Validated
 @Api(value = "authentication", description = "the authentication API")
 public interface AuthenticationApi {
@@ -36,14 +37,24 @@ public interface AuthenticationApi {
      * @param loginParameter Object that need to be authenticated (optional)
      * @return successful operation (status code 201)
      */
-    @ApiOperation(value = "Login", nickname = "login", notes = "", tags={ "authentication", })
+    @ApiOperation(value = "Login", nickname = "login", notes = "", response = LoginDTO.class, tags={ "authentication", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "successful operation") })
+        @ApiResponse(code = 201, message = "successful operation", response = LoginDTO.class) })
     @PostMapping(
         value = "/authentication/login",
+        produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Void> login(@ApiParam(value = "Object that need to be authenticated"  )  @Valid @RequestBody(required = false) LoginParameter loginParameter) {
+    default ResponseEntity<LoginDTO> login(@ApiParam(value = "Object that need to be authenticated"  )  @Valid @RequestBody(required = false) LoginParameter loginParameter) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"jwt\" : \"jwt\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

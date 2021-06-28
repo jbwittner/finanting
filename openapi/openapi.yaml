@@ -51,6 +51,10 @@ paths:
       responses:
         201:
           description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginDTO'
   /authentication/logout:
     post:
       tags:
@@ -833,6 +837,12 @@ components:
             enum:
               - ADMIN
               - USER
+
+    LoginDTO:
+      type: object
+      properties:
+        jwt:
+          type: string
 
     GroupDTO:
       type: object

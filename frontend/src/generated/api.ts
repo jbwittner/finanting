@@ -777,6 +777,19 @@ export interface GroupParameter {
 /**
  * 
  * @export
+ * @interface LoginDTO
+ */
+export interface LoginDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginDTO
+     */
+    jwt?: string;
+}
+/**
+ * 
+ * @export
  * @interface LoginParameter
  */
 export interface LoginParameter {
@@ -1361,7 +1374,7 @@ export const AuthenticationApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async login(loginParameter?: LoginParameter, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async login(loginParameter?: LoginParameter, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginDTO>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.login(loginParameter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1392,7 +1405,7 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        login(loginParameter?: LoginParameter, options?: any): AxiosPromise<void> {
+        login(loginParameter?: LoginParameter, options?: any): AxiosPromise<LoginDTO> {
             return localVarFp.login(loginParameter, options).then((request) => request(axios, basePath));
         },
         /**

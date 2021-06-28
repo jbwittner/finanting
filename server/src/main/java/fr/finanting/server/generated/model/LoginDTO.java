@@ -10,54 +10,31 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * LoginParameter
+ * LoginDTO
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-28T23:19:28.730960+02:00[Europe/Paris]")
-public class LoginParameter   {
-  @JsonProperty("userName")
-  private String userName;
+public class LoginDTO   {
+  @JsonProperty("jwt")
+  private String jwt;
 
-  @JsonProperty("password")
-  private String password;
-
-  public LoginParameter userName(String userName) {
-    this.userName = userName;
+  public LoginDTO jwt(String jwt) {
+    this.jwt = jwt;
     return this;
   }
 
   /**
-   * Get userName
-   * @return userName
+   * Get jwt
+   * @return jwt
   */
   @ApiModelProperty(value = "")
 
 
-  public String getUserName() {
-    return userName;
+  public String getJwt() {
+    return jwt;
   }
 
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  public LoginParameter password(String password) {
-    this.password = password;
-    return this;
-  }
-
-  /**
-   * Get password
-   * @return password
-  */
-  @ApiModelProperty(value = "")
-
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
+  public void setJwt(String jwt) {
+    this.jwt = jwt;
   }
 
 
@@ -69,23 +46,21 @@ public class LoginParameter   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    LoginParameter loginParameter = (LoginParameter) o;
-    return Objects.equals(this.userName, loginParameter.userName) &&
-        Objects.equals(this.password, loginParameter.password);
+    LoginDTO loginDTO = (LoginDTO) o;
+    return Objects.equals(this.jwt, loginDTO.jwt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userName, password);
+    return Objects.hash(jwt);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class LoginParameter {\n");
+    sb.append("class LoginDTO {\n");
     
-    sb.append("    userName: ").append(toIndentedString(userName)).append("\n");
-    sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    jwt: ").append(toIndentedString(jwt)).append("\n");
     sb.append("}");
     return sb.toString();
   }
