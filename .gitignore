@@ -277,6 +277,7 @@ buildNumber.properties
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/extensions.json
+!.vscode/launch.json
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
