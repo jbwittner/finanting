@@ -60,17 +60,9 @@ public class JwtTokenUtil {
     public static final String CLAIM_LAST_NAME_KEY = "LastName";
 
     @PostConstruct
-    public void setUpSecretKey() {
-        try {
-            secretKey = Keys.hmacShaKeyFor(secret.getBytes("UTF-8"));
-            logger.info("Secret key generation ok !");
-        } catch (WeakKeyException e) {
-            logger.error("Error generating JWT Secret Key : {}", e.getMessage());
-            throw new GetSecretKeyException(e);
-        } catch (UnsupportedEncodingException e) {
-            logger.error("Error generating JWT Secret Key : {}", e.getMessage());
-            throw new GetSecretKeyException(e);
-        }
+    public void setUpSecretKey() throws WeakKeyException, UnsupportedEncodingException {
+        secretKey = Keys.hmacShaKeyFor(secret.getBytes("UTF-8"));
+        logger.info("Secret key generation ok !");
     }
 
     private String createJWT(String userName) {

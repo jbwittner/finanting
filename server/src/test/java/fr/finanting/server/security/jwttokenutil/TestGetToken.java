@@ -53,9 +53,9 @@ public class TestGetToken extends AbstractMotherIntegrationTest {
         ReflectionTestUtils.setField(this.jwtTokenUtil, "secret", this.secret);
         ReflectionTestUtils.setField(this.jwtTokenUtil, "audience", this.audience);
         ReflectionTestUtils.setField(this.jwtTokenUtil, "timeToLiveInSeconds", this.timeToLiveInSeconds);
-        this.jwtTokenUtil.setUpSecretKey();
-
+        
         try {
+            this.jwtTokenUtil.setUpSecretKey();
             this.secretKey = Keys.hmacShaKeyFor(secret.getBytes("UTF-8"));
         } catch (WeakKeyException e) {
             throw new GetSecretKeyException(e);
