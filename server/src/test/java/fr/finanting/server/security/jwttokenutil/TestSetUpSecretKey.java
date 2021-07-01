@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import fr.finanting.server.exception.GetSecretKeyException;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.security.JwtTokenUtil;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
@@ -37,7 +36,6 @@ public class TestSetUpSecretKey extends AbstractMotherIntegrationTest {
         ReflectionTestUtils.setField(this.jwtTokenUtil, "issuer", this.issuer);
         ReflectionTestUtils.setField(this.jwtTokenUtil, "audience", this.audience);
         ReflectionTestUtils.setField(this.jwtTokenUtil, "timeToLiveInSeconds", this.timeToLiveInSeconds);
-        
     }
 
     @Test

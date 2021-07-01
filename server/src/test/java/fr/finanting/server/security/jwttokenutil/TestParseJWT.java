@@ -3,8 +3,6 @@ package fr.finanting.server.security.jwttokenutil;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
-import javax.crypto.SecretKey;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +18,10 @@ import fr.finanting.server.security.JwtTokenUtil;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.WeakKeyException;
 
-public class TestGetToken extends AbstractMotherIntegrationTest {
-
+public class TestParseJWT extends AbstractMotherIntegrationTest {
+    
     @Autowired
     private UserRepository userRepository;
 
@@ -43,7 +39,9 @@ public class TestGetToken extends AbstractMotherIntegrationTest {
     @Value("${application.jwt.ttl-in-seconds}")
     private long timeToLiveInSeconds;
 
-    private SecretKey secretKey;
+    private String token;
+
+    private User user;
 
     @Override
     protected void initDataBeforeEach() {
@@ -55,17 +53,13 @@ public class TestGetToken extends AbstractMotherIntegrationTest {
         
         try {
             this.jwtTokenUtil.setUpSecretKey();
-            this.secretKey = Keys.hmacShaKeyFor(secret.getBytes("UTF-8"));
         } catch (WeakKeyException e) {
             Assertions.fail(e);
         } catch (UnsupportedEncodingException e) {
             Assertions.fail(e);
         }
-    }
 
-    @Test
-    public void testGetToken(){
-        User user = this.testFactory.getUser();
+        this.user = this.testFactory.getUser();
 
         LoginParameter loginParameter = new LoginParameter();
         loginParameter.setUserName(user.getUserName());
@@ -73,25 +67,24 @@ public class TestGetToken extends AbstractMotherIntegrationTest {
 
         TestAuthentication testAuthentication = new TestAuthentication(user);
 
-        String token = this.jwtTokenUtil.getToken(testAuthentication);
+        this.token = this.jwtTokenUtil.getToken(testAuthentication);
 
-        Jws<Claims> claims =
-            Jwts.parserBuilder()
-                    .setSigningKey(this.secretKey)
-                    .build()
-                    .parseClaimsJws(token);
+    }
 
-        Claims body = claims.getBody();
+    @Test
+    public void testParseJWT(){
+        Jws<Claims> jwsClaims = this.jwtTokenUtil.parseJWT(this.token);
+        Claims claims = jwsClaims.getBody();
 
-        long duration = body.getExpiration().getTime() - body.getIssuedAt().getTime();
+        long duration = claims.getExpiration().getTime() - claims.getIssuedAt().getTime();
         long rest = Math.abs(duration - this.timeToLiveInSeconds*1000);
 
-        Assertions.assertEquals(8, body.size());
-        Assertions.assertEquals(this.audience, body.getAudience());
-        Assertions.assertEquals(this.issuer, body.getIssuer());
-        Assertions.assertEquals(user.getUserName(), body.getSubject());
-        Assertions.assertEquals(user.getFirstName(), body.get(JwtTokenUtil.CLAIM_FIRST_NAME_KEY));
-        Assertions.assertEquals(user.getLastName(), body.get(JwtTokenUtil.CLAIM_LAST_NAME_KEY));
+        Assertions.assertEquals(8, claims.size());
+        Assertions.assertEquals(this.audience, claims.getAudience());
+        Assertions.assertEquals(this.issuer, claims.getIssuer());
+        Assertions.assertEquals(user.getUserName(), claims.getSubject());
+        Assertions.assertEquals(user.getFirstName(), claims.get(JwtTokenUtil.CLAIM_FIRST_NAME_KEY));
+        Assertions.assertEquals(user.getLastName(), claims.get(JwtTokenUtil.CLAIM_LAST_NAME_KEY));
         Assertions.assertTrue(rest < 10);
 
         Assertions.assertNotNull(token);
@@ -141,5 +134,5 @@ public class TestGetToken extends AbstractMotherIntegrationTest {
         }
         
     }
-    
+
 }

@@ -3,6 +3,8 @@ package fr.finanting.server.service.implementation;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import fr.finanting.server.generated.model.CurrencyDTO;
 import fr.finanting.server.generated.model.CurrencyParameter;
 import fr.finanting.server.dto.CurrencyDTOBuilder;
@@ -22,6 +24,7 @@ import fr.finanting.server.repository.CurrencyRepository;
 import fr.finanting.server.service.CurrencyService;
 
 @Service
+@Transactional
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepository currencyRepository;

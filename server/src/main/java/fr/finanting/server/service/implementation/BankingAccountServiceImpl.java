@@ -20,7 +20,10 @@ import fr.finanting.server.service.BankingAccountService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class BankingAccountServiceImpl implements BankingAccountService {
     
     private final BankingAccountRepository bankingAccountRepository;

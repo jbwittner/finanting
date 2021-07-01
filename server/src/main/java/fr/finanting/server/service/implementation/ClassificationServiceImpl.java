@@ -2,6 +2,8 @@ package fr.finanting.server.service.implementation;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import fr.finanting.server.generated.model.ClassificationDTO;
 import fr.finanting.server.generated.model.ClassificationParameter;
 import fr.finanting.server.generated.model.UpdateClassificationParameter;
@@ -21,6 +23,7 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.ClassificationService;
 
 @Service
+@Transactional
 public class ClassificationServiceImpl implements ClassificationService {
 
     private final ClassificationRepository classificationRepository;

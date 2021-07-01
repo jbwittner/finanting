@@ -38,39 +38,34 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     }
  
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        try {
-            String headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-            logger.debug("headerAuth : " + headerAuth);
- 
-            if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(_BEARER)) {
-                String jwtToken = headerAuth.substring(7);
+        logger.debug("headerAuth : " + headerAuth);
 
-                Jws<Claims> jwsClaims = this.jwtTokenUtil.parseJWT(jwtToken);
-                Claims claims = jwsClaims.getBody();
-                String username = claims.getSubject();
- 
-                logger.debug("Username : " + username);
-        
-                UserDetails userDetails = this.UserDetailsService.loadUserByUsername(username);
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(_BEARER)) {
+            String jwtToken = headerAuth.substring(7);
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-                            
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
- 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                
-            }
- 
-        } catch (Exception ex) {
-            logger.error("Error authenticating user request : {}", ex.getMessage());
+            Jws<Claims> jwsClaims = this.jwtTokenUtil.parseJWT(jwtToken);
+            Claims claims = jwsClaims.getBody();
+            String username = claims.getSubject();
+
+            logger.debug("Username : " + username);
+    
+            UserDetails userDetails = this.UserDetailsService.loadUserByUsername(username);
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                        
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            
         }
- 
+
         filterChain.doFilter(request, response);
     }
 }

@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import fr.finanting.server.exception.GetSecretKeyException;
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.security.JwtTokenUtil;
@@ -112,7 +111,6 @@ public class JwtTokenUtil {
 
     public String getToken(final Authentication authentication){
 
-        
         String userName = authentication.getName();
         String jwtToken = this.createJWT(userName);
  

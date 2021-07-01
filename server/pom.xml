@@ -336,6 +336,7 @@
                                 <exclude>fr/finanting/server/ServerApplication.class</exclude>
                                 <exclude>fr/finanting/server/tools/handler/ErrorDetails.class</exclude>
                                 <exclude>fr/finanting/server/security/SecurityConfiguration.class</exclude>
+                                <exclude>fr/finanting/server/security/AuthTokenFilter.class</exclude>
                             </excludes>
                         </configuration>
                     </execution>
