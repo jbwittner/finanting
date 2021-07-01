@@ -4,14 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import fr.finanting.server.model.Role;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -23,6 +26,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -36,17 +42,32 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(final AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
     }
-    
- 
+
+    @Bean
+    public AuthenticationManager getAuthenticationManager() throws Exception {
+        return authenticationManager();
+    }
+
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http.cors()
+            .and()
+            .csrf().disable()
+            .formLogin().disable()
+            .httpBasic()
+            .and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
             .antMatcher("/**").authorizeRequests()
             .antMatchers("/", "index.html", "/favicon.ico", "/*manifest.json", "workbox-*/*.js", "/*.js", "/*.png", "/static/**", "/*.svg", "/*.jpg").permitAll()
             .antMatchers("/admin/*").hasAnyRole(Role.ADMIN.toString())
-            .antMatchers("/", "/user/registration").permitAll()
-            .anyRequest().authenticated()
-            .and().formLogin();   
+            .antMatchers("/").permitAll()
+            .antMatchers("/user/registration").permitAll()
+            .antMatchers("/authentication/login").permitAll()
+            .anyRequest().authenticated();
+
+        final AuthTokenFilter authTokenFilter = new AuthTokenFilter(this.userDetailsService, this.jwtTokenUtil);
+        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -56,6 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             @Override
             public void addCorsMappings(@NonNull final CorsRegistry registry) {
                 registry.addMapping("/**").allowedOrigins("http://localhost:9200");
+                registry.addMapping("/**").allowedOrigins("http://localhost:3000");
             }
         };
     }

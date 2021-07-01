@@ -2,6 +2,8 @@ package fr.finanting.server.service.implementation;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import fr.finanting.server.generated.model.BankingTransactionDTO;
 import fr.finanting.server.generated.model.BankingTransactionParameter;
 import fr.finanting.server.dto.BankingTransactionDTOBuilder;
@@ -30,6 +32,7 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.BankingTransactionService;
 
 @Service
+@Transactional
 public class BankingTransactionServiceImpl implements BankingTransactionService {
 
     private final BankingTransactionRepository bankingTransactionRepository;

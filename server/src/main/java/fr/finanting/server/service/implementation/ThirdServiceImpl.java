@@ -2,6 +2,8 @@ package fr.finanting.server.service.implementation;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import fr.finanting.server.generated.model.*;
 import fr.finanting.server.dto.ThirdDTOBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.ThirdService;
 
 @Service
+@Transactional
 public class ThirdServiceImpl implements ThirdService{
 
     private final ThirdRepository thirdRepository;

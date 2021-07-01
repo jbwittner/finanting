@@ -1,15 +1,22 @@
-Application:
+application:
   db-param:
     host: localhost
     port: 9000
     db-name: finanting
     user: finanting_user
     password: FinantingPass2020
+  jwt:
+    issuer: "Spring Boot App"
+    audience: "Demo App"
+    ttl-in-seconds: 3600
+    secret: "ej7+D6Hh2r2KBEIuoGz1RGjtXooObzebSSxNm7yu2YSkEKv8aQmC2iYuxXLkKYKgT1210e5ZKMoY4XM0uQnkJkKGA01tBWZK+Pi3zX+nZvVNTJbZwRSOyZ2bm99exCq+z6ER5q5XWes1G9/sG5rp7kK9bL/NdNdU13HAFjJew6NwyxIxFH5VhXWwtgIJy+1KcJ9+3kq6uYNylrPC2U1h0xvR9qQzi1D2m9H8ZA=="
 
 logging:
   level:
     fr.finanting.server:
       ServerApplication: INFO
+      security:
+        JwtTokenUtil: INFO
       aop.interceptor: 
         RepositoryInterceptor: INFO
         ServiceInterceptor: INFO

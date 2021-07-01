@@ -3,6 +3,8 @@ package fr.finanting.server.service.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import fr.finanting.server.generated.model.CategoryParameter;
 import fr.finanting.server.generated.model.TreeCategoryDTO;
 import fr.finanting.server.generated.model.UpdateCategoryParameter;
@@ -26,6 +28,7 @@ import fr.finanting.server.repository.UserRepository;
 import fr.finanting.server.service.CategoryService;
 
 @Service
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
     
     private final UserRepository userRepository;

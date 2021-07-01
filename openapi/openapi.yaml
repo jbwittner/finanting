@@ -14,6 +14,8 @@ externalDocs:
 servers:
   - url: http://localhost:9080
 tags:
+  - name: authentication
+    description : Management of authentication
   - name: admin
     description: Administration of the application
   - name: bankingAccount
@@ -34,6 +36,34 @@ tags:
     description: Management of users
 
 paths:
+  /authentication/login:
+    post:
+      tags:
+        - authentication
+      summary: Login
+      operationId: login
+      requestBody:
+        description: Object that need to be authenticated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginParameter'
+      responses:
+        201:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginDTO'
+  /authentication/logout:
+    post:
+      tags:
+        - authentication
+      summary: Logout
+      operationId: logout
+      responses:
+        201:
+          description: successful operation
   /user/registration:
     put:
       tags:
@@ -53,8 +83,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDTO'
-      security:
-        - basicAuth: []
   /user:
     post:
       tags:
@@ -102,8 +130,6 @@ paths:
       responses:
         200:
           description: successful operation
-      security:
-        - basicAuth: []
   /group:
     put:
       tags:
@@ -780,10 +806,18 @@ paths:
 
 components:
   securitySchemes:
-    basicAuth:     # <-- arbitrary name for the security scheme
+    jwtAuth:     # <-- arbitrary name for the security scheme
       type: http
-      scheme: basic
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
+    LoginParameter:
+      type: object
+      properties:
+        userName:
+          type: string
+        password:
+          type: string
     UserDTO:
       type: object
       properties:
@@ -803,6 +837,12 @@ components:
             enum:
               - ADMIN
               - USER
+
+    LoginDTO:
+      type: object
+      properties:
+        jwt:
+          type: string
 
     GroupDTO:
       type: object

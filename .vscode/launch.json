@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch ServerApplication",
+            "request": "launch",
+            "mainClass": "fr.finanting.server.ServerApplication",
+            "projectName": "finanting-server"
+        }
+    ]
+}
