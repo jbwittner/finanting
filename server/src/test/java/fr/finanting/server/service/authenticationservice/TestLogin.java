@@ -34,14 +34,14 @@ public class TestLogin extends AbstractMotherIntegrationTest {
     @Override
     protected void initDataBeforeEach() {
         this.authenticationServiceImpl = new AuthenticationServiceImpl(this.jwtTokenUtil, this.authenticationManager);
-        UserRegistrationParameter userRegistrationParameter = new UserRegistrationParameter();
+        final UserRegistrationParameter userRegistrationParameter = new UserRegistrationParameter();
         userRegistrationParameter.setEmail(this.testFactory.getUniqueRandomEmail());
         userRegistrationParameter.setFirstName(this.testFactory.getRandomAlphanumericString());
         userRegistrationParameter.setLastName(this.testFactory.getRandomAlphanumericString());
         userRegistrationParameter.setUserName(this.testFactory.getRandomAlphanumericString());
-        String password = this.testFactory.getRandomAlphanumericString();
+        final String password = this.testFactory.getRandomAlphanumericString();
         userRegistrationParameter.setPassword(password);
-        UserDTO userDTO = this.userService.registerNewAccount(userRegistrationParameter);
+        final UserDTO userDTO = this.userService.registerNewAccount(userRegistrationParameter);
         loginParameter = new LoginParameter();
         loginParameter.setUserName(userDTO.getUserName());
         loginParameter.setPassword(password);

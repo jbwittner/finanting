@@ -53,19 +53,17 @@ public class TestParseJWT extends AbstractMotherIntegrationTest {
         
         try {
             this.jwtTokenUtil.setUpSecretKey();
-        } catch (WeakKeyException e) {
-            Assertions.fail(e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (WeakKeyException | UnsupportedEncodingException e) {
             Assertions.fail(e);
         }
 
         this.user = this.testFactory.getUser();
 
-        LoginParameter loginParameter = new LoginParameter();
+        final LoginParameter loginParameter = new LoginParameter();
         loginParameter.setUserName(user.getUserName());
         loginParameter.setPassword(user.getPassword());
 
-        TestAuthentication testAuthentication = new TestAuthentication(user);
+        final TestAuthentication testAuthentication = new TestAuthentication(user);
 
         this.token = this.jwtTokenUtil.getToken(testAuthentication);
 
@@ -73,11 +71,11 @@ public class TestParseJWT extends AbstractMotherIntegrationTest {
 
     @Test
     public void testParseJWT(){
-        Jws<Claims> jwsClaims = this.jwtTokenUtil.parseJWT(this.token);
-        Claims claims = jwsClaims.getBody();
+        final Jws<Claims> jwsClaims = this.jwtTokenUtil.parseJWT(this.token);
+        final Claims claims = jwsClaims.getBody();
 
-        long duration = claims.getExpiration().getTime() - claims.getIssuedAt().getTime();
-        long rest = Math.abs(duration - this.timeToLiveInSeconds*1000);
+        final long duration = claims.getExpiration().getTime() - claims.getIssuedAt().getTime();
+        final long rest = Math.abs(duration - this.timeToLiveInSeconds*1000);
 
         Assertions.assertEquals(8, claims.size());
         Assertions.assertEquals(this.audience, claims.getAudience());
@@ -93,9 +91,9 @@ public class TestParseJWT extends AbstractMotherIntegrationTest {
 
     public class TestAuthentication implements Authentication{
 
-        private User user;
+        final private User user;
 
-        public TestAuthentication(User user){
+        public TestAuthentication(final User user){
             this.user = user;
         }
 
@@ -130,7 +128,7 @@ public class TestParseJWT extends AbstractMotherIntegrationTest {
         }
 
         @Override
-        public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        public void setAuthenticated(final boolean isAuthenticated) throws IllegalArgumentException {
         }
         
     }

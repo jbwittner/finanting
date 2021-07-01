@@ -19,7 +19,7 @@ public class AuthenticationController extends MotherController implements Authen
     @Override
     public ResponseEntity<LoginDTO> login(final LoginParameter loginParameter) {
 
-        LoginDTO loginDTO = this.authenticationService.login(loginParameter);
+        final LoginDTO loginDTO = this.authenticationService.login(loginParameter);
 
         return new ResponseEntity<>(loginDTO, HttpStatus.OK);
 

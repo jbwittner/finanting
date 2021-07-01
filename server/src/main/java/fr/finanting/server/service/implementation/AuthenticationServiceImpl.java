@@ -4,6 +4,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -23,15 +26,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthenticationServiceImpl(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager){
+    public AuthenticationServiceImpl(final JwtTokenUtil jwtTokenUtil, final AuthenticationManager authenticationManager){
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
     }
 
     @Override
-    public LoginDTO login(LoginParameter loginParameter) {
+    public LoginDTO login(final LoginParameter loginParameter) {
 
-        UsernamePasswordAuthenticationToken loginCredentials =
+        final UsernamePasswordAuthenticationToken loginCredentials =
                 new UsernamePasswordAuthenticationToken(
                         loginParameter.getUserName(), loginParameter.getPassword());
 
@@ -40,13 +43,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             authentication = 
                 authenticationManager.authenticate(loginCredentials);
-        } catch (Exception e) {
+        } catch (DisabledException | LockedException | BadCredentialsException e) {
                throw new LoginException(e);
         }
         
-        String jwtToken = this.jwtTokenUtil.getToken(authentication);
+        final String jwtToken = this.jwtTokenUtil.getToken(authentication);
 
-        LoginDTO loginDTO = new LoginDTO();
+        final LoginDTO loginDTO = new LoginDTO();
         loginDTO.setJwt(jwtToken);
 
         return loginDTO;

@@ -21,9 +21,6 @@ public class TestSetUpSecretKey extends AbstractMotherIntegrationTest {
     @Value("${application.jwt.issuer}")
     private String issuer;
  
-    @Value("${application.jwt.secret}")
-    private String secret;
- 
     @Value("${application.jwt.audience}")
     private String audience;
  
@@ -40,14 +37,14 @@ public class TestSetUpSecretKey extends AbstractMotherIntegrationTest {
 
     @Test
     public void testSetUpSecretKeyOk() {
-        String key = this.testFactory.getRandomAlphanumericString(32);
+        final String key = this.testFactory.getRandomAlphanumericString(32);
         ReflectionTestUtils.setField(this.jwtTokenUtil, "secret", key);
         Assertions.assertDoesNotThrow(() -> this.jwtTokenUtil.setUpSecretKey());
     }
 
     @Test
     public void testSetUpSecretKeyWeakKeyException() {
-        String key = this.testFactory.getRandomAlphanumericString(31);
+        final String key = this.testFactory.getRandomAlphanumericString(31);
         ReflectionTestUtils.setField(this.jwtTokenUtil, "secret", key);
         Assertions.assertThrows(WeakKeyException.class, () -> this.jwtTokenUtil.setUpSecretKey());
     }

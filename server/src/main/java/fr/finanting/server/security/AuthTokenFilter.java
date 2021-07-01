@@ -24,7 +24,6 @@ import org.springframework.util.StringUtils;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
     
-    
     public static final String _BEARER = "Bearer ";
  
     private UserDetailsService UserDetailsService;
@@ -32,31 +31,32 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     private final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
-    public AuthTokenFilter(UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil){
+    public AuthTokenFilter(final UserDetailsService userDetailsService, final JwtTokenUtil jwtTokenUtil){
+        super();
         this.UserDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
     }
  
     @Override
-    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    public void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+    final FilterChain filterChain) throws ServletException, IOException {
 
-        String headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         logger.debug("headerAuth : " + headerAuth);
 
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(_BEARER)) {
-            String jwtToken = headerAuth.substring(7);
+            final String jwtToken = headerAuth.substring(7);
 
-            Jws<Claims> jwsClaims = this.jwtTokenUtil.parseJWT(jwtToken);
-            Claims claims = jwsClaims.getBody();
-            String username = claims.getSubject();
+            final Jws<Claims> jwsClaims = this.jwtTokenUtil.parseJWT(jwtToken);
+            final Claims claims = jwsClaims.getBody();
+            final String username = claims.getSubject();
 
             logger.debug("Username : " + username);
     
-            UserDetails userDetails = this.UserDetailsService.loadUserByUsername(username);
+            final UserDetails userDetails = this.UserDetailsService.loadUserByUsername(username);
 
-            UsernamePasswordAuthenticationToken authentication =
+            final UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                         

@@ -66,7 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/authentication/login").permitAll()
             .anyRequest().authenticated();
 
-        AuthTokenFilter authTokenFilter = new AuthTokenFilter(this.userDetailsService, this.jwtTokenUtil);
+        final AuthTokenFilter authTokenFilter = new AuthTokenFilter(this.userDetailsService, this.jwtTokenUtil);
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

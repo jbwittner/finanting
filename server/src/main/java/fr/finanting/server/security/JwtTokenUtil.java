@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import fr.finanting.server.model.User;
 import fr.finanting.server.repository.UserRepository;
-import fr.finanting.server.security.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -30,6 +29,9 @@ import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
+
+    public static final String CLAIM_FIRST_NAME_KEY = "FirstName";
+    public static final String CLAIM_LAST_NAME_KEY = "LastName";
 
     @Value("${application.jwt.issuer}")
     private String issuer;
@@ -49,14 +51,10 @@ public class JwtTokenUtil {
 
     private UserRepository userRepository;
 
-
     @Autowired
-    public JwtTokenUtil(UserRepository userRepository){
+    public JwtTokenUtil(final UserRepository userRepository){
         this.userRepository = userRepository;
     }
-
-    public static final String CLAIM_FIRST_NAME_KEY = "FirstName";
-    public static final String CLAIM_LAST_NAME_KEY = "LastName";
 
     @PostConstruct
     public void setUpSecretKey() throws WeakKeyException, UnsupportedEncodingException {
@@ -64,17 +62,17 @@ public class JwtTokenUtil {
         logger.info("Secret key generation ok !");
     }
 
-    private String createJWT(String userName) {
+    private String createJWT(final String userName) {
 
-        User user = userRepository.findByUserName(userName).orElseThrow();
+        final User user = userRepository.findByUserName(userName).orElseThrow();
         
-        Date issuedAt = Date.from(Instant.now());
-        Date expiration = Date.from(Instant.now().plus(Duration.ofSeconds(this.timeToLiveInSeconds)));
+        final Date issuedAt = Date.from(Instant.now());
+        final Date expiration = Date.from(Instant.now().plus(Duration.ofSeconds(this.timeToLiveInSeconds)));
 
-        String randomUUID = UUID.randomUUID().toString();
+        final String randomUUID = UUID.randomUUID().toString();
 
-        String pattern = "dd-MM-yyyy HH:mm:ss";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        final String pattern = "dd-MM-yyyy HH:mm:ss";
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
         this.logger.info("Generation of new JWT [username : " + userName +
             " / randomUUID : " + randomUUID +
@@ -82,7 +80,7 @@ public class JwtTokenUtil {
             " / expiration : " + simpleDateFormat.format(expiration)
             + "]");
  
-        String jwt =
+        final String jwt =
             Jwts.builder()
                 .setId(randomUUID)
                 .setSubject(user.getUserName())
@@ -98,9 +96,9 @@ public class JwtTokenUtil {
         return jwt;
     }
 
-    public Jws<Claims> parseJWT(String jwtString) {
+    public Jws<Claims> parseJWT(final String jwtString) {
  
-        Jws<Claims> claims =
+        final Jws<Claims> claims =
             Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
@@ -111,8 +109,8 @@ public class JwtTokenUtil {
 
     public String getToken(final Authentication authentication){
 
-        String userName = authentication.getName();
-        String jwtToken = this.createJWT(userName);
+        final String userName = authentication.getName();
+        final String jwtToken = this.createJWT(userName);
  
         return jwtToken;
 

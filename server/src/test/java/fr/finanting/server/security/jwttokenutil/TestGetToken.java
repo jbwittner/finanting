@@ -56,35 +56,33 @@ public class TestGetToken extends AbstractMotherIntegrationTest {
         try {
             this.jwtTokenUtil.setUpSecretKey();
             this.secretKey = Keys.hmacShaKeyFor(secret.getBytes("UTF-8"));
-        } catch (WeakKeyException e) {
-            Assertions.fail(e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (WeakKeyException | UnsupportedEncodingException e) {
             Assertions.fail(e);
         }
     }
 
     @Test
     public void testGetToken(){
-        User user = this.testFactory.getUser();
+        final User user = this.testFactory.getUser();
 
-        LoginParameter loginParameter = new LoginParameter();
+        final LoginParameter loginParameter = new LoginParameter();
         loginParameter.setUserName(user.getUserName());
         loginParameter.setPassword(user.getPassword());
 
-        TestAuthentication testAuthentication = new TestAuthentication(user);
+        final TestAuthentication testAuthentication = new TestAuthentication(user);
 
-        String token = this.jwtTokenUtil.getToken(testAuthentication);
+        final String token = this.jwtTokenUtil.getToken(testAuthentication);
 
-        Jws<Claims> claims =
+        final Jws<Claims> claims =
             Jwts.parserBuilder()
                     .setSigningKey(this.secretKey)
                     .build()
                     .parseClaimsJws(token);
 
-        Claims body = claims.getBody();
+        final Claims body = claims.getBody();
 
-        long duration = body.getExpiration().getTime() - body.getIssuedAt().getTime();
-        long rest = Math.abs(duration - this.timeToLiveInSeconds*1000);
+        final long duration = body.getExpiration().getTime() - body.getIssuedAt().getTime();
+        final long rest = Math.abs(duration - this.timeToLiveInSeconds*1000);
 
         Assertions.assertEquals(8, body.size());
         Assertions.assertEquals(this.audience, body.getAudience());
@@ -100,9 +98,9 @@ public class TestGetToken extends AbstractMotherIntegrationTest {
 
     public class TestAuthentication implements Authentication{
 
-        private User user;
+        final private User user;
 
-        public TestAuthentication(User user){
+        public TestAuthentication(final User user){
             this.user = user;
         }
 
@@ -137,7 +135,7 @@ public class TestGetToken extends AbstractMotherIntegrationTest {
         }
 
         @Override
-        public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+        public void setAuthenticated(final boolean isAuthenticated) throws IllegalArgumentException {
         }
         
     }
