@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Redirect, RouteProps, Switch, HashRouter } from 'react-router-dom';
+import { LoginPage } from '../service/login/loginpage';
 import { LoginContext } from './Context';
 
 export const INDEX_PATH = '/';
@@ -34,7 +35,7 @@ export function MainRouter() {
     return (
         <HashRouter hashType={'noslash'}>
             <Switch>
-                <Route exact path={INDEX_PATH} component={React.Fragment} />
+                <Route exact path={INDEX_PATH} component={LoginPage} />
                 <PrivateRoute exact path={HOME_PATH} component={React.Fragment} />
             </Switch>
         </HashRouter>
