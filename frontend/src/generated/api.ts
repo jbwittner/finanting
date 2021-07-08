@@ -733,6 +733,37 @@ export interface CurrencyParameter {
 /**
  * 
  * @export
+ * @interface ExceptionDTO
+ */
+export interface ExceptionDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExceptionDTO
+     */
+    details?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExceptionDTO
+     */
+    exception?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExceptionDTO
+     */
+    message?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExceptionDTO
+     */
+    timestamp?: string;
+}
+/**
+ * 
+ * @export
  * @interface GroupDTO
  */
 export interface GroupDTO {

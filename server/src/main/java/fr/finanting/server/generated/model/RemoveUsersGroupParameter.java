@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 /**
  * RemoveUsersGroupParameter
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-06-28T23:19:28.730960+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T10:10:39.885064+02:00[Europe/Paris]")
 public class RemoveUsersGroupParameter   {
   @JsonProperty("groupName")
   private String groupName;

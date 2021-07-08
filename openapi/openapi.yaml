@@ -811,6 +811,18 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    ExceptionDTO:
+      type: object
+      properties:
+        details:
+          type: string
+        exception:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
     LoginParameter:
       type: object
       properties:
@@ -818,6 +830,8 @@ components:
           type: string
         password:
           type: string
+          format: password
+          writeOnly: true
     UserDTO:
       type: object
       properties:

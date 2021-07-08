@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 
 import fr.finanting.server.exception.FunctionalException;
+import fr.finanting.server.generated.model.ExceptionDTO;
 import fr.finanting.server.testhelper.AbstractMotherIntegrationTest;
-import fr.finanting.server.tools.handler.ErrorDetails;
 import fr.finanting.server.tools.handler.GlobalExceptionHandler;
 
 
@@ -69,7 +69,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         final Date dateAfter = new Date();
 
-        final ErrorDetails errorDetails = (ErrorDetails) test.getBody();
+        final ExceptionDTO errorDetails = (ExceptionDTO) test.getBody();
 
         Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();
@@ -100,7 +100,7 @@ public class GlobalExceptionHandlerTest extends AbstractMotherIntegrationTest {
 
         final Date dateAfter = new Date();
 
-        final ErrorDetails errorDetails = (ErrorDetails) test.getBody();
+        final ExceptionDTO errorDetails = (ExceptionDTO) test.getBody();
 
         Assertions.assertNotNull(errorDetails);
         final Date dateException = errorDetails.getTimestamp();

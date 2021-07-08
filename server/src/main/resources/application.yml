@@ -14,6 +14,7 @@ application:
 logging:
   level:
     fr.finanting.server:
+      tools.handler: INFO
       ServerApplication: INFO
       security:
         JwtTokenUtil: INFO

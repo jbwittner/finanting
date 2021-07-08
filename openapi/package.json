@@ -9,7 +9,8 @@
     "copy:frontend": "cpx \"output_frontend/*.ts\" \"../frontend/src/generated\"",
     "generate": "npm run generate:frontend & npm run generate:backend",
     "copy": "npm run copy:frontend & npm run copy:backend",
-    "delete": "rimraf output_frontend & rimraf output_server"
+    "delete": "rimraf output_frontend & rimraf output_server",
+    "all": "npm ci && npm run delete && npm run generate && npm run copy"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.3.2",

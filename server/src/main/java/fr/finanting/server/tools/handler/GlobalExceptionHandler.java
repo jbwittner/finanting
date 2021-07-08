@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import fr.finanting.server.exception.FunctionalException;
+import fr.finanting.server.generated.model.ExceptionDTO;
 
 /**
  * Class used to manage the exception and transfer the information with the answer of the REST request
@@ -27,14 +28,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FunctionalException.class)
     public ResponseEntity<?> globuleExceptionHandler(final Exception ex, final WebRequest request) throws Exception {
 
-        ErrorDetails errorDetails;
+        ExceptionDTO exceptionDTO = new ExceptionDTO();
+        exceptionDTO.setDetails(request.getDescription(false));
+        exceptionDTO.setTimestamp(new Date());
 
         if(ex instanceof FunctionalException){
             
-            this.logger.info("Handling - exception : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
+            this.logger.info("Handling - FunctionalException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
 
-            errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false), ex.getClass().getSimpleName());
-            
+            exceptionDTO.setException(ex.getClass().getSimpleName());
+            exceptionDTO.setMessage(ex.getMessage());
+
         } else if(ex instanceof UndeclaredThrowableException) {
 
             final UndeclaredThrowableException undeclaredThrowableException = (UndeclaredThrowableException) ex;
@@ -42,10 +46,13 @@ public class GlobalExceptionHandler {
             final Throwable throwable = undeclaredThrowableException.getUndeclaredThrowable();
 
             if(throwable instanceof FunctionalException){
-                this.logger.info("Handling - exception : " + throwable.getClass().getSimpleName() + " / message : " + throwable.getMessage());
-                errorDetails = new ErrorDetails(new Date(), throwable.getMessage(), request.getDescription(false), throwable.getClass().getSimpleName());
+                this.logger.info("Handling - UndeclaredThrowableException - FunctionalException : " + throwable.getClass().getSimpleName() + " / message : " + throwable.getMessage());
+
+                exceptionDTO.setException(throwable.getClass().getSimpleName());
+                exceptionDTO.setMessage(throwable.getMessage());
+
             }else {
-                this.logger.info("Handling - exception : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
+                this.logger.info("Handling - UnknownException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
                 throw ex;
             }
             
@@ -53,7 +60,7 @@ public class GlobalExceptionHandler {
             throw ex;
         }
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.FAILED_DEPENDENCY);
+        return new ResponseEntity<>(exceptionDTO, HttpStatus.FAILED_DEPENDENCY);
         
     }
 }
