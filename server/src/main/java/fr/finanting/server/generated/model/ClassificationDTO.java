@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 /**
  * ClassificationDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T10:10:39.885064+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
 public class ClassificationDTO   {
   @JsonProperty("id")
   private Integer id;
@@ -35,7 +35,8 @@ public class ClassificationDTO   {
    * Get id
    * @return id
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Integer getId() {
@@ -55,7 +56,8 @@ public class ClassificationDTO   {
    * Get label
    * @return label
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getLabel() {
@@ -75,7 +77,8 @@ public class ClassificationDTO   {
    * Get abbreviation
    * @return abbreviation
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getAbbreviation() {

@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
 /**
  * ThirdDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T10:10:39.885064+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
 public class ThirdDTO   {
   @JsonProperty("id")
   private Integer id;
@@ -51,7 +51,8 @@ public class ThirdDTO   {
    * Get id
    * @return id
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Integer getId() {
@@ -71,7 +72,8 @@ public class ThirdDTO   {
    * Get label
    * @return label
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getLabel() {
@@ -91,7 +93,8 @@ public class ThirdDTO   {
    * Get abbreviation
    * @return abbreviation
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getAbbreviation() {
@@ -131,7 +134,8 @@ public class ThirdDTO   {
    * Get categoryDTO
    * @return categoryDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -152,7 +156,8 @@ public class ThirdDTO   {
    * Get bankDetailsDTO
    * @return bankDetailsDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -173,7 +178,8 @@ public class ThirdDTO   {
    * Get addressDTO
    * @return addressDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -194,7 +200,8 @@ public class ThirdDTO   {
    * Get contactDTO
    * @return contactDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 

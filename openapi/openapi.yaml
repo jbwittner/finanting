@@ -811,6 +811,7 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+
     ExceptionDTO:
       type: object
       properties:
@@ -823,15 +824,7 @@ components:
         timestamp:
           type: string
           format: date-time
-    LoginParameter:
-      type: object
-      properties:
-        userName:
-          type: string
-        password:
-          type: string
-          format: password
-          writeOnly: true
+
     UserDTO:
       type: object
       properties:
@@ -857,6 +850,8 @@ components:
       properties:
         jwt:
           type: string
+      required:
+        - jwt
 
     GroupDTO:
       type: object
@@ -869,6 +864,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserDTO'
+      required:
+      - groupName
+      - userAdmin
+      - groupUsers
 
     CategoryDTO:
       type: object
@@ -886,6 +885,11 @@ components:
           enum:
             - EXPENSE
             - REVENUE
+      required:
+      - id
+      - label
+      - abbreviation
+      - categoryType
 
     TreeCategoryDTO:
       type: object
@@ -907,6 +911,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TreeCategoryDTO'
+      required:
+      - id
+      - label
+      - abbreviation
+      - categoryType
+      - childTreeCategoriesDTOs
 
     ClassificationDTO:
       type: object
@@ -919,6 +929,10 @@ components:
           type: string
         description:
           type: string
+      required:
+      - id
+      - label
+      - abbreviation
 
     CurrencyDTO:
       type: object
@@ -937,6 +951,14 @@ components:
           type: integer
         decimalPlaces:
           type: integer
+      required:
+      - id
+      - defaultCurrency
+      - label
+      - symbol
+      - isoCode
+      - rate
+      - decimalPlaces
 
     BankDetailsDTO:
       type: object
@@ -991,6 +1013,14 @@ components:
           $ref: '#/components/schemas/AddressDTO'
         contactDTO:
           $ref: '#/components/schemas/ContactDTO'
+      required:
+      - id
+      - label
+      - abbreviation
+      - categoryDTO
+      - bankDetailsDTO
+      - addressDTO
+      - contactDTO
 
     BankingAccountDTO:
       type: object
@@ -1010,6 +1040,14 @@ components:
           $ref: '#/components/schemas/CurrencyDTO'
         addressDTO:
           $ref: '#/components/schemas/AddressDTO'
+      required:
+      - id
+      - label
+      - abbreviation
+      - balance
+      - bankDetailsDTO
+      - currencyDTO
+      - addressDTO
 
     BankingTransactionDTO:
       type: object
@@ -1048,6 +1086,29 @@ components:
         updateTimestamp:
           type: string
           format: date
+      required:
+      - id
+      - bankingAccountDTO
+      - thirdDTO
+      - categoryDTO
+      - classificationDTO
+      - transactionDate
+      - amountDate
+      - amount
+      - currencyAmount
+      - currencyDTO
+      - createTimestamp
+      - updateTimestamp
+
+    LoginParameter:
+      type: object
+      properties:
+        userName:
+          type: string
+        password:
+          type: string
+          format: password
+          writeOnly: true
 
     UserRegistrationParameter:
       type: object

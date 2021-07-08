@@ -163,43 +163,43 @@ export interface BankingAccountDTO {
      * @type {number}
      * @memberof BankingAccountDTO
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {string}
      * @memberof BankingAccountDTO
      */
-    label?: string;
+    label: string;
     /**
      * 
      * @type {string}
      * @memberof BankingAccountDTO
      */
-    abbreviation?: string;
+    abbreviation: string;
     /**
      * 
      * @type {number}
      * @memberof BankingAccountDTO
      */
-    balance?: number;
+    balance: number;
     /**
      * 
      * @type {BankDetailsDTO}
      * @memberof BankingAccountDTO
      */
-    bankDetailsDTO?: BankDetailsDTO;
+    bankDetailsDTO: BankDetailsDTO;
     /**
      * 
      * @type {CurrencyDTO}
      * @memberof BankingAccountDTO
      */
-    currencyDTO?: CurrencyDTO;
+    currencyDTO: CurrencyDTO;
     /**
      * 
      * @type {AddressDTO}
      * @memberof BankingAccountDTO
      */
-    addressDTO?: AddressDTO;
+    addressDTO: AddressDTO;
 }
 /**
  * 
@@ -261,13 +261,13 @@ export interface BankingTransactionDTO {
      * @type {number}
      * @memberof BankingTransactionDTO
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {BankingAccountDTO}
      * @memberof BankingTransactionDTO
      */
-    bankingAccountDTO?: BankingAccountDTO;
+    bankingAccountDTO: BankingAccountDTO;
     /**
      * 
      * @type {BankingAccountDTO}
@@ -279,49 +279,49 @@ export interface BankingTransactionDTO {
      * @type {ThirdDTO}
      * @memberof BankingTransactionDTO
      */
-    thirdDTO?: ThirdDTO;
+    thirdDTO: ThirdDTO;
     /**
      * 
      * @type {CategoryDTO}
      * @memberof BankingTransactionDTO
      */
-    categoryDTO?: CategoryDTO;
+    categoryDTO: CategoryDTO;
     /**
      * 
      * @type {ClassificationDTO}
      * @memberof BankingTransactionDTO
      */
-    classificationDTO?: ClassificationDTO;
+    classificationDTO: ClassificationDTO;
     /**
      * 
      * @type {string}
      * @memberof BankingTransactionDTO
      */
-    transactionDate?: string;
+    transactionDate: string;
     /**
      * 
      * @type {string}
      * @memberof BankingTransactionDTO
      */
-    amountDate?: string;
+    amountDate: string;
     /**
      * 
      * @type {number}
      * @memberof BankingTransactionDTO
      */
-    amount?: number;
+    amount: number;
     /**
      * 
      * @type {number}
      * @memberof BankingTransactionDTO
      */
-    currencyAmount?: number;
+    currencyAmount: number;
     /**
      * 
      * @type {CurrencyDTO}
      * @memberof BankingTransactionDTO
      */
-    currencyDTO?: CurrencyDTO;
+    currencyDTO: CurrencyDTO;
     /**
      * 
      * @type {string}
@@ -333,13 +333,13 @@ export interface BankingTransactionDTO {
      * @type {string}
      * @memberof BankingTransactionDTO
      */
-    createTimestamp?: string;
+    createTimestamp: string;
     /**
      * 
      * @type {string}
      * @memberof BankingTransactionDTO
      */
-    updateTimestamp?: string;
+    updateTimestamp: string;
 }
 /**
  * 
@@ -425,19 +425,19 @@ export interface CategoryDTO {
      * @type {number}
      * @memberof CategoryDTO
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {string}
      * @memberof CategoryDTO
      */
-    label?: string;
+    label: string;
     /**
      * 
      * @type {string}
      * @memberof CategoryDTO
      */
-    abbreviation?: string;
+    abbreviation: string;
     /**
      * 
      * @type {string}
@@ -449,7 +449,7 @@ export interface CategoryDTO {
      * @type {string}
      * @memberof CategoryDTO
      */
-    categoryType?: CategoryDTOCategoryTypeEnum;
+    categoryType: CategoryDTOCategoryTypeEnum;
 }
 
 /**
@@ -525,19 +525,19 @@ export interface ClassificationDTO {
      * @type {number}
      * @memberof ClassificationDTO
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {string}
      * @memberof ClassificationDTO
      */
-    label?: string;
+    label: string;
     /**
      * 
      * @type {string}
      * @memberof ClassificationDTO
      */
-    abbreviation?: string;
+    abbreviation: string;
     /**
      * 
      * @type {string}
@@ -649,43 +649,43 @@ export interface CurrencyDTO {
      * @type {number}
      * @memberof CurrencyDTO
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {boolean}
      * @memberof CurrencyDTO
      */
-    defaultCurrency?: boolean;
+    defaultCurrency: boolean;
     /**
      * 
      * @type {string}
      * @memberof CurrencyDTO
      */
-    label?: string;
+    label: string;
     /**
      * 
      * @type {string}
      * @memberof CurrencyDTO
      */
-    symbol?: string;
+    symbol: string;
     /**
      * 
      * @type {string}
      * @memberof CurrencyDTO
      */
-    isoCode?: string;
+    isoCode: string;
     /**
      * 
      * @type {number}
      * @memberof CurrencyDTO
      */
-    rate?: number;
+    rate: number;
     /**
      * 
      * @type {number}
      * @memberof CurrencyDTO
      */
-    decimalPlaces?: number;
+    decimalPlaces: number;
 }
 /**
  * 
@@ -772,19 +772,19 @@ export interface GroupDTO {
      * @type {string}
      * @memberof GroupDTO
      */
-    groupName?: string;
+    groupName: string;
     /**
      * 
      * @type {UserDTO}
      * @memberof GroupDTO
      */
-    userAdmin?: UserDTO;
+    userAdmin: UserDTO;
     /**
      * 
      * @type {Array<UserDTO>}
      * @memberof GroupDTO
      */
-    groupUsers?: Array<UserDTO>;
+    groupUsers: Array<UserDTO>;
 }
 /**
  * 
@@ -816,7 +816,7 @@ export interface LoginDTO {
      * @type {string}
      * @memberof LoginDTO
      */
-    jwt?: string;
+    jwt: string;
 }
 /**
  * 
@@ -886,19 +886,19 @@ export interface ThirdDTO {
      * @type {number}
      * @memberof ThirdDTO
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {string}
      * @memberof ThirdDTO
      */
-    label?: string;
+    label: string;
     /**
      * 
      * @type {string}
      * @memberof ThirdDTO
      */
-    abbreviation?: string;
+    abbreviation: string;
     /**
      * 
      * @type {string}
@@ -910,25 +910,25 @@ export interface ThirdDTO {
      * @type {CategoryDTO}
      * @memberof ThirdDTO
      */
-    categoryDTO?: CategoryDTO;
+    categoryDTO: CategoryDTO;
     /**
      * 
      * @type {BankDetailsDTO}
      * @memberof ThirdDTO
      */
-    bankDetailsDTO?: BankDetailsDTO;
+    bankDetailsDTO: BankDetailsDTO;
     /**
      * 
      * @type {AddressDTO}
      * @memberof ThirdDTO
      */
-    addressDTO?: AddressDTO;
+    addressDTO: AddressDTO;
     /**
      * 
      * @type {ContactDTO}
      * @memberof ThirdDTO
      */
-    contactDTO?: ContactDTO;
+    contactDTO: ContactDTO;
 }
 /**
  * 
@@ -996,19 +996,19 @@ export interface TreeCategoryDTO {
      * @type {number}
      * @memberof TreeCategoryDTO
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {string}
      * @memberof TreeCategoryDTO
      */
-    label?: string;
+    label: string;
     /**
      * 
      * @type {string}
      * @memberof TreeCategoryDTO
      */
-    abbreviation?: string;
+    abbreviation: string;
     /**
      * 
      * @type {string}
@@ -1020,13 +1020,13 @@ export interface TreeCategoryDTO {
      * @type {string}
      * @memberof TreeCategoryDTO
      */
-    categoryType?: TreeCategoryDTOCategoryTypeEnum;
+    categoryType: TreeCategoryDTOCategoryTypeEnum;
     /**
      * 
      * @type {Array<TreeCategoryDTO>}
      * @memberof TreeCategoryDTO
      */
-    childTreeCategoriesDTOs?: Array<TreeCategoryDTO>;
+    childTreeCategoriesDTOs: Array<TreeCategoryDTO>;
 }
 
 /**

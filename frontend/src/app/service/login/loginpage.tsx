@@ -2,7 +2,8 @@ import { Button, TextField } from "@material-ui/core";
 import { AxiosResponse } from "axios";
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { AuthenticationApi, LoginDTO, LoginParameter } from "../../../generated";
+import { AuthenticationApi, ExceptionDTO, LoginDTO, LoginParameter } from "../../../generated";
+import { LOCAL_STORAGE_KEY, storeLocalStorage } from "../../common/LocalStorage";
 
 const style = {
     divStyle : {
@@ -12,33 +13,21 @@ const style = {
     }
 }
 
-export interface exceptionDTO {
-    details: string;
-    exception: string;
-    message: string;
-    timestamp: string;
-}
-
 export const LoginPage = () => {
 
     const api: AuthenticationApi = new AuthenticationApi()
 
     const { handleSubmit, control, formState: { errors }} = useForm<LoginParameter>();
 
-    const onSubmit: SubmitHandler<LoginParameter> = (data: LoginParameter) => {
-        console.log(data)
-
-        api.login(data)
-        .then((out:AxiosResponse<LoginDTO>) => {
-            const loginDTO:LoginDTO = out.data;
-            console.log(loginDTO)
+    const onSubmit: SubmitHandler<LoginParameter> = (loginParameter: LoginParameter) => {
+        api.login(loginParameter)
+        .then((response:AxiosResponse<LoginDTO>) => {
+            const loginDTO:LoginDTO = response.data;
+            storeLocalStorage(LOCAL_STORAGE_KEY.JWT_TOKEN, loginDTO.jwt)
         })
         .catch((error) => {
-            const exceptionDTOddd: exceptionDTO = error.response.data;
-            console.log(exceptionDTOddd)
-            console.log(exceptionDTOddd.timestamp)
-            const datess = new Date(exceptionDTOddd.timestamp)
-            console.log(datess.getFullYear())
+            const exceptionDTO: ExceptionDTO = error.response.data;
+            console.log(exceptionDTO)
         })
     }
 
@@ -56,7 +45,7 @@ export const LoginPage = () => {
                 rules={{ required: true }}
                 render={({ field }) => <TextField error={errors.password !== undefined} id="outlined-basic" label="Password" variant="outlined" {...field} />}
             />
-            <Button variant="contained" type="submit">Default</Button>
+            <Button variant="contained" type="submit">Login</Button>
         </form>
     </div>
 }

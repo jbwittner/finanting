@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 /**
  * CurrencyDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T10:10:39.885064+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
 public class CurrencyDTO   {
   @JsonProperty("id")
   private Integer id;
@@ -44,7 +44,8 @@ public class CurrencyDTO   {
    * Get id
    * @return id
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Integer getId() {
@@ -64,7 +65,8 @@ public class CurrencyDTO   {
    * Get defaultCurrency
    * @return defaultCurrency
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Boolean getDefaultCurrency() {
@@ -84,7 +86,8 @@ public class CurrencyDTO   {
    * Get label
    * @return label
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getLabel() {
@@ -104,7 +107,8 @@ public class CurrencyDTO   {
    * Get symbol
    * @return symbol
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getSymbol() {
@@ -124,7 +128,8 @@ public class CurrencyDTO   {
    * Get isoCode
    * @return isoCode
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getIsoCode() {
@@ -144,7 +149,8 @@ public class CurrencyDTO   {
    * Get rate
    * @return rate
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Integer getRate() {
@@ -164,7 +170,8 @@ public class CurrencyDTO   {
    * Get decimalPlaces
    * @return decimalPlaces
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Integer getDecimalPlaces() {

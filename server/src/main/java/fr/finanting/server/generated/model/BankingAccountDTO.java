@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 /**
  * BankingAccountDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T10:10:39.885064+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
 public class BankingAccountDTO   {
   @JsonProperty("id")
   private Integer id;
@@ -47,7 +47,8 @@ public class BankingAccountDTO   {
    * Get id
    * @return id
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Integer getId() {
@@ -67,7 +68,8 @@ public class BankingAccountDTO   {
    * Get label
    * @return label
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getLabel() {
@@ -87,7 +89,8 @@ public class BankingAccountDTO   {
    * Get abbreviation
    * @return abbreviation
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getAbbreviation() {
@@ -107,7 +110,8 @@ public class BankingAccountDTO   {
    * Get balance
    * @return balance
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Double getBalance() {
@@ -127,7 +131,8 @@ public class BankingAccountDTO   {
    * Get bankDetailsDTO
    * @return bankDetailsDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -148,7 +153,8 @@ public class BankingAccountDTO   {
    * Get currencyDTO
    * @return currencyDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -169,7 +175,8 @@ public class BankingAccountDTO   {
    * Get addressDTO
    * @return addressDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 

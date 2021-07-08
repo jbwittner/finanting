@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
 /**
  * ExceptionDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T10:10:39.885064+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
 public class ExceptionDTO   {
   @JsonProperty("details")
   private String details;

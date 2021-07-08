@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 /**
  * TreeCategoryDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T10:10:39.885064+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
 public class TreeCategoryDTO   {
   @JsonProperty("id")
   private Integer id;
@@ -69,7 +69,7 @@ public class TreeCategoryDTO   {
 
   @JsonProperty("childTreeCategoriesDTOs")
   @Valid
-  private List<TreeCategoryDTO> childTreeCategoriesDTOs = null;
+  private List<TreeCategoryDTO> childTreeCategoriesDTOs = new ArrayList<TreeCategoryDTO>();
 
   public TreeCategoryDTO id(Integer id) {
     this.id = id;
@@ -80,7 +80,8 @@ public class TreeCategoryDTO   {
    * Get id
    * @return id
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Integer getId() {
@@ -100,7 +101,8 @@ public class TreeCategoryDTO   {
    * Get label
    * @return label
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getLabel() {
@@ -120,7 +122,8 @@ public class TreeCategoryDTO   {
    * Get abbreviation
    * @return abbreviation
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getAbbreviation() {
@@ -160,7 +163,8 @@ public class TreeCategoryDTO   {
    * Get categoryType
    * @return categoryType
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public CategoryTypeEnum getCategoryType() {
@@ -177,9 +181,6 @@ public class TreeCategoryDTO   {
   }
 
   public TreeCategoryDTO addChildTreeCategoriesDTOsItem(TreeCategoryDTO childTreeCategoriesDTOsItem) {
-    if (this.childTreeCategoriesDTOs == null) {
-      this.childTreeCategoriesDTOs = new ArrayList<TreeCategoryDTO>();
-    }
     this.childTreeCategoriesDTOs.add(childTreeCategoriesDTOsItem);
     return this;
   }
@@ -188,7 +189,8 @@ public class TreeCategoryDTO   {
    * Get childTreeCategoriesDTOs
    * @return childTreeCategoriesDTOs
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 

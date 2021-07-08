@@ -18,7 +18,7 @@ import javax.validation.constraints.*;
 /**
  * BankingTransactionDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T10:10:39.885064+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
 public class BankingTransactionDTO   {
   @JsonProperty("id")
   private Integer id;
@@ -75,7 +75,8 @@ public class BankingTransactionDTO   {
    * Get id
    * @return id
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Integer getId() {
@@ -95,7 +96,8 @@ public class BankingTransactionDTO   {
    * Get bankingAccountDTO
    * @return bankingAccountDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -137,7 +139,8 @@ public class BankingTransactionDTO   {
    * Get thirdDTO
    * @return thirdDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -158,7 +161,8 @@ public class BankingTransactionDTO   {
    * Get categoryDTO
    * @return categoryDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -179,7 +183,8 @@ public class BankingTransactionDTO   {
    * Get classificationDTO
    * @return classificationDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -200,7 +205,8 @@ public class BankingTransactionDTO   {
    * Get transactionDate
    * @return transactionDate
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -221,7 +227,8 @@ public class BankingTransactionDTO   {
    * Get amountDate
    * @return amountDate
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -242,7 +249,8 @@ public class BankingTransactionDTO   {
    * Get amount
    * @return amount
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Double getAmount() {
@@ -262,7 +270,8 @@ public class BankingTransactionDTO   {
    * Get currencyAmount
    * @return currencyAmount
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public Double getCurrencyAmount() {
@@ -282,7 +291,8 @@ public class BankingTransactionDTO   {
    * Get currencyDTO
    * @return currencyDTO
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -323,7 +333,8 @@ public class BankingTransactionDTO   {
    * Get createTimestamp
    * @return createTimestamp
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -344,7 +355,8 @@ public class BankingTransactionDTO   {
    * Get updateTimestamp
    * @return updateTimestamp
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 

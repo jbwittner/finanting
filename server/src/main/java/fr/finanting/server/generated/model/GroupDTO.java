@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
 /**
  * GroupDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T10:10:39.885064+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
 public class GroupDTO   {
   @JsonProperty("groupName")
   private String groupName;
@@ -25,7 +25,7 @@ public class GroupDTO   {
 
   @JsonProperty("groupUsers")
   @Valid
-  private List<UserDTO> groupUsers = null;
+  private List<UserDTO> groupUsers = new ArrayList<UserDTO>();
 
   public GroupDTO groupName(String groupName) {
     this.groupName = groupName;
@@ -36,7 +36,8 @@ public class GroupDTO   {
    * Get groupName
    * @return groupName
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getGroupName() {
@@ -56,7 +57,8 @@ public class GroupDTO   {
    * Get userAdmin
    * @return userAdmin
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
@@ -74,9 +76,6 @@ public class GroupDTO   {
   }
 
   public GroupDTO addGroupUsersItem(UserDTO groupUsersItem) {
-    if (this.groupUsers == null) {
-      this.groupUsers = new ArrayList<UserDTO>();
-    }
     this.groupUsers.add(groupUsersItem);
     return this;
   }
@@ -85,7 +84,8 @@ public class GroupDTO   {
    * Get groupUsers
    * @return groupUsers
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 
