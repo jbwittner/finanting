@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
 /**
  * ExceptionDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T22:27:14.328456+02:00[Europe/Paris]")
 public class ExceptionDTO   {
   @JsonProperty("details")
   private String details;
@@ -37,7 +37,8 @@ public class ExceptionDTO   {
    * Get details
    * @return details
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getDetails() {
@@ -57,7 +58,8 @@ public class ExceptionDTO   {
    * Get exception
    * @return exception
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getException() {
@@ -77,7 +79,8 @@ public class ExceptionDTO   {
    * Get message
    * @return message
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
 
   public String getMessage() {
@@ -97,7 +100,8 @@ public class ExceptionDTO   {
    * Get timestamp
    * @return timestamp
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
 
   @Valid
 

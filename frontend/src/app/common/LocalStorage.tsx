@@ -4,7 +4,7 @@ export enum LOCAL_STORAGE_KEY {
 }
 /* eslint-enable no-unused-vars */
 
-export const storeLocalStorage = (key:LOCAL_STORAGE_KEY, value:object) => {
+export const storeLocalStorage = (key:LOCAL_STORAGE_KEY, value:any) => {
     localStorage.setItem(key, JSON.stringify(value));
 }
 

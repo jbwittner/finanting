@@ -741,25 +741,25 @@ export interface ExceptionDTO {
      * @type {string}
      * @memberof ExceptionDTO
      */
-    details?: string;
+    details: string;
     /**
      * 
      * @type {string}
      * @memberof ExceptionDTO
      */
-    exception?: string;
+    exception: string;
     /**
      * 
      * @type {string}
      * @memberof ExceptionDTO
      */
-    message?: string;
+    message: string;
     /**
      * 
      * @type {string}
      * @memberof ExceptionDTO
      */
-    timestamp?: string;
+    timestamp: string;
 }
 /**
  * 

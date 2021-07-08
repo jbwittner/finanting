@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 /**
  * CurrencyDTO
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T15:25:32.090761+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-08T22:27:14.328456+02:00[Europe/Paris]")
 public class CurrencyDTO   {
   @JsonProperty("id")
   private Integer id;

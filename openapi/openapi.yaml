@@ -824,6 +824,11 @@ components:
         timestamp:
           type: string
           format: date-time
+      required:
+      - details
+      - exception
+      - message
+      - timestamp
 
     UserDTO:
       type: object
