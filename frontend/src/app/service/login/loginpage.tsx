@@ -1,4 +1,4 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button, Grid, TextField } from "@material-ui/core";
 import { AxiosResponse } from "axios";
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -11,6 +11,9 @@ const style = {
         display: 'flex',
         flexdirection : 'row',
         margin: '4px'
+    },
+    gridItem: {
+        width: '100%'
     }
 }
 
@@ -45,21 +48,33 @@ export const LoginPage = () => {
     return <div>
         <ErrorSnackBars open={error} message={errorMessage} onClose={onCloseError}/>
         <form onSubmit={handleSubmit(onSubmit)} style={style.divStyle}>
-            <Controller
-                name="userName"
-                control={control}
-                rules={{ required: true }}
-                defaultValue={""}
-                render={({ field }) => <TextField error={errors.userName !== undefined} id="outlined-basic" label="Username" variant="outlined" {...field} />}
-            />
-            <Controller
-                name="password"
-                control={control}
-                rules={{ required: true }}
-                defaultValue={""}
-                render={({ field }) => <TextField error={errors.password !== undefined} id="outlined-basic" label="Password" variant="outlined" {...field} />}
-            />
-            <Button variant="contained" type="submit">Login</Button>
+            <Grid container direction="column" alignItems="stretch" spacing={1} >
+                <Grid item>
+                    <Controller
+                        name="userName"
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={""}
+                        render={({ field }) => <TextField style={style.gridItem} error={errors.userName !== undefined} id="outlined-basic" label="Username" variant="outlined" {...field} />}
+                    />
+                </Grid>
+                <Grid item>
+                    <Controller
+                        name="password"
+                        control={control}
+                        rules={{ required: true }}
+                        defaultValue={""}
+                        render={({ field }) => <TextField style={style.gridItem} error={errors.password !== undefined} id="outlined-basic" label="Password" variant="outlined" {...field} />}
+                    />
+                </Grid>
+                <Grid item>
+                    <Button variant="contained" type="submit" style={style.gridItem}>Login</Button>
+                </Grid>
+                <Grid item>
+                    <Button onClick={() => console.log("toto")}>link text</Button>
+                    <Button variant="contained" style={style.gridItem}>Sign Up</Button>
+                </Grid>
+            </Grid>
         </form>
     </div>
 }
