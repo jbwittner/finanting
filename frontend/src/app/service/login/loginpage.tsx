@@ -1,23 +1,35 @@
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Button, Grid, TextField, Container, Avatar, Typography, makeStyles } from "@material-ui/core";
 import { AxiosResponse } from "axios";
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AuthenticationApi, ExceptionDTO, LoginDTO, LoginParameter } from "../../../generated";
 import { LOCAL_STORAGE_KEY, storeLocalStorage } from "../../common/LocalStorage";
 import { ErrorSnackBars } from "../../common/SnackBar";
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-const style = {
-    divStyle : {
-        display: 'flex',
-        flexdirection : 'row',
-        margin: '4px'
+const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(6),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
     },
-    gridItem: {
-        width: '100%'
-    }
-}
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  }));
 
 export const LoginPage = () => {
+
+    const classes = useStyles();
 
     const api: AuthenticationApi = new AuthenticationApi()
 
@@ -47,34 +59,64 @@ export const LoginPage = () => {
 
     return <div>
         <ErrorSnackBars open={error} message={errorMessage} onClose={onCloseError}/>
-        <form onSubmit={handleSubmit(onSubmit)} style={style.divStyle}>
-            <Grid container direction="column" alignItems="stretch" spacing={1} >
-                <Grid item>
-                    <Controller
-                        name="userName"
-                        control={control}
-                        rules={{ required: true }}
-                        defaultValue={""}
-                        render={({ field }) => <TextField style={style.gridItem} error={errors.userName !== undefined} id="outlined-basic" label="Username" variant="outlined" {...field} />}
-                    />
+        <Container maxWidth="xs">
+            <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+                <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+                Sign in
+            </Typography>
+            <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+                <Grid container direction="column" alignItems="stretch" spacing={1} >
+                    <Grid item>
+                        <Controller
+                            name="userName"
+                            control={control}
+                            rules={{ required: true }}
+                            defaultValue={""}
+                            render={({ field }) => 
+                                <TextField
+                                    fullWidth
+                                    required
+                                    error={errors.userName !== undefined}
+                                    id="username"
+                                    label="Username"
+                                    variant="outlined"
+                                    autoComplete="username"
+                                    {...field}
+                                />}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Controller
+                            name="password"
+                            control={control}
+                            rules={{ required: true }}
+                            defaultValue={""}
+                            render={({ field }) =>
+                                <TextField
+                                    fullWidth
+                                    required
+                                    error={errors.password !== undefined}
+                                    id="password"
+                                    type="password"
+                                    label="Password"
+                                    variant="outlined"
+                                    autoComplete="current-password"
+                                    {...field}
+                                />}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Button variant="contained" fullWidth type="submit">SIGN IN</Button>
+                    </Grid>
+                    <Grid item>
+                        <Button variant="contained" >Sign Up</Button>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <Controller
-                        name="password"
-                        control={control}
-                        rules={{ required: true }}
-                        defaultValue={""}
-                        render={({ field }) => <TextField style={style.gridItem} error={errors.password !== undefined} id="outlined-basic" label="Password" variant="outlined" {...field} />}
-                    />
-                </Grid>
-                <Grid item>
-                    <Button variant="contained" type="submit" style={style.gridItem}>Login</Button>
-                </Grid>
-                <Grid item>
-                    <Button onClick={() => console.log("toto")}>link text</Button>
-                    <Button variant="contained" style={style.gridItem}>Sign Up</Button>
-                </Grid>
-            </Grid>
-        </form>
+            </form>
+            </div>
+        </Container>
     </div>
 }
