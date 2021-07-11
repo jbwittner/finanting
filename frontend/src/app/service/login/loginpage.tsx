@@ -6,6 +6,8 @@ import { AuthenticationApi, ExceptionDTO, LoginDTO, LoginParameter } from "../..
 import { LOCAL_STORAGE_KEY, storeLocalStorage } from "../../common/LocalStorage";
 import { ErrorSnackBars } from "../../common/SnackBar";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { PATH } from "../../common/Router";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -30,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
 export const LoginPage = () => {
 
     const classes = useStyles();
+
+    const history = useHistory();
 
     const api: AuthenticationApi = new AuthenticationApi()
 
@@ -61,61 +65,64 @@ export const LoginPage = () => {
         <ErrorSnackBars open={error} message={errorMessage} onClose={onCloseError}/>
         <Container maxWidth="xs">
             <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-                <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-                Sign in
-            </Typography>
-            <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-                <Grid container direction="column" alignItems="stretch" spacing={1} >
-                    <Grid item>
-                        <Controller
-                            name="userName"
-                            control={control}
-                            rules={{ required: true }}
-                            defaultValue={""}
-                            render={({ field }) => 
-                                <TextField
-                                    fullWidth
-                                    required
-                                    error={errors.userName !== undefined}
-                                    id="username"
-                                    label="Username"
-                                    variant="outlined"
-                                    autoComplete="username"
-                                    {...field}
-                                />}
-                        />
+                <Avatar className={classes.avatar}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h3">
+                    Finanting
+                </Typography>
+                <Typography component="h2" variant="h5">
+                    Sign in
+                </Typography>
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+                    <Grid container direction="column" alignItems="stretch" spacing={1} >
+                        <Grid item>
+                            <Controller
+                                name="userName"
+                                control={control}
+                                rules={{ required: true }}
+                                defaultValue={""}
+                                render={({ field }) => 
+                                    <TextField
+                                        fullWidth
+                                        required
+                                        error={errors.userName !== undefined}
+                                        id="username"
+                                        label="Username"
+                                        variant="outlined"
+                                        autoComplete="username"
+                                        {...field}
+                                    />}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Controller
+                                name="password"
+                                control={control}
+                                rules={{ required: true }}
+                                defaultValue={""}
+                                render={({ field }) =>
+                                    <TextField
+                                        fullWidth
+                                        required
+                                        error={errors.password !== undefined}
+                                        id="password"
+                                        type="password"
+                                        label="Password"
+                                        variant="outlined"
+                                        autoComplete="current-password"
+                                        {...field}
+                                    />}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" fullWidth type="submit">SIGN IN</Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="contained" fullWidth onClick={() => history.push(PATH.REGISTRATION_PATH)} >Sign Up</Button>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Controller
-                            name="password"
-                            control={control}
-                            rules={{ required: true }}
-                            defaultValue={""}
-                            render={({ field }) =>
-                                <TextField
-                                    fullWidth
-                                    required
-                                    error={errors.password !== undefined}
-                                    id="password"
-                                    type="password"
-                                    label="Password"
-                                    variant="outlined"
-                                    autoComplete="current-password"
-                                    {...field}
-                                />}
-                        />
-                    </Grid>
-                    <Grid item>
-                        <Button variant="contained" fullWidth type="submit">SIGN IN</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button variant="contained" >Sign Up</Button>
-                    </Grid>
-                </Grid>
-            </form>
+                </form>
             </div>
         </Container>
     </div>
