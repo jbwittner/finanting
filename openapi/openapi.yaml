@@ -1123,12 +1123,14 @@ components:
         email:
           type: string
           format: email
+          pattern: '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$'
         firstName:
           type: string
         lastName:
           type: string
         password:
           type: string
+          pattern: '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$'
       required:
         - userName
         - email
