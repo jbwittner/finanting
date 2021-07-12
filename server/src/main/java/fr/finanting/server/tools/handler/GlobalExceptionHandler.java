@@ -3,6 +3,9 @@ package fr.finanting.server.tools.handler;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Date;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -25,7 +28,7 @@ public class GlobalExceptionHandler {
     /**
      * Method used to manage the exception and transfer the information with the answer of the REST request
      */
-    @ExceptionHandler(FunctionalException.class)
+    @ExceptionHandler({FunctionalException.class, ValidationException.class, ConstraintViolationException.class})
     public ResponseEntity<?> globuleExceptionHandler(final Exception ex, final WebRequest request) throws Exception {
 
         ExceptionDTO exceptionDTO = new ExceptionDTO();

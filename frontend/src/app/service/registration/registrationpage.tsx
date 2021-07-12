@@ -117,12 +117,10 @@ export const RegistrationPage = () => {
                             <Controller
                                 name="firstName"
                                 control={control}
-                                rules={{ required: true }}
                                 defaultValue={""}
                                 render={({ field }) => 
                                     <TextField
                                         fullWidth
-                                        required
                                         error={errors.userName !== undefined}
                                         id="firstName"
                                         label="First Name"
