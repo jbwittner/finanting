@@ -10,7 +10,6 @@ import fr.finanting.server.exception.LoginException;
 import fr.finanting.server.generated.model.LoginParameter;
 import fr.finanting.server.generated.model.UserDTO;
 import fr.finanting.server.generated.model.UserRegistrationParameter;
-import fr.finanting.server.model.User;
 import fr.finanting.server.security.JwtTokenUtil;
 import fr.finanting.server.service.UserService;
 import fr.finanting.server.service.implementation.AuthenticationServiceImpl;
@@ -39,6 +38,7 @@ public class TestLogin extends AbstractMotherIntegrationTest {
         userRegistrationParameter.setFirstName(this.testFactory.getRandomAlphanumericString());
         userRegistrationParameter.setLastName(this.testFactory.getRandomAlphanumericString());
         userRegistrationParameter.setUserName(this.testFactory.getRandomAlphanumericString());
+        System.out.println(userRegistrationParameter.getEmail());
         final String password = this.testFactory.getRandomAlphanumericString();
         userRegistrationParameter.setPassword(password);
         final UserDTO userDTO = this.userService.registerNewAccount(userRegistrationParameter);

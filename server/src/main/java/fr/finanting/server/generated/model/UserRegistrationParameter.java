@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 /**
  * UserRegistrationParameter
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-12T22:51:39.727779+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-12T23:28:06.839061+02:00[Europe/Paris]")
 public class UserRegistrationParameter   {
   @JsonProperty("userName")
   private String userName;
@@ -62,7 +62,7 @@ public class UserRegistrationParameter   {
   @ApiModelProperty(required = true, value = "")
   @NotNull
 
-@Pattern(regexp="^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$") 
+@Pattern(regexp="^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$") 
   public String getEmail() {
     return email;
   }

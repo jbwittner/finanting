@@ -23,7 +23,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-12T22:51:39.727779+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-12T23:28:06.839061+02:00[Europe/Paris]")
 @Validated
 @Api(value = "classification", description = "the classification API")
 public interface ClassificationApi {
