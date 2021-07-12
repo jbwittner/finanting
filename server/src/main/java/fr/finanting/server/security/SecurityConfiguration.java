@@ -76,8 +76,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
             @Override
             public void addCorsMappings(@NonNull final CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:9200");
-                registry.addMapping("/**").allowedOrigins("http://localhost:3000");
+                registry.addMapping("/**").allowedMethods("*").allowedOrigins("http://localhost:9200");
+                registry.addMapping("/**").allowedMethods("*").allowedOrigins("http://localhost:3000");
             }
         };
     }

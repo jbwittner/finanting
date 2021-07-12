@@ -4,9 +4,9 @@ import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { ExceptionDTO, UserApi, UserDTO, UserRegistrationParameter } from "../../../generated";
 import { ErrorSnackBars } from "../../common/SnackBar";
-import { PATH } from "../../common/Router";
+import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import { useHistory } from "react-router-dom";
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { PATH } from "../../common/Router";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -65,7 +65,7 @@ export const RegistrationPage = () => {
         <Container maxWidth="xs">
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
+                    <PersonAddOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h3">
                     Finanting
@@ -171,11 +171,13 @@ export const RegistrationPage = () => {
                                     />}
                             />
                         </Grid>
-                        <Grid item>
-                            <Button variant="contained" fullWidth type="submit">SIGN IN</Button>
-                        </Grid>
-                        <Grid item>
-                            <Button variant="contained" fullWidth onClick={() => history.push(PATH.REGISTRATION_PATH)} >Sign Up</Button>
+                        <Grid container item spacing={1}>
+                            <Grid item xs={6}>
+                                <Button variant="contained" fullWidth type="submit">SIGN UP</Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Button variant="contained" fullWidth onClick={() => history.push(PATH.LOGIN_PATH)}>CANCEL</Button>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </form>
