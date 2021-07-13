@@ -22,7 +22,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-12T23:28:06.839061+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-13T16:22:45.636055+02:00[Europe/Paris]")
 @Validated
 @Api(value = "authentication", description = "the authentication API")
 public interface AuthenticationApi {
@@ -72,6 +72,23 @@ public interface AuthenticationApi {
         value = "/authentication/logout"
     )
     default ResponseEntity<Void> logout() {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /authentication/test : Test the connection
+     *
+     * @return successful operation (status code 201)
+     */
+    @ApiOperation(value = "Test the connection", nickname = "test", notes = "", tags={ "authentication", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 201, message = "successful operation") })
+    @PostMapping(
+        value = "/authentication/test"
+    )
+    default ResponseEntity<Void> test() {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

@@ -24,5 +24,10 @@ public class AuthenticationController extends MotherController implements Authen
         return new ResponseEntity<>(loginDTO, HttpStatus.OK);
 
     }
+
+    @Override
+    public ResponseEntity<Void> test(){
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
    
 }

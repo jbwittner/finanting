@@ -3,13 +3,11 @@ package fr.finanting.server.tools.handler;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Date;
 
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -28,7 +26,7 @@ public class GlobalExceptionHandler {
     /**
      * Method used to manage the exception and transfer the information with the answer of the REST request
      */
-    @ExceptionHandler({FunctionalException.class, ValidationException.class, ConstraintViolationException.class})
+    @ExceptionHandler({FunctionalException.class, MethodArgumentNotValidException.class})
     public ResponseEntity<?> globuleExceptionHandler(final Exception ex, final WebRequest request) throws Exception {
 
         ExceptionDTO exceptionDTO = new ExceptionDTO();
@@ -38,6 +36,13 @@ public class GlobalExceptionHandler {
         if(ex instanceof FunctionalException){
             
             this.logger.info("Handling - FunctionalException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
+
+            exceptionDTO.setException(ex.getClass().getSimpleName());
+            exceptionDTO.setMessage(ex.getMessage());
+
+        } else if (ex instanceof MethodArgumentNotValidException){
+
+            this.logger.info("Handling - MethodArgumentNotValidException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
 
             exceptionDTO.setException(ex.getClass().getSimpleName());
             exceptionDTO.setMessage(ex.getMessage());
@@ -54,7 +59,13 @@ public class GlobalExceptionHandler {
                 exceptionDTO.setException(throwable.getClass().getSimpleName());
                 exceptionDTO.setMessage(throwable.getMessage());
 
-            }else {
+            } else if(throwable instanceof MethodArgumentNotValidException){
+                this.logger.info("Handling - UndeclaredThrowableException - MethodArgumentNotValidException : " + throwable.getClass().getSimpleName() + " / message : " + throwable.getMessage());
+
+                exceptionDTO.setException(throwable.getClass().getSimpleName());
+                exceptionDTO.setMessage(throwable.getMessage());
+
+            } else {
                 this.logger.info("Handling - UnknownException : " + ex.getClass().getSimpleName() + " / message : " + ex.getMessage());
                 throw ex;
             }
@@ -63,7 +74,7 @@ public class GlobalExceptionHandler {
             throw ex;
         }
 
-        return new ResponseEntity<>(exceptionDTO, HttpStatus.FAILED_DEPENDENCY);
+        return new ResponseEntity<>(exceptionDTO, HttpStatus.BAD_REQUEST);
         
     }
 }

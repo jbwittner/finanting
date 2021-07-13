@@ -27,7 +27,8 @@ module.exports = {
         'plugin:prettier/recommended' // Make this the last element so prettier config overrides other formatting rules
     ],
     rules: {
-        'prettier/prettier': "off", // Use our .prettierrc file as source
-        "react/display-name": "off"
+        'prettier/prettier': 'off', // Use our .prettierrc file as source
+        'react/display-name': 'off',
+        'no-useless-escape': 'off'
     }
 };

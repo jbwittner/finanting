@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 /**
  * BankingAccountParameter
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-12T23:28:06.839061+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-07-13T16:22:45.636055+02:00[Europe/Paris]")
 public class BankingAccountParameter   {
   @JsonProperty("label")
   private String label;

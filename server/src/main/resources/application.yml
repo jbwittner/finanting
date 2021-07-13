@@ -14,17 +14,18 @@ application:
 logging:
   level:
     fr.finanting.server:
-      tools.handler: DEBUG
-      ServerApplication: DEBUG
+      tools.handler: INFO
+      ServerApplication: INFO
       security:
-        JwtTokenUtil: DEBUG
+        JwtTokenUtil: INFO
       aop.interceptor: 
-        RepositoryInterceptor: DEBUG
-        ServiceInterceptor: DEBUG
+        RepositoryInterceptor: INFO
+        ServiceInterceptor: INFO
     org:
-      apache: DEBUG
+      apache: INFO
       springframework:
-        data: DEBUG
+        data: INFO
+        web: INFO
 
 server:
   port : 9080

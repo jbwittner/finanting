@@ -6,11 +6,10 @@ import { LoginContext } from './Context';
 
 /* eslint-disable no-unused-vars */
 export enum PATH {
-    LOGIN_PATH = "/",
-    REGISTRATION_PATH = "/registration",
-    HOME_PATH = "/home"
+    LOGIN_PATH = '/',
+    REGISTRATION_PATH = '/registration',
+    HOME_PATH = '/home'
 }
-
 
 interface PrivateRouteProps extends RouteProps {
     component: any;
@@ -37,9 +36,9 @@ const PrivateRoute = (props: PrivateRouteProps) => {
     );
 };
 
-export function nextPath(path : PATH) {
+export function nextPath(path: PATH) {
     const history = useHistory();
-    history.push(path)
+    history.push(path);
 }
 
 export function MainRouter() {

@@ -64,6 +64,15 @@ paths:
       responses:
         201:
           description: successful operation
+  /authentication/test:
+    post:
+      tags:
+        - authentication
+      summary: Test the connection
+      operationId: test
+      responses:
+        201:
+          description: successful operation
   /user/registration:
     put:
       tags:
